@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam App – Maquettes Mobile</title>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Cabinet+Grotesk:wght@300;400;500;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#0d1117;--surface:#161b22;--card:#1c2128;
+  --green:#22c55e;--gl:#16a34a;--gd:#14532d;
+  --y:#fbbf24;--red:#ef4444;--blue:#3b82f6;--purple:#a855f7;
+  --border:rgba(255,255,255,0.08);--text:#e6edf3;--muted:#7d8590;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+/* ── PAGE LAYOUT ── */
+.page-header{text-align:center;padding:3rem 2rem 2rem}
+.ph-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);color:var(--green);font-size:0.75rem;font-weight:700;padding:0.35rem 1rem;border-radius:100px;margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.08em}
+.ph-title{font-family:'Syne',sans-serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:800;color:#fff;margin-bottom:0.6rem}
+.ph-title span{color:var(--y)}
+.ph-sub{color:var(--muted);max-width:550px;margin:0 auto;line-height:1.7;font-size:0.95rem}
+
+/* ── SCREEN NAV ── */
+.screen-nav{display:flex;gap:0.4rem;justify-content:center;flex-wrap:wrap;padding:0 2rem 2rem}
+.sn-btn{background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:0.5rem 1.1rem;border-radius:100px;font-size:0.8rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif}
+.sn-btn:hover{color:var(--text)}
+.sn-btn.active{background:var(--green);border-color:var(--green);color:#000}
+
+/* ── PHONE SHOWCASE ── */
+.showcase{display:flex;align-items:flex-start;justify-content:center;gap:3rem;padding:0 2rem 4rem;flex-wrap:wrap}
+
+/* ── PHONE FRAME ── */
+.phone-frame{position:relative;flex-shrink:0}
+.phone-outer{
+  width:320px;height:680px;
+  background:#1a1a2e;
+  border-radius:50px;
+  padding:12px;
+  box-shadow:
+    0 0 0 2px #2a2a3e,
+    0 0 0 4px #111,
+    0 40px 100px rgba(0,0,0,0.6),
+    inset 0 0 0 1px rgba(255,255,255,0.05);
+  position:relative;
+}
+.phone-notch{
+  position:absolute;top:18px;left:50%;transform:translateX(-50%);
+  width:110px;height:28px;background:#0d0d1a;
+  border-radius:0 0 20px 20px;z-index:10;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.notch-cam{width:10px;height:10px;border-radius:50%;background:#222}
+.notch-sensor{width:6px;height:6px;border-radius:50%;background:#1a1a1a}
+.phone-screen{
+  width:100%;height:100%;
+  border-radius:40px;
+  overflow:hidden;
+  background:var(--bg);
+  position:relative;
+}
+.phone-statusbar{
+  height:44px;background:transparent;
+  display:flex;align-items:flex-end;justify-content:space-between;
+  padding:0 1.2rem 6px;
+  position:absolute;top:0;left:0;right:0;z-index:5;
+}
+.sb-time{font-size:11px;font-weight:700;color:#fff;font-family:'DM Sans',sans-serif}
+.sb-icons{display:flex;gap:4px;align-items:center;font-size:10px;color:#fff}
+
+/* ── SCREEN CONTENTS ── */
+.screen{display:none;flex-direction:column;height:100%;position:absolute;inset:0;overflow:hidden}
+.screen.show{display:flex}
+
+/* ── ONBOARDING ── */
+.onboard{
+  background:linear-gradient(160deg,#0a1f0f 0%,#0d2b14 50%,#1a3d20 100%);
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:space-between;
+  padding:60px 28px 32px;
+}
+.ob-art{text-align:center;padding:1rem 0}
+.ob-circle{width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(34,197,94,0.15),rgba(34,197,94,0.03));border:1px solid rgba(34,197,94,0.2);display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem;position:relative}
+.ob-circle::before{content:'';position:absolute;inset:-12px;border-radius:50%;border:1px solid rgba(34,197,94,0.08)}
+.ob-emoji{font-size:4.5rem}
+.ob-title{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:#fff;text-align:center;line-height:1.2;margin-bottom:0.5rem}
+.ob-title span{color:var(--y)}
+.ob-sub{font-size:0.78rem;color:rgba(255,255,255,0.55);text-align:center;line-height:1.6}
+.ob-dots{display:flex;gap:6px;justify-content:center;margin:0.5rem 0}
+.ob-dot{width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,0.2);transition:all 0.3s}
+.ob-dot.active{width:20px;background:var(--green)}
+.ob-btn{width:100%;background:var(--green);color:#000;border:none;border-radius:14px;padding:14px;font-size:0.92rem;font-weight:800;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s}
+.ob-btn:hover{background:#1db854}
+.ob-skip{font-size:0.75rem;color:rgba(255,255,255,0.35);text-align:center;margin-top:0.5rem;cursor:pointer}
+
+/* ── HOME SCREEN ── */
+.home-screen{background:var(--bg);flex:1;overflow-y:auto;padding-top:50px;padding-bottom:80px}
+.home-screen::-webkit-scrollbar{display:none}
+.hs-top{background:linear-gradient(180deg,#0a1f0f,var(--bg));padding:1rem 1.2rem 1.4rem}
+.hs-greeting{font-size:0.72rem;color:var(--muted);margin-bottom:2px}
+.hs-name{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:#fff}
+.hs-streak{display:flex;align-items:center;gap:0.4rem;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.2);border-radius:100px;padding:0.3rem 0.7rem;font-size:0.7rem;font-weight:700;color:var(--y);width:fit-content;margin-top:0.5rem}
+/* calorie ring */
+.cal-ring-wrap{padding:0.8rem 1.2rem;display:flex;align-items:center;gap:1.2rem}
+.cal-ring-svg{flex-shrink:0}
+.cal-ring-info{}
+.cri-val{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:#fff}
+.cri-label{font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em}
+.cri-macros{display:flex;gap:0.7rem;margin-top:0.5rem}
+.crim{display:flex;flex-direction:column;align-items:center}
+.crim-val{font-size:0.78rem;font-weight:700;color:#fff}
+.crim-label{font-size:0.58rem;color:var(--muted)}
+/* quick actions */
+.quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;padding:0 1.2rem;margin-bottom:1rem}
+.qa-btn{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:0.9rem;display:flex;align-items:center;gap:0.6rem;cursor:pointer;transition:all 0.2s}
+.qa-btn:hover{border-color:var(--green)}
+.qa-icon{font-size:1.3rem}
+.qa-label{font-size:0.75rem;font-weight:700;color:#fff}
+.qa-sub{font-size:0.62rem;color:var(--muted)}
+/* section */
+.hs-section{padding:0 1.2rem;margin-bottom:1rem}
+.hs-section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.7rem}
+.hs-section-title{font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:700;color:#fff}
+.hs-section-link{font-size:0.7rem;color:var(--green);font-weight:600}
+/* meal log */
+.meal-log-item{display:flex;align-items:center;gap:0.7rem;padding:0.7rem 0.8rem;background:var(--card);border-radius:12px;border:1px solid var(--border);margin-bottom:0.4rem;transition:all 0.2s}
+.ml-emoji{font-size:1.3rem;width:36px;height:36px;background:var(--surface);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ml-name{font-size:0.8rem;font-weight:600;color:#fff}
+.ml-time{font-size:0.65rem;color:var(--muted)}
+.ml-cal{font-size:0.78rem;font-weight:800;color:var(--y);margin-left:auto;white-space:nowrap}
+.add-meal-fab{width:100%;background:rgba(34,197,94,0.08);border:1.5px dashed rgba(34,197,94,0.2);border-radius:12px;padding:0.75rem;font-size:0.78rem;font-weight:700;color:var(--green);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.4rem;transition:all 0.2s}
+.add-meal-fab:hover{background:rgba(34,197,94,0.14)}
+/* recipe cards horizontal */
+.recipes-scroll{display:flex;gap:0.6rem;overflow-x:auto;padding:0 1.2rem;padding-bottom:4px}
+.recipes-scroll::-webkit-scrollbar{display:none}
+.recipe-mini-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:0.8rem;min-width:130px;flex-shrink:0;cursor:pointer;transition:all 0.2s}
+.recipe-mini-card:hover{border-color:var(--green);transform:translateY(-2px)}
+.rmc-emoji{font-size:2rem;display:block;margin-bottom:0.4rem}
+.rmc-name{font-size:0.72rem;font-weight:700;color:#fff;margin-bottom:0.2rem}
+.rmc-cal{font-size:0.65rem;color:var(--y);font-weight:700}
+
+/* ── SCANNER SCREEN ── */
+.scanner-screen{background:#000;flex:1;display:flex;flex-direction:column;padding-top:44px}
+.scan-viewfinder{flex:1;position:relative;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(0,0,0,0.3),rgba(0,0,0,0));overflow:hidden}
+.scan-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.5)}
+.scan-window{position:relative;z-index:2;width:200px;height:200px}
+.scan-window::before,.scan-window::after{content:'';position:absolute;width:32px;height:32px;border-color:var(--green);border-style:solid}
+.scan-window::before{top:0;left:0;border-width:3px 0 0 3px;border-radius:4px 0 0 0}
+.scan-window::after{bottom:0;right:0;border-width:0 3px 3px 0;border-radius:0 0 4px 0}
+.sw-tl,.sw-tr,.sw-bl,.sw-br{position:absolute;width:32px;height:32px;border-color:var(--green);border-style:solid}
+.sw-tl{top:0;right:0;border-width:3px 3px 0 0;border-radius:0 4px 0 0}
+.sw-tr{bottom:0;left:0;border-width:0 0 3px 3px;border-radius:0 0 0 4px}
+.scan-laser{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent);animation:laser 2s ease-in-out infinite;z-index:3}
+@keyframes laser{0%,100%{top:10px;opacity:0}10%,90%{opacity:1}50%{top:188px}}
+.scan-hint{font-size:0.72rem;color:rgba(255,255,255,0.6);text-align:center;margin-top:1.2rem;padding:0 2rem;line-height:1.5}
+.scan-product-found{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(0deg,#000 60%,transparent);padding:1.2rem;z-index:5}
+.spf-label{font-size:0.65rem;color:var(--green);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.5rem}
+.spf-card{background:var(--card);border:1px solid rgba(34,197,94,0.3);border-radius:16px;padding:0.9rem;display:flex;gap:0.8rem;align-items:center;cursor:pointer}
+.spf-emoji{font-size:2rem;flex-shrink:0}
+.spf-name{font-size:0.85rem;font-weight:700;color:#fff;margin-bottom:0.2rem}
+.spf-brand{font-size:0.68rem;color:var(--muted)}
+.spf-cal{font-size:0.9rem;font-weight:800;color:var(--y);margin-left:auto;white-space:nowrap}
+.scan-controls{padding:0.8rem 1.2rem 0;display:flex;gap:0.6rem}
+.sc-btn{flex:1;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:0.7rem;font-size:0.72rem;font-weight:700;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.4rem;font-family:'DM Sans',sans-serif}
+.sc-btn.primary{background:var(--green);border-color:var(--green);color:#000}
+
+/* ── RECIPE DETAIL ── */
+.recipe-detail{background:var(--bg);flex:1;overflow-y:auto;padding-top:44px;padding-bottom:80px}
+.recipe-detail::-webkit-scrollbar{display:none}
+.rd-hero{height:200px;background:linear-gradient(135deg,#0a2d14,#1a7a3e);display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0}
+.rd-hero-emoji{font-size:5rem}
+.rd-back{position:absolute;top:12px;left:12px;width:34px;height:34px;border-radius:10px;background:rgba(0,0,0,0.3);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:0.9rem}
+.rd-fav{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:10px;background:rgba(0,0,0,0.3);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:0.9rem}
+.rd-body{padding:1.2rem}
+.rd-tag{font-size:0.65rem;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.4rem}
+.rd-title{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:0.8rem}
+.rd-meta{display:flex;gap:0.5rem;margin-bottom:1.2rem;flex-wrap:wrap}
+.rd-meta-pill{background:var(--card);border:1px solid var(--border);border-radius:100px;padding:0.28rem 0.7rem;font-size:0.65rem;font-weight:700;color:var(--muted);display:flex;align-items:center;gap:0.3rem}
+.rd-macros-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0.4rem;margin-bottom:1.2rem}
+.rdm-card{background:var(--card);border-radius:10px;padding:0.5rem;text-align:center;border:1px solid var(--border)}
+.rdm-val{font-size:0.9rem;font-weight:800;color:#fff}
+.rdm-label{font-size:0.58rem;color:var(--muted);text-transform:uppercase}
+.rd-section{margin-bottom:1.2rem}
+.rd-section-title{font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:var(--green);margin-bottom:0.6rem}
+.ing-tag{display:inline-flex;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:0.28rem 0.6rem;font-size:0.7rem;color:var(--text);margin:0 4px 4px 0}
+.step-row{display:flex;gap:0.7rem;align-items:flex-start;margin-bottom:0.6rem}
+.step-n{width:24px;height:24px;border-radius:50%;background:var(--green);color:#000;font-size:0.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-txt{font-size:0.75rem;color:rgba(255,255,255,0.75);line-height:1.5;padding-top:3px}
+.rd-add-btn{width:100%;background:var(--green);border:none;border-radius:14px;padding:13px;font-size:0.88rem;font-weight:800;color:#000;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-top:0.8rem;transition:all 0.2s}
+
+/* ── PROFILE SCREEN ── */
+.profile-screen{background:var(--bg);flex:1;overflow-y:auto;padding-top:44px;padding-bottom:80px}
+.profile-screen::-webkit-scrollbar{display:none}
+.ps-header{background:linear-gradient(180deg,#0a2d14,var(--bg));padding:1.4rem 1.2rem 1.8rem;text-align:center}
+.ps-avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--gl),var(--y));margin:0 auto 0.7rem;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:#000;border:3px solid rgba(34,197,94,0.3)}
+.ps-name{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:#fff}
+.ps-plan{font-size:0.7rem;color:var(--y);font-weight:700;margin-top:0.2rem}
+.ps-stats-row{display:flex;gap:0.5rem;padding:0 1.2rem;margin-bottom:1.2rem}
+.pss-card{flex:1;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:0.7rem;text-align:center}
+.pss-val{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:var(--green)}
+.pss-label{font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em}
+.ps-section{padding:0 1.2rem;margin-bottom:1rem}
+.ps-section-title{font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.6rem}
+.ps-item{display:flex;align-items:center;gap:0.7rem;padding:0.8rem;background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:0.4rem;cursor:pointer;transition:all 0.15s}
+.ps-item:hover{border-color:rgba(255,255,255,0.15)}
+.ps-item-icon{font-size:1.1rem;width:32px;text-align:center}
+.ps-item-label{font-size:0.82rem;font-weight:600;color:#fff;flex:1}
+.ps-item-val{font-size:0.75rem;color:var(--muted)}
+.ps-item-arr{font-size:0.8rem;color:var(--muted)}
+.ps-goals{padding:0 1.2rem;margin-bottom:1rem}
+.goal-progress-item{margin-bottom:0.8rem}
+.gpi-top{display:flex;justify-content:space-between;font-size:0.72rem;margin-bottom:0.3rem}
+.gpi-label{color:#fff;font-weight:600}
+.gpi-val{color:var(--muted)}
+.gpi-bar{height:5px;background:rgba(255,255,255,0.07);border-radius:3px;overflow:hidden}
+.gpi-fill{height:100%;border-radius:3px;transition:width 1s ease}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{
+  position:absolute;bottom:0;left:0;right:0;height:68px;
+  background:var(--surface);border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-around;
+  padding:0 0.5rem;z-index:10;backdrop-filter:blur(10px);
+}
+.bn-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:0.4rem 0.6rem;border-radius:10px;transition:all 0.2s;flex:1}
+.bn-item.active{background:rgba(34,197,94,0.1)}
+.bn-icon{font-size:1.3rem;filter:grayscale(1);opacity:0.5;transition:all 0.2s}
+.bn-item.active .bn-icon{filter:none;opacity:1}
+.bn-label{font-size:0.57rem;color:var(--muted);font-weight:700;transition:all 0.2s}
+.bn-item.active .bn-label{color:var(--green)}
+.bn-scan-btn{background:var(--green);width:50px;height:50px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 4px 20px rgba(34,197,94,0.4);flex-shrink:0;cursor:pointer;transition:all 0.2s;margin:0 0.3rem}
+.bn-scan-btn:hover{transform:scale(1.05)}
+
+/* ── SIDE PANEL INFO ── */
+.info-panel{max-width:440px;width:100%}
+.ip-title{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:#fff;margin-bottom:0.5rem}
+.ip-sub{color:var(--muted);font-size:0.88rem;line-height:1.7;margin-bottom:2rem}
+.screen-list{display:flex;flex-direction:column;gap:0.5rem;margin-bottom:2.5rem}
+.sl-item{display:flex;align-items:center;gap:0.9rem;padding:0.7rem 1rem;border-radius:12px;border:1.5px solid var(--border);cursor:pointer;transition:all 0.2s;background:var(--surface)}
+.sl-item.active{border-color:var(--green);background:rgba(34,197,94,0.06)}
+.sl-item:hover{border-color:rgba(255,255,255,0.15)}
+.sl-num{width:28px;height:28px;border-radius:8px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:800;color:var(--muted);flex-shrink:0;transition:all 0.2s}
+.sl-item.active .sl-num{background:var(--green);border-color:var(--green);color:#000}
+.sl-name{font-size:0.85rem;font-weight:600;color:var(--text)}
+.sl-desc{font-size:0.72rem;color:var(--muted)}
+/* tech specs */
+.tech-specs{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.2rem}
+.ts-title{font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:1rem}
+.ts-row{display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid var(--border);font-size:0.8rem}
+.ts-row:last-child{border-bottom:none}
+.ts-key{color:var(--muted)}
+.ts-val{color:#fff;font-weight:600}
+
+/* ── ANIMATE ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.screen.show{animation:fadeUp 0.3s ease}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .showcase{flex-direction:column;align-items:center}
+  .info-panel{max-width:100%;padding:0 0.5rem}
+  .screen-list{display:grid;grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="ph-badge">📱 React Native · iOS & Android</div>
+  <h1 class="ph-title">NutriCam <span>App Mobile</span></h1>
+  <p class="ph-sub">Maquettes interactives haute-fidélité de l'application mobile. Naviguez entre les 5 écrans principaux.</p>
+</div>
+
+<div class="screen-nav" id="screen-nav">
+  <button class="sn-btn active" onclick="showScreen('onboard',this)">🚀 Onboarding</button>
+  <button class="sn-btn" onclick="showScreen('home',this)">🏠 Accueil</button>
+  <button class="sn-btn" onclick="showScreen('scanner',this)">📷 Scanner</button>
+  <button class="sn-btn" onclick="showScreen('recipe',this)">🍲 Recette</button>
+  <button class="sn-btn" onclick="showScreen('profile',this)">👤 Profil</button>
+</div>
+
+<div class="showcase">
+
+  <!-- PHONE -->
+  <div class="phone-frame">
+    <div class="phone-outer">
+      <div class="phone-notch">
+        <div class="notch-cam"></div>
+        <div class="notch-sensor"></div>
+      </div>
+      <div class="phone-screen">
+        <div class="phone-statusbar">
+          <div class="sb-time" id="phone-time">09:41</div>
+          <div class="sb-icons">
+            <span>▲▲▲</span>
+            <span>WiFi</span>
+            <span>🔋</span>
+          </div>
+        </div>
+
+        <!-- ONBOARDING -->
+        <div class="screen show" id="sc-onboard">
+          <div class="onboard">
+            <div class="ob-art">
+              <div class="ob-circle"><div class="ob-emoji">🌿</div></div>
+              <div style="font-family:'Syne',sans-serif;font-size:0.65rem;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:0.5rem">NutriCam</div>
+              <div class="ob-title">Mangez local,<br/><span>vivez fort</span></div>
+              <div class="ob-sub" style="margin-top:0.5rem">La nutrition africaine enfin<br/>dans votre poche</div>
+            </div>
+            <div>
+              <div class="ob-dots">
+                <div class="ob-dot active"></div>
+                <div class="ob-dot"></div>
+                <div class="ob-dot"></div>
+              </div>
+              <button class="ob-btn" onclick="showScreen('home', document.querySelectorAll('.sn-btn')[1])">Commencer gratuitement</button>
+              <div class="ob-skip">J'ai déjà un compte</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- HOME -->
+        <div class="screen" id="sc-home">
+          <div class="home-screen">
+            <div class="hs-top">
+              <div class="hs-greeting">Mardi, 14 Janvier</div>
+              <div class="hs-name">Bonjour, Marie 👋</div>
+              <div class="hs-streak">🔥 12 jours de suite</div>
+            </div>
+            <div class="cal-ring-wrap">
+              <svg class="cal-ring-svg" width="80" height="80" viewBox="0 0 80 80">
+                <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8"/>
+                <circle cx="40" cy="40" r="32" fill="none" stroke="#22c55e" stroke-width="8"
+                  stroke-dasharray="126 201" stroke-dashoffset="0" stroke-linecap="round"
+                  transform="rotate(-90 40 40)" style="transition:stroke-dasharray 1s ease"/>
+                <text x="40" y="37" text-anchor="middle" fill="white" font-size="11" font-weight="800" font-family="Syne,sans-serif">1480</text>
+                <text x="40" y="49" text-anchor="middle" fill="#7d8590" font-size="7" font-family="DM Sans,sans-serif">kcal</text>
+              </svg>
+              <div class="cal-ring-info">
+                <div class="cri-label">Calories aujourd'hui</div>
+                <div class="cri-val">74%</div>
+                <div style="font-size:0.68rem;color:var(--muted)">1 480 / 2 000 kcal</div>
+                <div class="cri-macros">
+                  <div class="crim"><div class="crim-val" style="color:#4ade80">87g</div><div class="crim-label">Prot.</div></div>
+                  <div class="crim"><div class="crim-val" style="color:#fbbf24">165g</div><div class="crim-label">Gluc.</div></div>
+                  <div class="crim"><div class="crim-val" style="color:#f87171">52g</div><div class="crim-label">Lip.</div></div>
+                </div>
+              </div>
+            </div>
+            <div class="quick-actions">
+              <div class="qa-btn" onclick="showScreen('scanner',document.querySelectorAll('.sn-btn')[2])">
+                <div class="qa-icon">📷</div>
+                <div><div class="qa-label">Scanner</div><div class="qa-sub">Code-barres</div></div>
+              </div>
+              <div class="qa-btn" onclick="showScreen('recipe',document.querySelectorAll('.sn-btn')[3])">
+                <div class="qa-icon">🍲</div>
+                <div><div class="qa-label">Recettes</div><div class="qa-sub">Camerounaises</div></div>
+              </div>
+            </div>
+            <div class="hs-section">
+              <div class="hs-section-head">
+                <div class="hs-section-title">Repas du jour</div>
+                <div class="hs-section-link">+ Ajouter</div>
+              </div>
+              <div class="meal-log-item"><div class="ml-emoji">☕</div><div><div class="ml-name">Bouillie de maïs + lait</div><div class="ml-time">07:30 · Petit-déj.</div></div><div class="ml-cal">320 kcal</div></div>
+              <div class="meal-log-item"><div class="ml-emoji">🍲</div><div><div class="ml-name">Ndolé aux crevettes</div><div class="ml-time">12:30 · Déjeuner</div></div><div class="ml-cal">580 kcal</div></div>
+              <div class="meal-log-item"><div class="ml-emoji">🥜</div><div><div class="ml-name">Arachides grillées</div><div class="ml-time">16:00 · Collation</div></div><div class="ml-cal">180 kcal</div></div>
+              <div class="add-meal-fab">➕ Ajouter un repas</div>
+            </div>
+            <div class="hs-section">
+              <div class="hs-section-head">
+                <div class="hs-section-title">Recettes ce soir</div>
+                <div class="hs-section-link">Voir tout</div>
+              </div>
+              <div class="recipes-scroll">
+                <div class="recipe-mini-card" onclick="showScreen('recipe',document.querySelectorAll('.sn-btn')[3])"><span class="rmc-emoji">🐟</span><div class="rmc-name">Poisson braisé</div><div class="rmc-cal">🔥 290 kcal</div></div>
+                <div class="recipe-mini-card"><span class="rmc-emoji">🥬</span><div class="rmc-name">Eru & Waterleaf</div><div class="rmc-cal">🔥 310 kcal</div></div>
+                <div class="recipe-mini-card"><span class="rmc-emoji">🐔</span><div class="rmc-name">Poulet DG</div><div class="rmc-cal">🔥 520 kcal</div></div>
+                <div class="recipe-mini-card"><span class="rmc-emoji">🫘</span><div class="rmc-name">Haricots rouges</div><div class="rmc-cal">🔥 280 kcal</div></div>
+              </div>
+            </div>
+            <div class="hs-section" style="margin-top:0.5rem">
+              <div class="hs-section-head">
+                <div class="hs-section-title">💧 Hydratation</div>
+                <div style="font-size:0.72rem;font-weight:700;color:#60a5fa">2.1 / 2.5 L</div>
+              </div>
+              <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:0.8rem">
+                <div style="display:flex;gap:4px;flex-wrap:wrap">
+                  ${Array.from({length:10},(_,i)=>`<div style="width:24px;height:30px;border-radius:5px;border:1px solid ${i<8?'#60a5fa':'rgba(255,255,255,0.08)'};background:${i<8?'rgba(96,165,250,0.15)':'transparent'};display:flex;align-items:center;justify-content:center;font-size:0.7rem">${i<8?'💧':'○'}</div>`).join('')}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <div class="bn-item active"><div class="bn-icon">🏠</div><div class="bn-label">Accueil</div></div>
+            <div class="bn-item" onclick="showScreen('recipe',document.querySelectorAll('.sn-btn')[3])"><div class="bn-icon">🍲</div><div class="bn-label">Recettes</div></div>
+            <div class="bn-scan-btn" onclick="showScreen('scanner',document.querySelectorAll('.sn-btn')[2])">📷</div>
+            <div class="bn-item"><div class="bn-icon">📊</div><div class="bn-label">Stats</div></div>
+            <div class="bn-item" onclick="showScreen('profile',document.querySelectorAll('.sn-btn')[4])"><div class="bn-icon">👤</div><div class="bn-label">Profil</div></div>
+          </div>
+        </div>
+
+        <!-- SCANNER -->
+        <div class="screen" id="sc-scanner">
+          <div class="scanner-screen">
+            <div style="padding:0 1rem;display:flex;align-items:center;justify-content:space-between;background:#000">
+              <div style="font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:800;color:#fff">📷 Scanner</div>
+              <div style="font-size:0.72rem;color:var(--green);font-weight:700">Aide</div>
+            </div>
+            <div class="scan-controls">
+              <div class="sc-btn">🔦 Flash</div>
+              <div class="sc-btn">🖼️ Galerie</div>
+              <div class="sc-btn primary">📝 Manuel</div>
+            </div>
+            <div class="scan-viewfinder">
+              <div class="scan-overlay"></div>
+              <div class="scan-window">
+                <div class="sw-tl"></div>
+                <div class="sw-tr"></div>
+                <div class="sw-bl"></div>
+                <div class="sw-br"></div>
+                <div class="scan-laser"></div>
+              </div>
+              <div class="scan-hint">Pointez la caméra vers le code-barres<br/>d'un produit alimentaire</div>
+              <div class="scan-product-found">
+                <div class="spf-label">✅ Produit reconnu</div>
+                <div class="spf-card">
+                  <div class="spf-emoji">🫙</div>
+                  <div>
+                    <div class="spf-name">Huile de palme Azur</div>
+                    <div class="spf-brand">AZUR · 1L · Cameroun</div>
+                    <div style="display:flex;gap:0.4rem;margin-top:0.3rem">
+                      <span style="font-size:0.62rem;background:rgba(248,113,113,0.1);color:#f87171;padding:0.15rem 0.4rem;border-radius:4px;font-weight:700">Fat: 100g</span>
+                      <span style="font-size:0.62rem;background:rgba(34,197,94,0.1);color:#22c55e;padding:0.15rem 0.4rem;border-radius:4px;font-weight:700">0 sucre</span>
+                    </div>
+                  </div>
+                  <div class="spf-cal">884<br/><span style="font-size:0.6rem;font-weight:400;color:var(--muted)">kcal/100g</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <div class="bn-item" onclick="showScreen('home',document.querySelectorAll('.sn-btn')[1])"><div class="bn-icon">🏠</div><div class="bn-label">Accueil</div></div>
+            <div class="bn-item" onclick="showScreen('recipe',document.querySelectorAll('.sn-btn')[3])"><div class="bn-icon">🍲</div><div class="bn-label">Recettes</div></div>
+            <div class="bn-scan-btn active" style="box-shadow:0 0 0 3px rgba(34,197,94,0.3)">📷</div>
+            <div class="bn-item"><div class="bn-icon">📊</div><div class="bn-label">Stats</div></div>
+            <div class="bn-item" onclick="showScreen('profile',document.querySelectorAll('.sn-btn')[4])"><div class="bn-icon">👤</div><div class="bn-label">Profil</div></div>
+          </div>
+        </div>
+
+        <!-- RECIPE DETAIL -->
+        <div class="screen" id="sc-recipe">
+          <div class="recipe-detail">
+            <div class="rd-hero">
+              <div class="rd-hero-emoji">🍲</div>
+              <div class="rd-back" onclick="showScreen('home',document.querySelectorAll('.sn-btn')[1])">←</div>
+              <div class="rd-fav">🤍</div>
+            </div>
+            <div class="rd-body">
+              <div class="rd-tag">📍 Plat national · Littoral</div>
+              <div class="rd-title">Ndolé aux crevettes</div>
+              <div class="rd-meta">
+                <div class="rd-meta-pill">⏱ 90 min</div>
+                <div class="rd-meta-pill">👥 4 pers.</div>
+                <div class="rd-meta-pill">🌶 Moyen</div>
+                <div class="rd-meta-pill">⭐ Premium</div>
+              </div>
+              <div class="rd-macros-row">
+                <div class="rdm-card"><div class="rdm-val" style="color:var(--y)">380</div><div class="rdm-label">kcal</div></div>
+                <div class="rdm-card"><div class="rdm-val" style="color:#4ade80">28g</div><div class="rdm-label">Prot.</div></div>
+                <div class="rdm-card"><div class="rdm-val" style="color:#fbbf24">18g</div><div class="rdm-label">Gluc.</div></div>
+                <div class="rdm-card"><div class="rdm-val" style="color:#f87171">22g</div><div class="rdm-label">Lip.</div></div>
+              </div>
+              <div class="rd-section">
+                <div class="rd-section-title">🛒 Ingrédients</div>
+                <div>
+                  <span class="ing-tag">500g feuilles ndolé</span>
+                  <span class="ing-tag">300g crevettes</span>
+                  <span class="ing-tag">200g bœuf fumé</span>
+                  <span class="ing-tag">150g arachides</span>
+                  <span class="ing-tag">Huile de palme</span>
+                  <span class="ing-tag">Oignons · ail</span>
+                  <span class="ing-tag">1 cube Maggi</span>
+                </div>
+              </div>
+              <div class="rd-section">
+                <div class="rd-section-title">👨‍🍳 Préparation</div>
+                <div class="step-row"><div class="step-n">1</div><div class="step-txt">Tremper les feuilles de ndolé 30 min dans l'eau chaude. Essorer et ciseler finement.</div></div>
+                <div class="step-row"><div class="step-n">2</div><div class="step-txt">Mixer les arachides grillées avec peu d'eau en pâte lisse.</div></div>
+                <div class="step-row"><div class="step-n">3</div><div class="step-txt">Faire revenir oignon et ail dans l'huile de palme 5 min à feu moyen.</div></div>
+                <div class="step-row"><div class="step-n">4</div><div class="step-txt">Ajouter bœuf fumé, ndolé, pâte d'arachides et cube. Mijoter 25 min.</div></div>
+                <div class="step-row"><div class="step-n">5</div><div class="step-txt">Incorporer les crevettes, cuire 10 min. Servir chaud.</div></div>
+              </div>
+              <button class="rd-add-btn">➕ Ajouter au journal</button>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <div class="bn-item" onclick="showScreen('home',document.querySelectorAll('.sn-btn')[1])"><div class="bn-icon">🏠</div><div class="bn-label">Accueil</div></div>
+            <div class="bn-item active"><div class="bn-icon">🍲</div><div class="bn-label">Recettes</div></div>
+            <div class="bn-scan-btn" onclick="showScreen('scanner',document.querySelectorAll('.sn-btn')[2])">📷</div>
+            <div class="bn-item"><div class="bn-icon">📊</div><div class="bn-label">Stats</div></div>
+            <div class="bn-item" onclick="showScreen('profile',document.querySelectorAll('.sn-btn')[4])"><div class="bn-icon">👤</div><div class="bn-label">Profil</div></div>
+          </div>
+        </div>
+
+        <!-- PROFILE -->
+        <div class="screen" id="sc-profile">
+          <div class="profile-screen">
+            <div class="ps-header">
+              <div class="ps-avatar">GDP</div>
+              <div class="ps-name">Georges D. Pitchou</div>
+              <div class="ps-plan">⭐ Plan Premium · Adulte actif</div>
+            </div>
+            <div class="ps-stats-row">
+              <div class="pss-card"><div class="pss-val">-3.2<span style="font-size:0.7rem">kg</span></div><div class="pss-label">Ce mois</div></div>
+              <div class="pss-card"><div class="pss-val" style="color:var(--y)">12🔥</div><div class="pss-label">Streak</div></div>
+              <div class="pss-card"><div class="pss-val">87%</div><div class="pss-label">Objectif</div></div>
+            </div>
+            <div class="ps-goals">
+              <div class="ps-section-title">🎯 Mes objectifs</div>
+              <div class="goal-progress-item"><div class="gpi-top"><span class="gpi-label">Calories quotidiennes</span><span class="gpi-val">1 480/2 000</span></div><div class="gpi-bar"><div class="gpi-fill" style="width:74%;background:var(--green)"></div></div></div>
+              <div class="goal-progress-item"><div class="gpi-top"><span class="gpi-label">Hydratation</span><span class="gpi-val">2.1/2.5L</span></div><div class="gpi-bar"><div class="gpi-fill" style="width:84%;background:#60a5fa"></div></div></div>
+              <div class="goal-progress-item"><div class="gpi-top"><span class="gpi-label">Protéines</span><span class="gpi-val">87/120g</span></div><div class="gpi-bar"><div class="gpi-fill" style="width:72%;background:#4ade80"></div></div></div>
+              <div class="goal-progress-item"><div class="gpi-top"><span class="gpi-label">Poids cible</span><span class="gpi-val">64/62 kg</span></div><div class="gpi-bar"><div class="gpi-fill" style="width:45%;background:var(--y)"></div></div></div>
+            </div>
+            <div class="ps-section">
+              <div class="ps-section-title">Mon profil</div>
+              <div class="ps-item"><div class="ps-item-icon">⚖️</div><div class="ps-item-label">Poids actuel</div><div class="ps-item-val">64 kg</div><div class="ps-item-arr">›</div></div>
+              <div class="ps-item"><div class="ps-item-icon">🎯</div><div class="ps-item-label">Objectif</div><div class="ps-item-val">Perte poids</div><div class="ps-item-arr">›</div></div>
+              <div class="ps-item"><div class="ps-item-icon">🏃</div><div class="ps-item-label">Activité</div><div class="ps-item-val">Modérée</div><div class="ps-item-arr">›</div></div>
+            </div>
+            <div class="ps-section">
+              <div class="ps-section-title">Paramètres</div>
+              <div class="ps-item"><div class="ps-item-icon">🔔</div><div class="ps-item-label">Notifications repas</div><div class="ps-item-val" style="color:var(--green)">Activé</div><div class="ps-item-arr">›</div></div>
+              <div class="ps-item"><div class="ps-item-icon">🌍</div><div class="ps-item-label">Langue</div><div class="ps-item-val">Français</div><div class="ps-item-arr">›</div></div>
+              <div class="ps-item"><div class="ps-item-icon">💳</div><div class="ps-item-label">Abonnement</div><div class="ps-item-val" style="color:var(--y)">Premium</div><div class="ps-item-arr">›</div></div>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <div class="bn-item" onclick="showScreen('home',document.querySelectorAll('.sn-btn')[1])"><div class="bn-icon">🏠</div><div class="bn-label">Accueil</div></div>
+            <div class="bn-item" onclick="showScreen('recipe',document.querySelectorAll('.sn-btn')[3])"><div class="bn-icon">🍲</div><div class="bn-label">Recettes</div></div>
+            <div class="bn-scan-btn" onclick="showScreen('scanner',document.querySelectorAll('.sn-btn')[2])">📷</div>
+            <div class="bn-item"><div class="bn-icon">📊</div><div class="bn-label">Stats</div></div>
+            <div class="bn-item active"><div class="bn-icon">👤</div><div class="bn-label">Profil</div></div>
+          </div>
+        </div>
+
+      </div><!-- /phone-screen -->
+    </div><!-- /phone-outer -->
+  </div><!-- /phone-frame -->
+
+  <!-- INFO PANEL -->
+  <div class="info-panel">
+    <div class="ip-title" id="ip-title">Écran d'accueil</div>
+    <div class="ip-sub" id="ip-sub">L'accueil NutriCam affiche votre résumé nutritionnel du jour en temps réel : anneau calorique, macros, repas enregistrés, hydratation et suggestions du soir.</div>
+
+    <div class="screen-list">
+      <div class="sl-item" onclick="showScreen('onboard',document.querySelectorAll('.sn-btn')[0])">
+        <div class="sl-num">01</div>
+        <div><div class="sl-name">🚀 Onboarding</div><div class="sl-desc">Premier lancement · Profil utilisateur</div></div>
+      </div>
+      <div class="sl-item active" onclick="showScreen('home',document.querySelectorAll('.sn-btn')[1])">
+        <div class="sl-num">02</div>
+        <div><div class="sl-name">🏠 Accueil Dashboard</div><div class="sl-desc">Calories · Repas · Recettes · Eau</div></div>
+      </div>
+      <div class="sl-item" onclick="showScreen('scanner',document.querySelectorAll('.sn-btn')[2])">
+        <div class="sl-num">03</div>
+        <div><div class="sl-name">📷 Scanner produits</div><div class="sl-desc">Code-barres · Reconnaissance IA</div></div>
+      </div>
+      <div class="sl-item" onclick="showScreen('recipe',document.querySelectorAll('.sn-btn')[3])">
+        <div class="sl-num">04</div>
+        <div><div class="sl-name">🍲 Fiche recette</div><div class="sl-desc">Ingrédients · Étapes · Macros</div></div>
+      </div>
+      <div class="sl-item" onclick="showScreen('profile',document.querySelectorAll('.sn-btn')[4])">
+        <div class="sl-num">05</div>
+        <div><div class="sl-name">👤 Profil utilisateur</div><div class="sl-desc">Objectifs · Statistiques · Paramètres</div></div>
+      </div>
+    </div>
+
+    <div class="tech-specs">
+      <div class="ts-title">⚙️ Spécifications techniques</div>
+      <div class="ts-row"><span class="ts-key">Framework</span><span class="ts-val">React Native 0.73</span></div>
+      <div class="ts-row"><span class="ts-key">Plateformes</span><span class="ts-val">iOS 14+ · Android 9+</span></div>
+      <div class="ts-row"><span class="ts-key">Taille app</span><span class="ts-val">< 15 MB</span></div>
+      <div class="ts-row"><span class="ts-key">Mode hors-ligne</span><span class="ts-val">✅ Complet (SQLite)</span></div>
+      <div class="ts-row"><span class="ts-key">Scanner</span><span class="ts-val">react-native-vision-camera</span></div>
+      <div class="ts-row"><span class="ts-key">Paiement</span><span class="ts-val">MTN MM · Orange MM · Stripe</span></div>
+      <div class="ts-row"><span class="ts-key">Notifications</span><span class="ts-val">Firebase Cloud Messaging</span></div>
+      <div class="ts-row"><span class="ts-key">Auth</span><span class="ts-val">JWT + Biométrie</span></div>
+      <div class="ts-row"><span class="ts-key">Sync</span><span class="ts-val">GraphQL + WebSockets</span></div>
+      <div class="ts-row"><span class="ts-key">Langue</span><span class="ts-val">FR · EN · Fulfuldé (prévu)</span></div>
+    </div>
+  </div>
+
+</div><!-- /showcase -->
+
+<script>
+const screenInfo = {
+  onboard:{ title:'Onboarding & Connexion', sub:'Premier lancement de l\'app. Présentation des fonctionnalités, création du profil nutritionnel et connexion/inscription. Design immersif avec gradient forêt africaine.', listIdx:0 },
+  home:{ title:'Accueil Dashboard', sub:'L\'accueil NutriCam affiche votre résumé nutritionnel du jour en temps réel : anneau calorique animé, macros, repas enregistrés, hydratation et suggestions du soir personnalisées par l\'IA.', listIdx:1 },
+  scanner:{ title:'Scanner Produits', sub:'Scannez le code-barres de n\'importe quel produit alimentaire camerounais ou international. L\'IA reconnaît instantanément le produit et affiche les valeurs nutritionnelles complètes pour 100g et par portion.', listIdx:2 },
+  recipe:{ title:'Fiche Recette Détaillée', sub:'Chaque recette camerounaise dispose d\'une fiche complète avec macros, ingrédients cliquables, étapes numérotées et bouton "Ajouter au journal" pour un tracking en un tap.', listIdx:3 },
+  profile:{ title:'Profil & Objectifs', sub:'Votre espace personnel : objectifs de poids et nutrition avec barres de progression, historique des 30 derniers jours, streak de jours consécutifs, et gestion de l\'abonnement Premium.', listIdx:4 },
+};
+
+function showScreen(id, navBtn){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('show'));
+  document.getElementById('sc-'+id).classList.add('show');
+  document.querySelectorAll('.sn-btn').forEach(b=>b.classList.remove('active'));
+  if(navBtn) navBtn.classList.add('active');
+  document.querySelectorAll('.sl-item').forEach((it,i)=>{
+    it.classList.toggle('active', i===screenInfo[id].listIdx);
+  });
+  document.getElementById('ip-title').textContent = screenInfo[id].title;
+  document.getElementById('ip-sub').textContent = screenInfo[id].sub;
+}
+
+// Update clock
+function updateClock(){
+  const now=new Date();
+  document.getElementById('phone-time').textContent=`${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+}
+updateClock(); setInterval(updateClock,30000);
+
+// Init to home
+showScreen('home', document.querySelectorAll('.sn-btn')[1]);
+</script>
+</body>
+</html>

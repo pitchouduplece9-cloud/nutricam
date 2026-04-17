@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Plan Business & Architecture</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--g:#1a6b3c;--gl:#2daa5f;--y:#f5c842;--r:#c0392b;--bg:#f7f9f7;--dark:#0b150e;--card:#fff;--border:#e2ede6;--text:#1c2b1f;--muted:#6b8c72;--accent:#0a3d20}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+/* HEADER */
+.doc-header{background:linear-gradient(135deg,var(--dark) 0%,#0a2d16 100%);color:#fff;padding:3rem 4rem;position:relative;overflow:hidden}
+.doc-header::before{content:'🌿';position:absolute;right:3rem;top:50%;transform:translateY(-50%);font-size:8rem;opacity:0.06;pointer-events:none}
+.doc-header h1{font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;margin-bottom:0.5rem}
+.doc-header h1 span{color:var(--y)}
+.doc-header p{color:rgba(255,255,255,0.6);font-size:1rem}
+.header-meta{display:flex;gap:2rem;margin-top:1.5rem;flex-wrap:wrap}
+.hm-item{background:rgba(255,255,255,0.08);border-radius:10px;padding:0.6rem 1.2rem;font-size:0.82rem;color:rgba(255,255,255,0.75)}
+.hm-item strong{color:var(--y);font-weight:700}
+/* NAV TABS */
+.nav-tabs{background:#fff;border-bottom:2px solid var(--border);padding:0 4rem;display:flex;gap:0;position:sticky;top:0;z-index:50}
+.ntab{padding:1rem 1.5rem;border-bottom:3px solid transparent;margin-bottom:-2px;cursor:pointer;font-size:0.85rem;font-weight:600;color:var(--muted);transition:all 0.2s;white-space:nowrap}
+.ntab:hover{color:var(--text)}
+.ntab.active{color:var(--g);border-bottom-color:var(--g)}
+/* SECTIONS */
+.section{display:none;padding:2.5rem 4rem;max-width:1200px}
+.section.active{display:block}
+/* SECTION HEADERS */
+.sec-title{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:var(--accent);margin-bottom:0.5rem}
+.sec-sub{color:var(--muted);margin-bottom:2rem;font-size:0.92rem;line-height:1.6}
+/* BOXES */
+.info-box{background:rgba(26,107,60,0.05);border-left:4px solid var(--g);border-radius:0 12px 12px 0;padding:1.2rem 1.5rem;margin-bottom:1.5rem}
+.info-box h4{color:var(--g);font-weight:700;margin-bottom:0.4rem;font-size:0.9rem}
+.info-box p{color:var(--text);font-size:0.85rem;line-height:1.6}
+.warning-box{background:rgba(245,200,66,0.08);border-left:4px solid var(--y);border-radius:0 12px 12px 0;padding:1.2rem 1.5rem;margin-bottom:1.5rem}
+.warning-box h4{color:#a07a00;font-weight:700;margin-bottom:0.4rem}
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.2rem;margin-bottom:1.5rem}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem}
+/* CARDS */
+.bcard{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem}
+.bcard h3{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--accent);margin-bottom:1rem}
+.bcard ul{list-style:none;display:flex;flex-direction:column;gap:0.5rem}
+.bcard ul li{font-size:0.83rem;color:var(--text);padding-left:1.2rem;position:relative;line-height:1.5}
+.bcard ul li::before{content:'▸';position:absolute;left:0;color:var(--g);font-weight:700}
+/* METRIC CARDS */
+.metric{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem;text-align:center}
+.metric-val{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--g)}
+.metric-label{font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-top:0.2rem}
+.metric-trend{font-size:0.72rem;color:var(--gl);margin-top:0.3rem;font-weight:600}
+/* TABLE */
+table{width:100%;border-collapse:collapse;margin-bottom:1.5rem;background:#fff;border-radius:14px;overflow:hidden;border:1px solid var(--border)}
+thead{background:var(--dark)}
+th{padding:0.9rem 1.2rem;text-align:left;font-size:0.78rem;font-weight:700;color:rgba(255,255,255,0.8);text-transform:uppercase;letter-spacing:0.06em}
+td{padding:0.85rem 1.2rem;font-size:0.83rem;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top;line-height:1.5}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(26,107,60,0.02)}
+.td-green{color:var(--g);font-weight:700}
+.td-badge{display:inline-block;padding:0.2rem 0.6rem;border-radius:100px;font-size:0.7rem;font-weight:700}
+.tb-high{background:rgba(26,107,60,0.1);color:var(--g)}
+.tb-med{background:rgba(245,200,66,0.15);color:#a07a00}
+.tb-low{background:rgba(192,57,43,0.1);color:var(--r)}
+/* TIMELINE */
+.timeline{position:relative;padding-left:2.5rem;margin-bottom:1.5rem}
+.timeline::before{content:'';position:absolute;left:0.75rem;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--g),var(--y))}
+.tl-item{position:relative;margin-bottom:1.8rem}
+.tl-dot{position:absolute;left:-1.75rem;top:2px;width:14px;height:14px;border-radius:50%;background:var(--g);border:3px solid #fff;box-shadow:0 0 0 2px var(--g)}
+.tl-date{font-size:0.72rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.3rem}
+.tl-title{font-family:'Syne',sans-serif;font-weight:700;color:var(--accent);margin-bottom:0.3rem}
+.tl-desc{font-size:0.82rem;color:var(--muted);line-height:1.5}
+/* TECH */
+.tech-stack{display:flex;flex-wrap:wrap;gap:0.7rem;margin-bottom:1.5rem}
+.tech-pill{background:var(--dark);color:#fff;padding:0.5rem 1rem;border-radius:8px;font-size:0.78rem;font-weight:700;display:flex;align-items:center;gap:0.4rem}
+.tech-pill .tp-cat{color:rgba(255,255,255,0.4);font-size:0.65rem;font-weight:400}
+.arch-diagram{background:var(--dark);border-radius:16px;padding:2rem;margin-bottom:1.5rem;font-family:monospace;font-size:0.78rem;color:rgba(255,255,255,0.7);line-height:2}
+.arch-layer{background:rgba(255,255,255,0.05);border-radius:10px;padding:1rem;margin-bottom:0.8rem}
+.arch-layer-title{color:var(--y);font-weight:700;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.6rem;font-family:'Instrument Sans',sans-serif}
+.arch-items{display:flex;flex-wrap:wrap;gap:0.5rem}
+.arch-item{background:rgba(45,170,95,0.15);border:1px solid rgba(45,170,95,0.2);color:var(--gl);padding:0.3rem 0.8rem;border-radius:6px;font-size:0.75rem;font-family:'Instrument Sans',sans-serif}
+/* REVENUE */
+.revenue-bars{display:flex;gap:1.5rem;align-items:flex-end;height:200px;margin-bottom:1rem}
+.rev-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:0.5rem}
+.rev-bar{width:100%;border-radius:8px 8px 0 0;background:linear-gradient(0deg,var(--g),var(--gl));transition:height 1s ease;position:relative}
+.rev-val{position:absolute;top:-24px;left:50%;transform:translateX(-50%);font-size:0.72rem;font-weight:800;color:var(--g);white-space:nowrap}
+.rev-label{font-size:0.72rem;color:var(--muted);font-weight:600;text-align:center}
+/* SWOT */
+.swot{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+.swot-box{border-radius:12px;padding:1.2rem}
+.swot-box h4{font-weight:800;margin-bottom:0.7rem;font-size:0.9rem}
+.swot-box ul{list-style:none;display:flex;flex-direction:column;gap:0.4rem}
+.swot-box ul li{font-size:0.8rem;line-height:1.4;padding-left:1rem;position:relative}
+.swot-box ul li::before{position:absolute;left:0}
+.sw-s{background:rgba(26,107,60,0.07)}.sw-s h4{color:var(--g)}.sw-s li::before{content:'✓';color:var(--g)}
+.sw-w{background:rgba(245,200,66,0.08)}.sw-w h4{color:#a07a00}.sw-w li::before{content:'△';color:#c49900}
+.sw-o{background:rgba(96,165,250,0.07)}.sw-o h4{color:#2563eb}.sw-o li::before{content:'→';color:#3b82f6}
+.sw-t{background:rgba(192,57,43,0.07)}.sw-t h4{color:var(--r)}.sw-t li::before{content:'!';color:var(--r)}
+/* RESPONSIVE */
+@media(max-width:900px){.g2,.g3,.g4{grid-template-columns:1fr}.swot{grid-template-columns:1fr}.doc-header,.section{padding:2rem 1.5rem}.nav-tabs{padding:0 1rem;overflow-x:auto}}
+</style>
+</head>
+<body>
+
+<div class="doc-header">
+  <h1>NutriCam <span>Business Plan</span></h1>
+  <p>Startup nutritionnelle africaine · Document Confidentiel v1.0</p>
+  <div class="header-meta">
+    <div class="hm-item"><strong>Fondation :</strong> 2025, Yaoundé, Cameroun</div>
+    <div class="hm-item"><strong>Secteur :</strong> FoodTech · HealthTech · AfriTech</div>
+    <div class="hm-item"><strong>Levée cible :</strong> 50 000 000 FCFA (~75 000 €)</div>
+    <div class="hm-item"><strong>Marché :</strong> Afrique subsaharienne francophone</div>
+  </div>
+</div>
+
+<div class="nav-tabs">
+  <div class="ntab active" onclick="showSection('vision',this)">🎯 Vision & Marché</div>
+  <div class="ntab" onclick="showSection('modele',this)">💰 Modèle économique</div>
+  <div class="ntab" onclick="showSection('produit',this)">📱 Produit</div>
+  <div class="ntab" onclick="showSection('tech',this)">⚙️ Architecture Tech</div>
+  <div class="ntab" onclick="showSection('go',this)">🚀 Roadmap</div>
+  <div class="ntab" onclick="showSection('finance',this)">📊 Finances</div>
+  <div class="ntab" onclick="showSection('equipe',this)">👥 Équipe</div>
+</div>
+
+<!-- VISION -->
+<div class="section active" id="sec-vision">
+  <div class="sec-title">Vision & Analyse de Marché</div>
+  <div class="sec-sub">NutriCam entend devenir la référence nutritionnelle de l'Afrique subsaharienne francophone, en combinant science alimentaire moderne et gastronomie traditionnelle.</div>
+
+  <div class="info-box">
+    <h4>🌍 Mission</h4>
+    <p>Démocratiser l'accès à une nutrition saine et culturellement adaptée pour tous les Africains, qu'ils soient sportifs, parents, malades chroniques ou simplement soucieux de leur santé. Nous croyons que manger bien n'exige pas de renoncer à son identité culinaire.</p>
+  </div>
+
+  <div class="g4">
+    <div class="metric"><div class="metric-val">28M</div><div class="metric-label">Population Cameroun</div><div class="metric-trend">+2.8% / an</div></div>
+    <div class="metric"><div class="metric-val">65%</div><div class="metric-label">Part des moins de 35 ans</div><div class="metric-trend">Cible principale</div></div>
+    <div class="metric"><div class="metric-val">7M+</div><div class="metric-label">Utilisateurs smartphones Cam.</div><div class="metric-trend">+22% / an</div></div>
+    <div class="metric"><div class="metric-val">350M</div><div class="metric-label">Marché AfriqueFranc. FCFA</div><div class="metric-trend">Addressable Market</div></div>
+  </div>
+
+  <div class="g2">
+    <div class="bcard">
+      <h3>🎯 Segments cibles (Personas)</h3>
+      <ul>
+        <li><strong>Sportifs amateurs (20-35 ans)</strong> : veulent optimiser performance et récupération via l'alimentation locale</li>
+        <li><strong>Mères de famille (28-45 ans)</strong> : planification repas famille équilibrée, budget maîtrisé</li>
+        <li><strong>Patients diabétiques/hypertendus</strong> : suivi nutritionnel sur prescription médicale</li>
+        <li><strong>Étudiants en nutrition/médecine</strong> : base de données professionnelle camerounaise</li>
+        <li><strong>Diaspora africaine</strong> : garder contact avec cuisine traditionnelle à l'étranger</li>
+        <li><strong>Travailleurs urbains (25-40 ans)</strong> : gestion poids dans mode de vie sédentaire</li>
+      </ul>
+    </div>
+    <div class="bcard">
+      <h3>🔥 Problèmes identifiés</h3>
+      <ul>
+        <li>Aucune base de données nutritionnelle des plats africains n'existe en accès libre</li>
+        <li>Les applications existantes (MyFitnessPal, Yazio) ignorent totalement la gastronomie africaine</li>
+        <li>Montée des maladies métaboliques en Afrique : diabète type 2 +47% en 10 ans</li>
+        <li>Dénutrition infantile coexiste avec obésité urbaine croissante (double fardeau)</li>
+        <li>Diététiciens trop rares et coûteux pour la majorité de la population</li>
+        <li>Manque d'éducation nutritionnelle culturellement adaptée</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Syne',sans-serif;color:var(--accent);margin-bottom:1rem">📊 Analyse SWOT</h3>
+  <div class="swot">
+    <div class="swot-box sw-s">
+      <h4>💪 Forces</h4>
+      <ul>
+        <li>Première application dédiée nutrition camerounaise</li>
+        <li>Base de données 200+ recettes avec valeurs nutritionnelles</li>
+        <li>Connaissance culturelle profonde des habitudes alimentaires locales</li>
+        <li>Freemium accessible sans carte bancaire (Mobile Money)</li>
+        <li>Contenu en français et langues nationales</li>
+      </ul>
+    </div>
+    <div class="swot-box sw-w">
+      <h4>⚠️ Faiblesses</h4>
+      <ul>
+        <li>Validation scientifique des données nutritionnelles à renforcer</li>
+        <li>Équipe initiale limitée en ressources humaines</li>
+        <li>Infrastructure internet variable en zones rurales</li>
+        <li>Nécessité d'un mode hors-ligne robuste</li>
+      </ul>
+    </div>
+    <div class="swot-box sw-o">
+      <h4>🚀 Opportunités</h4>
+      <ul>
+        <li>Expansion vers 15 pays d'Afrique francophone</li>
+        <li>Partenariats hôpitaux et cliniques pour suivi patient</li>
+        <li>API B2B pour restaurants et hôtels (labellisation nutritionnelle)</li>
+        <li>Programmes de nutrition scolaire (ministères éducation)</li>
+        <li>Croissance explosive du smartphone en Afrique</li>
+      </ul>
+    </div>
+    <div class="swot-box sw-t">
+      <h4>⚡ Menaces</h4>
+      <ul>
+        <li>Entrée possible de MyFitnessPal/Noom avec fonds africains</li>
+        <li>Changements réglementaires sur les données de santé</li>
+        <li>Coût d'acquisition utilisateur élevé si publicité classique</li>
+        <li>Concurrence des médecins et diététiciens sur les conseils</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- MODELE ECONOMIQUE -->
+<div class="section" id="sec-modele">
+  <div class="sec-title">Modèle Économique</div>
+  <div class="sec-sub">Stratégie freemium avec 5 sources de revenus complémentaires pour une diversification durable.</div>
+
+  <div class="g3">
+    <div class="bcard" style="border-top:3px solid var(--g)">
+      <h3>🆓 Plan Gratuit</h3>
+      <ul>
+        <li>Calcul calories quotidien</li>
+        <li>Accès à 15 recettes camerounaises</li>
+        <li>1 profil utilisateur</li>
+        <li>Suivi basique hebdomadaire</li>
+        <li>Calculateur IMC</li>
+      </ul>
+      <div style="margin-top:1rem;font-size:0.9rem;font-weight:800;color:var(--muted)">0 FCFA / mois</div>
+    </div>
+    <div class="bcard" style="border-top:3px solid var(--y);position:relative">
+      <div style="position:absolute;top:-10px;right:1rem;background:var(--y);color:#000;font-size:0.65rem;font-weight:800;padding:0.2rem 0.6rem;border-radius:100px;text-transform:uppercase">⭐ Populaire</div>
+      <h3>💎 Plan Premium</h3>
+      <ul>
+        <li>Tout du plan gratuit</li>
+        <li>200+ recettes complètes</li>
+        <li>Plan repas personnalisé IA</li>
+        <li>Suivi macros quotidien</li>
+        <li>Conseils nutritionnels IA</li>
+        <li>Mode sportif & objectifs</li>
+        <li>Synchronisation wearables</li>
+      </ul>
+      <div style="margin-top:1rem;font-size:0.9rem;font-weight:800;color:var(--g)">2 500 FCFA / mois</div>
+    </div>
+    <div class="bcard" style="border-top:3px solid #60a5fa">
+      <h3>👨‍👩‍👧 Plan Famille</h3>
+      <ul>
+        <li>Tout du plan Premium</li>
+        <li>Jusqu'à 6 profils familiaux</li>
+        <li>Plans enfants adaptés par âge</li>
+        <li>Planificateur repas famille</li>
+        <li>Liste courses intelligente</li>
+        <li>Coach nutrition familial IA</li>
+      </ul>
+      <div style="margin-top:1rem;font-size:0.9rem;font-weight:800;color:#2563eb">5 000 FCFA / mois</div>
+    </div>
+  </div>
+
+  <table>
+    <thead><tr><th>Source de revenus</th><th>Description</th><th>Prix / Marge</th><th>Potentiel an 3</th><th>Priorité</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Abonnements B2C</strong></td><td>Premium + Famille, paiement Mobile Money (MTN, Orange)</td><td>2 500 – 5 000 FCFA/mois</td><td class="td-green">45M FCFA/an</td><td><span class="td-badge tb-high">Haute</span></td></tr>
+      <tr><td><strong>API B2B Restauration</strong></td><td>Restaurants, hôtels, cantines scolaires qui veulent afficher les calories</td><td>50 000 – 200 000 FCFA/mois</td><td class="td-green">18M FCFA/an</td><td><span class="td-badge tb-high">Haute</span></td></tr>
+      <tr><td><strong>Santé Entreprises</strong></td><td>Programme bien-être employés pour grandes entreprises et administrations</td><td>500 000 – 2M FCFA/contrat</td><td class="td-green">24M FCFA/an</td><td><span class="td-badge tb-med">Moyenne</span></td></tr>
+      <tr><td><strong>Partenariats Médicaux</strong></td><td>Suivi nutritionnel prescrit par médecins pour diabète, hypertension</td><td>Commission 20% / patient suivi</td><td class="td-green">12M FCFA/an</td><td><span class="td-badge tb-med">Moyenne</span></td></tr>
+      <tr><td><strong>Contenu Sponsorisé</strong></td><td>Marques alimentaires locales (Sosucam, Nestlé Cameroun) pour recettes sponsorisées</td><td>1-5M FCFA/campagne</td><td class="td-green">8M FCFA/an</td><td><span class="td-badge tb-low">Faible</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box">
+    <h4>💳 Paiement adapté à l'Afrique</h4>
+    <p>Intégration prioritaire de <strong>MTN Mobile Money</strong> et <strong>Orange Money</strong> (70% des paiements numériques au Cameroun). Pas de carte bancaire requise. Paiement à la semaine disponible pour les revenus irréguliers (3 000 FCFA/semaine). Partnership avec les opérateurs télécom pour facturation sur facture mobile.</p>
+  </div>
+</div>
+
+<!-- PRODUIT -->
+<div class="section" id="sec-produit">
+  <div class="sec-title">Produit & Fonctionnalités</div>
+  <div class="sec-sub">Écosystème complet sur 3 plateformes interconnectées : site web, application mobile, et API partenaires.</div>
+
+  <div class="g3">
+    <div class="bcard">
+      <h3>🌐 Site Web (Phase 1)</h3>
+      <ul>
+        <li>Landing page + calculateur calories</li>
+        <li>Base de données 200+ recettes camerounaises</li>
+        <li>Blog nutrition & santé africaine</li>
+        <li>Calculateur IMC + objectifs</li>
+        <li>Tableau de bord utilisateur web</li>
+        <li>Version Progressive Web App (PWA)</li>
+      </ul>
+    </div>
+    <div class="bcard">
+      <h3>📱 Application Mobile (Phase 2)</h3>
+      <ul>
+        <li>React Native (iOS + Android)</li>
+        <li>Mode hors-ligne complet</li>
+        <li>Scanner code-barres produits locaux</li>
+        <li>Journal alimentaire quotidien</li>
+        <li>Notifications rappels repas</li>
+        <li>Synchronisation Apple Health / Google Fit</li>
+      </ul>
+    </div>
+    <div class="bcard">
+      <h3>🤖 IA Nutritionnelle (Phase 3)</h3>
+      <ul>
+        <li>Chatbot coach nutritionnel IA 24/7</li>
+        <li>Génération automatique de plans repas</li>
+        <li>Analyse photo du repas (vision IA)</li>
+        <li>Personnalisation selon pathologies</li>
+        <li>Recommandations saisonnières locales</li>
+        <li>Prédiction carences nutritionnelles</li>
+      </ul>
+    </div>
+  </div>
+
+  <table>
+    <thead><tr><th>Fonctionnalité</th><th>Description</th><th>Plan</th><th>Statut</th></tr></thead>
+    <tbody>
+      <tr><td>Calculateur de calories</td><td>Formule Mifflin-St Jeor avec facteur d'activité et objectifs</td><td>Gratuit</td><td><span class="td-badge tb-high">✅ Fait</span></td></tr>
+      <tr><td>Base recettes camerounaises</td><td>52 plats avec ingrédients, étapes, valeurs nutritionnelles</td><td>Mixte</td><td><span class="td-badge tb-high">✅ Fait</span></td></tr>
+      <tr><td>Dashboard utilisateur</td><td>Suivi quotidien calories, macros, eau, poids</td><td>Premium</td><td><span class="td-badge tb-high">✅ Fait</span></td></tr>
+      <tr><td>Profils multiples</td><td>Sportif, enfant, enceinte, senior, étudiant</td><td>Famille</td><td><span class="td-badge tb-med">🔨 En cours</span></td></tr>
+      <tr><td>Plan repas hebdomadaire IA</td><td>Génération automatique selon profil et objectifs</td><td>Premium</td><td><span class="td-badge tb-low">📋 Planifié</span></td></tr>
+      <tr><td>Scanner produits</td><td>Scan code-barres produits camerounais (Foofoo, Sanga...)</td><td>Premium</td><td><span class="td-badge tb-low">📋 Planifié</span></td></tr>
+      <tr><td>Chatbot nutritionnel</td><td>IA conversationnelle pour conseils personnalisés en français</td><td>Premium</td><td><span class="td-badge tb-low">📋 Planifié</span></td></tr>
+      <tr><td>App mobile iOS/Android</td><td>React Native avec mode hors-ligne et notifications</td><td>Tous</td><td><span class="td-badge tb-low">📋 Phase 2</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- TECH -->
+<div class="section" id="sec-tech">
+  <div class="sec-title">Architecture Technique</div>
+  <div class="sec-sub">Stack moderne, scalable, optimisée pour les conditions réseau africaines (connexion lente, mode hors-ligne).</div>
+
+  <div class="arch-diagram">
+    <div class="arch-layer">
+      <div class="arch-layer-title">🖥️ Frontend (Client)</div>
+      <div class="arch-items">
+        <span class="arch-item">React.js 18</span>
+        <span class="arch-item">React Native (mobile)</span>
+        <span class="arch-item">Tailwind CSS</span>
+        <span class="arch-item">Progressive Web App</span>
+        <span class="arch-item">Service Workers (offline)</span>
+        <span class="arch-item">IndexedDB (cache local)</span>
+      </div>
+    </div>
+    <div class="arch-layer">
+      <div class="arch-layer-title">⚙️ Backend (API)</div>
+      <div class="arch-items">
+        <span class="arch-item">Node.js + Express</span>
+        <span class="arch-item">GraphQL API</span>
+        <span class="arch-item">JWT Authentication</span>
+        <span class="arch-item">Redis (cache)</span>
+        <span class="arch-item">Nginx (reverse proxy)</span>
+        <span class="arch-item">WebSockets (chat IA)</span>
+      </div>
+    </div>
+    <div class="arch-layer">
+      <div class="arch-layer-title">🗄️ Base de données</div>
+      <div class="arch-items">
+        <span class="arch-item">PostgreSQL (données principales)</span>
+        <span class="arch-item">MongoDB (recettes & médias)</span>
+        <span class="arch-item">Redis (sessions & cache)</span>
+        <span class="arch-item">Elasticsearch (recherche recettes)</span>
+      </div>
+    </div>
+    <div class="arch-layer">
+      <div class="arch-layer-title">🤖 IA & Machine Learning</div>
+      <div class="arch-items">
+        <span class="arch-item">Claude API (chatbot nutritionnel)</span>
+        <span class="arch-item">TensorFlow Lite (mobile)</span>
+        <span class="arch-item">Vision API (analyse photo repas)</span>
+        <span class="arch-item">Algorithme reco. personnalisée</span>
+      </div>
+    </div>
+    <div class="arch-layer">
+      <div class="arch-layer-title">☁️ Infrastructure & Déploiement</div>
+      <div class="arch-items">
+        <span class="arch-item">AWS / Scaleway (serveurs)</span>
+        <span class="arch-item">CDN Afrique (latence optimisée)</span>
+        <span class="arch-item">Docker + Kubernetes</span>
+        <span class="arch-item">GitHub Actions (CI/CD)</span>
+        <span class="arch-item">Sentry (monitoring erreurs)</span>
+        <span class="arch-item">SSL/TLS + HTTPS</span>
+      </div>
+    </div>
+    <div class="arch-layer">
+      <div class="arch-layer-title">💳 Paiements Africains</div>
+      <div class="arch-items">
+        <span class="arch-item">MTN Mobile Money API</span>
+        <span class="arch-item">Orange Money API</span>
+        <span class="arch-item">CinetPay</span>
+        <span class="arch-item">Stripe (cartes intl)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="bcard">
+      <h3>🔒 Sécurité & Confidentialité</h3>
+      <ul>
+        <li>Chiffrement AES-256 des données santé</li>
+        <li>Conformité RGPD (données EU) + droit camerounais</li>
+        <li>Données hébergées en Afrique (souveraineté)</li>
+        <li>Authentification 2FA optionnelle</li>
+        <li>Anonymisation données pour recherche</li>
+        <li>Politique explicite de non-vente des données</li>
+      </ul>
+    </div>
+    <div class="bcard">
+      <h3>📶 Optimisation Réseau Africain</h3>
+      <ul>
+        <li>Mode hors-ligne complet (Service Workers)</li>
+        <li>Images optimisées WebP + chargement progressif</li>
+        <li>Taille bundle < 200KB (initial load)</li>
+        <li>CDN avec nœuds Lagos, Nairobi, Johannesburg</li>
+        <li>Compression Brotli/Gzip agressive</li>
+        <li>App < 15MB téléchargement mobile</li>
+      </ul>
+    </div>
+  </div>
+
+  <table>
+    <thead><tr><th>Composant</th><th>Technologie</th><th>Raison du choix</th></tr></thead>
+    <tbody>
+      <tr><td>Base nutritionnelle</td><td>MongoDB + JSON</td><td>Flexibilité des schémas recettes, ingrédients variables</td></tr>
+      <tr><td>Authentification</td><td>JWT + Refresh Token</td><td>Fonctionne offline, compatible mobile</td></tr>
+      <tr><td>Search recettes</td><td>Elasticsearch</td><td>Recherche full-text multilingue (fr, anglais, langues locales)</td></tr>
+      <tr><td>IA Conseil</td><td>Claude API (Anthropic)</td><td>Meilleure compréhension des nuances culinaires et santé</td></tr>
+      <tr><td>Analytics</td><td>PostHog (open source)</td><td>Hébergeable localement, pas de fuite données vers US</td></tr>
+      <tr><td>Email transactionnel</td><td>Mailgun / SendGrid</td><td>Fiabilité livraison en Afrique</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ROADMAP -->
+<div class="section" id="sec-go">
+  <div class="sec-title">Roadmap & Go-to-Market</div>
+  <div class="sec-sub">Plan de déploiement sur 24 mois, du MVP au lancement continental.</div>
+
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-dot"></div>
+      <div class="tl-date">Mois 1-3 · Phase Alpha</div>
+      <div class="tl-title">🏗️ Construction MVP</div>
+      <div class="tl-desc">Développement site web + calculateur calories. Base de données 50 recettes. Tests utilisateurs avec 50 beta-testeurs à Yaoundé et Douala. Validation formules nutritionnelles avec diététicien.</div>
+    </div>
+    <div class="tl-item"><div class="tl-dot"></div>
+      <div class="tl-date">Mois 4-6 · Phase Bêta</div>
+      <div class="tl-title">🚀 Lancement Public Site Web</div>
+      <div class="tl-desc">Lancement site web public. Objectif : 5 000 utilisateurs gratuits. Partenariats avec 3 influenceurs santé/cuisine camerounais. Articles presse (Mutations, Le Jour). Présence dans les universités.</div>
+    </div>
+    <div class="tl-item"><div class="tl-dot"></div>
+      <div class="tl-date">Mois 7-9 · Monétisation</div>
+      <div class="tl-title">💰 Lancement Plan Premium</div>
+      <div class="tl-desc">Activation Mobile Money (MTN + Orange). Objectif : 500 abonnés Premium. Partenariat pilote avec 2 cliniques pour suivi nutritionnel médical. 200 recettes complètes en ligne.</div>
+    </div>
+    <div class="tl-item"><div class="tl-dot"></div>
+      <div class="tl-date">Mois 10-14 · Mobile</div>
+      <div class="tl-title">📱 Lancement Application Mobile</div>
+      <div class="tl-desc">App iOS + Android sur stores. Mode hors-ligne complet. Intégration scanner code-barres. Objectif : 20 000 téléchargements en 3 mois. Fonctionnalités sociales (partage de repas).</div>
+    </div>
+    <div class="tl-item"><div class="tl-dot"></div>
+      <div class="tl-date">Mois 15-18 · B2B</div>
+      <div class="tl-title">🏢 Expansion B2B</div>
+      <div class="tl-desc">API pour restaurants et hôtels. Programme bien-être entreprise (MTN Cameroun, Total Energie comme cibles). Contrats avec 3 lycées pour programme nutrition scolaire. Certification Ministère de la Santé.</div>
+    </div>
+    <div class="tl-item"><div class="tl-dot"></div>
+      <div class="tl-date">Mois 19-24 · Expansion</div>
+      <div class="tl-title">🌍 Expansion Afrique Francophone</div>
+      <div class="tl-desc">Lancement Côte d'Ivoire, Sénégal, Gabon. Adaptation gastronomies locales. Objectif : 100 000 utilisateurs actifs totaux. Levée de fonds Série A. IA coach nutritionnel personnalisé.</div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="bcard">
+      <h3>📣 Stratégie d'Acquisition</h3>
+      <ul>
+        <li><strong>Marketing organique :</strong> SEO francophone "recettes camerounaises", blog nutrition, YouTube tutoriels cuisine</li>
+        <li><strong>Influenceurs :</strong> Partenariats cuisinières YouTube camerounaises (100K+ abonnés), influenceurs fitness</li>
+        <li><strong>Bouche-à-oreille :</strong> Programme de parrainage (1 mois Premium offert par ami invité)</li>
+        <li><strong>B2I (Business-to-Institution) :</strong> Universités, centres de santé, lycées</li>
+        <li><strong>WhatsApp Marketing :</strong> Groupes familiaux, partage recettes quotidiennes</li>
+        <li><strong>Événements :</strong> Présence salons tech Africaine (Afric'up, VivaTech Africa)</li>
+      </ul>
+    </div>
+    <div class="bcard">
+      <h3>🤝 Partenariats Clés</h3>
+      <ul>
+        <li><strong>CHU Yaoundé & Douala :</strong> Validation médicale des données nutritionnelles</li>
+        <li><strong>ENSTP / Universités :</strong> Base d'utilisateurs étudiants, recherche académique</li>
+        <li><strong>MTN + Orange Cameroun :</strong> Bundle data inclus pour l'app, paiement Mobile Money</li>
+        <li><strong>Ministère Santé Publique :</strong> Programme nutrition nationale</li>
+        <li><strong>SABC (Brasseries) / Sosucam :</strong> Contenu nutrition et recettes sponsorisées</li>
+        <li><strong>FECAFOOT / Clubs sportifs :</strong> Nutrition des sportifs professionnels</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- FINANCES -->
+<div class="section" id="sec-finance">
+  <div class="sec-title">Projections Financières</div>
+  <div class="sec-sub">Projections sur 3 ans basées sur taux de conversion freemium moyen AfriTech de 3-5%.</div>
+
+  <div class="g4">
+    <div class="metric"><div class="metric-val">50M</div><div class="metric-label">Levée cible FCFA</div><div class="metric-trend">≈ 75 000 €</div></div>
+    <div class="metric"><div class="metric-val">18</div><div class="metric-label">Mois jusqu'au seuil</div><div class="metric-trend">Break-even</div></div>
+    <div class="metric"><div class="metric-val">107M</div><div class="metric-label">Revenus An 3 FCFA</div><div class="metric-trend">Objectif</div></div>
+    <div class="metric"><div class="metric-val">3.2x</div><div class="metric-label">ROI investisseurs An 3</div><div class="metric-trend">Projection</div></div>
+  </div>
+
+  <table>
+    <thead><tr><th>Poste</th><th>An 1 (FCFA)</th><th>An 2 (FCFA)</th><th>An 3 (FCFA)</th></tr></thead>
+    <tbody>
+      <tr><td><strong>REVENUS</strong></td><td></td><td></td><td></td></tr>
+      <tr><td>Abonnements Premium B2C</td><td class="td-green">6 000 000</td><td class="td-green">22 000 000</td><td class="td-green">45 000 000</td></tr>
+      <tr><td>API & B2B Restauration</td><td class="td-green">0</td><td class="td-green">8 000 000</td><td class="td-green">18 000 000</td></tr>
+      <tr><td>Programme Entreprise</td><td class="td-green">0</td><td class="td-green">5 000 000</td><td class="td-green">24 000 000</td></tr>
+      <tr><td>Partenariats Médicaux</td><td class="td-green">0</td><td class="td-green">3 000 000</td><td class="td-green">12 000 000</td></tr>
+      <tr><td>Sponsoring contenu</td><td class="td-green">2 000 000</td><td class="td-green">4 000 000</td><td class="td-green">8 000 000</td></tr>
+      <tr><td><strong>TOTAL REVENUS</strong></td><td class="td-green"><strong>8 000 000</strong></td><td class="td-green"><strong>42 000 000</strong></td><td class="td-green"><strong>107 000 000</strong></td></tr>
+      <tr><td><strong>CHARGES</strong></td><td></td><td></td><td></td></tr>
+      <tr><td>Développement & Tech</td><td>20 000 000</td><td>15 000 000</td><td>20 000 000</td></tr>
+      <tr><td>Équipe (salaires)</td><td>12 000 000</td><td>22 000 000</td><td>35 000 000</td></tr>
+      <tr><td>Marketing & Acquisition</td><td>8 000 000</td><td>10 000 000</td><td>15 000 000</td></tr>
+      <tr><td>Infrastructure cloud</td><td>3 000 000</td><td>4 000 000</td><td>7 000 000</td></tr>
+      <tr><td>Juridique & Compliance</td><td>2 000 000</td><td>2 000 000</td><td>3 000 000</td></tr>
+      <tr><td><strong>TOTAL CHARGES</strong></td><td><strong>45 000 000</strong></td><td><strong>53 000 000</strong></td><td><strong>80 000 000</strong></td></tr>
+      <tr><td><strong>RÉSULTAT NET</strong></td><td style="color:var(--r)"><strong>-37 000 000</strong></td><td style="color:var(--r)"><strong>-11 000 000</strong></td><td class="td-green"><strong>+27 000 000</strong></td></tr>
+    </tbody>
+  </table>
+
+  <div class="warning-box">
+    <h4>⚠️ Utilisation des fonds levés (50M FCFA)</h4>
+    <p><strong>40% (20M)</strong> → Développement produit (app mobile, IA, base recettes) · <strong>30% (15M)</strong> → Marketing & acquisition utilisateurs · <strong>20% (10M)</strong> → Équipe (recrutement) · <strong>10% (5M)</strong> → Infrastructure cloud & juridique</p>
+  </div>
+</div>
+
+<!-- EQUIPE -->
+<div class="section" id="sec-equipe">
+  <div class="sec-title">Équipe & Recrutement</div>
+  <div class="sec-sub">Structure légère au démarrage, scalable avec les fonds levés.</div>
+
+  <div class="g2">
+    <div class="bcard">
+      <h3>🏗️ Équipe Fondatrice (Profils recherchés)</h3>
+      <ul>
+        <li><strong>CEO / Product :</strong> Vision business, développement partenariats, levée fonds</li>
+        <li><strong>CTO :</strong> Architecture technique, React/Node.js, gestion équipe dev</li>
+        <li><strong>Diététicienne-Nutritionniste :</strong> Validation médicale toutes données nutritionnelles</li>
+        <li><strong>Chef Camerounais / Culinaire :</strong> Authenticité recettes, développement base gastronomique</li>
+      </ul>
+    </div>
+    <div class="bcard">
+      <h3>📋 Recrutements An 1-2</h3>
+      <ul>
+        <li><strong>Développeur Full-Stack ×2 :</strong> React Native + Node.js, juniors Cameroun</li>
+        <li><strong>Designer UX/UI :</strong> Expérience produits mobiles africains</li>
+        <li><strong>Community Manager :</strong> Francophone, maîtrise Instagram/TikTok/WhatsApp</li>
+        <li><strong>Commercial B2B :</strong> Réseau santé/restauration Cameroun, Côte d'Ivoire</li>
+        <li><strong>Data Scientist :</strong> Modèles ML recommandation, analyse comportements</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <h4>🎓 Avantage Cameroun</h4>
+    <p>Le Cameroun dispose d'excellentes universités techniques (Polytechnique Yaoundé I, IUT Douala) formant des ingénieurs compétitifs à des salaires 5-10x inférieurs à l'Europe. NutriCam peut construire une équipe technique de qualité internationale avec un budget africain, constituant un avantage concurrentiel structurel face aux concurrents occidentaux.</p>
+  </div>
+
+  <table>
+    <thead><tr><th>Poste</th><th>Profil</th><th>Salaire mensuel FCFA</th><th>Phase</th></tr></thead>
+    <tbody>
+      <tr><td>CEO / Co-fondateur</td><td>Business, nutrition, Cameroun</td><td>300 000 – 500 000</td><td>Fondation</td></tr>
+      <tr><td>CTO / Co-fondateur</td><td>Fullstack React/Node</td><td>400 000 – 600 000</td><td>Fondation</td></tr>
+      <tr><td>Diététicienne</td><td>Diplômée, bilangue</td><td>250 000 – 350 000</td><td>Fondation</td></tr>
+      <tr><td>Développeur Mobile</td><td>React Native, 2+ ans</td><td>200 000 – 300 000</td><td>Bêta</td></tr>
+      <tr><td>Designer UX</td><td>Figma, mobile-first</td><td>180 000 – 250 000</td><td>Bêta</td></tr>
+      <tr><td>Community Manager</td><td>Social media, cuisine</td><td>100 000 – 180 000</td><td>Lancement</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+function showSection(id, btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>

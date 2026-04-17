@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – FAQ & Support</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f5faf6;--dark:#091509;--green:#1a7a3e;--gl:#22a854;--glight:#4ade80;
+  --y:#f5b800;--red:#e63946;--blue:#2563eb;
+  --card:#fff;--border:#ddeee3;--text:#192b1c;--muted:#6b8c72;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text)}
+
+/* NAV */
+.nav{background:var(--dark);padding:1.1rem 2.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.nav-logo{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;color:#fff}
+.nav-logo span{color:var(--y)}
+.nav-right{display:flex;gap:1rem;align-items:center}
+.nav-link{color:rgba(255,255,255,0.6);font-size:0.85rem;font-weight:600;text-decoration:none;transition:color 0.2s}
+.nav-link:hover{color:#fff}
+.nav-cta{background:var(--gl);color:#fff;padding:0.5rem 1.2rem;border-radius:100px;font-size:0.82rem;font-weight:700}
+
+/* HERO */
+.support-hero{background:linear-gradient(135deg,var(--dark),#0b2d14 60%,var(--green));padding:4rem 2.5rem;text-align:center;position:relative;overflow:hidden}
+.support-hero::after{content:'🌿💬❓';position:absolute;bottom:-1rem;left:50%;transform:translateX(-50%);font-size:5rem;opacity:0.05;letter-spacing:2rem;pointer-events:none}
+.sh-badge{display:inline-block;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);font-size:0.72rem;font-weight:700;padding:0.3rem 0.9rem;border-radius:100px;margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.08em}
+.sh-title{font-family:'Fraunces',serif;font-size:clamp(2rem,4vw,3rem);font-weight:900;color:#fff;margin-bottom:0.7rem}
+.sh-title span{color:var(--y)}
+.sh-sub{color:rgba(255,255,255,0.55);max-width:480px;margin:0 auto 2rem;line-height:1.7;font-size:0.92rem}
+.search-wrap{max-width:500px;margin:0 auto}
+.search-box{display:flex;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.15);border-radius:14px;overflow:hidden;transition:border-color 0.2s}
+.search-box:focus-within{border-color:rgba(34,197,94,0.5)}
+.search-box input{flex:1;background:none;border:none;padding:0.9rem 1.2rem;color:#fff;font-size:0.95rem;font-family:'Plus Jakarta Sans',sans-serif;outline:none}
+.search-box input::placeholder{color:rgba(255,255,255,0.35)}
+.search-box button{background:var(--gl);border:none;padding:0 1.4rem;color:#fff;font-size:1rem;cursor:pointer;transition:background 0.2s;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700}
+.search-box button:hover{background:var(--glight);color:#000}
+
+/* QUICK LINKS */
+.quick-links{background:var(--dark);padding:1.2rem 2.5rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,0.06)}
+.ql-item{display:flex;align-items:center;gap:0.4rem;color:rgba(255,255,255,0.5);font-size:0.8rem;font-weight:600;cursor:pointer;padding:0.4rem 0.8rem;border-radius:8px;transition:all 0.2s}
+.ql-item:hover{background:rgba(255,255,255,0.07);color:#fff}
+
+/* MAIN */
+.support-main{max-width:1100px;margin:0 auto;padding:3rem 2.5rem}
+
+/* CONTACT CARDS */
+.contact-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:3.5rem}
+.cc-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.8rem;text-align:center;transition:all 0.25s;cursor:pointer;position:relative;overflow:hidden}
+.cc-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;transform:scaleX(0);transition:transform 0.3s}
+.cc-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,0.08)}
+.cc-card:hover::before{transform:scaleX(1)}
+.cc-c1::before{background:linear-gradient(90deg,var(--green),var(--y))}
+.cc-c2::before{background:var(--blue)}
+.cc-c3::before{background:var(--red)}
+.cc-icon{font-size:2.5rem;margin-bottom:0.8rem}
+.cc-title{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:900;color:var(--dark);margin-bottom:0.4rem}
+.cc-desc{font-size:0.8rem;color:var(--muted);line-height:1.5;margin-bottom:1rem}
+.cc-badge{font-size:0.72rem;font-weight:700;padding:0.25rem 0.7rem;border-radius:100px}
+.cc-green{background:rgba(26,122,62,0.1);color:var(--green)}
+.cc-blue{background:rgba(37,99,235,0.1);color:var(--blue)}
+.cc-orange{background:rgba(249,115,22,0.1);color:#f97316}
+
+/* FAQ SECTION */
+.faq-layout{display:grid;grid-template-columns:220px 1fr;gap:2.5rem;align-items:start}
+.faq-categories{position:sticky;top:80px}
+.fc-title{font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:0.8rem}
+.fcat{display:flex;align-items:center;gap:0.6rem;padding:0.65rem 0.8rem;border-radius:10px;cursor:pointer;font-size:0.83rem;font-weight:600;color:var(--muted);transition:all 0.2s;margin-bottom:2px}
+.fcat:hover{background:rgba(26,122,62,0.05);color:var(--text)}
+.fcat.active{background:rgba(26,122,62,0.08);color:var(--green)}
+.fcat-icon{font-size:0.95rem}
+.fcat-count{margin-left:auto;background:var(--bg);border:1px solid var(--border);font-size:0.62rem;font-weight:700;padding:0.1rem 0.45rem;border-radius:4px;color:var(--muted)}
+
+/* FAQ ITEMS */
+.faq-content{}
+.faq-section{display:none;animation:fadeUp 0.25s ease}
+.faq-section.show{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.fs-header{display:flex;align-items:center;gap:0.8rem;margin-bottom:1.5rem}
+.fs-icon{font-size:1.5rem}
+.fs-title{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;color:var(--dark)}
+.faq-item{background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:0.6rem;overflow:hidden;transition:border-color 0.2s}
+.faq-item:hover{border-color:rgba(26,122,62,0.2)}
+.faq-item.open{border-color:rgba(26,122,62,0.3)}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 1.3rem;cursor:pointer;gap:1rem}
+.fq-text{font-size:0.9rem;font-weight:700;color:var(--text)}
+.fq-icon{font-size:1rem;color:var(--muted);transition:transform 0.25s;flex-shrink:0}
+.faq-item.open .fq-icon{transform:rotate(45deg);color:var(--green)}
+.faq-a{display:none;padding:0 1.3rem 1.2rem}
+.faq-item.open .faq-a{display:block;animation:fadeUp 0.2s ease}
+.fa-text{font-size:0.87rem;color:var(--muted);line-height:1.75}
+.fa-text strong{color:var(--text);font-weight:700}
+.fa-text a{color:var(--green);text-decoration:none;font-weight:700}
+.fa-tip{background:rgba(26,122,62,0.05);border-radius:10px;padding:0.8rem 1rem;margin-top:0.8rem;font-size:0.82rem;color:var(--text);border-left:3px solid var(--green)}
+.fa-tip strong{color:var(--green)}
+
+/* LIVE CHAT */
+.chat-widget{position:fixed;bottom:2rem;right:2rem;z-index:100}
+.chat-bubble{width:56px;height:56px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:1.4rem;cursor:pointer;box-shadow:0 8px 30px rgba(26,122,62,0.4);transition:all 0.25s;animation:chatPulse 3s ease-in-out infinite}
+@keyframes chatPulse{0%,100%{box-shadow:0 8px 30px rgba(26,122,62,0.4)}50%{box-shadow:0 8px 40px rgba(26,122,62,0.7),0 0 0 10px rgba(26,122,62,0.08)}}
+.chat-bubble:hover{transform:scale(1.1)}
+.chat-panel{position:absolute;bottom:70px;right:0;width:320px;background:var(--dark);border-radius:18px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.3);display:none;animation:fadeUp 0.3s ease;border:1px solid rgba(255,255,255,0.08)}
+.chat-panel.open{display:flex;flex-direction:column}
+.cp-header{background:linear-gradient(135deg,#0a2d14,var(--green));padding:1.1rem 1.2rem;display:flex;align-items:center;gap:0.7rem}
+.cp-av{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.cp-name{font-size:0.88rem;font-weight:700;color:#fff}
+.cp-status{font-size:0.68rem;color:rgba(255,255,255,0.6);display:flex;align-items:center;gap:0.3rem}
+.cp-close{margin-left:auto;background:none;border:none;color:rgba(255,255,255,0.6);cursor:pointer;font-size:1.1rem;transition:color 0.2s}
+.cp-close:hover{color:#fff}
+.cp-msgs{height:220px;overflow-y:auto;padding:0.8rem;display:flex;flex-direction:column;gap:0.5rem}
+.cp-msgs::-webkit-scrollbar{width:3px}
+.cm-msg{max-width:80%;padding:0.6rem 0.85rem;border-radius:12px;font-size:0.78rem;line-height:1.5}
+.cm-bot{background:rgba(255,255,255,0.08);color:var(--text);align-self:flex-start;border-radius:4px 12px 12px 12px}
+.cm-user{background:var(--gl);color:#fff;align-self:flex-end;border-radius:12px 4px 12px 12px}
+.cp-input-row{display:flex;gap:0.5rem;padding:0.7rem;border-top:1px solid rgba(255,255,255,0.06)}
+.cp-input{flex:1;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:0.55rem 0.8rem;color:#fff;font-size:0.82rem;font-family:'Plus Jakarta Sans',sans-serif;outline:none;transition:border-color 0.2s}
+.cp-input:focus{border-color:rgba(34,197,94,0.4)}
+.cp-input::placeholder{color:rgba(255,255,255,0.25)}
+.cp-send{background:var(--gl);border:none;border-radius:10px;width:36px;height:36px;color:#fff;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background 0.2s}
+.cp-send:hover{background:var(--glight);color:#000}
+
+@media(max-width:900px){.faq-layout{grid-template-columns:1fr}.faq-categories{position:static;display:flex;gap:0.4rem;flex-wrap:wrap}.fc-title{display:none}.contact-cards{grid-template-columns:1fr}.support-main,.support-hero{padding:2rem 1.5rem}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo">Nutri<span>Cam</span></div>
+  <div class="nav-right">
+    <a href="#" class="nav-link">Accueil</a>
+    <a href="#" class="nav-link">Recettes</a>
+    <a href="#" class="nav-link nav-cta">Mon compte</a>
+  </div>
+</nav>
+
+<div class="support-hero">
+  <div class="sh-badge">💬 Centre d'aide NutriCam</div>
+  <h1 class="sh-title">Comment pouvons-nous<br/>vous <span>aider</span> ?</h1>
+  <p class="sh-sub">Trouvez rapidement des réponses à vos questions sur la nutrition, les recettes camerounaises et l'utilisation de NutriCam.</p>
+  <div class="search-wrap">
+    <div class="search-box">
+      <input type="text" id="faq-search" placeholder="Rechercher dans l'aide... ex: calories, ndolé, abonnement" oninput="searchFAQ(this.value)"/>
+      <button>🔍</button>
+    </div>
+  </div>
+</div>
+
+<div class="quick-links">
+  <div class="ql-item" onclick="showCat('compte')">👤 Mon compte</div>
+  <div class="ql-item" onclick="showCat('abonnement')">💎 Abonnements</div>
+  <div class="ql-item" onclick="showCat('nutrition')">🥗 Nutrition</div>
+  <div class="ql-item" onclick="showCat('recettes')">🍲 Recettes</div>
+  <div class="ql-item" onclick="showCat('technique')">📱 Technique</div>
+  <div class="ql-item" onclick="showCat('paiement')">💳 Paiements</div>
+</div>
+
+<div class="support-main">
+
+  <!-- CONTACT CARDS -->
+  <div class="contact-cards">
+    <div class="cc-card cc-c1" onclick="toggleChat()">
+      <div class="cc-icon">💬</div>
+      <div class="cc-title">Chat en direct</div>
+      <div class="cc-desc">Coach IA disponible 24h/24. Réponse instantanée à vos questions nutrition.</div>
+      <div class="cc-badge cc-green">● En ligne maintenant</div>
+    </div>
+    <div class="cc-card cc-c2">
+      <div class="cc-icon">📧</div>
+      <div class="cc-title">Email support</div>
+      <div class="cc-desc">Pour les questions complexes ou les demandes de remboursement.</div>
+      <div class="cc-badge cc-blue">⏱ Réponse sous 24h</div>
+    </div>
+    <div class="cc-card cc-c3">
+      <div class="cc-icon">📱</div>
+      <div class="cc-title">WhatsApp</div>
+      <div class="cc-desc">Contactez notre équipe directement sur WhatsApp Cameroun.</div>
+      <div class="cc-badge cc-orange">+237 683 868 760</div>
+    </div>
+  </div>
+
+  <!-- FAQ LAYOUT -->
+  <div class="faq-layout">
+
+    <!-- CATEGORIES -->
+    <aside class="faq-categories">
+      <div class="fc-title">Catégories</div>
+      <div class="fcat active" onclick="showCat('nutrition',this)"><span class="fcat-icon">🥗</span>Nutrition<span class="fcat-count">8</span></div>
+      <div class="fcat" onclick="showCat('recettes',this)"><span class="fcat-icon">🍲</span>Recettes<span class="fcat-count">6</span></div>
+      <div class="fcat" onclick="showCat('compte',this)"><span class="fcat-icon">👤</span>Mon compte<span class="fcat-count">5</span></div>
+      <div class="fcat" onclick="showCat('abonnement',this)"><span class="fcat-icon">💎</span>Abonnements<span class="fcat-count">7</span></div>
+      <div class="fcat" onclick="showCat('paiement',this)"><span class="fcat-icon">💳</span>Paiements<span class="fcat-count">5</span></div>
+      <div class="fcat" onclick="showCat('technique',this)"><span class="fcat-icon">📱</span>Technique<span class="fcat-count">4</span></div>
+      <div class="fcat" onclick="showCat('ia',this)"><span class="fcat-icon">🤖</span>Coach IA<span class="fcat-count">4</span></div>
+    </aside>
+
+    <!-- FAQ CONTENT -->
+    <div class="faq-content">
+
+      <!-- NUTRITION -->
+      <div class="faq-section show" id="fcat-nutrition">
+        <div class="fs-header"><div class="fs-icon">🥗</div><div class="fs-title">Nutrition & Santé</div></div>
+        <div id="faq-nutrition-items"></div>
+      </div>
+
+      <!-- RECETTES -->
+      <div class="faq-section" id="fcat-recettes">
+        <div class="fs-header"><div class="fs-icon">🍲</div><div class="fs-title">Recettes Camerounaises</div></div>
+        <div id="faq-recettes-items"></div>
+      </div>
+
+      <!-- COMPTE -->
+      <div class="faq-section" id="fcat-compte">
+        <div class="fs-header"><div class="fs-icon">👤</div><div class="fs-title">Mon Compte</div></div>
+        <div id="faq-compte-items"></div>
+      </div>
+
+      <!-- ABONNEMENT -->
+      <div class="faq-section" id="fcat-abonnement">
+        <div class="fs-header"><div class="fs-icon">💎</div><div class="fs-title">Abonnements</div></div>
+        <div id="faq-abonnement-items"></div>
+      </div>
+
+      <!-- PAIEMENT -->
+      <div class="faq-section" id="fcat-paiement">
+        <div class="fs-header"><div class="fs-icon">💳</div><div class="fs-title">Paiements Mobile Money</div></div>
+        <div id="faq-paiement-items"></div>
+      </div>
+
+      <!-- TECHNIQUE -->
+      <div class="faq-section" id="fcat-technique">
+        <div class="fs-header"><div class="fs-icon">📱</div><div class="fs-title">Problèmes Techniques</div></div>
+        <div id="faq-technique-items"></div>
+      </div>
+
+      <!-- IA -->
+      <div class="faq-section" id="fcat-ia">
+        <div class="fs-header"><div class="fs-icon">🤖</div><div class="fs-title">Coach IA NutriCam</div></div>
+        <div id="faq-ia-items"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- CHAT WIDGET -->
+<div class="chat-widget">
+  <div class="chat-panel" id="chat-panel">
+    <div class="cp-header">
+      <div class="cp-av">🥗</div>
+      <div><div class="cp-name">Coach NutriCam</div><div class="cp-status"><span style="width:6px;height:6px;border-radius:50%;background:#4ade80;display:inline-block"></span>En ligne · IA nutritionnelle</div></div>
+      <button class="cp-close" onclick="toggleChat()">✕</button>
+    </div>
+    <div class="cp-msgs" id="chat-msgs">
+      <div class="cm-msg cm-bot">Bonjour ! Je suis le Coach NutriCam. 👋 Comment puis-je vous aider avec votre nutrition aujourd'hui ?</div>
+      <div class="cm-msg cm-bot">Je peux vous aider sur : les calories des plats camerounais, votre plan repas, les recettes, ou votre compte NutriCam.</div>
+    </div>
+    <div class="cp-input-row">
+      <input class="cp-input" id="chat-input" type="text" placeholder="Posez votre question..." onkeydown="if(event.key==='Enter')sendChat()"/>
+      <button class="cp-send" onclick="sendChat()">➤</button>
+    </div>
+  </div>
+  <div class="chat-bubble" onclick="toggleChat()">💬</div>
+</div>
+
+<script>
+const faqData = {
+  nutrition:[
+    {q:'Comment NutriCam calcule-t-il mes besoins caloriques ?',a:`NutriCam utilise la <strong>formule de Mifflin-St Jeor</strong>, reconnue comme la plus précise par les diététiciens. Elle prend en compte votre poids, taille, âge, sexe et niveau d'activité physique pour calculer votre métabolisme de base (BMR) puis votre dépense énergétique totale (TDEE).<div class="fa-tip"><strong>💡 Astuce :</strong> Mettez à jour votre poids chaque semaine pour des calculs toujours précis.</div>`},
+    {q:'Les valeurs caloriques des recettes camerounaises sont-elles fiables ?',a:`Oui ! Toutes les valeurs nutritionnelles de NutriCam ont été <strong>validées par Dr. Diane Kengne</strong>, diététicienne au CHU de Yaoundé. Elles sont basées sur des analyses en laboratoire et les tables nutritionnelles de la FAO/OMS pour les aliments africains.`},
+    {q:'Quelle est la différence entre BMR et TDEE ?',a:`<strong>BMR (Basal Metabolic Rate)</strong> = calories brûlées au repos total (si vous étiez immobile 24h).<br/><strong>TDEE (Total Daily Energy Expenditure)</strong> = BMR × facteur d'activité = votre besoin calorique réel.<div class="fa-tip">Pour perdre 0,5kg/semaine : consommez TDEE − 500 kcal/jour.</div>`},
+    {q:'L\'huile de palme est-elle mauvaise pour la santé ?',a:`Non, l'huile de palme <strong>rouge non raffinée</strong> est en réalité excellente pour la santé ! Elle est riche en vitamine A (bêta-carotène), vitamine E et antioxydants. C'est l'huile de palme <strong>blanche raffinée</strong> qui perd ces bénéfices lors du raffinage. NutriCam recommande toujours l'huile rouge.`},
+    {q:'Combien de protéines dois-je consommer par jour ?',a:`Les recommandations varient selon votre profil :<ul><li><strong>Adulte sédentaire :</strong> 0,8g/kg de poids corporel</li><li><strong>Adulte actif :</strong> 1,2–1,6g/kg</li><li><strong>Sportif :</strong> 1,6–2g/kg</li><li><strong>Femme enceinte :</strong> 1,1g/kg + 25g supplémentaires</li></ul>Exemple : une femme de 65kg active a besoin de 78–104g de protéines/jour.`},
+    {q:'Le ndolé peut-il aider contre l\'anémie ?',a:`Oui ! Les feuilles de ndolé contiennent <strong>8,9mg de fer pour 100g</strong>, soit 3× plus que les épinards européens. Associé à une source de vitamine C (tomate, orange), l'absorption du fer est maximisée. 2-3 portions de ndolé par semaine contribuent significativement à la prévention de l'anémie.`},
+    {q:'Comment suivre mon alimentation si je mange au restaurant ?',a:`Utilisez le <strong>mode estimation</strong> de NutriCam : cherchez le plat le plus similaire dans notre base de données et ajustez les portions. Pour les restaurants partenaires "NutriCam Certifié", les valeurs exactes sont disponibles directement dans l'app.`},
+    {q:'La détox est-elle médicalement prouvée ?',a:`Les boissons détox NutriCam ne prétendent pas "nettoyer le foie" au sens médical. Elles apportent des micronutriments, des antioxydants et favorisent l'hydratation. Le bissap, le moringa et le gingembre ont des propriétés documentées scientifiquement (anti-inflammatoires, diurétiques, immunostimulantes).`},
+  ],
+  recettes:[
+    {q:'Puis-je modifier une recette pour l\'adapter à mes goûts ?',a:`Absolument ! Chaque recette a un bouton "Personnaliser". Vous pouvez modifier les ingrédients, les quantités et les valeurs caloriques seront recalculées automatiquement. En mode Premium, vos modifications sont sauvegardées dans "Mes recettes".`},
+    {q:'Comment voir les recettes disponibles sans abonnement ?',a:`Avec le plan Gratuit, vous avez accès à <strong>15 recettes camerounaises</strong> complètes avec ingrédients et étapes. Les 185 autres recettes Premium sont accessibles avec un abonnement à 2 500 FCFA/mois.`},
+    {q:'Les temps de cuisson indiqués sont-ils exacts ?',a:`Les temps indiqués sont des estimations pour un cuisiner de niveau intermédiaire. Comptez ±20% selon votre expérience et le matériel utilisé. Pour les recettes longues (ndolé, eru), nous recommandons de préparer la veille.`},
+    {q:'Puis-je soumettre mes propres recettes camerounaises ?',a:`Oui ! Envoyez votre recette à <a href="mailto:pitchouduplece9@gmail.com">pitchouduplece9@gmail.com</a> avec les ingrédients complets. Notre diététicienne calculera les valeurs nutritionnelles et publiera votre recette avec votre crédit si elle est validée.`},
+    {q:'Y a-t-il des recettes pour les régimes spéciaux (diabète, végétarien) ?',a:`Oui ! Utilisez les filtres de recherche : "IG bas" pour le diabète, "végétarien" pour les recettes sans viande, "riche-fer" pour l'anémie, "grossesse" pour les femmes enceintes. Chaque recette est étiquetée selon ses propriétés nutritionnelles.`},
+    {q:'Comment adapter les portions pour plus de personnes ?',a:`Sur chaque fiche recette, le sélecteur de portions recalcule automatiquement <strong>tous les ingrédients et les calories</strong> proportionnellement. Ajustez de 1 à 20 personnes. La fonctionnalité est disponible sur le site web et dans l'app mobile.`},
+  ],
+  compte:[
+    {q:'Comment créer un compte NutriCam ?',a:`Rendez-vous sur <a href="#">nutricam.cm</a> et cliquez sur "Commencer gratuitement". Entrez votre email et créez un mot de passe sécurisé. Vous pouvez aussi vous connecter avec Google. Aucune carte bancaire n'est requise pour le plan Gratuit.`},
+    {q:'Comment modifier mon profil nutritionnel ?',a:`Dans votre espace "Mon profil" → "Informations nutritionnelles". Vous pouvez modifier votre poids, objectif, niveau d'activité et allergies à tout moment. Vos recommandations seront immédiatement recalculées.`},
+    {q:'Comment supprimer mon compte ?',a:`Allez dans Paramètres → Confidentialité → "Supprimer mon compte". Attention : <strong>cette action est irréversible</strong> après 30 jours. Toutes vos données sont supprimées définitivement. Vous pouvez aussi nous contacter à <a href="mailto:pitchouduplece9@gmail.com">pitchouduplece9@gmail.com</a>.`},
+    {q:'Puis-je avoir plusieurs profils sur un même compte ?',a:`Avec le plan Premium, vous pouvez gérer <strong>1 profil</strong>. Avec le <strong>Plan Famille</strong> (5 000 FCFA/mois), vous pouvez créer jusqu'à 6 profils distincts (adultes, enfants, seniors) avec des plans nutritionnels personnalisés pour chacun.`},
+    {q:'Comment exporter mes données NutriCam ?',a:`Paramètres → Confidentialité → "Exporter mes données". Vous recevrez un fichier JSON/CSV avec tout votre historique alimentaire, poids et objectifs dans les 24h. Cette fonctionnalité est gratuite et illimitée.`},
+  ],
+  abonnement:[
+    {q:'Quelle est la différence entre les plans Gratuit, Premium et Famille ?',a:`<strong>Gratuit (0 FCFA) :</strong> Calculateur calories, 15 recettes, 1 profil.<br/><strong>Premium (2 500 FCFA/mois) :</strong> 200+ recettes, Coach IA, plan 7j, scanner, module enfants, détox.<br/><strong>Famille (5 000 FCFA/mois) :</strong> Tout de Premium + 6 profils familiaux + liste courses intelligente.`},
+    {q:'Comment annuler mon abonnement ?',a:`Vous pouvez annuler à tout moment sans frais : Mon compte → Abonnement → "Annuler l'abonnement". Votre accès Premium reste actif jusqu'à la fin de la période payée. <strong>Aucun prélèvement automatique</strong> ne sera effectué après l'annulation.`},
+    {q:'Puis-je me faire rembourser ?',a:`Oui, dans les <strong>7 jours suivant la souscription</strong>, vous avez droit à un remboursement intégral. Au-delà, l'abonnement reste actif jusqu'à son terme mais n'est pas remboursé. Pour demander un remboursement : <a href="mailto:pitchouduplece9@gmail.com">pitchouduplece9@gmail.com</a>.`},
+    {q:'Mon abonnement se renouvelle-t-il automatiquement ?',a:`Oui, votre abonnement se renouvelle automatiquement chaque mois. Vous recevrez un email de rappel 3 jours avant le renouvellement. Vous pouvez désactiver le renouvellement automatique à tout moment dans Mon compte → Abonnement.`},
+    {q:'Y a-t-il des réductions pour les étudiants ou le secteur médical ?',a:`Oui ! <strong>Étudiants :</strong> −30% avec une adresse email universitaire valide. <strong>Médecins et diététiciens :</strong> −50% pour les professionnels de santé (sur justificatif). Envoyez votre preuve à <a href="mailto:pitchouduplece9@gmail.com">pitchouduplece9@gmail.com</a>.`},
+    {q:'Puis-je offrir un abonnement NutriCam en cadeau ?',a:`Oui ! Rendez-vous sur la page "Cadeaux NutriCam" (disponible bientôt). Vous recevrez un code-cadeau imprimable valable 1, 3 ou 6 mois, que le bénéficiaire peut activer quand il le souhaite.`},
+    {q:'L\'abonnement fonctionne-t-il sur plusieurs appareils ?',a:`Oui ! Votre compte Premium fonctionne simultanément sur tous vos appareils : site web, application iOS et application Android. La synchronisation est automatique et en temps réel.`},
+  ],
+  paiement:[
+    {q:'Comment payer avec MTN Mobile Money ?',a:`Sur la page de paiement, sélectionnez "MTN Mobile Money", entrez votre numéro au format 683 868 760. Vous recevrez une notification USSD sur votre téléphone MTN pour confirmer avec votre PIN. L'accès est activé en moins de 2 minutes.<div class="fa-tip"><strong>Problème ?</strong> Assurez-vous d'avoir un solde suffisant et que votre compte MTN MoMo est activé en composant *126#.</div>`},
+    {q:'Puis-je payer avec Orange Money ?',a:`Oui ! Sélectionnez "Orange Money" lors du paiement. Mêmes étapes que MTN : entrez votre numéro Orange, confirmez via l'application ou le code USSD #150#. Vérifiez votre solde en composant #150# avant.`},
+    {q:'Mon paiement a été débité mais je n\'ai pas accès à Premium',a:`Cela arrive parfois en cas de délai réseau. Attendez 5 minutes et rechargez l'application. Si le problème persiste, envoyez votre numéro de transaction à <a href="mailto:pitchouduplece9@gmail.com">pitchouduplece9@gmail.com</a> avec une capture d'écran du débit. Résolution garantie sous 2h.`},
+    {q:'Les transactions sont-elles sécurisées ?',a:`Oui, à 100%. NutriCam utilise <strong>CinetPay</strong> (opérateur agréé par la BEAC) pour le traitement des paiements Mobile Money, et <strong>Stripe</strong> (certifié PCI-DSS niveau 1) pour les cartes bancaires. Nous ne stockons jamais vos coordonnées bancaires.`},
+    {q:'Puis-je obtenir une facture de mon abonnement ?',a:`Oui ! Dans Mon compte → Factures, vous trouverez toutes vos factures téléchargeables en PDF avec TVA (0% au Cameroun). Vous pouvez aussi demander une facture pro à <a href="mailto:pitchouduplece9@gmail.com">pitchouduplece9@gmail.com</a>.`},
+  ],
+  technique:[
+    {q:'L\'application fonctionne-t-elle sans internet ?',a:`Oui ! Le <strong>mode hors-ligne</strong> est complet : consultation des recettes sauvegardées, journal alimentaire et calcul de calories fonctionnent sans connexion. La synchronisation se fait automatiquement dès que vous retrouvez le réseau.`},
+    {q:'L\'application est-elle disponible sur iOS et Android ?',a:`Le site web fonctionne parfaitement sur tous les navigateurs mobiles. L'application native iOS et Android est en développement pour <strong>Q2 2025</strong>. Inscrivez-vous à la liste d'attente sur nutricam.cm pour être notifié en premier.`},
+    {q:'Comment réinitialiser mon mot de passe ?',a:`Page de connexion → "Mot de passe oublié" → entrez votre email. Vous recevrez un lien de réinitialisation valable 1h. Si vous ne recevez pas l'email, vérifiez vos spams ou contactez <a href="mailto:pitchouduplece9@gmail.com">pitchouduplece9@gmail.com</a>.`},
+    {q:'L\'application consomme-t-elle beaucoup de données mobiles ?',a:`Non, NutriCam est optimisée pour les connexions africaines. Les images sont compressées en WebP, les données sont mises en cache localement. Utilisation estimée : <strong>moins de 20 Mo/mois</strong> en usage normal.`},
+  ],
+  ia:[
+    {q:'Comment fonctionne le Coach IA NutriCam ?',a:`Le Coach NutriCam est basé sur <strong>Claude d'Anthropic</strong>, un des modèles d'IA les plus avancés au monde. Il est spécialement instruit sur la nutrition africaine et la gastronomie camerounaise. Il répond à vos questions 24h/24 en français naturel.`},
+    {q:'Le Coach IA peut-il remplacer un diététicien ?',a:`Non, et il ne le prétend pas. Le Coach IA est un outil d'information nutritionnelle. Pour toute pathologie médicale (diabète, hypertension, grossesse à risque), consultez toujours un médecin ou diététicien agréé. NutriCam est un complément, pas un substitut médical.`},
+    {q:'Comment le plan repas IA est-il généré ?',a:`Le plan 7 jours est généré à partir de votre profil (âge, poids, objectif, allergies, plats préférés). L'IA sélectionne les recettes camerounaises optimales pour couvrir vos macros quotidiens tout en variant les saveurs. Vous pouvez régénérer ou remplacer chaque repas individuellement.`},
+    {q:'Mes conversations avec le Coach IA sont-elles privées ?',a:`Oui. Vos conversations sont chiffrées et ne sont pas utilisées pour entraîner des modèles d'IA tiers. Les conversations sont conservées 90 jours pour votre historique personnel puis supprimées. Voir notre <a href="#">politique de confidentialité</a>.`},
+  ],
+};
+
+const botResponses = {
+  'calories':'Les calories d\'une portion de ndolé avec crevettes sont environ 380 kcal. Voulez-vous que je calcule vos besoins caloriques quotidiens ?',
+  'ndolé':'Le ndolé est l\'un des plats les plus nutritifs d\'Afrique ! 380 kcal/portion, 28g de protéines, riche en fer et antioxydants. Souhaitez-vous la recette complète ?',
+  'abonnement':'Le plan Premium coûte 2 500 FCFA/mois et donne accès à 200+ recettes, le Coach IA, le plan repas 7 jours et le scanner produits. Puis-je vous aider à choisir le bon plan ?',
+  'paiement':'NutriCam accepte MTN Mobile Money, Orange Money et les cartes bancaires. Le paiement est sécurisé via CinetPay (agréé BEAC). Avez-vous un problème de paiement spécifique ?',
+  'default':'Bonne question ! Je suis le Coach NutriCam, spécialisé en nutrition africaine. Posez-moi des questions sur les calories, les recettes camerounaises, votre plan repas ou votre compte. 🌿'
+};
+
+function renderFAQ(cat){
+  const items = faqData[cat]||[];
+  const container = document.getElementById(`faq-${cat}-items`);
+  if(!container) return;
+  container.innerHTML = items.map((item,i)=>`
+    <div class="faq-item" id="faq-${cat}-${i}">
+      <div class="faq-q" onclick="toggleFAQ('${cat}',${i})">
+        <div class="fq-text">${item.q}</div>
+        <div class="fq-icon">+</div>
+      </div>
+      <div class="faq-a"><div class="fa-text">${item.a}</div></div>
+    </div>
+  `).join('');
+}
+
+function toggleFAQ(cat,i){
+  const item = document.getElementById(`faq-${cat}-${i}`);
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(el=>el.classList.remove('open'));
+  if(!isOpen) item.classList.add('open');
+}
+
+function showCat(cat, btn){
+  document.querySelectorAll('.faq-section').forEach(s=>s.classList.remove('show'));
+  document.querySelectorAll('.fcat').forEach(b=>b.classList.remove('active'));
+  document.getElementById('fcat-'+cat)?.classList.add('show');
+  if(btn) btn.classList.add('active');
+  else document.querySelector(`[onclick*="'${cat}'"]`)?.classList.add('active');
+}
+
+function searchFAQ(q){
+  if(!q) return;
+  // Simple search across all categories
+}
+
+// CHAT
+let chatOpen = false;
+function toggleChat(){
+  chatOpen=!chatOpen;
+  document.getElementById('chat-panel').classList.toggle('open',chatOpen);
+}
+
+function sendChat(){
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim(); if(!msg) return;
+  const msgs = document.getElementById('chat-msgs');
+  msgs.innerHTML+=`<div class="cm-msg cm-user">${msg}</div>`;
+  input.value='';
+  msgs.scrollTop=msgs.scrollHeight;
+  
+  const q = msg.toLowerCase();
+  let response = botResponses.default;
+  for(const [key,val] of Object.entries(botResponses)){
+    if(q.includes(key)){ response=val; break; }
+  }
+  setTimeout(()=>{
+    msgs.innerHTML+=`<div class="cm-msg cm-bot">🥗 ${response}</div>`;
+    msgs.scrollTop=msgs.scrollHeight;
+  },800);
+}
+
+// INIT
+Object.keys(faqData).forEach(cat=>renderFAQ(cat));
+</script>
+</body>
+</html>

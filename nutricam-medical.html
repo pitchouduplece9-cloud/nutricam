@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Suivi Médical & Grossesse</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#fdf8ff;--dark:#0f0514;--purple:#7c3aed;--pl:#9333ea;--plight:#c084fc;
+  --pink:#ec4899;--green:#16a34a;--y:#f5b800;--red:#dc2626;--blue:#2563eb;--teal:#0d9488;
+  --card:#fff;--border:#e9d5ff;--text:#1a0b2e;--muted:#7c5cbf;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* NAV */
+.nav{background:var(--dark);padding:1rem 2.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.nav-logo{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;color:#fff}
+.nav-logo span{color:var(--plight)}
+.nav-badge{background:rgba(192,132,252,0.15);border:1px solid rgba(192,132,252,0.25);color:var(--plight);font-size:0.65rem;font-weight:800;padding:0.2rem 0.7rem;border-radius:4px;text-transform:uppercase;letter-spacing:0.07em}
+.nav-right{display:flex;gap:0.6rem}
+.nb{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);padding:0.45rem 1rem;border-radius:8px;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.2s}
+.nb.primary{background:var(--purple);border-color:var(--purple);color:#fff}
+
+/* TABS */
+.mode-tabs{background:var(--dark);padding:0 2.5rem;display:flex;gap:0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.mt{padding:0.9rem 1.5rem;font-size:0.84rem;font-weight:700;color:rgba(255,255,255,0.4);cursor:pointer;border-bottom:3px solid transparent;transition:all 0.2s;white-space:nowrap}
+.mt.active{color:var(--plight);border-bottom-color:var(--plight)}
+.mt:hover{color:rgba(255,255,255,0.7)}
+
+/* MAIN */
+.main{max-width:1100px;margin:0 auto;padding:2.5rem}
+.view{display:none}.view.show{display:block;animation:fadeUp 0.25s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── GROSSESSE ── */
+.preg-hero{background:linear-gradient(135deg,#1a0533,#3d1075 60%,#6b21a8);border-radius:22px;padding:2.5rem;margin-bottom:2rem;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center;overflow:hidden;position:relative}
+.preg-hero::before{content:'🌸';position:absolute;right:2rem;top:50%;transform:translateY(-50%);font-size:8rem;opacity:0.06}
+.ph-week{font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.5);margin-bottom:0.4rem}
+.ph-title{font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:#fff;margin-bottom:0.5rem}
+.ph-sub{color:rgba(255,255,255,0.55);font-size:0.88rem;line-height:1.6;max-width:440px}
+.ph-ring{text-align:center}
+.ph-ring-label{font-size:0.65rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.08em;margin-top:0.5rem}
+
+/* WEEK SELECTOR */
+.week-selector{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem;margin-bottom:1.5rem}
+.ws-title{font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.8rem}
+.week-tabs{display:flex;gap:0.3rem;overflow-x:auto;padding-bottom:3px}
+.week-tabs::-webkit-scrollbar{height:3px}
+.week-tabs::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.wt{min-width:44px;height:36px;border-radius:9px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;cursor:pointer;transition:all 0.15s;color:var(--muted);background:var(--bg);flex-shrink:0}
+.wt:hover{border-color:var(--pl);color:var(--purple)}
+.wt.active{background:var(--purple);border-color:var(--purple);color:#fff}
+.wt.trimestre-1{border-color:rgba(124,58,237,0.25)}
+.wt.trimestre-2{border-color:rgba(236,72,153,0.2)}
+.wt.trimestre-3{border-color:rgba(16,163,74,0.2)}
+
+/* WEEK CARD */
+.week-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2rem;margin-bottom:1.5rem;transition:all 0.2s}
+.wc-header{display:flex;align-items:center;gap:1.2rem;margin-bottom:1.5rem}
+.wc-emoji{font-size:3rem}
+.wc-info{}
+.wc-week-num{font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.09em;color:var(--muted);margin-bottom:0.2rem}
+.wc-title{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;color:var(--dark);margin-bottom:0.2rem}
+.wc-size{font-size:0.82rem;color:var(--muted)}
+.wc-body{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+.wcb-section{}
+.wcbs-title{font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:var(--purple);margin-bottom:0.6rem}
+.wcbs-text{font-size:0.85rem;color:var(--text);line-height:1.7}
+.wcbs-list{display:flex;flex-direction:column;gap:0.4rem}
+.wcbl-item{display:flex;align-items:flex-start;gap:0.5rem;font-size:0.82rem;color:var(--text);line-height:1.5}
+.wcbl-icon{flex-shrink:0;font-size:0.8rem}
+
+/* NUTRITION NEEDS */
+.nutri-needs{background:linear-gradient(135deg,rgba(124,58,237,0.05),rgba(236,72,153,0.03));border:1px solid var(--border);border-radius:18px;padding:1.5rem;margin-bottom:1.5rem}
+.nn-title{font-family:'Fraunces',serif;font-size:1rem;font-weight:900;color:var(--dark);margin-bottom:1.2rem}
+.nn-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.8rem}
+.nn-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:0.9rem;text-align:center}
+.ni-val{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;color:var(--purple)}
+.ni-label{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-top:0.2rem}
+.ni-tip{font-size:0.68rem;color:var(--text);margin-top:0.4rem;line-height:1.4}
+
+/* ALIMENTS RECOMMANDÉS */
+.aliments-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin-bottom:1.5rem}
+.aliment-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1rem;transition:all 0.2s;cursor:pointer}
+.aliment-card:hover{border-color:rgba(124,58,237,0.3);transform:translateY(-2px)}
+.ac-emoji{font-size:1.8rem;display:block;margin-bottom:0.4rem}
+.ac-name{font-size:0.82rem;font-weight:700;color:var(--dark);margin-bottom:0.2rem}
+.ac-benefit{font-size:0.7rem;color:var(--muted);line-height:1.4}
+.ac-tag{font-size:0.62rem;font-weight:700;margin-top:0.4rem;padding:0.12rem 0.45rem;border-radius:4px;display:inline-block;background:rgba(124,58,237,0.08);color:var(--purple)}
+
+/* ── DIABÈTE ── */
+.diab-header{background:linear-gradient(135deg,#0c1a4a,#1e3a8a 60%,#2563eb);border-radius:22px;padding:2rem;margin-bottom:1.5rem;display:flex;gap:1.5rem;align-items:center}
+.dh-icon{font-size:3.5rem;flex-shrink:0}
+.dh-title{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:900;color:#fff;margin-bottom:0.4rem}
+.dh-sub{color:rgba(255,255,255,0.55);font-size:0.88rem;line-height:1.6}
+.glyco-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.5rem;margin-bottom:1.5rem}
+.gc-title{font-family:'Fraunces',serif;font-size:0.95rem;font-weight:900;color:var(--dark);margin-bottom:1rem}
+.glyco-row{display:flex;align-items:center;gap:0.8rem;padding:0.7rem 0;border-bottom:1px solid var(--border)}
+.glyco-row:last-child{border-bottom:none}
+.gr-time{font-size:0.78rem;font-weight:700;color:var(--text);width:130px;flex-shrink:0}
+.gr-bar-bg{flex:1;height:12px;background:var(--bg);border-radius:6px;overflow:hidden;position:relative}
+.gr-bar{height:100%;border-radius:6px;transition:width 1s ease}
+.gr-val{font-family:'DM Mono',monospace;font-size:0.78rem;font-weight:700;width:80px;text-align:right;flex-shrink:0}
+.gr-status{font-size:0.68rem;font-weight:800;padding:0.12rem 0.45rem;border-radius:4px;white-space:nowrap}
+.ig-foods{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+.igf-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem}
+.igfc-title{font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.8rem}
+.igfc-ok{color:var(--green)}.igfc-bad{color:var(--red)}
+.igf-item{display:flex;align-items:center;gap:0.6rem;padding:0.45rem 0;border-bottom:1px solid var(--border);font-size:0.8rem}
+.igf-item:last-child{border-bottom:none}
+.igf-emoji{font-size:1rem;flex-shrink:0}
+.igf-name{flex:1;color:var(--text)}
+.igf-ig{font-family:'DM Mono',monospace;font-size:0.72rem;font-weight:700;white-space:nowrap}
+
+/* ── HYPERTENSION ── */
+.hta-header{background:linear-gradient(135deg,#1a0505,#7f1d1d 60%,#b91c1c);border-radius:22px;padding:2rem;margin-bottom:1.5rem;display:flex;gap:1.5rem;align-items:center}
+.bp-tracker{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.5rem;margin-bottom:1.5rem}
+.bp-readings{display:flex;flex-direction:column;gap:0.6rem;margin-bottom:1rem}
+.bpr-row{display:flex;align-items:center;gap:0.8rem;padding:0.7rem 1rem;background:var(--bg);border-radius:10px}
+.bpr-date{font-size:0.72rem;color:var(--muted);width:90px;flex-shrink:0;font-family:'DM Mono',monospace}
+.bpr-val{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;flex:1}
+.bpr-badge{font-size:0.68rem;font-weight:800;padding:0.15rem 0.55rem;border-radius:4px}
+.bp-normal{color:#16a34a;background:rgba(22,163,74,0.1)}
+.bp-elevated{color:#ea580c;background:rgba(234,88,12,0.1)}
+.bp-high{color:#dc2626;background:rgba(220,38,38,0.1)}
+.bp-low{color:#2563eb;background:rgba(37,99,235,0.1)}
+
+@media(max-width:768px){.main{padding:1.5rem 1rem}.wc-body{grid-template-columns:1fr}.nn-grid{grid-template-columns:1fr 1fr}.aliments-grid{grid-template-columns:1fr 1fr}.ig-foods{grid-template-columns:1fr}.preg-hero{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div style="display:flex;align-items:center;gap:0.8rem">
+    <div class="nav-logo">Nutri<span>Cam</span></div>
+    <div class="nav-badge">🏥 Suivi Médical</div>
+  </div>
+  <div class="nav-right">
+    <button class="nb">👤 Profil médical</button>
+    <button class="nb primary">📋 Mon dossier</button>
+  </div>
+</nav>
+
+<div class="mode-tabs">
+  <div class="mt active" onclick="showView('grossesse',this)">🤰 Grossesse</div>
+  <div class="mt" onclick="showView('diabete',this)">🩺 Diabète</div>
+  <div class="mt" onclick="showView('hypertension',this)">❤️ Hypertension</div>
+  <div class="mt" onclick="showView('senior',this)">👴 Senior</div>
+  <div class="mt" onclick="showView('sport',this)">🏃 Sportif</div>
+</div>
+
+<div class="main">
+
+  <!-- ══ GROSSESSE ══ -->
+  <div class="view show" id="v-grossesse">
+    <div class="preg-hero">
+      <div>
+        <div class="ph-week">Trimestre 2 · Semaine 20</div>
+        <h1 class="ph-title">🤰 Suivi nutritionnel grossesse</h1>
+        <p class="ph-sub">Recommandations personnalisées semaine par semaine basées sur les guidelines OMS et les aliments locaux camerounais disponibles.</p>
+      </div>
+      <div class="ph-ring">
+        <svg width="120" height="120" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="10"/>
+          <circle cx="60" cy="60" r="50" fill="none" stroke="#c084fc" stroke-width="10"
+            stroke-dasharray="196 314" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 60 60)"/>
+          <text x="60" y="56" text-anchor="middle" fill="white" font-size="18" font-weight="800" font-family="Fraunces,serif">20</text>
+          <text x="60" y="72" text-anchor="middle" fill="rgba(255,255,255,0.45)" font-size="9" font-family="Plus Jakarta Sans,sans-serif">semaines</text>
+        </svg>
+        <div class="ph-ring-label">62% de la grossesse</div>
+      </div>
+    </div>
+
+    <div class="week-selector">
+      <div class="ws-title">Sélectionnez une semaine (1–40)</div>
+      <div class="week-tabs" id="week-tabs"></div>
+    </div>
+
+    <div class="week-card" id="week-detail"></div>
+
+    <div class="nutri-needs">
+      <div class="nn-title">🍽️ Besoins nutritionnels supplémentaires — Semaine 20</div>
+      <div class="nn-grid">
+        <div class="nn-item"><div class="ni-val">+300</div><div class="ni-label">kcal/jour</div><div class="ni-tip">2ème trimestre : +300 kcal vs avant grossesse</div></div>
+        <div class="nn-item"><div class="ni-val">+25g</div><div class="ni-label">Protéines</div><div class="ni-tip">Total 75g/j. Privilégier poissons, légumineuses</div></div>
+        <div class="nn-item"><div class="ni-val">600µg</div><div class="ni-label">Acide folique</div><div class="ni-tip">Double vs avant grossesse. Ndolé = source locale !</div></div>
+        <div class="nn-item"><div class="ni-val">27mg</div><div class="ni-label">Fer/jour</div><div class="ni-tip">Triple vs femme non enceinte. Eru + vitamine C</div></div>
+      </div>
+    </div>
+
+    <div style="font-family:'Fraunces',serif;font-size:1rem;font-weight:900;color:var(--dark);margin-bottom:1rem">🥗 Aliments locaux recommandés cette semaine</div>
+    <div class="aliments-grid" id="aliments-grid"></div>
+
+    <div style="background:rgba(220,38,38,0.06);border:1px solid rgba(220,38,38,0.15);border-radius:14px;padding:1.1rem 1.3rem;font-size:0.83rem;color:var(--text);line-height:1.6;margin-bottom:1.5rem">
+      <strong style="color:#dc2626">⚠️ Avertissement médical :</strong> Ces recommandations sont informatives uniquement. Consultez toujours votre sage-femme ou gynécologue pour un suivi médical personnalisé. NutriCam ne remplace pas une consultation médicale.
+    </div>
+  </div>
+
+  <!-- ══ DIABÈTE ══ -->
+  <div class="view" id="v-diabete">
+    <div class="diab-header">
+      <div class="dh-icon">🩺</div>
+      <div>
+        <div class="dh-title">Nutrition pour le diabète de type 2</div>
+        <div class="dh-sub">Contrôlez votre glycémie avec les aliments camerounais à faible indice glycémique. Recommandations validées par Dr. Emmanuel Nlend, endocrinologue CHUY.</div>
+      </div>
+    </div>
+
+    <div class="glyco-card">
+      <div class="gc-title">📊 Glycémie aujourd'hui (mmol/L)</div>
+      <div class="glyco-row">
+        <div class="gr-time">🌅 À jeun (7h00)</div>
+        <div class="gr-bar-bg"><div class="gr-bar" style="width:58%;background:#22c55e"></div></div>
+        <div class="gr-val" style="color:#16a34a">5.2</div>
+        <div class="gr-status" style="background:rgba(22,163,74,0.1);color:#16a34a">✅ Normal</div>
+      </div>
+      <div class="glyco-row">
+        <div class="gr-time">🍲 Après déjeuner (14h30)</div>
+        <div class="gr-bar-bg"><div class="gr-bar" style="width:78%;background:#fbbf24"></div></div>
+        <div class="gr-val" style="color:#d97706">7.8</div>
+        <div class="gr-status" style="background:rgba(251,191,36,0.1);color:#d97706">⚠️ Élevé</div>
+      </div>
+      <div class="glyco-row">
+        <div class="gr-time">🌇 Avant dîner (19h00)</div>
+        <div class="gr-bar-bg"><div class="gr-bar" style="width:62%;background:#22c55e"></div></div>
+        <div class="gr-val" style="color:#16a34a">6.1</div>
+        <div class="gr-status" style="background:rgba(22,163,74,0.1);color:#16a34a">✅ Normal</div>
+      </div>
+      <div class="glyco-row">
+        <div class="gr-time">🌙 Au coucher (22h00)</div>
+        <div class="gr-bar-bg"><div class="gr-bar" style="width:70%;background:#fbbf24"></div></div>
+        <div class="gr-val" style="color:#d97706">6.9</div>
+        <div class="gr-status" style="background:rgba(251,191,36,0.1);color:#d97706">⚠️ Limite</div>
+      </div>
+    </div>
+
+    <div class="ig-foods">
+      <div class="igf-card">
+        <div class="igfc-title igfc-ok">✅ Aliments recommandés (IG bas)</div>
+        <div class="igf-item"><div class="igf-emoji">🥬</div><div class="igf-name">Feuilles de ndolé cuites</div><div class="igf-ig" style="color:#16a34a">IG 15</div></div>
+        <div class="igf-item"><div class="igf-emoji">🫘</div><div class="igf-name">Haricots rouges camerounais</div><div class="igf-ig" style="color:#16a34a">IG 28</div></div>
+        <div class="igf-item"><div class="igf-emoji">🥜</div><div class="igf-name">Arachides non sucrées</div><div class="igf-ig" style="color:#16a34a">IG 14</div></div>
+        <div class="igf-item"><div class="igf-emoji">🌿</div><div class="igf-name">Moringa (poudre ou feuilles)</div><div class="igf-ig" style="color:#16a34a">IG 5</div></div>
+        <div class="igf-item"><div class="igf-emoji">🥬</div><div class="igf-name">Eru & Waterleaf</div><div class="igf-ig" style="color:#16a34a">IG 10</div></div>
+        <div class="igf-item"><div class="igf-emoji">🐟</div><div class="igf-name">Tilapia et poissons locaux</div><div class="igf-ig" style="color:#16a34a">IG 0</div></div>
+      </div>
+      <div class="igf-card">
+        <div class="igfc-title igfc-bad">⚠️ À limiter (IG élevé)</div>
+        <div class="igf-item"><div class="igf-emoji">🍚</div><div class="igf-name">Riz blanc cuit à la vapeur</div><div class="igf-ig" style="color:#dc2626">IG 72</div></div>
+        <div class="igf-item"><div class="igf-emoji">🍌</div><div class="igf-name">Banane plantain frite</div><div class="igf-ig" style="color:#dc2626">IG 68</div></div>
+        <div class="igf-item"><div class="igf-emoji">🥤</div><div class="igf-name">Jus de fruit sucré industriel</div><div class="igf-ig" style="color:#dc2626">IG 75</div></div>
+        <div class="igf-item"><div class="igf-emoji">🌽</div><div class="igf-name">Bouillie de maïs sucrée</div><div class="igf-ig" style="color:#ea580c">IG 58</div></div>
+        <div class="igf-item"><div class="igf-emoji">🥖</div><div class="igf-name">Pain blanc de boulangerie</div><div class="igf-ig" style="color:#dc2626">IG 73</div></div>
+        <div class="igf-item"><div class="igf-emoji">🧂</div><div class="igf-name">Cube Maggi (sodium élevé)</div><div class="igf-ig" style="color:#ea580c">⚠ Sel</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ HYPERTENSION ══ -->
+  <div class="view" id="v-hypertension">
+    <div class="hta-header">
+      <div style="font-size:3.5rem;flex-shrink:0">❤️</div>
+      <div>
+        <div style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:900;color:#fff;margin-bottom:0.4rem">Nutrition anti-hypertensive</div>
+        <div style="color:rgba(255,255,255,0.55);font-size:0.88rem;line-height:1.6">Régime DASH adapté aux aliments camerounais. Réduction du sodium, augmentation du potassium et magnésium. Validé par Dr. Nlend (CHUY).</div>
+      </div>
+    </div>
+    <div class="bp-tracker">
+      <div style="font-family:'Fraunces',serif;font-size:0.95rem;font-weight:900;color:var(--dark);margin-bottom:1rem">📊 Suivi de la pression artérielle (7 derniers jours)</div>
+      <div class="bp-readings">
+        <div class="bpr-row"><div class="bpr-date">14 Jan · 08h00</div><div class="bpr-val" style="color:#16a34a">118/76</div><div style="font-size:0.7rem;color:var(--muted)">mmHg</div><div class="bpr-badge bp-normal">✅ Normale</div></div>
+        <div class="bpr-row"><div class="bpr-date">13 Jan · 09h00</div><div class="bpr-val" style="color:#d97706">134/88</div><div style="font-size:0.7rem;color:var(--muted)">mmHg</div><div class="bpr-badge bp-elevated">⚠ Légèrement haute</div></div>
+        <div class="bpr-row"><div class="bpr-date">12 Jan · 08h30</div><div class="bpr-val" style="color:#16a34a">122/79</div><div style="font-size:0.7rem;color:var(--muted)">mmHg</div><div class="bpr-badge bp-normal">✅ Normale</div></div>
+        <div class="bpr-row"><div class="bpr-date">11 Jan · 08h00</div><div class="bpr-val" style="color:#dc2626">142/91</div><div style="font-size:0.7rem;color:var(--muted)">mmHg</div><div class="bpr-badge bp-high">🔴 Élevée</div></div>
+        <div class="bpr-row"><div class="bpr-date">10 Jan · 08h15</div><div class="bpr-val" style="color:#16a34a">119/77</div><div style="font-size:0.7rem;color:var(--muted)">mmHg</div><div class="bpr-badge bp-normal">✅ Normale</div></div>
+      </div>
+      <div style="background:rgba(37,99,235,0.06);border:1px solid rgba(37,99,235,0.15);border-radius:12px;padding:1rem;font-size:0.82rem;color:var(--text)">
+        💡 <strong>Conseil NutriCam :</strong> La lecture du 11 Jan (142/91) coïncide avec un repas riche en cube Maggi (sodium). Remplacez par du crayfish (crevettes séchées) pour un assaisonnement naturel sans sodium excessif.
+      </div>
+    </div>
+    <div class="ig-foods">
+      <div class="igf-card">
+        <div class="igfc-title igfc-ok">✅ Aliments hypotenseurs locaux</div>
+        <div class="igf-item"><div class="igf-emoji">🌺</div><div class="igf-name">Bissap (hibiscus) — puissant</div><div class="igf-ig" style="color:#16a34a">↓ PA forte</div></div>
+        <div class="igf-item"><div class="igf-emoji">🍌</div><div class="igf-name">Banane plantain bouillie</div><div class="igf-ig" style="color:#16a34a">Potassium +++</div></div>
+        <div class="igf-item"><div class="igf-emoji">🥬</div><div class="igf-name">Feuilles de ndolé fraîches</div><div class="igf-ig" style="color:#16a34a">Magnésium</div></div>
+        <div class="igf-item"><div class="igf-emoji">🧄</div><div class="igf-name">Ail frais camerounais</div><div class="igf-ig" style="color:#16a34a">Allicine ↓PA</div></div>
+        <div class="igf-item"><div class="igf-emoji">🐟</div><div class="igf-name">Sardines locales (SCBC)</div><div class="igf-ig" style="color:#16a34a">Oméga-3</div></div>
+      </div>
+      <div class="igf-card">
+        <div class="igfc-title igfc-bad">❌ À éviter absolument</div>
+        <div class="igf-item"><div class="igf-emoji">🧂</div><div class="igf-name">Cube Maggi (2.3g sel/cube)</div><div class="igf-ig" style="color:#dc2626">Sodium ↑↑↑</div></div>
+        <div class="igf-item"><div class="igf-emoji">🥩</div><div class="igf-name">Viandes fumées salées</div><div class="igf-ig" style="color:#dc2626">Sodium ↑↑</div></div>
+        <div class="igf-item"><div class="igf-emoji">🥤</div><div class="igf-name">Boissons gazeuses sucrées</div><div class="igf-ig" style="color:#dc2626">Sucre + café</div></div>
+        <div class="igf-item"><div class="igf-emoji">🍺</div><div class="igf-name">Alcool (brasseries locales)</div><div class="igf-ig" style="color:#dc2626">PA ↑ direct</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SENIOR & SPORT (placeholders) ══ -->
+  <div class="view" id="v-senior">
+    <div style="background:linear-gradient(135deg,#1a1000,#4d2d00 60%,#7a4f00);border-radius:22px;padding:2.5rem;text-align:center;color:#fff;margin-bottom:1.5rem">
+      <div style="font-size:3rem;margin-bottom:1rem">👴</div>
+      <div style="font-family:'Fraunces',serif;font-size:1.8rem;font-weight:900;margin-bottom:0.5rem">Nutrition Senior (60+ ans)</div>
+      <div style="color:rgba(255,255,255,0.5);max-width:500px;margin:0 auto">Besoins en calcium, vitamine D, protéines et fibres adaptés aux seniors camerounais. Prévention de l'ostéoporose et de la sarcopénie.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.3rem;text-align:center"><div style="font-size:2rem;margin-bottom:0.5rem">🦴</div><div style="font-family:'Fraunces',serif;font-weight:900;color:var(--dark);margin-bottom:0.3rem">1200mg</div><div style="font-size:0.72rem;color:var(--muted)">Calcium/jour cible</div></div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.3rem;text-align:center"><div style="font-size:2rem;margin-bottom:0.5rem">☀️</div><div style="font-family:'Fraunces',serif;font-weight:900;color:var(--dark);margin-bottom:0.3rem">800 UI</div><div style="font-size:0.72rem;color:var(--muted)">Vitamine D/jour</div></div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.3rem;text-align:center"><div style="font-size:2rem;margin-bottom:0.5rem">💪</div><div style="font-family:'Fraunces',serif;font-weight:900;color:var(--dark);margin-bottom:0.3rem">1.2g/kg</div><div style="font-size:0.72rem;color:var(--muted)">Protéines/jour</div></div>
+    </div>
+  </div>
+
+  <div class="view" id="v-sport">
+    <div style="background:linear-gradient(135deg,#052a0c,#0a5218 60%,#166534);border-radius:22px;padding:2.5rem;text-align:center;color:#fff;margin-bottom:1.5rem">
+      <div style="font-size:3rem;margin-bottom:1rem">🏃</div>
+      <div style="font-family:'Fraunces',serif;font-size:1.8rem;font-weight:900;margin-bottom:0.5rem">Nutrition Sport & Performance</div>
+      <div style="color:rgba(255,255,255,0.5);max-width:500px;margin:0 auto">Plan nutrition pour sportifs camerounais avec aliments locaux. Avant/pendant/après entraînement. Validé par Coach Paul Bello (FECAFOOT).</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.3rem"><div style="font-size:1.5rem;margin-bottom:0.5rem">⚡ Avant</div><div style="font-size:0.82rem;color:var(--text);line-height:1.6"><strong>-2h :</strong> Macabo + poisson braisé<br/><strong>-30min :</strong> Banane plantain bouillie</div></div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.3rem"><div style="font-size:1.5rem;margin-bottom:0.5rem">🏃 Pendant</div><div style="font-size:0.82rem;color:var(--text);line-height:1.6"><strong>Hydratation :</strong> Eau + sel de roche<br/><strong>Si &gt;90min :</strong> Dattes + eau de coco</div></div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.3rem"><div style="font-size:1.5rem;margin-bottom:0.5rem">💪 Après</div><div style="font-size:0.82rem;color:var(--text);line-height:1.6"><strong>-30min :</strong> Crevettes + riz<br/><strong>-2h :</strong> Ndolé + plantains bouillis</div></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const weekData={
+  4:{emoji:'🫐',title:'Embryon — Taille d\'un grain de riz',size:'2mm',dev:'Formation du tube neural. Le cerveau et la moelle épinière commencent à se former.',symp:'Fatigue intense, nausées matinales (50% des femmes), seins sensibles.',nutrients:['Acide folique URGENT : 600µg/j — Ndolé, légumes verts feuilles','Vitamine B12 : poissons, crevettes camerounaises','Vitamine C : goyave, mangue, tomate'],foods:[{e:'🥬',n:'Feuilles de ndolé',b:'82µg acide folique/100g',t:'Folate'},
+  {e:'🐟',n:'Tilapia grillé',b:'Vitamine B12 + DHA',t:'Cerveau bébé'},{e:'🥭',n:'Mangue mûre',b:'Vitamine C + bêta-carotène',t:'Immunité'}]},
+  12:{emoji:'🍋',title:'Fœtus — Taille d\'un citron',size:'6cm · 14g',dev:'Tous les organes sont formés. Le fœtus peut sucer son pouce. Risque de fausse couche diminue drastiquement.',symp:'Nausées commencent à diminuer. Ventre légèrement visible. Fatigue persiste.',nutrients:['Fer : 27mg/j — Eru + vitamine C pour absorption','Calcium : 1000mg/j — lait local SCDP, sardines SCBC','Protéines : +25g/j vs avant grossesse'],foods:[{e:'🥬',n:'Eru & Waterleaf',b:'Fer + magnésium + fibres',t:'Fer végétal'},{e:'🐟',n:'Sardines SCBC (conserves)',b:'Calcium + oméga-3 + vit D',t:'Os bébé'},{e:'🥛',n:'Yaourt SCDP Ngaoundéré',b:'Calcium + probiotiques',t:'Intestin'}]},
+  20:{emoji:'🥭',title:'Fœtus — Taille d\'une mangue',size:'25cm · 300g',dev:'Mouvements fœtaux ressentis (quickening). Oreilles fonctionnelles — bébé entend votre voix. Cheveux commencent à pousser.',symp:'Ventre bien visible. Douleurs ligamentaires. Dos. Bonne énergie en général.',nutrients:['Fer : 27mg/j — pic de besoins — ndolé quotidien','DHA : 200mg/j — poissons gras locaux','Vitamine D : 600 UI/j — exposition soleil + poissons'],foods:[{e:'🍲',n:'Ndolé aux crevettes',b:'Fer + protéines + folates',t:'Essentiel'},{e:'🐟',n:'Maquereau atlantique',b:'DHA + vitamine D',t:'Cerveau'},{e:'🌿',n:'Moringa frais',b:'Calcium + fer + vitamines A,C',t:'Multi-nutriments'}]},
+  30:{emoji:'🥥',title:'Fœtus — Taille d\'une noix de coco',size:'40cm · 1.5kg',dev:'Cerveau en développement rapide. Yeux ouverts. Bébé se retourne souvent.',symp:'Heartburn (brûlures), essoufflement, œdèmes aux pieds le soir.',nutrients:['Calcium : 1200mg/j — lait, sardines','Réduire sel si œdèmes — remplacer Maggi par crayfish','Fractionner les repas : 5-6 petits repas vs 3 grands'],foods:[{e:'🥛',n:'Lait en poudre Nido',b:'Calcium + vitamine D + B12',t:'Os bébé'},{e:'🫐',n:'Crayfish (crevettes séchées)',b:'Condiment sans sel · protéines',t:'Anti-Maggi'},{e:'🍌',n:'Plantain bouilli (non frit)',b:'Potassium · digestion',t:'Œdèmes'}]},
+  40:{emoji:'🎉',title:'Bébé prêt à naître !',size:'50cm · 3.4kg (moyen)',dev:'Bébé en position tête en bas. Poumons matures. Prêt pour le monde !',symp:'Contractions de Braxton-Hicks fréquentes. Perte du bouchon muqueux possible.',nutrients:['Maintenir tous les apports','Hydratation : 3L/j minimum','Stocks d\'énergie : glucides complexes (macabo, plantain)'],foods:[{e:'🫘',n:'Macabo bouilli',b:'Glucides complexes · énergie travail',t:'Énergie accouchement'},{e:'💧',n:'Eau de coco fraîche',b:'Électrolytes naturels',t:'Hydratation'},{e:'🍌',n:'Dattes fraîches',b:'Favorise les contractions naturelles',t:'Accouchement'}]},
+};
+
+let selectedWeek=20;
+
+function renderWeekTabs(){
+  const tabs=[];
+  for(let w=1;w<=40;w++){
+    const t=w<=13?'trimestre-1':w<=27?'trimestre-2':'trimestre-3';
+    tabs.push(`<div class="wt ${t} ${w===selectedWeek?'active':''}" onclick="selectWeek(${w},this)">S${w}</div>`);
+  }
+  document.getElementById('week-tabs').innerHTML=tabs.join('');
+}
+
+function selectWeek(w,btn){
+  selectedWeek=w;
+  document.querySelectorAll('.wt').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderWeekDetail(w);
+}
+
+function renderWeekDetail(w){
+  const keys=Object.keys(weekData).map(Number).sort((a,b)=>a-b);
+  let d=weekData[w];
+  if(!d){const closest=keys.reduce((a,b)=>Math.abs(b-w)<Math.abs(a-w)?b:a);d=weekData[closest];}
+  document.getElementById('week-detail').innerHTML=`
+    <div class="wc-header">
+      <div class="wc-emoji">${d.emoji}</div>
+      <div>
+        <div class="wc-week-num">Semaine ${w} de grossesse</div>
+        <div class="wc-title">${d.title}</div>
+        <div class="wc-size">📏 ${d.size}</div>
+      </div>
+    </div>
+    <div class="wc-body">
+      <div class="wcb-section"><div class="wcbs-title">🌱 Développement bébé</div><div class="wcbs-text">${d.dev}</div></div>
+      <div class="wcb-section"><div class="wcbs-title">🤰 Symptômes fréquents</div><div class="wcbs-text">${d.symp}</div></div>
+      <div class="wcb-section"><div class="wcbs-title">💊 Nutriments clés</div><div class="wcbs-list">${d.nutrients.map(n=>`<div class="wcbl-item"><span class="wcbl-icon">✓</span>${n}</div>`).join('')}</div></div>
+    </div>`;
+  document.getElementById('aliments-grid').innerHTML=(d.foods||[]).map(f=>`
+    <div class="aliment-card">
+      <span class="ac-emoji">${f.e}</span>
+      <div class="ac-name">${f.n}</div>
+      <div class="ac-benefit">${f.b}</div>
+      <span class="ac-tag">${f.t}</span>
+    </div>`).join('');
+}
+
+function showView(id,btn){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('show'));
+  document.querySelectorAll('.mt').forEach(b=>b.classList.remove('active'));
+  document.getElementById('v-'+id).classList.add('show');
+  btn.classList.add('active');
+}
+
+renderWeekTabs();
+renderWeekDetail(selectedWeek);
+document.querySelector('.wt.active')?.scrollIntoView({inline:'center',behavior:'smooth'});
+</script>
+</body>
+</html>

@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Recettes Camerounaises</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--g:#1a6b3c;--gl:#2daa5f;--y:#f5c842;--r:#c0392b;--bg:#0b150e;--card:#111c14;--card2:#162019;--border:rgba(255,255,255,0.07);--text:#e8f0ea;--muted:#6b8c72}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:2rem}
+.page-header{text-align:center;margin-bottom:2.5rem}
+.page-header h1{font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;color:#fff}
+.page-header h1 span{color:var(--y)}
+.page-header p{color:var(--muted);margin-top:0.5rem}
+.stats-bar{display:flex;justify-content:center;gap:3rem;margin:1.5rem 0 2.5rem;flex-wrap:wrap}
+.stat{text-align:center}
+.stat-n{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--gl)}
+.stat-l{font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em}
+/* FILTERS */
+.filters{display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;margin-bottom:2rem}
+.filter-btn{background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--muted);padding:0.45rem 1.1rem;border-radius:100px;font-size:0.8rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:'Instrument Sans',sans-serif}
+.filter-btn:hover,.filter-btn.active{background:var(--g);color:#fff;border-color:var(--g)}
+.search-wrap{display:flex;justify-content:center;margin-bottom:2rem}
+.search-field{display:flex;align-items:center;gap:0.8rem;background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:0.8rem 1.2rem;width:100%;max-width:500px}
+.search-field input{background:none;border:none;color:#fff;font-size:0.95rem;flex:1;outline:none;font-family:'Instrument Sans',sans-serif}
+.search-field input::placeholder{color:var(--muted)}
+/* GRID */
+.recipes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.2rem;max-width:1400px;margin:0 auto}
+.recipe-card{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;cursor:pointer;transition:all 0.25s;position:relative}
+.recipe-card:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,0.4);border-color:rgba(45,170,95,0.3)}
+.rc-top{padding:1.3rem 1.3rem 1rem;position:relative}
+.rc-emoji{font-size:2.8rem;margin-bottom:0.6rem;display:block}
+.rc-badges{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.6rem}
+.badge{font-size:0.62rem;font-weight:700;padding:0.2rem 0.6rem;border-radius:100px;text-transform:uppercase;letter-spacing:0.06em}
+.badge-region{background:rgba(245,200,66,0.12);color:var(--y)}
+.badge-cat{background:rgba(45,170,95,0.12);color:var(--gl)}
+.badge-diet{background:rgba(96,165,250,0.12);color:#60a5fa}
+.rc-name{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:800;color:#fff;margin-bottom:0.3rem}
+.rc-desc{font-size:0.78rem;color:var(--muted);line-height:1.5}
+.rc-meta{display:flex;gap:1rem;padding:0.8rem 1.3rem;border-top:1px solid var(--border);background:rgba(255,255,255,0.02)}
+.rc-meta-item{display:flex;align-items:center;gap:0.3rem;font-size:0.72rem;color:var(--muted)}
+.rc-cals{position:absolute;top:1rem;right:1rem;background:rgba(245,200,66,0.1);border:1px solid rgba(245,200,66,0.2);color:var(--y);font-size:0.75rem;font-weight:800;padding:0.25rem 0.6rem;border-radius:100px}
+.rc-nutrition{display:grid;grid-template-columns:repeat(3,1fr);gap:0.4rem;padding:0.8rem 1.3rem;background:rgba(255,255,255,0.015);border-top:1px solid var(--border)}
+.n-item{text-align:center}
+.n-val{font-size:0.82rem;font-weight:700;color:#fff}
+.n-label{font-size:0.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em}
+.rc-footer{padding:0.8rem 1.3rem;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border)}
+.rc-difficulty{font-size:0.72rem;color:var(--muted)}
+.rc-btn{background:var(--g);color:#fff;border:none;border-radius:8px;padding:0.4rem 1rem;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:'Instrument Sans',sans-serif;transition:background 0.2s}
+.rc-btn:hover{background:var(--gl)}
+/* MODAL */
+.modal-ov{display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,0.9);backdrop-filter:blur(10px);align-items:flex-start;justify-content:center;padding:2rem;overflow-y:auto}
+.modal-ov.open{display:flex}
+.modal-box{background:#0e1a11;border:1px solid var(--border);border-radius:24px;padding:2.5rem;width:100%;max-width:680px;margin:auto;animation:fadeUp 0.3s ease;position:relative}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.modal-close{position:absolute;top:1.5rem;right:1.5rem;background:rgba(255,255,255,0.08);border:none;color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.modal-emoji{font-size:3.5rem;margin-bottom:1rem;display:block}
+.modal-header-badges{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.8rem}
+.modal-title{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:#fff;margin-bottom:0.5rem}
+.modal-desc{color:var(--muted);line-height:1.6;margin-bottom:1.5rem}
+.modal-nutrition{display:grid;grid-template-columns:repeat(4,1fr);gap:0.8rem;margin-bottom:1.8rem}
+.mn-card{background:rgba(255,255,255,0.04);border-radius:12px;padding:0.8rem;text-align:center}
+.mn-val{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;color:#fff}
+.mn-label{font-size:0.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em}
+.modal-section{margin-bottom:1.5rem}
+.modal-section h4{font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--gl);margin-bottom:0.8rem}
+.ing-grid{display:flex;flex-wrap:wrap;gap:0.5rem}
+.ing-pill{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;padding:0.35rem 0.8rem;font-size:0.78rem;color:var(--text)}
+.steps-list{display:flex;flex-direction:column;gap:0.8rem}
+.step-row{display:flex;gap:1rem;align-items:flex-start}
+.step-num{width:28px;height:28px;border-radius:50%;background:var(--g);color:#fff;font-weight:800;font-size:0.78rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.step-text{color:rgba(255,255,255,0.75);font-size:0.85rem;line-height:1.6}
+.tips-box{background:rgba(245,200,66,0.07);border:1px solid rgba(245,200,66,0.2);border-radius:12px;padding:1rem;font-size:0.82rem;color:rgba(255,255,255,0.7);line-height:1.6}
+.tips-box strong{color:var(--y)}
+.no-results{text-align:center;padding:4rem 2rem;color:var(--muted)}
+.no-results span{font-size:3rem;display:block;margin-bottom:1rem}
+.count-label{text-align:center;color:var(--muted);font-size:0.82rem;margin-bottom:1.5rem}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>🍲 Recettes <span>Camerounaises</span></h1>
+  <p>Base de données nutritionnelle complète · 52 plats traditionnels</p>
+</div>
+
+<div class="stats-bar">
+  <div class="stat"><div class="stat-n">52</div><div class="stat-l">Recettes</div></div>
+  <div class="stat"><div class="stat-n">10</div><div class="stat-l">Régions</div></div>
+  <div class="stat"><div class="stat-n">100%</div><div class="stat-l">Valeurs nutri.</div></div>
+  <div class="stat"><div class="stat-n">6</div><div class="stat-l">Catégories</div></div>
+</div>
+
+<div class="search-wrap">
+  <div class="search-field">
+    <span>🔍</span>
+    <input type="text" id="search" placeholder="Rechercher : ndolé, poulet DG, eru..." oninput="renderAll()"/>
+  </div>
+</div>
+
+<div class="filters" id="filters">
+  <button class="filter-btn active" onclick="setFilter('tous',this)">🍽️ Tous</button>
+  <button class="filter-btn" onclick="setFilter('plat',this)">🥘 Plats principaux</button>
+  <button class="filter-btn" onclick="setFilter('accompagnement',this)">🌽 Accompagnements</button>
+  <button class="filter-btn" onclick="setFilter('soupe',this)">🍜 Soupes & Bouillons</button>
+  <button class="filter-btn" onclick="setFilter('snack',this)">🥜 Snacks & Street food</button>
+  <button class="filter-btn" onclick="setFilter('boisson',this)">🥤 Boissons</button>
+  <button class="filter-btn" onclick="setFilter('dessert',this)">🍮 Desserts</button>
+</div>
+
+<div class="count-label" id="count-label">52 recettes</div>
+<div class="recipes-grid" id="recipes-grid"></div>
+
+<!-- MODAL -->
+<div class="modal-ov" id="modal" onclick="maybeClose(event)">
+  <div class="modal-box" id="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<script>
+const recipes = [
+  // PLATS PRINCIPAUX
+  {id:1,emoji:'🍲',name:'Ndolé aux crevettes',cat:'plat',region:'Littoral',kcal:380,prot:28,carb:18,fat:22,time:90,serves:4,diff:'Moyen',diet:'',
+  desc:'Plat national camerounais à base de feuilles amères mijotées avec crevettes fraîches, viande fumée et pâte d\'arachides onctueuse.',
+  ing:['500g feuilles de ndolé','300g crevettes fraîches','200g bœuf fumé','150g arachides grillées','2 oignons','3 gousses d\'ail','100ml huile de palme','1 cube Maggi','Sel, poivre, piment'],
+  steps:['Tremper les feuilles de ndolé 30 min dans l\'eau chaude. Essorer et ciseler finement.','Mixer les arachides avec un peu d\'eau en pâte épaisse.','Faire revenir oignon et ail dans l\'huile de palme 5 min.','Ajouter la viande fumée en morceaux, dorer 10 min.','Incorporer ndolé, pâte d\'arachides, cube et 200ml eau. Mijoter 25 min.','Ajouter les crevettes décortiquées, cuire 10 min.','Servir avec riz, miondo ou plantains bouillis.'],
+  tip:'<strong>Astuce nutrition :</strong> Les feuilles de ndolé sont riches en fer et antioxydants. Pour réduire les calories, utiliser moins d\'huile de palme.'},
+
+  {id:2,emoji:'🐔',name:'Poulet DG',cat:'plat',region:'Centre',kcal:520,prot:42,carb:38,fat:21,time:45,serves:2,diff:'Facile',diet:'',
+  desc:'Incontournable du dimanche, le Poulet Directeur Général associe poulet doré, plantains frits et sauce tomate aux poivrons.',
+  ing:['1 poulet entier coupé','3 plantains mûrs','2 poivrons (rouge+vert)','2 tomates fraîches','1 oignon','4 gousses d\'ail','1 cube Maggi','Persil, thym','Huile de tournesol'],
+  steps:['Assaisonner le poulet avec ail, sel, poivre, thym. Mariner 30 min.','Frire les plantains en rondelles jusqu\'à dorure. Réserver.','Dorer le poulet 8 min par face. Réserver.','Revenir oignon, ajouter poivrons + tomates en dés. Cuire 8 min.','Remettre le poulet, couvrir et cuire 15 min à feu doux.','Ajouter les plantains frits, mélanger et cuire 5 min.','Garnir de persil frais et servir.'],
+  tip:'<strong>Version santé :</strong> Remplacer les plantains frits par des plantains bouillis pour économiser ~80 kcal par portion.'},
+
+  {id:3,emoji:'🥬',name:'Eru & Waterleaf',cat:'plat',region:'Sud-Ouest',kcal:310,prot:26,carb:8,fat:20,time:75,serves:4,diff:'Moyen',diet:'riche-fer',
+  desc:'Mélange de feuilles de jungle (eru) et de waterleaf, cuit dans l\'huile de palme avec viande et crevettes séchées. Très riche en fer.',
+  ing:['400g feuilles d\'eru séchées','300g waterleaf frais','250g bœuf en morceaux','200g crevettes séchées','150ml huile de palme','1 oignon','Crayfish moulu','1 cube Maggi','Sel'],
+  steps:['Réhydrater l\'eru dans l\'eau chaude 45 min, égoutter et ciseler.','Cuire la viande dans eau salée + oignon 20 min.','Ajouter huile de palme, crayfish, cube et crevettes séchées à la viande.','Incorporer l\'eru, couvrir et cuire 20 min à feu doux.','Ajouter le waterleaf en fin de cuisson, mélanger 5 min sans couvercle.','Servir avec fufu de maïs ou riz.'],
+  tip:'<strong>Astuce :</strong> L\'eru est une des feuilles les plus riches en calcium et fer d\'Afrique centrale. Idéal pour femmes enceintes.'},
+
+  {id:4,emoji:'🐟',name:'Poisson braisé sauce tomate',cat:'plat',region:'Littoral',kcal:290,prot:34,carb:10,fat:12,time:50,serves:2,diff:'Facile',diet:'protéines',
+  desc:'Tilapia ou carpe grillé au feu de bois, servi avec une sauce tomate épicée aux oignons et poivrons.',
+  ing:['1 poisson entier (tilapia/carpe)','3 tomates','1 oignon','2 poivrons','4 gousses d\'ail','Piment frais','Jus de citron','Sel, poivre, thym','Huile de palme 2 c.à.s'],
+  steps:['Vider, nettoyer et inciser le poisson. Assaisonner avec ail, citron, sel et thym.','Faire griller le poisson sur braise ou au four à 200°C pendant 20-25 min en retournant à mi-cuisson.','Pendant ce temps, revenir oignon haché dans l\'huile de palme.','Ajouter tomates et poivrons en dés, piment. Cuire 15 min.','Napper le poisson grillé de sauce tomate chaude.','Servir avec miondo, plantains ou riz.'],
+  tip:'<strong>Protéines :</strong> Le tilapia apporte 34g de protéines pour seulement 290 kcal. Excellent pour sportifs et femmes enceintes.'},
+
+  {id:5,emoji:'🫘',name:'Haricots rouges épicés',cat:'plat',region:'Adamaoua',kcal:280,prot:16,carb:45,fat:5,time:80,serves:4,diff:'Facile',diet:'végétarien',
+  desc:'Haricots rouges mijotés longuement avec oignons, tomates et épices du nord. Plat complet et économique riche en fibres.',
+  ing:['500g haricots rouges secs','2 oignons','3 tomates','2 c.à.s huile de palme','1 cube Maggi','Piment, sel, poivre','Gingembre frais 2cm','3 gousses d\'ail'],
+  steps:['Faire tremper les haricots 8h (ou toute la nuit) dans l\'eau froide.','Rincer et cuire dans eau bouillante 1h jusqu\'à tendreté. Égoutter.','Faire revenir oignon et ail haché dans huile de palme 5 min.','Ajouter tomates en dés, gingembre râpé, épices. Cuire 10 min.','Incorporer les haricots égouttés à la sauce. Mélanger et cuire 15 min.','Rectifier l\'assaisonnement et servir chaud avec riz ou maïs.'],
+  tip:'<strong>Végétarien :</strong> Les haricots rouges + riz forment une protéine complète. Idéal comme substitut de viande 2x/semaine.'},
+
+  {id:6,emoji:'🐄',name:'Bœuf en sauce d\'arachide',cat:'plat',region:'Ouest',kcal:460,prot:38,carb:15,fat:28,time:70,serves:4,diff:'Moyen',diet:'',
+  desc:'Morceaux de bœuf tendres mijotés dans une sauce arachide onctueuse avec gingembre et épices. Un classique de l\'Ouest Cameroun.',
+  ing:['700g bœuf à braiser','300g pâte d\'arachides','2 oignons','4 tomates','Gingembre 3cm','4 gousses d\'ail','Piment djansang 1 c.à.s','1 cube Maggi','Sel, poivre'],
+  steps:['Couper le bœuf en gros cubes. Assaisonner avec ail, gingembre, sel.','Faire dorer le bœuf à feu vif dans un peu d\'huile. Réserver.','Diluer la pâte d\'arachides dans 400ml d\'eau chaude jusqu\'à consistance lisse.','Faire revenir oignon + tomates jusqu\'à réduction.','Ajouter le bœuf, verser la sauce arachide. Couvrir et mijoter 35 min.','Ajouter djansang pilé, rectifier assaisonnement. Cuire 10 min.','Servir avec taro, macabo ou riz.'],
+  tip:'<strong>Substitution :</strong> Remplacer la pâte d\'arachides par du beurre d\'amande pour une version moins calorique.'},
+
+  {id:7,emoji:'🐑',name:'Mbongo tchobi (sauce noire)',cat:'plat',region:'Littoral',kcal:390,prot:35,carb:12,fat:22,time:100,serves:4,diff:'Difficile',diet:'',
+  desc:'Sauce noire mystérieuse à base d\'écorces brûlées et d\'épices rares. Poulet ou poisson mijoté dans cette sauce emblématique du peuple Bassa.',
+  ing:['1 poulet entier coupé','2 poignées d\'écorces de mbongo brûlées','1 oignon','Gingembre frais','Ail 5 gousses','Piment frais','Country onion (djansang)','1 cube Maggi','Sel'],
+  steps:['Faire brûler les écorces de mbongo jusqu\'au charbon. Moudre finement.','Assaisonner le poulet avec ail, gingembre, sel.','Faire dorer le poulet dans peu d\'huile. Réserver.','Dissoudre la poudre de mbongo dans 500ml d\'eau.','Faire revenir oignon haché, ajouter la sauce noire. Porter à ébullition.','Ajouter le poulet, cuire à couvert 40 min à feu doux.','Vérifier la couleur noire profonde caractéristique. Servir avec riz blanc.'],
+  tip:'<strong>Antioxydants :</strong> Les épices du mbongo (écorces, djansang) contiennent des polyphénols aux propriétés anti-inflammatoires.'},
+
+  {id:8,emoji:'🦐',name:'Crevettes sautées pimentées',cat:'plat',region:'Littoral',kcal:190,prot:30,carb:5,fat:6,time:20,serves:2,diff:'Facile',diet:'protéines',
+  desc:'Crevettes fraîches sautées à vive allure avec ail, piment, citron et herbes. Plat express ultra-protéiné.',
+  ing:['500g crevettes fraîches décortiquées','6 gousses d\'ail','2 piments frais','Jus de 2 citrons','2 c.à.s huile d\'olive','Persil frais','Sel, poivre'],
+  steps:['Décortiquer et dévéiner les crevettes. Sécher sur papier absorbant.','Écraser l\'ail et émincer finement les piments.','Chauffer l\'huile à feu très vif dans une poêle ou wok.','Saisir les crevettes 2 min sans remuer jusqu\'à coloration rose.','Retourner, ajouter ail + piment, cuire 1 min.','Déglacer au jus de citron, assaisonner.','Garnir de persil frais et servir immédiatement.'],
+  tip:'<strong>Sportifs :</strong> 30g de protéines pour seulement 190 kcal et 20 min de préparation. Idéal post-entraînement.'},
+
+  {id:9,emoji:'🍖',name:'Brochettes de bœuf braisées',cat:'plat',region:'Nord',kcal:320,prot:34,carb:3,fat:18,time:30,serves:2,diff:'Facile',diet:'protéines',
+  desc:'Brochettes de bœuf marinées dans les épices peules et grillées sur braise vive. Street food emblématique du nord Cameroun.',
+  ing:['600g bœuf tendre','1 oignon râpé','4 gousses d\'ail','Gingembre 2cm râpé','1 c.à.s huile d\'arachide','Poivre noir, sel','Piment djansang','Persil haché'],
+  steps:['Couper la viande en cubes de 3cm.','Préparer la marinade : ail+oignon râpés, gingembre, épices, huile.','Enrober la viande de marinade. Laisser mariner 1h minimum (idéal : 3h).','Enfiler les cubes sur les brochettes.','Griller sur braise ou gril 8-10 min en retournant régulièrement.','Servir avec oignons frais, tomate et piment.'],
+  tip:'<strong>Protéines maigres :</strong> Choisir une pièce de bœuf maigre (rumsteck, filet) pour réduire les lipides à 10g.'},
+
+  {id:10,emoji:'🐓',name:'Poulet yassa-Cameroun',cat:'plat',region:'Littoral',kcal:380,prot:40,carb:18,fat:16,time:60,serves:4,diff:'Facile',diet:'',
+  desc:'Adaptation camerounaise du yassa sénégalais, avec poulet mariné au citron et oignons caramélisés au djansang.',
+  ing:['1 poulet en morceaux','5 oignons émincés','Jus de 4 citrons','4 gousses d\'ail','1 c.à.s moutarde','2 c.à.s huile de palme','Djansang pilé','Sel, poivre','1 cube Maggi'],
+  steps:['Mariner le poulet dans citron, ail, sel, poivre et moutarde pendant 2h.','Égoutter le poulet, réserver la marinade.','Faire dorer le poulet de tous côtés. Réserver.','Dans la même cocotte, caraméliser les oignons 20 min à feu doux.','Verser la marinade, ajouter djansang et cube. Cuire 10 min.','Remettre le poulet, couvrir et mijoter 20 min.','Servir sur riz blanc parfumé au citron.'],
+  tip:'<strong>Citron :</strong> La marinade au citron attendrit la viande naturellement et réduit la nécessité de graisses.'},
+
+  // ACCOMPAGNEMENTS
+  {id:11,emoji:'🌽',name:'Miondo (bâtons de manioc)',cat:'accompagnement',region:'Littoral/Centre',kcal:180,prot:2,carb:42,fat:0,time:120,serves:6,diff:'Difficile',diet:'végétarien',
+  desc:'Bâtons de manioc fermenté emballés dans feuilles de bananier. Accompagnement incontournable du Littoral.',
+  ing:['1kg manioc frais','Feuilles de bananier','Sel (facultatif)','Ficelle pour attacher'],
+  steps:['Éplucher et râper le manioc. Mettre dans un sac et presser pour extraire l\'eau.','Laisser fermenter 2-3 jours dans un endroit tiède.','Pétrir la pâte fermentée, former des cylindres de 15cm.','Enrober chaque bâton de feuille de bananier, attacher aux extrémités.','Faire bouillir dans grande marmite 45-60 min.','Vérifier la cuisson : le miondo doit être ferme mais moelleux.'],
+  tip:'<strong>Index glycémique :</strong> Le manioc fermenté a un IG plus bas que le manioc frais grâce à la fermentation. Bonne source d\'énergie durable.'},
+
+  {id:12,emoji:'🍌',name:'Plantains bouillis',cat:'accompagnement',region:'Toutes régions',kcal:150,prot:2,carb:38,fat:0,time:25,serves:3,diff:'Facile',diet:'végétarien',
+  desc:'Plantains mûrs ou verts cuits à l\'eau. Version saine et simple, idéale pour accompagner les plats en sauce.',
+  ing:['3 plantains mûrs','Eau salée','Sel'],
+  steps:['Éplucher les plantains et couper en tronçons de 5cm.','Porter une grande casserole d\'eau salée à ébullition.','Plonger les plantains, couvrir et cuire 20-25 min.','Vérifier la cuisson avec une fourchette : doit traverser facilement.','Égoutter et servir chaud.'],
+  tip:'<strong>vs frits :</strong> Les plantains bouillis contiennent 150 kcal vs 210 kcal pour les frits. Même goût, moins de gras.'},
+
+  {id:13,emoji:'🍚',name:'Couscous de maïs (semoule)',cat:'accompagnement',region:'Ouest/Nord-Ouest',kcal:200,prot:5,carb:42,fat:1,time:30,serves:4,diff:'Facile',diet:'végétarien',
+  desc:'Semoule de maïs cuite à la vapeur, accompagnement de base de l\'Ouest Cameroun avec les sauces.',
+  ing:['500g farine de maïs jaune','500ml eau chaude','1 c.à.c sel','1 c.à.s huile ou beurre (optionnel)'],
+  steps:['Tamiser la farine de maïs pour enlever les grumeaux.','Porter l\'eau salée à ébullition dans une casserole.','Verser progressivement la farine en remuant constamment.','Réduire le feu, couvrir et cuire 15 min en remuant toutes les 5 min.','La semoule doit être compacte et se détacher des parois.','Mouler dans un bol et démouler dans l\'assiette. Servir chaud.'],
+  tip:'<strong>Fibres :</strong> Le maïs complet retient les fibres et vitamines. Préférer la farine de maïs complète jaune plutôt que blanche.'},
+
+  {id:14,emoji:'🥔',name:'Macabo / Taro cuit',cat:'accompagnement',region:'Sud/Centre',kcal:165,prot:3,carb:36,fat:0,time:35,serves:4,diff:'Facile',diet:'végétarien',
+  desc:'Tubercule local riche en potassium et antioxydants, cuit à l\'eau ou en robe. Alternative saine aux féculents transformés.',
+  ing:['1kg macabo ou taro','Eau salée','1 pincée de sel'],
+  steps:['Brosser soigneusement le macabo sous l\'eau froide.','Cuire entier en robe dans l\'eau salée bouillante 35-40 min.','Vérifier la cuisson avec un couteau : lame doit entrer facilement.','Éplucher après cuisson (la peau s\'enlève facilement).','Couper en tranches et servir chaud ou tiède.'],
+  tip:'<strong>Potassium :</strong> Le taro contient plus de potassium que la banane. Excellent pour sportifs et récupération musculaire.'},
+
+  {id:15,emoji:'🌿',name:'Riz parfumé au basilic africain',cat:'accompagnement',region:'Littoral',kcal:210,prot:4,carb:46,fat:0,time:20,serves:4,diff:'Facile',diet:'végétarien',
+  desc:'Riz cuit avec feuilles de basilic africain (nchuawiri), oignons et bouillon. Parfumé et légèrement aromatisé.',
+  ing:['400g riz à grains longs','Feuilles de basilic africain frais','1 oignon émincé','1 cube de bouillon','Sel, huile d\'olive 1 c.à.s','800ml eau'],
+  steps:['Rincer le riz plusieurs fois jusqu\'à eau claire.','Faire revenir l\'oignon dans peu d\'huile 3 min.','Ajouter le riz, nacrer 2 min.','Verser l\'eau chaude avec le cube de bouillon.','Couvrir et cuire 18 min à feu doux.','Ajouter les feuilles de basilic au dernier moment. Couvrir 2 min.','Égrainer à la fourchette et servir.'],
+  tip:'<strong>Aromatique :</strong> Le basilic africain contient des huiles essentielles aux propriétés digestives. Facilite la digestion des plats lourds.'},
+
+  // SOUPES & BOUILLONS
+  {id:16,emoji:'🍜',name:'Soupe mbanga (palme)',cat:'soupe',region:'Littoral',kcal:290,prot:24,carb:12,fat:16,time:60,serves:4,diff:'Moyen',diet:'',
+  desc:'Soupe riche à base d\'huile de palme rouge avec poisson fumé et feuilles de mbanga. Recette ancestrale du Littoral.',
+  ing:['500g poisson fumé','400ml huile de palme','200g feuilles de mbanga','1 oignon','2 piments','1 cube Maggi','Sel, ail en poudre','500ml eau'],
+  steps:['Nettoyer et émietter le poisson fumé, retirer les arêtes.','Chauffer l\'huile de palme, faire revenir l\'oignon 5 min.','Ajouter piments, cube, eau et porter à ébullition.','Incorporer le poisson, cuire 15 min à feu moyen.','Ajouter les feuilles de mbanga ciselées, cuire 20 min.','Rectifier le sel et servir chaud avec miondo.'],
+  tip:'<strong>Huile de palme :</strong> Utiliser de l\'huile de palme non raffinée rouge pour conserver les caroténoïdes (provitamine A).'},
+
+  {id:17,emoji:'🥣',name:'Bouillon de poule fermière',cat:'soupe',region:'Toutes régions',kcal:180,prot:22,carb:8,fat:6,time:90,serves:6,diff:'Facile',diet:'',
+  desc:'Bouillon longuement mijoté à partir de poule fermière entière avec légumes, ail et gingembre. Remède universel et fortifiant.',
+  ing:['1 poule fermière entière','3 carottes','2 oignons','Céleri 2 tiges','4 gousses d\'ail','Gingembre 3cm','Sel, poivre','Thym, laurier'],
+  steps:['Vider et nettoyer la poule. Brûler les restes de plumes.','Mettre dans grande marmite, couvrir largement d\'eau froide.','Porter à ébullition, écumer soigneusement.','Ajouter légumes, ail, gingembre et herbes aromatiques.','Mijoter à feu doux 1h30 jusqu\'à ce que la viande se détache.','Filtrer le bouillon, dégraisser si nécessaire.','Servir tel quel ou avec vermicelles.'],
+  tip:'<strong>Collagène :</strong> La longue cuisson libère le collagène des os qui renforce les articulations et la peau. Remède naturel reconnu.'},
+
+  {id:18,emoji:'🍲',name:'Kati-kati (soupe poulet-tomate)',cat:'soupe',region:'Ouest',kcal:240,prot:28,carb:12,fat:9,time:50,serves:4,diff:'Facile',diet:'',
+  desc:'Soupe légère de poulet avec tomates fraîches, oignons et épices douces. Version allégée des plats en sauce de l\'Ouest.',
+  ing:['500g poulet (cuisses)','4 tomates fraîches','1 gros oignon','3 gousses d\'ail','1 poivron','Persil frais','Sel, poivre, thym','1 cube Maggi'],
+  steps:['Couper le poulet en petits morceaux, assaisonner.','Faire dorer le poulet sans matière grasse dans une cocotte anti-adhésive.','Ajouter oignons et ail hachés, cuire 5 min.','Incorporer tomates en dés et poivrons.','Verser 500ml d\'eau, ajouter cube et thym.','Mijoter 30 min à couvert jusqu\'à réduction.','Garnir de persil frais et servir.'],
+  tip:'<strong>Low-fat :</strong> En utilisant du poulet sans peau et sans ajout de corps gras, cette soupe tombe à seulement 9g de lipides.'},
+
+  {id:19,emoji:'🌱',name:'Soupe de feuilles de patate douce',cat:'soupe',region:'Sud',kcal:120,prot:6,carb:18,fat:3,time:25,serves:3,diff:'Facile',diet:'végétarien',
+  desc:'Soupe légère et nutritive à base de feuilles de patate douce, souvent ignorées mais ultra-riches en vitamines A et C.',
+  ing:['400g feuilles de patate douce fraîches','1 oignon','2 tomates','1 piment doux','1 c.à.s huile de palme','Sel, cube Maggi','300ml eau'],
+  steps:['Bien laver et ciseler les feuilles de patate douce.','Faire revenir l\'oignon haché dans l\'huile de palme 3 min.','Ajouter les tomates en dés, le piment. Cuire 5 min.','Verser l\'eau, ajouter cube et sel. Porter à ébullition.','Incorporer les feuilles ciselées. Cuire 10 min.','Ne pas trop cuire pour préserver la vitamine C.','Servir comme entrée légère ou avec fufu.'],
+  tip:'<strong>Superaliment ignoré :</strong> Les feuilles de patate douce contiennent 3x plus de vitamine A que les carottes. Très peu consommées mais excellentes.'},
+
+  // SNACKS & STREET FOOD
+  {id:20,emoji:'🍌',name:'Alloco (plantains frits)',cat:'snack',region:'Toutes régions',kcal:210,prot:2,carb:42,fat:8,time:15,serves:2,diff:'Facile',diet:'végétarien',
+  desc:'Plantains très mûrs frits à la perfection, légèrement caramélisés. Source d\'énergie rapide et plaisir simple.',
+  ing:['3 plantains très mûrs (peau noire)','Huile de tournesol pour friture','1 pincée de sel','Piment en poudre (optionnel)'],
+  steps:['Éplucher les plantains, couper en rondelles obliques de 1cm.','Chauffer l\'huile à 180°C.','Frire les rondelles 3-4 min de chaque côté jusqu\'à dorure caramel.','Égoutter sur papier absorbant.','Saupoudrer de sel et piment.','Servir immédiatement.'],
+  tip:'<strong>Énergie :</strong> Les plantains mûrs ont un index glycémique moyen. Bon snack pré-entraînement 1h avant l\'effort.'},
+
+  {id:21,emoji:'🧆',name:'Accra (beignets de haricots)',cat:'snack',region:'Littoral',kcal:240,prot:8,carb:32,fat:10,time:40,serves:15,diff:'Moyen',diet:'végétarien',
+  desc:'Beignets légers à base de pâte de haricots blancs épicée, frits en petites bouchées. Street food incontournable.',
+  ing:['500g haricots blancs secs','2 oignons râpés','1 piment','Sel, cube Maggi','Huile de friture'],
+  steps:['Tremper les haricots 12h. Frotter pour enlever les peaux.','Mixer les haricots pelés en pâte très lisse avec peu d\'eau.','Incorporer oignon râpé, piment, sel et cube.','Battre la pâte énergiquement pour l\'aérer (10 min).','Chauffer l\'huile à 170°C.','Déposer des cuillères de pâte dans l\'huile. Frire 4 min par face.','Égoutter et servir chaud avec piment sauce.'],
+  tip:'<strong>Protéines végétales :</strong> Les haricots blancs apportent 8g de protéines par portion. Bon snack équilibré.'},
+
+  {id:22,emoji:'🌽',name:'Maïs grillé au piment',cat:'snack',region:'Toutes régions',kcal:130,prot:5,carb:26,fat:2,time:20,serves:2,diff:'Facile',diet:'végétarien',
+  desc:'Épis de maïs frais grillés directement sur braise, frottés au beurre de karité ou beurre et pimentés. Street food emblématique.',
+  ing:['2 épis de maïs frais','Beurre ou beurre de karité','Sel marin','Piment en poudre','Citron (optionnel)'],
+  steps:['Éplucher les épis en laissant quelques feuilles protectrices.','Faire tremper les épis dans eau froide salée 15 min (pour plus de tendreté).','Placer sur braise ou gril. Cuire 15-20 min en retournant régulièrement.','Frotter les épis chauds avec beurre, sel et piment.','Presser un peu de citron selon goût.'],
+  tip:'<strong>Fibres :</strong> Le maïs grillé conserve ses fibres et vitamines du groupe B. Index glycémique modéré.'},
+
+  {id:23,emoji:'🥜',name:'Arachides grillées épicées',cat:'snack',region:'Toutes régions',kcal:320,prot:14,carb:12,fat:26,time:25,serves:4,diff:'Facile',diet:'végétarien',
+  desc:'Arachides brutes grillées à la poêle ou four avec sel de mer et épices. Snack ultra-nutritif riche en bonnes graisses.',
+  ing:['400g arachides crues avec peau','1 c.à.c sel de mer','1/2 c.à.c piment de Cayenne','1/2 c.à.c ail en poudre'],
+  steps:['Préchauffer four à 180°C (ou poêle sèche à feu moyen).','Étaler les arachides en couche unique sur plaque.','Rôtir 15-20 min en remuant toutes les 5 min jusqu\'à légère dorure.','Mélanger avec les épices à chaud.','Laisser refroidir complètement avant consommation.'],
+  tip:'<strong>Bonnes graisses :</strong> 26g de lipides dont 80% insaturés (oméga-6). Satiétogène mais à consommer en petites portions (30g).'},
+
+  {id:24,emoji:'🍢',name:'Soya (brochettes porc/bœuf)',cat:'snack',region:'Centre/Littoral',kcal:280,prot:26,carb:4,fat:18,time:25,serves:2,diff:'Facile',diet:'',
+  desc:'Brochettes de porc ou bœuf épicées grillées sur braise, servies avec oignons crus et piment frais. Street food nocturne.',
+  ing:['400g porc ou bœuf tendre','2 oignons','2 piments frais','Ail 4 gousses','Gingembre 2cm','1 c.à.s huile d\'arachide','Sel, poivre de Cayenne','Cube Maggi'],
+  steps:['Couper la viande en cubes de 2cm.','Mélanger ail+gingembre râpés, piment, épices, huile pour la marinade.','Enrober la viande, mariner 30 min min.','Enfiler sur brochettes, alterner avec rondelles d\'oignon.','Griller 8-12 min sur braise vive en retournant souvent.','Servir avec oignons frais et piment coupé.'],
+  tip:'<strong>Street food :</strong> Demander aux vendeurs de réduire l\'huile de la marinade pour une version plus légère.'},
+
+  // BOISSONS
+  {id:25,emoji:'🥤',name:'Jus de bissap (hibiscus)',cat:'boisson',region:'Nord',kcal:45,prot:0,carb:11,fat:0,time:15,serves:4,diff:'Facile',diet:'végétarien',
+  desc:'Infusion de fleurs d\'hibiscus séchées, sucrée et épicée de gingembre. Riche en vitamine C et antioxydants puissants.',
+  ing:['100g fleurs d\'hibiscus séchées','1L eau','Sucre ou miel selon goût','Gingembre frais 3cm','Menthe fraîche'],
+  steps:['Porter l\'eau à ébullition.','Ajouter les fleurs d\'hibiscus et le gingembre pelé en tranches.','Laisser infuser hors du feu 10 min.','Filtrer, sucrer selon goût.','Réfrigérer 1h avant de servir sur glace.','Garnir de feuilles de menthe.'],
+  tip:'<strong>Vitamine C :</strong> Le bissap contient plus de vitamine C que l\'orange. Propriétés diurétiques et anti-hypertensives documentées.'},
+
+  {id:26,emoji:'🍶',name:'Bouillie de sorgho fermenté',cat:'boisson',region:'Nord/Adamaoua',kcal:120,prot:4,carb:24,fat:1,time:20,serves:3,diff:'Facile',diet:'végétarien',
+  desc:'Boisson-repas à base de sorgho fermenté et cuit. Riche en probiotiques, fer et vitamines B. Petit-déjeuner traditionnel du nord.',
+  ing:['300g farine de sorgho (rouge ou blanc)','1L eau','Sucre selon goût','1 pincée de sel'],
+  steps:['Délayer la farine dans 300ml d\'eau froide sans grumeaux.','Porter 700ml d\'eau à ébullition dans une casserole.','Verser le mélange farine-eau en filet dans l\'eau bouillante en remuant.','Cuire 15 min à feu moyen en remuant constamment.','Sucrer selon goût, rectifier la consistance avec de l\'eau.','Servir chaud le matin ou tiède.'],
+  tip:'<strong>Probiotiques :</strong> Si fait avec sorgho fermenté, apporte des bactéries probiotiques bénéfiques pour la flore intestinale.'},
+
+  {id:27,emoji:'🧃',name:'Jus de gingembre-citron',cat:'boisson',region:'Toutes régions',kcal:35,prot:0,carb:9,fat:0,time:10,serves:4,diff:'Facile',diet:'végétarien',
+  desc:'Boisson brûlante et tonique à base de gingembre frais pressé et citron vert. Anti-infectieux naturel et stimulant digestif.',
+  ing:['200g gingembre frais','4 citrons verts','1L eau','Miel 2 c.à.s','Menthe (optionnel)'],
+  steps:['Éplucher et râper le gingembre finement.','Presser les citrons.','Mettre le gingembre râpé dans une passoire fine au-dessus d\'un bol.','Verser l\'eau bouillante sur le gingembre pour l\'infuser 5 min.','Presser le gingembre pour extraire tout le jus.','Ajouter jus de citron et miel. Mélanger.','Servir chaud ou froid sur glace.'],
+  tip:'<strong>Immunité :</strong> Le gingérol (actif du gingembre) a des propriétés anti-inflammatoires et immunostimulantes prouvées scientifiquement.'},
+
+  // DESSERTS
+  {id:28,emoji:'🍯',name:'Bâtons de manioc sucrés',cat:'dessert',region:'Centre/Sud',kcal:220,prot:2,carb:50,fat:1,time:90,serves:8,diff:'Moyen',diet:'végétarien',
+  desc:'Version sucrée du miondo avec sucre de palme et noix de coco râpée. Dessert festif de la région Centre-Sud.',
+  ing:['1kg manioc fermenté','150g sucre de palme (ou roux)','100g noix de coco râpée','Feuilles de bananier','Vanille 1 gousse'],
+  steps:['Pétrir le manioc fermenté avec sucre, noix de coco et vanille.','Goûter et ajuster la sucrosité.','Former des cylindres de 10cm.','Enrober dans feuilles de bananier humidifiées.','Cuire à la vapeur 40-50 min.','Laisser refroidir avant de servir.'],
+  tip:'<strong>Sucre de palme :</strong> Le sucre de palme a un IG plus bas que le sucre blanc (35 vs 65). Préférable pour les desserts camerounais.'},
+
+  {id:29,emoji:'🥥',name:'Crème de coco au gingembre',cat:'dessert',region:'Littoral',kcal:195,prot:2,carb:18,fat:14,time:15,serves:4,diff:'Facile',diet:'végétarien',
+  desc:'Dessert léger à base de lait de coco naturel, sucré au miel et aromatisé au gingembre frais. Frais et digeste.',
+  ing:['400ml lait de coco naturel','3 c.à.s miel','Gingembre frais 2cm râpé','1 citron vert (zeste + jus)','Noix de coco râpée pour garnir'],
+  steps:['Extraire le lait de coco frais (ou utiliser une boîte de qualité).','Râper finement le gingembre, presser pour en extraire le jus.','Mélanger lait de coco, miel, jus de gingembre et zeste de citron.','Réfrigérer 2h minimum.','Servir dans de petits verres, garnir de noix de coco râpée.'],
+  tip:'<strong>TCM :</strong> Le lait de coco contient des triglycérides à chaîne moyenne qui se métabolisent rapidement en énergie.'},
+
+  {id:30,emoji:'🌰',name:'Café au lait + pain beurre',cat:'dessert',region:'Toutes régions',kcal:310,prot:8,carb:38,fat:14,time:5,serves:1,diff:'Facile',diet:'végétarien',
+  desc:'Petit-déjeuner classique camerounais : café robusta fort, lait chaud et pain baguette beurré. Simple mais complet.',
+  ing:['1 tasse café robusta fort','150ml lait entier chaud','1 morceau de sucre','2 tranches de baguette','15g beurre'],
+  steps:['Préparer le café très fort (café camerounais robusta de préférence).','Chauffer le lait sans faire bouillir.','Mélanger café + lait, sucrer selon goût.','Tartiner généreusement le pain de beurre.','Servir immédiatement.'],
+  tip:'<strong>Robusta :</strong> Le café camerounais (Mount Cameroon, Bafia) contient 2x plus de caféine que l\'arabica, excellent antioxydant.'},
+
+  // RECETTES ADDITIONNELLES (pour atteindre 50+)
+  {id:31,emoji:'🥗',name:'Salade de fruits tropicaux',cat:'dessert',region:'Toutes régions',kcal:110,prot:2,carb:26,fat:0,time:10,serves:3,diff:'Facile',diet:'végétarien',
+  desc:'Salade rafraîchissante de mangue, ananas, papaye et citron. Riche en vitamines C, A et enzymes digestives.',
+  ing:['1 mangue mûre','1/4 ananas','1/2 papaye','2 oranges','Jus de citron vert','Menthe fraîche'],
+  steps:['Éplucher et couper tous les fruits en cubes égaux.','Mélanger délicatement dans un grand bol.','Arroser de jus de citron vert.','Ajouter quelques feuilles de menthe.','Servir immédiatement ou réfrigérer 30 min.'],
+  tip:'<strong>Enzymes :</strong> Papaye et ananas contiennent papaïne et bromélaïne, des enzymes qui facilitent la digestion des protéines.'},
+
+  {id:32,emoji:'🫛',name:'Gombo sauce tomate',cat:'plat',region:'Nord',kcal:150,prot:4,carb:22,fat:5,time:30,serves:4,diff:'Facile',diet:'végétarien',
+  desc:'Gombo frais coupé et mijoté dans sauce tomate épicée aux oignons. Riche en fibres solubles bénéfiques pour le cholestérol.',
+  ing:['500g gombo frais','3 tomates','1 oignon','2 piments','1 c.à.s huile de palme','Sel, cube Maggi','Ail 2 gousses'],
+  steps:['Laver et couper le gombo en rondelles de 1cm.','Faire revenir l\'oignon et l\'ail dans l\'huile de palme.','Ajouter tomates en dés et piments. Cuire 8 min.','Incorporer le gombo, sel et cube.','Cuire 15 min en remuant souvent pour épaissir la sauce.','Servir avec riz ou fufu.'],
+  tip:'<strong>Cholestérol :</strong> Les fibres solubles du gombo (mucilage) aident à réduire le LDL (mauvais cholestérol).'},
+
+  {id:33,emoji:'🐠',name:'Sardines à la camerounaise',cat:'plat',region:'Littoral',kcal:230,prot:28,carb:6,fat:11,time:20,serves:2,diff:'Facile',diet:'protéines',
+  desc:'Sardines fraîches ou en conserve cuisinées en sauce tomate épicée avec oignons et laurier. Rapide et nutritif.',
+  ing:['400g sardines fraîches ou 2 boîtes','2 tomates','1 oignon','2 gousses d\'ail','Laurier, thym','Piment','Huile d\'olive 1 c.à.s','Sel, poivre'],
+  steps:['Vider et nettoyer les sardines fraîches (ou ouvrir les boîtes).','Faire revenir oignon et ail dans l\'huile.','Ajouter tomates en dés, laurier, thym et piment.','Cuire la sauce 10 min.','Ajouter les sardines, cuire 8-10 min à feu doux.','Servir avec du pain ou du riz.'],
+  tip:'<strong>Oméga-3 :</strong> Les sardines sont parmi les poissons les plus riches en oméga-3. 2 portions/semaine = apport recommandé.'},
+
+  {id:34,emoji:'🥩',name:'Viande de porc au bâton de citronnelle',cat:'plat',region:'Littoral',kcal:410,prot:36,carb:4,fat:28,time:55,serves:3,diff:'Moyen',diet:'',
+  desc:'Porc braisé avec citronnelle fraîche, gingembre et feuilles de laurier. Parfumé et juteux.',
+  ing:['700g côtes de porc','3 tiges citronnelle','Gingembre 4cm','4 gousses d\'ail','2 c.à.s sauce soja','Jus de citron','Sel, poivre','1 c.à.s huile'],
+  steps:['Écraser la citronnelle, hacher grossièrement.','Mixer citronnelle, gingembre, ail, sauce soja et citron.','Badigeonner le porc de marinade. Mariner 1h.','Saisir le porc à feu vif 5 min par face.','Réduire le feu, couvrir et cuire 35 min.','Laisser reposer 5 min avant de servir.','Accompagner de riz gluant ou plantains.'],
+  tip:'<strong>Citronnelle :</strong> Propriétés anti-bactériennes et digestives. Aide à réduire les ballonnements post-repas.'},
+
+  {id:35,emoji:'🍳',name:'Omelette aux légumes tropicaux',cat:'plat',region:'Toutes régions',kcal:280,prot:18,carb:10,fat:20,time:15,serves:1,diff:'Facile',diet:'végétarien',
+  desc:'Omelette garnie de tomates, oignons, poivrons et herbes fraîches. Petit-déjeuner ou dîner léger et nutritif.',
+  ing:['3 œufs frais','1 tomate','1/2 oignon','1/2 poivron','Persil et ciboulette','Sel, poivre','1 c.à.s huile de tournesol'],
+  steps:['Battre les œufs avec sel et poivre.','Couper les légumes en petits dés.','Faire revenir les légumes 3 min dans l\'huile.','Verser les œufs battus sur les légumes.','Cuire à feu moyen 2-3 min sans mélanger.','Rabattre l\'omelette en deux.','Garnir d\'herbes fraîches et servir.'],
+  tip:'<strong>Complète :</strong> Les œufs fournissent toutes les vitamines sauf C. Ajouter des herbes fraîches pour un apport en vitamines C et K.'},
+
+  {id:36,emoji:'🌾',name:'Bouillie de mil au lait',cat:'boisson',region:'Nord',kcal:200,prot:6,carb:38,fat:3,time:20,serves:3,diff:'Facile',diet:'végétarien',
+  desc:'Porridge de mil à base de farine de millet, fortifié au lait. Petit-déjeuner nourrissant et reminéralisant du nord Cameroun.',
+  ing:['250g farine de millet','750ml eau','250ml lait de vache ou lait d\'arachide','Sucre ou miel selon goût','Pincée de sel','Vanille optionnel'],
+  steps:['Délayer la farine dans 250ml d\'eau froide.','Porter 500ml d\'eau salée à ébullition.','Verser le mélange farine en filet en remuant constamment.','Cuire 15 min à feu moyen, remuer régulièrement.','Ajouter le lait chaud, sucrer selon goût.','Servir bien chaud dans des bols.'],
+  tip:'<strong>Minéraux :</strong> Le millet est riche en magnésium, phosphore et zinc. Excellent pour os et système nerveux.'},
+
+  {id:37,emoji:'🫕',name:'Sauce jaune (safou-tomate)',cat:'plat',region:'Sud',kcal:340,prot:6,carb:18,fat:28,time:40,serves:4,diff:'Moyen',diet:'végétarien',
+  desc:'Sauce à base de safou (prune africaine) ou d\'avocat sauvage et tomates. Onctueuse, riche en bonnes graisses.',
+  ing:['500g safou frais ou avocat','3 tomates','1 oignon','2 piments doux','1 c.à.s huile de palme','Sel, cube Maggi','Ail 2 gousses'],
+  steps:['Faire bouillir les safou 10 min jusqu\'à tendreté.','Éplucher et écraser grossièrement la pulpe.','Faire revenir oignon et ail dans l\'huile de palme.','Ajouter tomates mixées et piment. Cuire 10 min.','Incorporer la purée de safou. Mélanger et cuire 15 min.','Rectifier l\'assaisonnement et servir avec fufu.'],
+  tip:'<strong>Safou :</strong> Très riche en acide oléique (comme l\'huile d\'olive) et vitamine E. Anti-oxydant puissant.'},
+
+  {id:38,emoji:'🍋',name:'Tisane citronnelle-gingembre',cat:'boisson',region:'Toutes régions',kcal:15,prot:0,carb:4,fat:0,time:10,serves:2,diff:'Facile',diet:'végétarien',
+  desc:'Infusion digestive et anti-inflammatoire à la citronnelle fraîche et gingembre. Boisson thérapeutique quotidienne.',
+  ing:['3 tiges citronnelle fraîche','Gingembre 3cm','1 citron','Miel 1 c.à.s','500ml eau'],
+  steps:['Écraser les tiges de citronnelle avec le plat d\'un couteau.','Couper le gingembre en tranches fines.','Porter l\'eau à ébullition avec citronnelle et gingembre.','Infuser 8 min.','Filtrer, ajouter miel et jus de citron.','Servir chaud ou tiède.'],
+  tip:'<strong>Digestif :</strong> À boire après les repas lourds. La citronnelle soulage les spasmes intestinaux et le gingembre active la digestion.'},
+
+  {id:39,emoji:'🫀',name:'Bœuf aux épinards & palme',cat:'plat',region:'Centre',kcal:350,prot:32,carb:8,fat:20,time:50,serves:4,diff:'Facile',diet:'riche-fer',
+  desc:'Bœuf mijoté avec épinards frais dans sauce légère à l\'huile de palme. Excellent pour lutte contre l\'anémie.',
+  ing:['600g bœuf en cube','400g épinards frais','2 oignons','3 tomates','2 c.à.s huile de palme','Ail, gingembre','Sel, poivre, cube Maggi'],
+  steps:['Faire dorer le bœuf à feu vif. Réserver.','Faire revenir oignon et ail. Ajouter tomates. Cuire 8 min.','Remettre le bœuf, verser 200ml eau. Mijoter 25 min.','En fin de cuisson, incorporer les épinards.','Cuire 5 min à couvert jusqu\'à wilting des épinards.','Servir avec riz ou couscous de maïs.'],
+  tip:'<strong>Anti-anémie :</strong> Association bœuf (fer héminique) + épinards (fer non-héminique) + tomate (vitamine C) = absorption du fer maximale.'},
+
+  {id:40,emoji:'🍵',name:'Thé de feuilles de moringa',cat:'boisson',region:'Extrême-Nord',kcal:5,prot:0,carb:1,fat:0,time:5,serves:1,diff:'Facile',diet:'végétarien',
+  desc:'Infusion de feuilles fraîches de moringa oleifera. Surnommé "arbre de vie", le plus nutritif des arbres tropicaux.',
+  ing:['1 poignée feuilles de moringa fraîches','250ml eau chaude (non bouillante)','Miel optionnel','Citron optionnel'],
+  steps:['Rincer les feuilles de moringa à l\'eau froide.','Porter l\'eau à 80°C (ne pas bouillir pour préserver les nutriments).','Infuser les feuilles 5 min.','Filtrer, ajouter miel et citron selon goût.','Boire 1 tasse par jour de préférence le matin.'],
+  tip:'<strong>Superaliment :</strong> Le moringa contient 7x plus de vitamine C que l\'orange, 4x plus de calcium que le lait, 2x plus de protéines que le yaourt.'},
+
+  {id:41,emoji:'🫙',name:'Groundnut soup (soupe arachides)',cat:'soupe',region:'Adamaoua/Nord',kcal:420,prot:24,carb:18,fat:30,time:60,serves:4,diff:'Moyen',diet:'',
+  desc:'Soupe riche et crémeuse à base de pâte d\'arachides et viandes mixtes. Repas complet en un seul bol.',
+  ing:['300g pâte d\'arachides','400g poulet + bœuf mixte','2 oignons','3 tomates','Gingembre 2cm','Piment frais','Sel, cube Maggi','1L eau','Crayfish 1 c.à.s'],
+  steps:['Diluer la pâte d\'arachides dans 400ml eau chaude.','Faire dorer les viandes en morceaux.','Ajouter oignons, tomates mixées, gingembre. Cuire 10 min.','Verser la sauce arachide et 600ml eau. Porter à ébullition.','Mijoter 30 min. Ajouter crayfish.','Rectifier consistance et assaisonnement.','Servir avec fufu de maïs ou riz blanc.'],
+  tip:'<strong>Satiété :</strong> La pâte d\'arachides est très rassasiante grâce à ses graisses et protéines. Une petite portion suffit.'},
+
+  {id:42,emoji:'🌿',name:'Légumes sautés au piment vert',cat:'accompagnement',region:'Toutes régions',kcal:90,prot:4,carb:14,fat:3,time:15,serves:3,diff:'Facile',diet:'végétarien',
+  desc:'Mélange de légumes africains sautés rapidement : amarante, feuilles de morelle, gombo et aubergine africaine.',
+  ing:['200g feuilles d\'amarante','150g gombo','100g aubergine africaine','1 oignon','2 piments verts doux','Ail 2 gousses','Sel, cube Maggi','1 c.à.s huile de palme'],
+  steps:['Laver et préparer tous les légumes. Ciseler les feuilles.','Chauffer l\'huile à feu vif. Faire revenir oignon et ail 2 min.','Ajouter l\'aubergine et le gombo. Cuire 5 min.','Incorporer les feuilles d\'amarante et les piments.','Saler, ajouter le cube. Cuire 5 min en remuant.','Ne pas trop cuire pour garder les nutriments.'],
+  tip:'<strong>Micronutriments :</strong> L\'amarante africaine contient plus de fer que les épinards européens. Idéal pour femmes et enfants.'},
+
+  {id:43,emoji:'🐄',name:'Tripes à la camerounaise',cat:'plat',region:'Ouest/Centre',kcal:270,prot:30,carb:5,fat:14,time:120,serves:4,diff:'Difficile',diet:'',
+  desc:'Abats de bœuf longuement cuits dans bouillon aromatique aux épices traditionnelles. Économique et riche en collagène.',
+  ing:['1kg tripes de bœuf nettoyées','2 oignons','4 gousses d\'ail','Gingembre 4cm','Djansang 1 c.à.s','Piment frais','Sel, cube Maggi','Persil, laurier'],
+  steps:['Nettoyer soigneusement les tripes au vinaigre et citron. Rincer abondamment.','Couper en morceaux de 5cm.','Porter à ébullition, jeter la première eau.','Recommencer avec nouvelle eau + oignons, ail, gingembre, laurier.','Cuire 1h30 à 2h jusqu\'à tendreté.','Assaisonner avec djansang pilé et piment. Cuire 15 min.','Servir comme ragoût avec plantains ou fufu.'],
+  tip:'<strong>Collagène :</strong> Les tripes sont la meilleure source alimentaire de collagène naturel. Excellent pour peau, cheveux et articulations.'},
+
+  {id:44,emoji:'🥬',name:'Kpem (feuilles de manioc pilées)',cat:'accompagnement',region:'Sud/Est',kcal:140,prot:5,carb:20,fat:5,time:50,serves:4,diff:'Moyen',diet:'végétarien',
+  desc:'Feuilles de manioc tendres pilées et cuites dans huile de palme. Riche en protéines végétales et vitamines.',
+  ing:['500g feuilles de manioc tendres','100ml huile de palme','1 oignon','2 gousses d\'ail','Sel, cube Maggi','Piment (optionnel)'],
+  steps:['Laver soigneusement les feuilles de manioc.','Faire bouillir les feuilles 20 min. Égoutter.','Piler les feuilles au mortier jusqu\'à consistance grossière.','Faire revenir oignon et ail dans l\'huile de palme.','Incorporer les feuilles pilées. Mélanger et cuire 15 min.','Rectifier l\'assaisonnement. Servir comme légume.'],
+  tip:'<strong>Important :</strong> Ne jamais consommer les feuilles de manioc crues (glycosides cyanogènes). La cuisson est obligatoire.'},
+
+  {id:45,emoji:'🍤',name:'Crevettes séchées en poudre',cat:'snack',region:'Littoral',kcal:150,prot:32,carb:0,fat:2,time:5,serves:4,diff:'Facile',diet:'',
+  desc:'Crevettes séchées moulues en condiment (crayfish). Exhausteur de goût ultra-protéiné utilisé dans presque toutes les sauces.',
+  ing:['200g crevettes séchées entières'],
+  steps:['Vérifier que les crevettes sont bien sèches (sans moisissures).','Passer au moulin à épices ou mixer par impulsions courtes.','Ne pas trop mixer : laisser une texture grossière.','Conserver dans bocal hermétique à l\'abri de l\'humidité.','Utiliser 1-2 c.à.s dans les sauces, soupes et plats.'],
+  tip:'<strong>Protéines :</strong> Le crayfish contient 32g de protéines pour 100g. Condiment sain vs les bouillons industriels trop salés.'},
+
+  {id:46,emoji:'🫚',name:'Huile de palme rouge maison',cat:'accompagnement',region:'Toutes régions',kcal:120,prot:0,carb:0,fat:13,time:30,serves:20,diff:'Moyen',diet:'végétarien',
+  desc:'Extraction artisanale de l\'huile de palme non raffinée riche en caroténoïdes et vitamine E. La base de la cuisine camerounaise.',
+  ing:['2kg régime de noix de palme mûres','Eau chaude'],
+  steps:['Faire bouillir les noix de palme 30 min pour les ramollir.','Écraser les noix au mortier pour séparer la pulpe.','Diluer dans eau chaude et pétrir pour extraire l\'huile.','Filtrer pour enlever les fibres.','Faire chauffer doucement pour évaporer l\'eau.','L\'huile rouge remonte à la surface. Recueillir soigneusement.'],
+  tip:'<strong>Non raffinée :</strong> L\'huile de palme rouge non raffinée contient bêta-carotène et vitamine E. Éviter l\'huile de palme raffinée (blanche).'},
+
+  {id:47,emoji:'🧅',name:'Sauce nkui (condiment veuf)',cat:'soupe',region:'Ouest',kcal:180,prot:8,carb:12,fat:10,time:45,serves:6,diff:'Difficile',diet:'',
+  desc:'Sauce gélatineuse et filante à base d\'écorce de nkui. Utilisée comme condiment ou soupe. Facilite l\'accouchement selon la tradition.',
+  ing:['200g écorce de nkui séchée','1 oignon','Crayfish 2 c.à.s','Huile de palme 2 c.à.s','Piment frais','Sel, cube Maggi','500ml eau'],
+  steps:['Laver et tremper l\'écorce de nkui 1h dans eau froide.','Porter à ébullition et cuire 20 min.','Moudre ou écraser pour libérer la substance gélatineuse.','Filtrer et récupérer le liquide visqueux.','Dans une casserole, faire revenir oignon dans l\'huile de palme.','Ajouter le liquide de nkui, crayfish, cube. Cuire 15 min.','Servir comme sauce avec fufu ou plantains.'],
+  tip:'<strong>Ethnobotanique :</strong> Le nkui est utilisé en médecine traditionnelle pour faciliter l\'accouchement. Études scientifiques en cours sur ses propriétés.'},
+
+  {id:48,emoji:'🫛',name:'Haricots verts sautés au crayfish',cat:'accompagnement',region:'Ouest',kcal:95,prot:6,carb:14,fat:3,time:20,serves:3,diff:'Facile',diet:'',
+  desc:'Haricots verts frais sautés rapidement avec crayfish, ail et piment. Légume d\'accompagnement craquant et nutritif.',
+  ing:['400g haricots verts frais','2 gousses d\'ail','1 piment doux','1 c.à.s crayfish','1 c.à.s huile de palme','Sel'],
+  steps:['Laver, équeuter et couper les haricots en 2.','Blanchir 5 min dans eau bouillante salée. Égoutter.','Chauffer l\'huile de palme à feu vif.','Saisir l\'ail et le piment 1 min.','Ajouter les haricots, crayfish. Sauter 5 min à feu vif.','Rectifier sel. Servir immédiatement croquant.'],
+  tip:'<strong>Vitamine C :</strong> Cuisson rapide à feu vif = préservation de la vitamine C et de la chlorophylle. Ne pas trop cuire.'},
+
+  {id:49,emoji:'🫓',name:'Chin-chin (biscuits frits)',cat:'dessert',region:'Toutes régions',kcal:290,prot:5,carb:38,fat:14,time:45,serves:10,diff:'Moyen',diet:'végétarien',
+  desc:'Petits biscuits frits croustillants à la noix de muscade et sucre. Collation festive et snack de fête très populaire.',
+  ing:['500g farine de blé','150g sucre','3 œufs','100ml lait','50g beurre fondu','Noix de muscade 1/4 c.à.c','Huile de friture'],
+  steps:['Mélanger farine, sucre, muscade dans un bol.','Ajouter œufs, lait et beurre fondu. Pétrir en pâte ferme.','Laisser reposer 15 min sous linge humide.','Étaler finement, couper en petites lanières ou losanges.','Frire par petites quantités à 175°C jusqu\'à dorure.','Égoutter et laisser refroidir complètement.'],
+  tip:'<strong>Fête :</strong> À consommer occasionnellement (fêtes, cadeaux). Version moins calorique : cuire au four à 180°C 15 min.'},
+
+  {id:50,emoji:'🥭',name:'Mango fool (mousse mangue)',cat:'dessert',region:'Littoral/Centre',kcal:160,prot:3,carb:28,fat:5,time:15,serves:4,diff:'Facile',diet:'végétarien',
+  desc:'Dessert frais à base de purée de mangue mûre et yaourt nature. Léger, vitaminé et sans cuisson.',
+  ing:['3 mangues mûres','200ml yaourt nature','2 c.à.s miel','Jus de citron vert','Menthe fraîche pour garnir'],
+  steps:['Éplucher les mangues, retirer le noyau, mixer en purée lisse.','Mélanger yaourt et miel jusqu\'à consistance homogène.','Incorporer délicatement la purée de mangue au yaourt.','Ajouter jus de citron, mélanger.','Réfrigérer 1h.','Servir dans des verrines, garnir de menthe.'],
+  tip:'<strong>Vitamines :</strong> Mangue = vitamine C + bêta-carotène + folates. Yaourt = calcium + probiotiques. Dessert nutritionnellement dense.'},
+
+  {id:51,emoji:'🌊',name:'Poisson salé séché aux légumes',cat:'plat',region:'Adamaoua',kcal:260,prot:28,carb:14,fat:10,time:50,serves:3,diff:'Moyen',diet:'',
+  desc:'Poisson séché réhydraté et mijoté avec légumes du marché. Cuisine économique et protéinée du plateau de l\'Adamaoua.',
+  ing:['300g poisson séché salé','2 carottes','1 oignon','3 tomates','Piment','1 c.à.s huile de palme','Sel (peu), cube Maggi'],
+  steps:['Tremper le poisson séché dans eau froide 2h en changeant l\'eau. Dessaler.','Effiler le poisson en morceaux, retirer les arêtes.','Faire revenir oignon dans huile de palme.','Ajouter tomates et carottes en dés. Cuire 10 min.','Incorporer le poisson, piment et 200ml eau.','Mijoter 25 min à feu doux.','Servir avec riz, couscous ou plantains.'],
+  tip:'<strong>Dessalage :</strong> Toujours dessaler le poisson séché au minimum 2h. Changer l\'eau plusieurs fois pour réduire le sodium.'},
+
+  {id:52,emoji:'🧇',name:'Mandazi (beignets à la cardamome)',cat:'snack',region:'Nord',kcal:200,prot:4,carb:30,fat:8,time:35,serves:8,diff:'Moyen',diet:'végétarien',
+  desc:'Beignets moelleux légèrement sucrés à la cardamome, d\'influence swahilie. Petit-déjeuner ou goûter du nord Cameroun.',
+  ing:['300g farine de blé','1 c.à.s levure chimique','50g sucre','1 œuf','100ml lait de coco','1/2 c.à.c cardamome moulue','Huile de friture'],
+  steps:['Mélanger farine, levure, sucre et cardamome.','Battre l\'œuf avec le lait de coco.','Incorporer le liquide à la farine. Pétrir pâte souple.','Laisser reposer 20 min.','Étaler à 1cm d\'épaisseur, couper en triangles.','Frire à 170°C 3-4 min de chaque côté jusqu\'à gonflement et dorure.','Égoutter et déguster chaud.'],
+  tip:'<strong>Cardamome :</strong> Épice digestive et antioxydante. Propriétés anti-bactériennes bénéfiques pour l\'haleine et l\'hygiène buccale.'},
+];
+
+let activeFilter = 'tous';
+
+function setFilter(cat, btn) {
+  activeFilter = cat;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAll();
+}
+
+function renderAll() {
+  const q = document.getElementById('search').value.toLowerCase();
+  let filtered = recipes.filter(r => {
+    const matchCat = activeFilter==='tous' || r.cat===activeFilter;
+    const matchQ = !q || r.name.toLowerCase().includes(q) || r.desc.toLowerCase().includes(q) || r.region.toLowerCase().includes(q);
+    return matchCat && matchQ;
+  });
+  document.getElementById('count-label').textContent = `${filtered.length} recette${filtered.length>1?'s':''}`;
+  const grid = document.getElementById('recipes-grid');
+  if(filtered.length===0){
+    grid.innerHTML=`<div class="no-results" style="grid-column:1/-1"><span>🔍</span>Aucune recette trouvée pour "${q}"</div>`;
+    return;
+  }
+  grid.innerHTML = filtered.map(r=>`
+    <div class="recipe-card" onclick="openRecipe(${r.id})">
+      <div class="rc-top">
+        <div class="rc-cals">🔥 ${r.kcal} kcal</div>
+        <span class="rc-emoji">${r.emoji}</span>
+        <div class="rc-badges">
+          <span class="badge badge-region">📍 ${r.region}</span>
+          <span class="badge badge-cat">${catLabel(r.cat)}</span>
+          ${r.diet?`<span class="badge badge-diet">${r.diet}</span>`:''}
+        </div>
+        <div class="rc-name">${r.name}</div>
+        <div class="rc-desc">${r.desc.substring(0,80)}...</div>
+      </div>
+      <div class="rc-nutrition">
+        <div class="n-item"><div class="n-val" style="color:#4ade80">${r.prot}g</div><div class="n-label">Protéines</div></div>
+        <div class="n-item"><div class="n-val" style="color:#fbbf24">${r.carb}g</div><div class="n-label">Glucides</div></div>
+        <div class="n-item"><div class="n-val" style="color:#f87171">${r.fat}g</div><div class="n-label">Lipides</div></div>
+      </div>
+      <div class="rc-meta">
+        <div class="rc-meta-item">⏱ ${r.time} min</div>
+        <div class="rc-meta-item">👥 ${r.serves} pers.</div>
+        <div class="rc-meta-item">📊 ${r.diff}</div>
+      </div>
+      <div class="rc-footer">
+        <div class="rc-difficulty">${diffEmoji(r.diff)} ${r.diff}</div>
+        <button class="rc-btn">Voir recette</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function catLabel(c){
+  return {plat:'🥘 Plat',accompagnement:'🌽 Accomp.',soupe:'🍜 Soupe',snack:'🥜 Snack',boisson:'🥤 Boisson',dessert:'🍮 Dessert'}[c]||c;
+}
+function diffEmoji(d){return {Facile:'🟢',Moyen:'🟡',Difficile:'🔴'}[d]||'⚪'}
+
+function openRecipe(id){
+  const r = recipes.find(x=>x.id===id);
+  if(!r)return;
+  document.getElementById('modal-content').innerHTML=`
+    <span class="modal-emoji">${r.emoji}</span>
+    <div class="modal-header-badges">
+      <span class="badge badge-region">📍 ${r.region}</span>
+      <span class="badge badge-cat">${catLabel(r.cat)}</span>
+      <span class="badge" style="background:rgba(255,255,255,0.06);color:#aaa">⏱ ${r.time} min</span>
+      <span class="badge" style="background:rgba(255,255,255,0.06);color:#aaa">👥 ${r.serves} pers.</span>
+    </div>
+    <div class="modal-title">${r.name}</div>
+    <div class="modal-desc">${r.desc}</div>
+    <div class="modal-nutrition">
+      <div class="mn-card"><div class="mn-val">${r.kcal}</div><div class="mn-label">kcal</div></div>
+      <div class="mn-card"><div class="mn-val" style="color:#4ade80">${r.prot}g</div><div class="mn-label">Protéines</div></div>
+      <div class="mn-card"><div class="mn-val" style="color:#fbbf24">${r.carb}g</div><div class="mn-label">Glucides</div></div>
+      <div class="mn-card"><div class="mn-val" style="color:#f87171">${r.fat}g</div><div class="mn-label">Lipides</div></div>
+    </div>
+    <div class="modal-section">
+      <h4>🛒 Ingrédients (${r.serves} personnes)</h4>
+      <div class="ing-grid">${r.ing.map(i=>`<span class="ing-pill">${i}</span>`).join('')}</div>
+    </div>
+    <div class="modal-section">
+      <h4>👨‍🍳 Préparation étape par étape</h4>
+      <div class="steps-list">${r.steps.map((s,i)=>`<div class="step-row"><div class="step-num">${i+1}</div><div class="step-text">${s}</div></div>`).join('')}</div>
+    </div>
+    <div class="modal-section">
+      <div class="tips-box">💡 ${r.tip}</div>
+    </div>
+  `;
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+function maybeClose(e){if(e.target===document.getElementById('modal'))closeModal()}
+
+renderAll();
+</script>
+</body>
+</html>

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Guide de Déploiement Complet</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#0d1117;--surface:#161b22;--card:#1c2128;--green:#3fb950;--gl:#238636;--y:#d29922;--red:#f85149;--blue:#58a6ff;--purple:#bc8cff;--border:rgba(48,54,61,1);--text:#c9d1d9;--muted:#8b949e}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.nav{background:var(--surface);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.nav-logo{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:#fff}
+.nav-logo span{color:var(--y)}
+.nav-badge{background:rgba(63,185,80,0.1);border:1px solid rgba(63,185,80,0.2);color:var(--green);font-size:0.68rem;font-weight:700;padding:0.2rem 0.7rem;border-radius:4px;text-transform:uppercase;letter-spacing:0.06em}
+.hero{background:linear-gradient(135deg,var(--bg),#0d2b14 60%,#1a4a28);padding:4rem 2rem;text-align:center}
+.hero h1{font-family:'Syne',sans-serif;font-size:2.4rem;font-weight:800;color:#fff;margin-bottom:0.5rem}
+.hero h1 span{color:var(--y)}
+.hero p{color:var(--muted);max-width:550px;margin:0 auto 2rem;line-height:1.7}
+.hero-cards{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.hero-card{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:1rem 1.5rem;text-align:center}
+.hc-icon{font-size:1.8rem;margin-bottom:0.4rem}
+.hc-title{font-size:0.82rem;font-weight:700;color:#fff}
+.hc-note{font-size:0.7rem;color:var(--muted);margin-top:0.2rem}
+.main{max-width:900px;margin:0 auto;padding:2rem}
+.section{margin-bottom:3rem}
+.section-title{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;color:#fff;margin-bottom:0.3rem;display:flex;align-items:center;gap:0.6rem}
+.section-sub{color:var(--muted);font-size:0.85rem;margin-bottom:1.5rem}
+.step{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:0.8rem}
+.step-header{display:flex;align-items:center;gap:0.8rem;padding:1rem 1.2rem;background:rgba(255,255,255,0.02);border-bottom:1px solid var(--border);cursor:pointer}
+.step-num{width:28px;height:28px;border-radius:50%;font-size:0.75rem;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-title{font-size:0.9rem;font-weight:700;color:#fff;flex:1}
+.step-time{font-size:0.7rem;color:var(--muted);white-space:nowrap}
+.step-body{padding:1.2rem;display:none}
+.step.open .step-body{display:block}
+.step.open .step-header{background:rgba(63,185,80,0.05)}
+p.note{font-size:0.85rem;color:var(--text);line-height:1.7;margin-bottom:0.8rem}
+p.note strong{color:#fff;font-weight:700}
+p.note a{color:var(--blue);text-decoration:none}
+p.note a:hover{text-decoration:underline}
+.cmd{background:var(--bg);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:0.8rem 0}
+.cmd-header{background:rgba(255,255,255,0.03);padding:0.5rem 1rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.cmd-lang{font-size:0.65rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;font-family:'DM Mono',monospace}
+.cmd-copy{background:none;border:none;color:var(--muted);font-size:0.72rem;font-weight:600;cursor:pointer;padding:0.18rem 0.5rem;border-radius:4px;transition:all 0.15s;font-family:'DM Sans',sans-serif}
+.cmd-copy:hover{background:rgba(255,255,255,0.06);color:#fff}
+.cmd pre{padding:1rem;font-family:'DM Mono',monospace;font-size:0.8rem;line-height:1.8;overflow-x:auto;color:var(--text)}
+.c-comment{color:#6e7681}.c-cmd{color:var(--green)}.c-str{color:#a5d6ff}.c-val{color:var(--blue)}.c-warn{color:var(--y)}
+.alert{border-radius:10px;padding:0.9rem 1.1rem;margin:0.8rem 0;font-size:0.83rem;line-height:1.6;display:flex;gap:0.7rem}
+.alert-icon{flex-shrink:0;font-size:1rem}
+.al-green{background:rgba(63,185,80,0.08);border:1px solid rgba(63,185,80,0.2);color:var(--green)}
+.al-blue{background:rgba(88,166,255,0.08);border:1px solid rgba(88,166,255,0.2);color:var(--blue)}
+.al-warn{background:rgba(210,153,34,0.08);border:1px solid rgba(210,153,34,0.2);color:var(--y)}
+.al-red{background:rgba(248,81,73,0.08);border:1px solid rgba(248,81,73,0.2);color:var(--red)}
+.checklist{display:flex;flex-direction:column;gap:0.5rem;margin-top:1rem}
+.ci{display:flex;align-items:flex-start;gap:0.7rem;padding:0.65rem 0.9rem;border:1px solid var(--border);border-radius:9px;cursor:pointer;transition:all 0.15s;background:var(--card)}
+.ci:hover{border-color:rgba(255,255,255,0.12)}
+.ci.done{border-color:rgba(63,185,80,0.3);background:rgba(63,185,80,0.04)}
+.ci-box{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--muted);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:var(--green);margin-top:1px;transition:all 0.15s}
+.ci.done .ci-box{background:var(--gl);border-color:var(--gl);color:#fff}
+.ci-text{font-size:0.82rem;color:var(--text)}
+.ci-text strong{color:#fff}
+.store-cards{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem}
+.store-card{border-radius:14px;padding:1.3rem;border:1px solid var(--border)}
+.sc-icon{font-size:2rem;margin-bottom:0.6rem}
+.sc-name{font-size:0.9rem;font-weight:700;color:#fff;margin-bottom:0.3rem}
+.sc-desc{font-size:0.78rem;color:var(--muted);line-height:1.5;margin-bottom:0.8rem}
+.sc-price{font-size:0.75rem;font-weight:800;padding:0.2rem 0.6rem;border-radius:4px;display:inline-block;margin-bottom:0.6rem}
+.sc-link{font-size:0.78rem;color:var(--blue);text-decoration:none;font-weight:700}
+.final-card{background:linear-gradient(135deg,var(--gl),#1a6b3c);border-radius:18px;padding:2rem;text-align:center;margin-top:2rem}
+.fc-title{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:#fff;margin-bottom:0.5rem}
+.fc-sub{color:rgba(255,255,255,0.7);font-size:0.9rem;margin-bottom:1.5rem}
+.fc-contacts{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.fc-contact{background:rgba(255,255,255,0.15);border-radius:10px;padding:0.6rem 1.2rem;font-size:0.82rem;font-weight:700;color:#fff}
+@media(max-width:600px){.hero-cards{flex-direction:column}.store-cards{grid-template-columns:1fr}.main{padding:1rem}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-logo">Nutri<span>Cam</span> <span style="color:var(--muted);font-size:0.8rem;font-family:'DM Sans',sans-serif;font-weight:400">· Guide Déploiement</span></div>
+  <div class="nav-badge">v1.0.0 · Georges Duplece Pitchou</div>
+</nav>
+<div class="hero">
+  <h1>Mettre NutriCam <span>en ligne</span><br/>étape par étape</h1>
+  <p>Guide complet pour déployer le site web NutriCam sur Vercel, l'app mobile sur les stores iOS & Android, et acheter le domaine nutricam.cm.</p>
+  <div class="hero-cards">
+    <div class="hero-card"><div class="hc-icon">🌐</div><div class="hc-title">Site Web</div><div class="hc-note">Vercel · Gratuit</div></div>
+    <div class="hero-card"><div class="hc-icon">📱</div><div class="hc-title">App iOS</div><div class="hc-note">99$/an</div></div>
+    <div class="hero-card"><div class="hc-icon">🤖</div><div class="hc-title">App Android</div><div class="hc-note">25$ une fois</div></div>
+    <div class="hero-card"><div class="hc-icon">🌍</div><div class="hc-title">Domaine .cm</div><div class="hc-note">~20 000 FCFA/an</div></div>
+    <div class="hero-card"><div class="hc-icon">⏱️</div><div class="hc-title">Temps total</div><div class="hc-note">~2 heures</div></div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- PARTIE 1 : SITE WEB -->
+  <div class="section">
+    <div class="section-title">🌐 Partie 1 — Site Web sur Vercel</div>
+    <div class="section-sub">Déployer les 35 pages HTML de NutriCam gratuitement en moins de 30 minutes.</div>
+
+    <div class="step open" onclick="toggleStep(this)">
+      <div class="step-header">
+        <div class="step-num" style="background:rgba(63,185,80,0.15);color:var(--green)">1</div>
+        <div class="step-title">Créer un compte GitHub (si pas encore fait)</div>
+        <div class="step-time">⏱ 2 min</div>
+      </div>
+      <div class="step-body">
+        <p class="note">GitHub servira à stocker votre code. Vercel se connecte à GitHub pour déployer automatiquement.</p>
+        <div class="alert al-blue"><div class="alert-icon">🔗</div><div>Allez sur <a href="https://github.com" target="_blank">github.com</a> → cliquez "Sign up" → entrez votre email <strong>pitchouduplece9@gmail.com</strong></div></div>
+        <p class="note">Choisissez le plan <strong>Free</strong> (gratuit pour toujours pour les projets publics).</p>
+      </div>
+    </div>
+
+    <div class="step" onclick="toggleStep(this)">
+      <div class="step-header">
+        <div class="step-num" style="background:rgba(63,185,80,0.15);color:var(--green)">2</div>
+        <div class="step-title">Créer un dépôt GitHub "nutricam"</div>
+        <div class="step-time">⏱ 3 min</div>
+      </div>
+      <div class="step-body">
+        <div class="cmd"><div class="cmd-header"><span class="cmd-lang">Terminal / Git Bash</span><button class="cmd-copy" onclick="copyCmd(this)">📋 Copier</button></div>
+        <pre><span class="c-comment"># Sur votre ordinateur, créez un dossier et initialisez Git</span>
+<span class="c-cmd">mkdir</span> nutricam-website
+<span class="c-cmd">cd</span> nutricam-website
+<span class="c-cmd">git init</span>
+
+<span class="c-comment"># Copiez TOUS vos fichiers nutricam-*.html dans ce dossier</span>
+<span class="c-comment"># Puis créez un fichier index.html qui redirige vers le hub</span>
+<span class="c-cmd">echo</span> <span class="c-str">'&lt;meta http-equiv="refresh" content="0;url=nutricam-hub.html"&gt;'</span> &gt; index.html
+
+<span class="c-comment"># Ajoutez tout et faites le premier commit</span>
+<span class="c-cmd">git add</span> .
+<span class="c-cmd">git commit</span> -m <span class="c-str">"🚀 NutriCam v1.0 - Initial deploy"</span>
+
+<span class="c-comment"># Connectez à GitHub (remplacez YOUR_USERNAME par votre pseudo)</span>
+<span class="c-cmd">git remote add</span> origin https://github.com/YOUR_USERNAME/nutricam.git
+<span class="c-cmd">git branch</span> -M main
+<span class="c-cmd">git push</span> -u origin main</pre></div>
+        <div class="alert al-warn"><div class="alert-icon">💡</div><div>Si vous n'avez pas Git installé : <a href="https://git-scm.com/download/win" target="_blank">téléchargez-le ici</a> (Windows) ou utilisez directement l'interface GitHub pour uploader les fichiers.</div></div>
+      </div>
+    </div>
+
+    <div class="step" onclick="toggleStep(this)">
+      <div class="step-header">
+        <div class="step-num" style="background:rgba(63,185,80,0.15);color:var(--green)">3</div>
+        <div class="step-title">Déployer sur Vercel (gratuit)</div>
+        <div class="step-time">⏱ 5 min</div>
+      </div>
+      <div class="step-body">
+        <p class="note"><strong>Vercel</strong> héberge des sites web gratuitement avec HTTPS automatique et CDN mondial.</p>
+        <div class="checklist">
+          <div class="ci" onclick="this.classList.toggle('done');updateCheck(this)"><div class="ci-box"></div><div class="ci-text">Allez sur <a href="https://vercel.com" target="_blank" style="color:var(--blue)">vercel.com</a> → <strong>"Sign up with GitHub"</strong></div></div>
+          <div class="ci" onclick="this.classList.toggle('done');updateCheck(this)"><div class="ci-box"></div><div class="ci-text">Cliquez <strong>"Add New Project"</strong> → Sélectionnez votre repo <strong>"nutricam"</strong></div></div>
+          <div class="ci" onclick="this.classList.toggle('done');updateCheck(this)"><div class="ci-box"></div><div class="ci-text">Framework Preset: sélectionnez <strong>"Other"</strong> (pas Next.js, ce sont des HTML simples)</div></div>
+          <div class="ci" onclick="this.classList.toggle('done');updateCheck(this)"><div class="ci-box"></div><div class="ci-text">Cliquez <strong>"Deploy"</strong> → Attendez 60 secondes</div></div>
+          <div class="ci" onclick="this.classList.toggle('done');updateCheck(this)"><div class="ci-box"></div><div class="ci-text">✅ Votre site est en ligne sur <strong>nutricam.vercel.app</strong> !</div></div>
+        </div>
+        <div class="alert al-green"><div class="alert-icon">🎉</div><div>Chaque fois que vous faites un <code>git push</code>, Vercel redéploie automatiquement en moins de 30 secondes !</div></div>
+      </div>
+    </div>
+
+    <div class="step" onclick="toggleStep(this)">
+      <div class="step-header">
+        <div class="step-num" style="background:rgba(63,185,80,0.15);color:var(--green)">4</div>
+        <div class="step-title">Connecter le domaine nutricam.cm</div>
+        <div class="step-time">⏱ 30 min (propagation DNS)</div>
+      </div>
+      <div class="step-body">
+        <p class="note"><strong>Option A — Domaine camerounais (.cm) :</strong> Achetez via un registrar local.</p>
+        <div class="alert al-blue"><div class="alert-icon">🌍</div><div>Registrar camerounais recommandés :<br/>• <a href="https://www.afriregister.cm" target="_blank">afriregister.cm</a> — registrar officiel Cameroun<br/>• <a href="https://www.hostingsolutions.cm" target="_blank">hostingsolutions.cm</a><br/>Prix estimé : 15 000–25 000 FCFA/an pour un .cm</div></div>
+        <p class="note"><strong>Option B — Domaine international (.com) :</strong> Plus simple, accessible partout.</p>
+        <div class="cmd"><div class="cmd-header"><span class="cmd-lang">Configuration DNS Vercel</span><button class="cmd-copy" onclick="copyCmd(this)">📋 Copier</button></div>
+        <pre><span class="c-comment"># Dans Vercel → Project Settings → Domains</span>
+<span class="c-comment"># Ajoutez votre domaine : nutricam.cm (ou nutricam.com)</span>
+
+<span class="c-comment"># Vercel vous donnera 2 enregistrements DNS à configurer :</span>
+Type: <span class="c-val">A</span>     Name: <span class="c-str">@</span>      Value: <span class="c-str">76.76.19.61</span>
+Type: <span class="c-val">CNAME</span>  Name: <span class="c-str">www</span>    Value: <span class="c-str">cname.vercel-dns.com</span>
+
+<span class="c-comment"># Entrez ces valeurs dans le panneau DNS de votre registrar</span>
+<span class="c-comment"># La propagation prend 5 min à 48h selon le registrar</span></pre></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTIE 2 : APP MOBILE -->
+  <div class="section">
+    <div class="section-title">📱 Partie 2 — Application Mobile</div>
+    <div class="section-sub">Publier l'app NutriCam sur App Store (iOS) et Google Play Store (Android).</div>
+
+    <div class="step" onclick="toggleStep(this)">
+      <div class="step-header">
+        <div class="step-num" style="background:rgba(88,166,255,0.15);color:var(--blue)">5</div>
+        <div class="step-title">Installer Node.js et Expo CLI</div>
+        <div class="step-time">⏱ 10 min</div>
+      </div>
+      <div class="step-body">
+        <div class="alert al-blue"><div class="alert-icon">💻</div><div>Téléchargez <a href="https://nodejs.org" target="_blank">Node.js 18 LTS</a> (nécessaire pour Expo).</div></div>
+        <div class="cmd"><div class="cmd-header"><span class="cmd-lang">Terminal</span><button class="cmd-copy" onclick="copyCmd(this)">📋 Copier</button></div>
+        <pre><span class="c-comment"># Installer Expo CLI globalement</span>
+<span class="c-cmd">npm install</span> -g expo-cli eas-cli
+
+<span class="c-comment"># Aller dans le dossier de l'app mobile NutriCam</span>
+<span class="c-cmd">cd</span> nutricam-mobile
+
+<span class="c-comment"># Installer les dépendances</span>
+<span class="c-cmd">npm install</span>
+
+<span class="c-comment"># Tester en local (scan QR code avec Expo Go sur votre téléphone)</span>
+<span class="c-cmd">npx expo start</span>
+
+<span class="c-comment"># ✅ Scannez le QR code avec l'app "Expo Go" (iOS/Android)</span>
+<span class="c-comment"># → Vous verrez NutriCam tourner sur votre téléphone !</span></pre></div>
+      </div>
+    </div>
+
+    <div class="step" onclick="toggleStep(this)">
+      <div class="step-header">
+        <div class="step-num" style="background:rgba(88,166,255,0.15);color:var(--blue)">6</div>
+        <div class="step-title">Créer les comptes développeur</div>
+        <div class="step-time">⏱ 30 min + 48h validation Apple</div>
+      </div>
+      <div class="step-body">
+        <div class="store-cards">
+          <div class="store-card" style="background:rgba(0,0,0,0.3);border-color:rgba(255,255,255,0.12)">
+            <div class="sc-icon">🍎</div>
+            <div class="sc-name">Apple Developer</div>
+            <div class="sc-desc">Nécessaire pour publier sur l'App Store iOS. Validation manuelle par Apple (~24-48h).</div>
+            <div class="sc-price" style="background:rgba(248,81,73,0.1);color:var(--red)">99 $/an (~60 000 FCFA)</div>
+            <br/><a href="https://developer.apple.com/programs/enroll/" target="_blank" class="sc-link">→ S'inscrire Apple Developer</a>
+          </div>
+          <div class="store-card" style="background:rgba(52,211,153,0.03);border-color:rgba(52,211,153,0.2)">
+            <div class="sc-icon">🤖</div>
+            <div class="sc-name">Google Play Console</div>
+            <div class="sc-desc">Nécessaire pour publier sur Google Play. Paiement unique, accès immédiat.</div>
+            <div class="sc-price" style="background:rgba(63,185,80,0.1);color:var(--green)">25 $ une seule fois (~15 000 FCFA)</div>
+            <br/><a href="https://play.google.com/console/signup" target="_blank" class="sc-link">→ S'inscrire Google Play</a>
+          </div>
+        </div>
+        <div class="alert al-warn"><div class="alert-icon">💡</div><div><strong>Conseil :</strong> Commencez par Google Play (moins cher, plus rapide). Votre compte Google : <strong>pitchouduplece9@gmail.com</strong></div></div>
+      </div>
+    </div>
+
+    <div class="step" onclick="toggleStep(this)">
+      <div class="step-header">
+        <div class="step-num" style="background:rgba(88,166,255,0.15);color:var(--blue)">7</div>
+        <div class="step-title">Build et soumission avec EAS (Expo Application Services)</div>
+        <div class="step-time">⏱ 20 min (build ~15 min)</div>
+      </div>
+      <div class="step-body">
+        <div class="cmd"><div class="cmd-header"><span class="cmd-lang">Terminal</span><button class="cmd-copy" onclick="copyCmd(this)">📋 Copier</button></div>
+        <pre><span class="c-comment"># Se connecter à votre compte Expo</span>
+<span class="c-cmd">eas login</span>
+<span class="c-comment"># Email: pitchouduplece9@gmail.com</span>
+
+<span class="c-comment"># Configurer le projet (une seule fois)</span>
+<span class="c-cmd">eas build:configure</span>
+
+<span class="c-comment"># ── BUILD ANDROID (APK pour Google Play) ──</span>
+<span class="c-cmd">eas build</span> --platform android --profile production
+<span class="c-comment"># ⏳ Attend ~15 min sur les serveurs Expo</span>
+<span class="c-comment"># ✅ Télécharge l'APK/AAB automatiquement</span>
+
+<span class="c-comment"># ── BUILD iOS (Archive pour App Store) ──</span>
+<span class="c-cmd">eas build</span> --platform ios --profile production
+<span class="c-comment"># Nécessite le compte Apple Developer</span>
+
+<span class="c-comment"># ── SOUMISSION DIRECTE aux stores ──</span>
+<span class="c-cmd">eas submit</span> --platform android
+<span class="c-cmd">eas submit</span> --platform ios</pre></div>
+        <div class="alert al-green"><div class="alert-icon">🎉</div><div>EAS gère automatiquement les certificats de signature iOS et Android. Vous n'avez pas besoin de Xcode ou Android Studio !</div></div>
+      </div>
+    </div>
+
+    <div class="step" onclick="toggleStep(this)">
+      <div class="step-header">
+        <div class="step-num" style="background:rgba(88,166,255,0.15);color:var(--blue)">8</div>
+        <div class="step-title">Fiche store — Descriptions et captures d'écran</div>
+        <div class="step-time">⏱ 1 heure</div>
+      </div>
+      <div class="step-body">
+        <p class="note">Pour chaque store, vous aurez besoin de :</p>
+        <div class="checklist">
+          <div class="ci" onclick="this.classList.toggle('done')"><div class="ci-box"></div><div class="ci-text"><strong>Nom de l'app :</strong> NutriCam – Nutrition africaine</div></div>
+          <div class="ci" onclick="this.classList.toggle('done')"><div class="ci-box"></div><div class="ci-text"><strong>Description courte :</strong> Calculez vos calories avec des recettes camerounaises authentiques</div></div>
+          <div class="ci" onclick="this.classList.toggle('done')"><div class="ci-box"></div><div class="ci-text"><strong>Description longue :</strong> Copiez le texte de nutricam-landing.html (section features)</div></div>
+          <div class="ci" onclick="this.classList.toggle('done')"><div class="ci-box"></div><div class="ci-text"><strong>Captures iOS :</strong> 6 screenshots iPhone 6.5" (utilisez les maquettes nutricam-app-mockups.html)</div></div>
+          <div class="ci" onclick="this.classList.toggle('done')"><div class="ci-box"></div><div class="ci-text"><strong>Captures Android :</strong> 3 screenshots 16:9 minimum</div></div>
+          <div class="ci" onclick="this.classList.toggle('done')"><div class="ci-box"></div><div class="ci-text"><strong>Icône app :</strong> PNG 1024×1024px (fond vert #07100a + emoji 🌿 centré)</div></div>
+          <div class="ci" onclick="this.classList.toggle('done')"><div class="ci-box"></div><div class="ci-text"><strong>Politique confidentialité URL :</strong> https://nutricam.vercel.app/nutricam-legal.html</div></div>
+          <div class="ci" onclick="this.classList.toggle('done')"><div class="ci-box"></div><div class="ci-text"><strong>Email support :</strong> pitchouduplece9@gmail.com</div></div>
+          <div class="ci" onclick="this.classList.toggle('done')"><div class="ci-box"></div><div class="ci-text"><strong>Catégorie :</strong> Santé & Forme / Health & Fitness</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTIE 3 : CHECKLIST FINALE -->
+  <div class="section">
+    <div class="section-title">✅ Checklist finale avant lancement</div>
+    <div class="section-sub">Cochez chaque élément avant d'annoncer le lancement public de NutriCam.</div>
+    <div class="checklist">
+      <div class="ci" onclick="this.classList.toggle('done')"><div class="ci-box"></div><div class="ci-text">Site web accessible sur https://nutricam.vercel.app (ou votre domaine)</div></div>
+      <div class="ci" onclick="this.classList.toggle('done')"><div class="ci-box"></div><div class="ci-text">HTTPS actif (cadenas vert dans le navigateur)</div></div>
+      <div class="ci" onclick="this.classList.toggle('done')"><div class="ci-box"></div><div class="ci-text">Tous les 35 modules accessibles depuis nutricam-hub.html</div></div>
+      <div class="ci" onclick="this.classList.toggle('done')"><div class="ci-box"></div><div class="ci-text">Paiements Mobile Money testés en mode sandbox</div></div>
+      <div class="ci" onclick="this.classList.toggle('done')"><div class="ci-box"></div><div class="ci-text">Email pitchouduplece9@gmail.com reçoit bien les messages des formulaires</div></div>
+      <div class="ci" onclick="this.classList.toggle('done')"><div class="ci-box"></div><div class="ci-text">App Android publiée sur Google Play Store</div></div>
+      <div class="ci" onclick="this.classList.toggle('done')"><div class="ci-box"></div><div class="ci-text">App iOS soumise sur App Store (en attente validation Apple 1-3 jours)</div></div>
+      <div class="ci" onclick="this.classList.toggle('done')"><div class="ci-box"></div><div class="ci-text">Annonce sur WhatsApp, Facebook Cameroun et LinkedIn</div></div>
+      <div class="ci" onclick="this.classList.toggle('done')"><div class="ci-box"></div><div class="ci-text">🚀 NutriCam est officiellement lancé !</div></div>
+    </div>
+  </div>
+
+  <!-- CONTACTS -->
+  <div class="final-card">
+    <div class="fc-title">🌿 NutriCam est prêt !</div>
+    <div class="fc-sub">Projet de Georges Duplece Pitchou · CEO & Fondateur<br/>Yaoundé, Cameroun 🇨🇲</div>
+    <div class="fc-contacts">
+      <div class="fc-contact">📧 pitchouduplece9@gmail.com</div>
+      <div class="fc-contact">📱 WhatsApp : +237 683 868 760</div>
+      <div class="fc-contact">🌐 nutricam.vercel.app</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggleStep(el){ el.classList.toggle('open'); }
+function copyCmd(btn){
+  const pre=btn.closest('.cmd').querySelector('pre');
+  const text=pre.textContent.replace(/^.*#.*\n/gm,'').trim();
+  navigator.clipboard?.writeText(pre.textContent).then(()=>{
+    btn.textContent='✅ Copié !';
+    setTimeout(()=>btn.textContent='📋 Copier',2000);
+  });
+}
+function updateCheck(el){}
+</script>
+</body>
+</html>

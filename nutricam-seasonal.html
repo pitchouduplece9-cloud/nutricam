@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Calendrier Saisonnier</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f5f0e8;--dark:#1a0f00;--orange:#c2410c;--o2:#ea580c;--olight:#fb923c;
+  --green:#15803d;--y:#d97706;--teal:#0d9488;--blue:#1d4ed8;
+  --card:#fff;--border:#e8d5b4;--text:#1c1007;--muted:#78665a;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text)}
+
+.nav{background:var(--dark);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:#fff}
+.nav-logo span{color:#fb923c}
+
+/* HERO */
+.cal-hero{background:linear-gradient(135deg,var(--dark) 0%,#2d1600 55%,var(--orange) 100%);padding:3rem 2.5rem;position:relative;overflow:hidden}
+.ch-bg{position:absolute;right:2rem;top:50%;transform:translateY(-50%);font-size:12rem;opacity:0.05;pointer-events:none}
+.ch-badge{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);font-size:0.72rem;font-weight:700;padding:0.3rem 0.9rem;border-radius:100px;margin-bottom:0.9rem;text-transform:uppercase;letter-spacing:0.08em}
+.ch-title{font-family:'Fraunces',serif;font-size:clamp(1.9rem,4vw,2.8rem);font-weight:900;color:#fff;margin-bottom:0.5rem}
+.ch-title span{color:#fb923c}
+.ch-sub{color:rgba(255,255,255,0.5);font-size:0.9rem;line-height:1.7;max-width:520px}
+
+/* MONTH NAV */
+.month-nav{background:var(--dark);padding:0.8rem 2rem;display:flex;align-items:center;gap:0.3rem;overflow-x:auto;position:sticky;top:0;z-index:40;border-bottom:1px solid rgba(255,255,255,0.06)}
+.month-nav::-webkit-scrollbar{height:3px}
+.mn-btn{background:rgba(255,255,255,0.06);border:none;color:rgba(255,255,255,0.45);padding:0.45rem 0.9rem;border-radius:8px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;white-space:nowrap;flex-shrink:0}
+.mn-btn:hover{color:rgba(255,255,255,0.8)}
+.mn-btn.active{background:var(--orange);color:#fff}
+.mn-current{font-size:0.72rem;color:rgba(255,255,255,0.3);margin-left:auto;white-space:nowrap;font-family:'DM Mono',monospace}
+
+/* MAIN */
+.cal-main{max-width:1100px;margin:0 auto;padding:2.5rem}
+
+/* SEASON BANNER */
+.season-banner{border-radius:20px;padding:1.8rem 2rem;margin-bottom:2rem;display:flex;align-items:center;gap:1.5rem;position:relative;overflow:hidden}
+.sb-icon{font-size:4rem;flex-shrink:0}
+.sb-title{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:900;color:#fff;margin-bottom:0.3rem}
+.sb-sub{font-size:0.88rem;color:rgba(255,255,255,0.6);line-height:1.6}
+.sb-tip{background:rgba(255,255,255,0.1);border-radius:10px;padding:0.6rem 1rem;margin-top:0.8rem;font-size:0.8rem;color:rgba(255,255,255,0.8);display:flex;align-items:center;gap:0.5rem}
+.sb-bg{position:absolute;right:-1rem;top:50%;transform:translateY(-50%);font-size:8rem;opacity:0.07;pointer-events:none}
+
+/* FOODS GRID */
+.section-header{display:flex;align-items:center;gap:0.8rem;margin-bottom:1.2rem;padding-bottom:0.8rem;border-bottom:2px solid var(--border)}
+.sh-icon{font-size:1.5rem}
+.sh-title{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:var(--dark)}
+.sh-count{background:var(--card);border:1px solid var(--border);border-radius:100px;padding:0.18rem 0.65rem;font-size:0.68rem;font-weight:700;color:var(--muted);font-family:'DM Mono',monospace}
+.foods-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;margin-bottom:2.5rem}
+.food-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.1rem;transition:all 0.2s;cursor:pointer;position:relative}
+.food-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.1)}
+.fc-emoji{font-size:2.2rem;display:block;margin-bottom:0.5rem}
+.fc-name{font-size:0.85rem;font-weight:800;color:var(--dark);margin-bottom:0.2rem}
+.fc-desc{font-size:0.7rem;color:var(--muted);line-height:1.4;margin-bottom:0.5rem}
+.fc-tags{display:flex;gap:0.3rem;flex-wrap:wrap}
+.fc-tag{font-size:0.6rem;font-weight:700;padding:0.12rem 0.45rem;border-radius:4px}
+.ft-saison{background:rgba(21,128,61,0.1);color:var(--green)}
+.ft-peak{background:rgba(217,119,6,0.12);color:var(--y)}
+.ft-rare{background:rgba(220,38,38,0.08);color:#dc2626}
+.ft-nut{background:rgba(29,78,216,0.08);color:var(--blue)}
+.fc-price{position:absolute;top:0.7rem;right:0.7rem;font-size:0.65rem;font-weight:800;color:var(--green);font-family:'DM Mono',monospace}
+.fc-peak-badge{position:absolute;top:0.7rem;left:0.7rem;background:linear-gradient(135deg,var(--y),#f59e0b);color:#000;font-size:0.58rem;font-weight:900;padding:0.12rem 0.45rem;border-radius:4px}
+
+/* ANNUAL CALENDAR */
+.annual-calendar{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-bottom:2rem}
+.ac-header{padding:1.2rem 1.5rem;border-bottom:1px solid var(--border)}
+.ac-title{font-family:'Fraunces',serif;font-size:1rem;font-weight:900;color:var(--dark)}
+.ac-table{overflow-x:auto}
+.ac-table table{width:100%;border-collapse:collapse;font-size:0.75rem}
+.ac-table th{padding:0.6rem 0.7rem;text-align:center;font-weight:800;background:rgba(0,0,0,0.02)}
+.ac-table td{padding:0.5rem 0.7rem;border-top:1px solid var(--border);text-align:center}
+.ac-table td:first-child{text-align:left;font-weight:700;color:var(--dark);font-size:0.8rem;white-space:nowrap;padding-left:1rem}
+.availability-dot{width:20px;height:20px;border-radius:50%;margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:900}
+.av-full{background:rgba(21,128,61,0.15);color:var(--green)}
+.av-peak{background:rgba(217,119,6,0.15);color:var(--y)}
+.av-rare{background:rgba(220,38,38,0.08);color:#dc2626;font-size:0.55rem}
+.av-none{background:rgba(0,0,0,0.04);color:var(--muted)}
+
+/* TIPS */
+.tips-section{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem}
+.tip-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.4rem}
+.tc-title{font-family:'Fraunces',serif;font-size:0.95rem;font-weight:900;color:var(--dark);margin-bottom:1rem}
+.tip-item{display:flex;gap:0.7rem;padding:0.6rem 0;border-bottom:1px solid var(--border)}
+.tip-item:last-child{border-bottom:none}
+.ti-icon{font-size:1rem;flex-shrink:0}
+.ti-text{font-size:0.8rem;color:var(--text);line-height:1.5}
+.ti-text strong{color:var(--dark)}
+
+@media(max-width:768px){.cal-main{padding:1.5rem 1rem}.tips-section{grid-template-columns:1fr}.foods-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-logo">Nutri<span>Cam</span> <span style="color:rgba(255,255,255,0.35);font-family:'DM Sans',sans-serif;font-weight:400;font-size:0.85rem">· Saisonnier</span></div>
+</nav>
+<div class="cal-hero">
+  <div class="ch-bg">🌿</div>
+  <div class="ch-badge">📅 Calendrier saisonnier · Cameroun</div>
+  <h1 class="ch-title">Manger <span>local & saisonnier</span><br/>au Cameroun</h1>
+  <p class="ch-sub">Découvrez quels aliments camerounais sont à leur pic nutritionnel chaque mois. Les produits de saison sont plus nutritifs, moins chers et bons pour l'économie locale.</p>
+</div>
+
+<div class="month-nav" id="month-nav"></div>
+
+<div class="cal-main">
+  <div id="season-banner"></div>
+  <div id="foods-content"></div>
+  <div id="annual-cal"></div>
+  <div id="tips-content"></div>
+</div>
+
+<script>
+const months=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+const monthShort=['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
+
+const seasons={
+  0:{name:'Grande saison sèche',icon:'☀️',color:'linear-gradient(135deg,#7c2d12,#c2410c 60%,#ea580c)',tip:'🌡️ Période de chaleur intense — Hydratez-vous avec le bissap et l\'eau de coco. Les légumes-feuilles sont rares et plus chers.'},
+  1:{name:'Grande saison sèche',icon:'🌵',color:'linear-gradient(135deg,#7c2d12,#b45309 60%,#d97706)',tip:'💧 Les rivières sont basses — poisson moins disponible. Privilégiez les conserves locales et les légumineuses sèches.'},
+  2:{name:'Transition — Petites pluies',icon:'🌤️',color:'linear-gradient(135deg,#1c4a2a,#166534 60%,#15803d)',tip:'🌱 Les premières pluies arrivent — les légumes-feuilles commencent à repousser. Excellent pour le ndolé jeune.'},
+  3:{name:'Petite saison des pluies',icon:'🌧️',color:'linear-gradient(135deg,#1a3a5c,#1d4ed8 60%,#2563eb)',tip:'🌿 Pleine saison des feuilles vertes. Ndolé, eru, waterleaf sont abondants et très nutritifs. Profitez-en !'},
+  4:{name:'Petite saison des pluies',icon:'🌦️',color:'linear-gradient(135deg,#1a3a5c,#1d4ed8 60%,#3b82f6)',tip:'🍌 Les plantains arrivent à maturité. Excellente période pour faire des stocks.'},
+  5:{name:'Petite saison sèche',icon:'🌤️',color:'linear-gradient(135deg,#7c2d12,#9a3412 60%,#c2410c)',tip:'⚠️ Petite pause des pluies — fin de la saison des feuilles. Constituez des réserves de légumes séchés.'},
+  6:{name:'Grande saison des pluies',icon:'🌧️',color:'linear-gradient(135deg,#1c4a2a,#14532d 60%,#166534)',tip:'🐟 Saison du poisson ! Les rivières débordent — poisson abondant et moins cher. Profitez du tilapia frais.'},
+  7:{name:'Grande saison des pluies',icon:'⛈️',color:'linear-gradient(135deg,#1a3a5c,#1e3a8a 60%,#1d4ed8)',tip:'🍂 Pic de la saison des pluies. Champignons sauvages disponibles. Vigilance sur la conservation des aliments.'},
+  8:{name:'Grande saison des pluies',icon:'🌧️',color:'linear-gradient(135deg,#1c4a2a,#166534 60%,#15803d)',tip:'🍃 Légumes-feuilles et tubercules abondants. Période idéale pour diversifier votre alimentation.'},
+  9:{name:'Transition — Fin des pluies',icon:'🌤️',color:'linear-gradient(135deg,#7c2d12,#9a3412 60%,#b45309)',tip:'🌽 Récolte du maïs et du sorgho. Farine fraîche disponible. Bouillie de maïs au goût incomparable.'},
+  10:{name:'Petite saison sèche',icon:'☀️',color:'linear-gradient(135deg,#7c2d12,#c2410c 60%,#ea580c)',tip:'🥜 Saison des arachides ! Les récoltes battent leur plein. Prix au plus bas pour les arachides et l\'huile locale.'},
+  11:{name:'Grande saison sèche (début)',icon:'🌵',color:'linear-gradient(135deg,#1a0f00,#7c2d12 60%,#c2410c)',tip:'🎄 Période festive — viandes et poissons de fête. Planifiez vos commandes tôt pour les meilleures pièces.'},
+};
+
+const foodsData={
+  0:{fruits:[{e:'🥭',n:'Mangue sauvage',d:'Mangue dite africaine (Irvingia). Teneur élevée en fibres et graisses saines.',tags:['Saison','Riche fibres'],peak:true,price:'↓ Bas'},{e:'🍊',n:'Oranges du Moungo',d:'Oranges de la région du Moungo (Littoral). Très juteuses, riches en vitamine C.',tags:['Saison','Vit. C'],peak:false,price:'Moyen'},{e:'🍋',n:'Citrons verts',d:'Disponibles toute l\'année. Essentiels pour assaisonner les plats.',tags:['Toujours'],peak:false,price:'↓ Bas'}],legumes:[{e:'🍌',n:'Plantain vert (stock)',d:'Plantains verts de début de saison. Bons pour bouillir.',tags:['Disponible'],peak:false,price:'Moyen'}],poissons:[{e:'🐟',n:'Poisson fumé (conserve)',d:'Poisson fumé disponible toute l\'année. Alternative aux frais.',tags:['Toujours'],peak:false,price:'Stable'}]},
+  3:{fruits:[{e:'🍌',n:'Plantain mûr',d:'Pleine saison ! Plantains jaunes excellents pour Poulet DG et alloco.',tags:['Pic saison'],peak:true,price:'↓ Bas'},{e:'🥑',n:'Avocat sauvage',d:'Avocats de forêt du Centre et Sud. Riches en bonnes graisses.',tags:['Saison','Oméga-9'],peak:true,price:'↓ Bas'}],legumes:[{e:'🥬',n:'Feuilles de Ndolé',d:'Pleine saison ! Feuilles jeunes, moins amères, plus nutritives.',tags:['Pic saison','Fer +++'],peak:true,price:'↓ Très bas'},{e:'🌿',n:'Waterleaf (Talinum)',d:'Abondant et peu coûteux. Excellent pour l\'eru et les salades.',tags:['Pic saison','Fibres'],peak:true,price:'↓ Très bas'},{e:'🥬',n:'Eru (Gnetum)',d:'Feuilles tendres de grande qualité. Cueillez-les à la main.',tags:['Saison'],peak:false,price:'Moyen'}],poissons:[{e:'🐟',n:'Tilapia du Wouri',d:'Poisson de rivière abondant en saison des pluies.',tags:['Saison','Protéines'],peak:false,price:'Moyen'}]},
+  6:{fruits:[{e:'🍍',n:'Ananas de Bafia',d:'Bafia (Centre) est la capitale de l\'ananas camerounais. Sucré, riche en bromélaïne.',tags:['Pic saison','Anti-inflam.'],peak:true,price:'↓ Bas'},{e:'🌽',n:'Maïs frais (épis)',d:'Première récolte de l\'année. Épis frais pour griller ou bouillir.',tags:['Saison'],peak:true,price:'↓ Bas'}],legumes:[{e:'🥬',n:'Feuilles de ndolé',d:'Deuxième pic de saison. Feuilles de qualité excellente.',tags:['Pic saison','Fer +++'],peak:true,price:'↓ Bas'},{e:'🍄',n:'Champignons sauvages',d:'Champignons de brousse après les premières grandes pluies.',tags:['Saison','Rare'],peak:true,price:'Moyen'}],poissons:[{e:'🐟',n:'Capitaine (Lac Tchad)',d:'Poisson noble du Nord-Cameroun. Saison des pluies = affluence.',tags:['Saison','Protéines'],peak:true,price:'↓ Bas'},{e:'🦐',n:'Crevettes du Wouri',d:'Crevettes fraîches d\'estuaire à leur pic de disponibilité.',tags:['Pic saison'],peak:true,price:'↓ Bas'}]},
+  10:{fruits:[{e:'🥜',n:'Arachides nouvelles',d:'Récolte principale ! Arachides fraîches pour griller, huile et pâte.',tags:['Pic récolte'],peak:true,price:'↓ Très bas'},{e:'🌽',n:'Maïs sec (farine)',d:'Maïs récolté et séché. Farine fraîche au goût incomparable.',tags:['Récolte'],peak:true,price:'↓ Bas'}],legumes:[{e:'🍠',n:'Macabo (Taro)',d:'Récolte des tubercules. Macabo savoureux, riche en potassium.',tags:['Récolte'],peak:true,price:'↓ Bas'},{e:'🥔',n:'Igname',d:'Igname de la saison sèche, plus farineuse et douce.',tags:['Récolte'],peak:false,price:'Moyen'}],poissons:[{e:'🐟',n:'Tilapia séché',d:'Fin de saison des pluies — poisson séché en abondance.',tags:['Disponible'],peak:false,price:'Stable'}]},
+};
+
+// Annual availability matrix (simplified)
+const annualCalendar=[
+  {name:'Ndolé (feuilles)',av:[0,0,1,2,2,1,2,2,2,1,0,0]},
+  {name:'Eru (Gnetum)',av:[0,0,0,1,2,1,2,2,1,1,0,0]},
+  {name:'Plantain',av:[1,1,1,2,2,1,1,1,1,1,1,1]},
+  {name:'Mangue',av:[2,2,1,0,0,0,0,0,0,0,0,1]},
+  {name:'Ananas de Bafia',av:[0,0,0,0,1,1,2,2,1,0,0,0]},
+  {name:'Arachides',av:[1,1,0,0,0,0,1,1,1,1,2,2]},
+  {name:'Tilapia frais',av:[1,1,1,1,1,0,2,2,2,1,1,1]},
+  {name:'Crevettes Wouri',av:[1,0,0,0,1,1,2,2,2,1,0,0]},
+  {name:'Maïs frais',av:[0,0,0,0,0,1,2,2,1,2,1,0]},
+  {name:'Champignons',av:[0,0,0,0,0,0,1,2,2,1,0,0]},
+];
+
+const avCfg={0:{cls:'av-none',txt:'—'},1:{cls:'av-full',txt:'●'},2:{cls:'av-peak',txt:'★'}};
+
+let currentMonth = new Date().getMonth();
+
+function renderMonthNav(){
+  document.getElementById('month-nav').innerHTML = months.map((m,i)=>`
+    <button class="mn-btn ${i===currentMonth?'active':''}" onclick="setMonth(${i})">${m.slice(0,3)}</button>`).join('') +
+    `<div class="mn-current">📅 ${months[currentMonth]} ${new Date().getFullYear()}</div>`;
+}
+
+function setMonth(m){
+  currentMonth=m;
+  renderMonthNav();
+  renderContent();
+}
+
+function renderContent(){
+  const s=seasons[currentMonth];
+  // Season banner
+  document.getElementById('season-banner').innerHTML=`
+    <div class="season-banner" style="background:${s.color}">
+      <div class="sb-bg">${s.icon}</div>
+      <div class="sb-icon">${s.icon}</div>
+      <div>
+        <div class="sb-title">${s.name}</div>
+        <div class="sb-sub">Cameroun · ${months[currentMonth]} · Ce que vous pouvez manger en ce moment</div>
+        <div class="sb-tip">💡 ${s.tip}</div>
+      </div>
+    </div>`;
+
+  // Foods
+  const fd = foodsData[currentMonth] || foodsData[3];
+  const sections=[{k:'fruits',label:'Fruits & Tubercules',icon:'🍌'},{k:'legumes',label:'Légumes & Feuilles',icon:'🥬'},{k:'poissons',label:'Poissons & Protéines',icon:'🐟'}];
+  document.getElementById('foods-content').innerHTML=sections.map(s=>`
+    <div class="section-header">
+      <span class="sh-icon">${s.icon}</span>
+      <div class="sh-title">${s.label}</div>
+      <div class="sh-count">${(fd[s.k]||[]).length} produits</div>
+    </div>
+    <div class="foods-grid">
+      ${(fd[s.k]||[{e:'🍃',n:'Peu disponible',d:'Ce mois, peu de produits locaux dans cette catégorie. Privilégiez les conserves et séchés.',tags:[],peak:false,price:'Variable'}]).map(f=>`
+        <div class="food-card">
+          ${f.peak?'<div class="fc-peak-badge">★ Pic</div>':''}
+          <div class="fc-price">${f.price||''}</div>
+          <span class="fc-emoji">${f.e}</span>
+          <div class="fc-name">${f.n}</div>
+          <div class="fc-desc">${f.d}</div>
+          <div class="fc-tags">${(f.tags||[]).map(t=>`<span class="fc-tag ft-saison">${t}</span>`).join('')}</div>
+        </div>`).join('')}
+    </div>`).join('');
+
+  // Annual
+  document.getElementById('annual-cal').innerHTML=`
+    <div class="annual-calendar">
+      <div class="ac-header"><div class="ac-title">📊 Disponibilité annuelle des aliments clés</div></div>
+      <div class="ac-table">
+        <table>
+          <thead><tr><th style="text-align:left;padding-left:1rem">Aliment</th>${monthShort.map((m,i)=>`<th style="${i===currentMonth?'color:var(--orange);font-weight:900':''}">${m}</th>`).join('')}</tr></thead>
+          <tbody>${annualCalendar.map(row=>`
+            <tr>
+              <td>${row.name}</td>
+              ${row.av.map((v,i)=>{const c=avCfg[v]||avCfg[0];return`<td><div class="availability-dot ${c.cls} ${i===currentMonth?'ring-current':''}" style="${i===currentMonth?'outline:2px solid var(--orange);outline-offset:2px':''}">${c.txt}</div></td>`;}).join('')}
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+      <div style="display:flex;gap:1.5rem;padding:0.8rem 1.4rem;font-size:0.72rem;color:var(--muted);flex-wrap:wrap">
+        <span><span style="color:var(--y);font-weight:800">★</span> Pic de saison · Meilleur prix + qualité max</span>
+        <span><span style="color:var(--green);font-weight:800">●</span> Disponible</span>
+        <span><span style="color:var(--muted);font-weight:800">—</span> Peu/Pas disponible</span>
+      </div>
+    </div>`;
+
+  // Tips
+  document.getElementById('tips-content').innerHTML=`
+    <div class="tips-section">
+      <div class="tip-card">
+        <div class="tc-title">💰 Pourquoi manger saisonnier ?</div>
+        <div class="tip-item"><div class="ti-icon">🥗</div><div class="ti-text"><strong>Plus nutritif :</strong> Les aliments de saison récoltés localement contiennent jusqu'à 3× plus de vitamines que les mêmes produits hors saison.</div></div>
+        <div class="tip-item"><div class="ti-icon">💵</div><div class="ti-text"><strong>Moins cher :</strong> En période de pic de production, les prix peuvent être divisés par 3 ou 4 au marché.</div></div>
+        <div class="tip-item"><div class="ti-icon">🌍</div><div class="ti-text"><strong>Impact local :</strong> Acheter saisonnier soutient les agriculteurs et maraîchers camerounais directement.</div></div>
+      </div>
+      <div class="tip-card">
+        <div class="tc-title">📦 Comment conserver les produits de saison ?</div>
+        <div class="tip-item"><div class="ti-icon">🥬</div><div class="ti-text"><strong>Feuilles (Ndolé, Eru) :</strong> Blanchir 2min, égoutter, congeler en portions. Se conservent 3-6 mois.</div></div>
+        <div class="tip-item"><div class="ti-icon">🍌</div><div class="ti-text"><strong>Plantain :</strong> Trancher, sécher au soleil 2-3 jours ou déshydrater pour des chips longue durée.</div></div>
+        <div class="tip-item"><div class="ti-icon">🐟</div><div class="ti-text"><strong>Poisson :</strong> Fumage ou séchage traditionnel. Le crayfish se conserve 6-12 mois à l'abri de l'humidité.</div></div>
+      </div>
+    </div>`;
+}
+
+renderMonthNav();
+renderContent();
+</script>
+</body>
+</html>

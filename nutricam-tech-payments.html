@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Paiements Réels + Backend</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#0d1117;--surface:#161b22;--card:#1c2128;--green:#3fb950;--gl:#238636;--y:#d29922;--red:#f85149;--blue:#58a6ff;--purple:#bc8cff;--orange:#f0883e;--border:rgba(48,54,61,1);--text:#c9d1d9;--muted:#8b949e}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text)}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0.9rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.tb-logo{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:#fff}
+.tb-logo span{color:var(--y)}
+.tab-nav{display:flex;gap:0.3rem}
+.tab{background:rgba(255,255,255,0.06);border:none;color:var(--muted);padding:0.42rem 1rem;border-radius:7px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s}
+.tab.active{background:rgba(63,185,80,0.15);color:var(--green)}
+.main{max-width:860px;margin:0 auto;padding:2rem}
+.view{display:none}.view.show{display:block;animation:fadeUp 0.25s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.section-title{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:0.3rem}
+.section-sub{color:var(--muted);font-size:0.85rem;margin-bottom:1.5rem}
+.step-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:1rem}
+.sc-header{padding:1rem 1.2rem;display:flex;align-items:center;gap:0.8rem;background:rgba(255,255,255,0.02);border-bottom:1px solid var(--border);cursor:pointer}
+.sc-num{width:28px;height:28px;border-radius:50%;font-size:0.75rem;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sc-title{font-size:0.9rem;font-weight:700;color:#fff;flex:1}
+.sc-time{font-size:0.7rem;color:var(--muted)}
+.sc-body{padding:1.2rem;display:none}
+.step-card.open .sc-body{display:block}
+.note{font-size:0.85rem;color:var(--text);line-height:1.7;margin-bottom:0.8rem}
+.note strong{color:#fff}
+.note a{color:var(--blue);text-decoration:none}
+.code-block{background:var(--bg);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:0.8rem 0}
+.cb-header{background:rgba(255,255,255,0.03);padding:0.5rem 1rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.cb-lang{font-size:0.65rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;font-family:'DM Mono',monospace}
+.copy-btn{background:none;border:none;color:var(--muted);font-size:0.72rem;font-weight:600;cursor:pointer;padding:0.18rem 0.5rem;border-radius:4px;font-family:'DM Sans',sans-serif;transition:all 0.15s}
+.copy-btn:hover{background:rgba(255,255,255,0.06);color:#fff}
+pre{padding:1.1rem;font-family:'DM Mono',monospace;font-size:0.79rem;line-height:1.85;overflow-x:auto;color:var(--text)}
+.c-comment{color:#6e7681}.c-key{color:#ff7b72}.c-str{color:#a5d6ff}.c-val{color:var(--blue)}.c-cmd{color:var(--green)}.c-num{color:var(--orange)}
+.alert{border-radius:8px;padding:0.9rem 1.1rem;margin:0.8rem 0;font-size:0.83rem;line-height:1.6;display:flex;gap:0.7rem}
+.al-icon{flex-shrink:0}
+.al-green{background:rgba(63,185,80,0.08);border:1px solid rgba(63,185,80,0.2);color:var(--green)}
+.al-blue{background:rgba(88,166,255,0.08);border:1px solid rgba(88,166,255,0.2);color:var(--blue)}
+.al-warn{background:rgba(210,153,34,0.08);border:1px solid rgba(210,153,34,0.2);color:var(--y)}
+.al-red{background:rgba(248,81,73,0.08);border:1px solid rgba(248,81,73,0.2);color:var(--red)}
+.service-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+.service-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.3rem}
+.svc-icon{font-size:2rem;margin-bottom:0.5rem}
+.svc-name{font-size:0.9rem;font-weight:700;color:#fff;margin-bottom:0.3rem}
+.svc-desc{font-size:0.78rem;color:var(--muted);line-height:1.5;margin-bottom:0.8rem}
+.svc-link{font-size:0.78rem;color:var(--blue);text-decoration:none;font-weight:700}
+.svc-price{font-size:0.72rem;font-weight:800;padding:0.18rem 0.6rem;border-radius:4px;display:inline-block;margin-bottom:0.5rem}
+@media(max-width:600px){.service-grid{grid-template-columns:1fr}.main{padding:1rem}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="tb-logo">Nutri<span>Cam</span> <span style="color:var(--muted);font-size:0.8rem;font-family:'DM Sans',sans-serif;font-weight:400">· Tech & Paiements</span></div>
+  <div class="tab-nav">
+    <button class="tab active" onclick="showView('paiements',this)">💳 Paiements</button>
+    <button class="tab" onclick="showView('backend',this)">⚙️ Backend</button>
+    <button class="tab" onclick="showView('services',this)">☁️ Services</button>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- ══ PAIEMENTS ══ -->
+  <div class="view show" id="v-paiements">
+    <div class="section-title">💳 Configurer les paiements réels</div>
+    <div class="section-sub">MTN Mobile Money + Orange Money + Cartes bancaires. En production pour recevoir de vrais FCFA.</div>
+
+    <div class="alert al-blue"><div class="al-icon">ℹ️</div><div><strong>Pour un non-technique :</strong> Vous avez besoin d'un développeur ou d'un ami tech pour cette partie. Les commandes sont prêtes — il suffit de les copier et les exécuter. Ou utilisez la solution no-code ci-dessous.</div></div>
+
+    <div class="section-title" style="font-size:1rem;margin-top:1.5rem;margin-bottom:0.5rem">🔑 Étape 1 — Créer un compte CinetPay</div>
+    <p class="note">CinetPay est l'agrégateur de paiements africain qui gère MTN MoMo et Orange Money. C'est ce que NutriCam utilise.</p>
+    <div class="step-card open" onclick="toggleStep(this)">
+      <div class="sc-header">
+        <div class="sc-num" style="background:rgba(63,185,80,0.12);color:var(--green)">1</div>
+        <div class="sc-title">Inscription CinetPay (30 minutes)</div>
+        <div class="sc-time">Gratuit</div>
+      </div>
+      <div class="sc-body">
+        <p class="note">Allez sur <a href="https://cinetpay.com" target="_blank">cinetpay.com</a> → Créer un compte marchand</p>
+        <p class="note">Documents requis :</p>
+        <ul style="font-size:0.83rem;color:var(--text);padding-left:1.5rem;line-height:2">
+          <li>Pièce d'identité (CNI ou passeport)</li>
+          <li>Justificatif de domicile</li>
+          <li>Numéro MTN MoMo Business (demandez à l'agence MTN)</li>
+          <li>Votre email : <strong>pitchouduplece9@gmail.com</strong></li>
+        </ul>
+        <div class="alert al-warn"><div class="al-icon">⏱️</div><div>La validation du compte prend 2-5 jours ouvrés. Commencez cette démarche en priorité !</div></div>
+        <p class="note">Une fois validé, vous recevrez dans votre tableau de bord :</p>
+        <ul style="font-size:0.83rem;color:var(--text);padding-left:1.5rem;line-height:2">
+          <li><strong>CINETPAY_API_KEY</strong> → ex: "1234abcd5678..."</li>
+          <li><strong>CINETPAY_SITE_ID</strong> → ex: "123456"</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step-card" onclick="toggleStep(this)">
+      <div class="sc-header">
+        <div class="sc-num" style="background:rgba(63,185,80,0.12);color:var(--green)">2</div>
+        <div class="sc-title">Configurer le fichier .env avec vos vraies clés</div>
+        <div class="sc-time">5 min</div>
+      </div>
+      <div class="sc-body">
+        <p class="note">Dans le dossier de votre site, modifiez (ou créez) le fichier <strong>.env</strong> :</p>
+        <div class="code-block"><div class="cb-header"><span class="cb-lang">.env — Variables d'environnement</span><button class="copy-btn" onclick="copyCode(this)">📋</button></div>
+        <pre><span class="c-comment"># ── INFORMATIONS NUTRICAM ──</span>
+<span class="c-key">OWNER_NAME</span>=<span class="c-str">"Georges Duplece Pitchou"</span>
+<span class="c-key">OWNER_EMAIL</span>=<span class="c-str">"pitchouduplece9@gmail.com"</span>
+<span class="c-key">OWNER_WHATSAPP</span>=<span class="c-str">"+237683868760"</span>
+
+<span class="c-comment"># ── PAIEMENTS MOBILE MONEY (CinetPay) ──</span>
+<span class="c-key">CINETPAY_API_KEY</span>=<span class="c-str">"VOTRE_CLE_CINETPAY_ICI"</span>
+<span class="c-key">CINETPAY_SITE_ID</span>=<span class="c-str">"VOTRE_SITE_ID_ICI"</span>
+<span class="c-key">CINETPAY_SECRET_KEY</span>=<span class="c-str">"VOTRE_SECRET_KEY_ICI"</span>
+
+<span class="c-comment"># ── PAIEMENTS CARTES (Stripe) ──</span>
+<span class="c-key">STRIPE_SECRET_KEY</span>=<span class="c-str">"sk_live_..."</span>
+<span class="c-key">STRIPE_PUBLIC_KEY</span>=<span class="c-str">"pk_live_..."</span>
+
+<span class="c-comment"># ── BASE DE DONNÉES (Supabase - gratuit) ──</span>
+<span class="c-key">SUPABASE_URL</span>=<span class="c-str">"https://xxxxx.supabase.co"</span>
+<span class="c-key">SUPABASE_ANON_KEY</span>=<span class="c-str">"eyJhbGciOiJIUzI1NiIs..."</span>
+
+<span class="c-comment"># ── IA (Claude API - Anthropic) ──</span>
+<span class="c-key">ANTHROPIC_API_KEY</span>=<span class="c-str">"sk-ant-api03-..."</span>
+
+<span class="c-comment"># ── EMAILS (Gmail SMTP) ──</span>
+<span class="c-key">GMAIL_USER</span>=<span class="c-str">"pitchouduplece9@gmail.com"</span>
+<span class="c-key">GMAIL_APP_PASSWORD</span>=<span class="c-str">"votre-mot-de-passe-app-gmail"</span></pre></div>
+        <div class="alert al-red"><div class="al-icon">🚨</div><div><strong>IMPORTANT :</strong> Ne jamais mettre ces clés sur GitHub ! Ajoutez <code>.env</code> dans votre fichier <code>.gitignore</code></div></div>
+      </div>
+    </div>
+
+    <div class="step-card" onclick="toggleStep(this)">
+      <div class="sc-header">
+        <div class="sc-num" style="background:rgba(63,185,80,0.12);color:var(--green)">3</div>
+        <div class="sc-title">Code de paiement CinetPay (MTN + Orange)</div>
+        <div class="sc-time">Code prêt à l'emploi</div>
+      </div>
+      <div class="sc-body">
+        <p class="note">Ce code gère un paiement MTN ou Orange Money via CinetPay :</p>
+        <div class="code-block"><div class="cb-header"><span class="cb-lang">JavaScript — paiement.js</span><button class="copy-btn" onclick="copyCode(this)">📋</button></div>
+        <pre><span class="c-comment">// NutriCam — Paiement Mobile Money via CinetPay
+// Georges Duplece Pitchou | pitchouduplece9@gmail.com</span>
+
+<span class="c-comment">// ── INITIER UN PAIEMENT ──</span>
+<span class="c-key">async function</span> initierPaiement(utilisateur, plan) {
+  <span class="c-key">const</span> montant = plan === <span class="c-str">'premium'</span> ? <span class="c-num">2500</span> : <span class="c-num">5000</span>;
+  
+  <span class="c-key">const</span> reponse = <span class="c-key">await</span> fetch(<span class="c-str">'https://api-checkout.cinetpay.com/v2/payment'</span>, {
+    method: <span class="c-str">'POST'</span>,
+    headers: { <span class="c-str">'Content-Type'</span>: <span class="c-str">'application/json'</span> },
+    body: JSON.stringify({
+      apikey: process.env.<span class="c-val">CINETPAY_API_KEY</span>,
+      site_id: process.env.<span class="c-val">CINETPAY_SITE_ID</span>,
+      transaction_id: <span class="c-str">`TXN-${Date.now()}`</span>,
+      amount: montant,
+      currency: <span class="c-str">'XAF'</span>,           <span class="c-comment">// FCFA</span>
+      description: <span class="c-str">`NutriCam ${plan} - Abonnement mensuel`</span>,
+      customer_name: utilisateur.nom,
+      customer_surname: utilisateur.prenom,
+      customer_email: utilisateur.email,
+      customer_phone_number: utilisateur.telephone,
+      customer_address: <span class="c-str">'Yaoundé, Cameroun'</span>,
+      customer_city: <span class="c-str">'Yaoundé'</span>,
+      customer_country: <span class="c-str">'CM'</span>,
+      customer_state: <span class="c-str">'CM'</span>,
+      customer_zip_code: <span class="c-str">'00000'</span>,
+      notify_url: <span class="c-str">'https://nutricam.vercel.app/api/webhook-paiement'</span>,
+      return_url: <span class="c-str">'https://nutricam.vercel.app/dashboard'</span>,
+      channels: <span class="c-str">'MOBILE_MONEY'</span>,
+      metadata: <span class="c-str">`${utilisateur.id}|${plan}`</span>,
+    })
+  });
+  
+  <span class="c-key">const</span> data = <span class="c-key">await</span> reponse.json();
+  <span class="c-comment">// Redirigez l'utilisateur vers data.data.payment_url</span>
+  <span class="c-key">return</span> data.data.payment_url;
+}
+
+<span class="c-comment">// ── RECEVOIR LA CONFIRMATION (Webhook) ──</span>
+<span class="c-comment">// URL : /api/webhook-paiement</span>
+<span class="c-key">async function</span> webhookPaiement(requete, reponse) {
+  <span class="c-key">const</span> { cpm_trans_id, cpm_amount, cpm_payment_status, metadata } = requete.body;
+  
+  <span class="c-key">if</span> (cpm_payment_status === <span class="c-str">'ACCEPTED'</span>) {
+    <span class="c-key">const</span> [userId, plan] = metadata.split(<span class="c-str">'|'</span>);
+    
+    <span class="c-comment">// ✅ Activer l'abonnement en base de données</span>
+    <span class="c-key">await</span> activerAbonnement(userId, plan);
+    
+    <span class="c-comment">// ✅ Envoyer email de confirmation</span>
+    <span class="c-key">await</span> envoyerEmailConfirmation(userId, montant);
+    
+    console.log(<span class="c-str">`✅ Paiement OK: ${cpm_amount} FCFA - User: ${userId}`</span>);
+  }
+  reponse.json({ status: <span class="c-str">'reçu'</span> });
+}</pre></div>
+      </div>
+    </div>
+
+    <div class="step-card" onclick="toggleStep(this)">
+      <div class="sc-header">
+        <div class="sc-num" style="background:rgba(88,166,255,0.12);color:var(--blue)">4</div>
+        <div class="sc-title">Solution no-code : Stripe Payment Links (si CinetPay prend trop de temps)</div>
+        <div class="sc-time">15 min</div>
+      </div>
+      <div class="sc-body">
+        <p class="note">En attendant la validation CinetPay, utilisez <strong>Stripe Payment Links</strong> pour accepter des cartes bancaires immédiatement :</p>
+        <ol style="font-size:0.83rem;color:var(--text);padding-left:1.5rem;line-height:2.2">
+          <li>Créez un compte sur <a href="https://stripe.com" target="_blank" style="color:var(--blue)">stripe.com</a> avec pitchouduplece9@gmail.com</li>
+          <li>Dashboard → Products → <strong>"Créer un produit"</strong> → "NutriCam Premium" → 2 500 FCFA/mois</li>
+          <li>Cliquez <strong>"Créer un lien de paiement"</strong> → Copiez l'URL</li>
+          <li>Collez ce lien dans votre page paiement NutriCam</li>
+          <li>L'argent arrive directement sur votre compte Stripe → virement bancaire</li>
+        </ol>
+        <div class="alert al-green"><div class="al-icon">✅</div><div>Cette solution est <strong>opérationnelle en 15 minutes</strong> et accepte les cartes Visa/Mastercard de la diaspora camerounaise en Europe.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ BACKEND ══ -->
+  <div class="view" id="v-backend">
+    <div class="section-title">⚙️ Backend Node.js — Base de données réelle</div>
+    <div class="section-sub">Supabase (PostgreSQL gratuit) + Node.js Express. Gratuit jusqu'à 500 Mo de données.</div>
+
+    <div class="alert al-blue"><div class="al-icon">💡</div><div><strong>Solution recommandée pour vous :</strong> Utilisez <strong>Supabase</strong> (base de données + auth + API) — tout se configure via une interface graphique, sans ligne de code. Gratuit pour démarrer.</div></div>
+
+    <div class="step-card open" onclick="toggleStep(this)">
+      <div class="sc-header">
+        <div class="sc-num" style="background:rgba(63,185,80,0.12);color:var(--green)">1</div>
+        <div class="sc-title">Créer la base de données Supabase (gratuit)</div>
+        <div class="sc-time">10 min</div>
+      </div>
+      <div class="sc-body">
+        <p class="note">Allez sur <a href="https://supabase.com" target="_blank">supabase.com</a> → <strong>"Start your project"</strong> → Connectez avec GitHub</p>
+        <p class="note">Créez un nouveau projet : <strong>"nutricam"</strong> → Region : <strong>"EU West"</strong> (plus proche de vous)</p>
+        <p class="note">Dans <strong>"Table Editor"</strong>, créez ces 3 tables en cliquant sur "New Table" :</p>
+        <div class="code-block"><div class="cb-header"><span class="cb-lang">Tables SQL à créer</span><button class="copy-btn" onclick="copyCode(this)">📋</button></div>
+        <pre><span class="c-comment">-- Table 1 : Utilisateurs</span>
+<span class="c-key">CREATE TABLE</span> utilisateurs (
+  id UUID <span class="c-val">DEFAULT</span> uuid_generate_v4() <span class="c-val">PRIMARY KEY</span>,
+  nom TEXT,
+  prenom TEXT,
+  email TEXT <span class="c-val">UNIQUE NOT NULL</span>,
+  telephone TEXT,
+  plan TEXT <span class="c-val">DEFAULT</span> <span class="c-str">'gratuit'</span>,
+  calories_objectif INTEGER <span class="c-val">DEFAULT</span> <span class="c-num">2000</span>,
+  poids DECIMAL,
+  cree_le TIMESTAMP <span class="c-val">DEFAULT</span> now()
+);
+
+<span class="c-comment">-- Table 2 : Journal alimentaire</span>
+<span class="c-key">CREATE TABLE</span> journal_repas (
+  id UUID <span class="c-val">DEFAULT</span> uuid_generate_v4() <span class="c-val">PRIMARY KEY</span>,
+  user_id UUID <span class="c-val">REFERENCES</span> utilisateurs(id),
+  recette_nom TEXT,
+  calories INTEGER,
+  proteines DECIMAL,
+  glucides DECIMAL,
+  lipides DECIMAL,
+  date_repas DATE <span class="c-val">DEFAULT</span> CURRENT_DATE,
+  heure_repas TIME
+);
+
+<span class="c-comment">-- Table 3 : Abonnements & Paiements</span>
+<span class="c-key">CREATE TABLE</span> abonnements (
+  id UUID <span class="c-val">DEFAULT</span> uuid_generate_v4() <span class="c-val">PRIMARY KEY</span>,
+  user_id UUID <span class="c-val">REFERENCES</span> utilisateurs(id),
+  plan TEXT,
+  montant INTEGER,
+  devise TEXT <span class="c-val">DEFAULT</span> <span class="c-str">'XAF'</span>,
+  methode_paiement TEXT,
+  transaction_id TEXT,
+  debut_abonnement DATE,
+  fin_abonnement DATE,
+  statut TEXT <span class="c-val">DEFAULT</span> <span class="c-str">'actif'</span>
+);</pre></div>
+        <div class="alert al-green"><div class="al-icon">✅</div><div>Une fois les tables créées, Supabase génère <strong>automatiquement une API REST</strong> pour chaque table. Vous pouvez déjà lire et écrire des données !</div></div>
+      </div>
+    </div>
+
+    <div class="step-card" onclick="toggleStep(this)">
+      <div class="sc-header">
+        <div class="sc-num" style="background:rgba(63,185,80,0.12);color:var(--green)">2</div>
+        <div class="sc-title">Code backend Node.js — Serveur Express complet</div>
+        <div class="sc-time">Code prêt à l'emploi</div>
+      </div>
+      <div class="sc-body">
+        <div class="code-block"><div class="cb-header"><span class="cb-lang">server.js — Backend NutriCam complet</span><button class="copy-btn" onclick="copyCode(this)">📋</button></div>
+        <pre><span class="c-comment">// NutriCam Backend — server.js
+// Georges Duplece Pitchou | pitchouduplece9@gmail.com
+// Démarrage : node server.js</span>
+
+<span class="c-key">const</span> express = require(<span class="c-str">'express'</span>);
+<span class="c-key">const</span> cors = require(<span class="c-str">'cors'</span>);
+<span class="c-key">const</span> { createClient } = require(<span class="c-str">'@supabase/supabase-js'</span>);
+<span class="c-key">const</span> Anthropic = require(<span class="c-str">'@anthropic-ai/sdk'</span>);
+require(<span class="c-str">'dotenv'</span>).config();
+
+<span class="c-key">const</span> app = express();
+app.use(cors()); app.use(express.json());
+
+<span class="c-comment">// ── CONNEXIONS ──</span>
+<span class="c-key">const</span> supabase = createClient(
+  process.env.<span class="c-val">SUPABASE_URL</span>,
+  process.env.<span class="c-val">SUPABASE_ANON_KEY</span>
+);
+<span class="c-key">const</span> ai = <span class="c-key">new</span> Anthropic({ apiKey: process.env.<span class="c-val">ANTHROPIC_API_KEY</span> });
+
+<span class="c-comment">// ── ROUTE TEST ──</span>
+app.get(<span class="c-str">'/'</span>, (req, res) => {
+  res.json({ message: <span class="c-str">'🌿 NutriCam API OK'</span>, version: <span class="c-str">'1.0.0'</span> });
+});
+
+<span class="c-comment">// ── INSCRIPTION UTILISATEUR ──</span>
+app.post(<span class="c-str">'/api/inscription'</span>, async (req, res) => {
+  <span class="c-key">const</span> { nom, prenom, email, telephone } = req.body;
+  <span class="c-key">const</span> { data, error } = <span class="c-key">await</span> supabase
+    .from(<span class="c-str">'utilisateurs'</span>)
+    .insert([{ nom, prenom, email, telephone }])
+    .select();
+  <span class="c-key">if</span> (error) <span class="c-key">return</span> res.status(<span class="c-num">400</span>).json({ erreur: error.message });
+  res.json({ utilisateur: data[<span class="c-num">0</span>], message: <span class="c-str">'✅ Bienvenue sur NutriCam !'</span> });
+});
+
+<span class="c-comment">// ── ENREGISTRER UN REPAS ──</span>
+app.post(<span class="c-str">'/api/repas'</span>, async (req, res) => {
+  <span class="c-key">const</span> { user_id, recette_nom, calories, proteines, glucides, lipides } = req.body;
+  <span class="c-key">const</span> { data, error } = <span class="c-key">await</span> supabase
+    .from(<span class="c-str">'journal_repas'</span>)
+    .insert([{ user_id, recette_nom, calories, proteines, glucides, lipides }])
+    .select();
+  <span class="c-key">if</span> (error) <span class="c-key">return</span> res.status(<span class="c-num">400</span>).json({ erreur: error.message });
+  res.json({ repas: data[<span class="c-num">0</span>] });
+});
+
+<span class="c-comment">// ── COACH IA NUTRITIONNEL ──</span>
+app.post(<span class="c-str">'/api/coach'</span>, async (req, res) => {
+  <span class="c-key">const</span> { question, profil_utilisateur } = req.body;
+  <span class="c-key">const</span> reponse = <span class="c-key">await</span> ai.messages.create({
+    model: <span class="c-str">'claude-sonnet-4-5'</span>, max_tokens: <span class="c-num">500</span>,
+    system: <span class="c-str">`Tu es le Coach NutriCam, expert en nutrition africaine et gastronomie camerounaise. Réponds en français, de façon chaleureuse et pratique. Profil: ${JSON.stringify(profil_utilisateur)}`</span>,
+    messages: [{ role: <span class="c-str">'user'</span>, content: question }]
+  });
+  res.json({ reponse: reponse.content[<span class="c-num">0</span>].text });
+});
+
+<span class="c-comment">// ── WEBHOOK PAIEMENT CINETPAY ──</span>
+app.post(<span class="c-str">'/api/webhook-paiement'</span>, async (req, res) => {
+  <span class="c-key">const</span> { cpm_payment_status, metadata } = req.body;
+  <span class="c-key">if</span> (cpm_payment_status === <span class="c-str">'ACCEPTED'</span>) {
+    <span class="c-key">const</span> [userId, plan] = metadata.split(<span class="c-str">'|'</span>);
+    <span class="c-key">const</span> fin = <span class="c-key">new</span> Date(); fin.setMonth(fin.getMonth() + <span class="c-num">1</span>);
+    <span class="c-key">await</span> supabase.from(<span class="c-str">'utilisateurs'</span>).update({ plan }).eq(<span class="c-str">'id'</span>, userId);
+    <span class="c-key">await</span> supabase.from(<span class="c-str">'abonnements'</span>).insert([{ user_id: userId, plan, fin_abonnement: fin }]);
+  }
+  res.json({ status: <span class="c-str">'ok'</span> });
+});
+
+app.listen(<span class="c-num">3001</span>, () => console.log(<span class="c-str">'🌿 NutriCam API sur http://localhost:3001'</span>));</pre></div>
+        <div class="code-block"><div class="cb-header"><span class="cb-lang">Terminal — Démarrer le backend</span><button class="copy-btn" onclick="copyCode(this)">📋</button></div>
+        <pre><span class="c-cmd">npm install</span> express cors @supabase/supabase-js @anthropic-ai/sdk dotenv
+<span class="c-cmd">node</span> server.js
+<span class="c-comment"># ✅ 🌿 NutriCam API sur http://localhost:3001</span></pre></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SERVICES ══ -->
+  <div class="view" id="v-services">
+    <div class="section-title">☁️ Tous les services nécessaires</div>
+    <div class="section-sub">Récapitulatif des comptes à créer et leur coût réel.</div>
+
+    <div class="service-grid">
+      <div class="service-card">
+        <div class="svc-icon">🌐</div>
+        <div class="svc-name">Vercel — Hébergement site web</div>
+        <div class="svc-price" style="background:rgba(63,185,80,0.1);color:var(--green)">Gratuit</div>
+        <div class="svc-desc">Héberge vos 35 pages HTML. HTTPS automatique. Redéploiement en 30s.</div>
+        <a href="https://vercel.com" target="_blank" class="svc-link">→ vercel.com</a>
+      </div>
+      <div class="service-card">
+        <div class="svc-icon">🗄️</div>
+        <div class="svc-name">Supabase — Base de données</div>
+        <div class="svc-price" style="background:rgba(63,185,80,0.1);color:var(--green)">Gratuit (500 Mo)</div>
+        <div class="svc-desc">PostgreSQL + Auth + API auto. Interface graphique, pas besoin de coder.</div>
+        <a href="https://supabase.com" target="_blank" class="svc-link">→ supabase.com</a>
+      </div>
+      <div class="service-card">
+        <div class="svc-icon">💳</div>
+        <div class="svc-name">CinetPay — MTN + Orange Money</div>
+        <div class="svc-price" style="background:rgba(210,153,34,0.1);color:var(--y)">2-3% par transaction</div>
+        <div class="svc-desc">Agrégateur de paiements africain. Validation 2-5 jours. Obligatoire pour FCFA.</div>
+        <a href="https://cinetpay.com" target="_blank" class="svc-link">→ cinetpay.com</a>
+      </div>
+      <div class="service-card">
+        <div class="svc-icon">💳</div>
+        <div class="svc-name">Stripe — Cartes bancaires</div>
+        <div class="svc-price" style="background:rgba(210,153,34,0.1);color:var(--y)">1.4% + 0.25€/transaction</div>
+        <div class="svc-desc">Pour la diaspora en Europe. Disponible immédiatement. Virement bancaire.</div>
+        <a href="https://stripe.com" target="_blank" class="svc-link">→ stripe.com</a>
+      </div>
+      <div class="service-card">
+        <div class="svc-icon">🤖</div>
+        <div class="svc-name">Anthropic — Claude IA</div>
+        <div class="svc-price" style="background:rgba(240,136,62,0.1);color:var(--orange)">~$0.003/question Coach</div>
+        <div class="svc-desc">Pour le Coach IA NutriCam. 1 000 questions utilisateurs = ~$3. Très rentable.</div>
+        <a href="https://console.anthropic.com" target="_blank" class="svc-link">→ console.anthropic.com</a>
+      </div>
+      <div class="service-card">
+        <div class="svc-icon">📧</div>
+        <div class="svc-name">Gmail SMTP — Emails</div>
+        <div class="svc-price" style="background:rgba(63,185,80,0.1);color:var(--green)">Gratuit (500/jour)</div>
+        <div class="svc-desc">Envoyez les emails de confirmation depuis pitchouduplece9@gmail.com.</div>
+        <a href="https://myaccount.google.com/apppasswords" target="_blank" class="svc-link">→ Créer mot de passe app</a>
+      </div>
+      <div class="service-card">
+        <div class="svc-icon">🔔</div>
+        <div class="svc-name">Firebase — Notifications</div>
+        <div class="svc-price" style="background:rgba(63,185,80,0.1);color:var(--green)">Gratuit</div>
+        <div class="svc-desc">Notifications push pour l'app mobile. Rappels repas, hydratation, streak.</div>
+        <a href="https://firebase.google.com" target="_blank" class="svc-link">→ firebase.google.com</a>
+      </div>
+      <div class="service-card">
+        <div class="svc-icon">📊</div>
+        <div class="svc-name">Google Analytics — Stats</div>
+        <div class="svc-price" style="background:rgba(63,185,80,0.1);color:var(--green)">Gratuit</div>
+        <div class="svc-desc">Suivre les visiteurs, conversions, pages vues. Ajoutez 1 ligne de code.</div>
+        <a href="https://analytics.google.com" target="_blank" class="svc-link">→ analytics.google.com</a>
+      </div>
+    </div>
+
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.4rem;margin-top:1rem">
+      <div style="font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:800;color:#fff;margin-bottom:1rem">💰 Coût mensuel total (500 utilisateurs)</div>
+      <div style="display:flex;flex-direction:column;gap:0.5rem">
+        ${[['Vercel (hébergement)','Gratuit','#3fb950'],['Supabase (base de données)','Gratuit','#3fb950'],['Stripe frais (20 transactions)','~4€','#d29922'],['CinetPay frais (20 transactions)','~750 FCFA','#d29922'],['Claude API (1000 questions)','~3€','#d29922'],['Domaine nutricam.cm','~1 700 FCFA/mois','#d29922'],['TOTAL','< 10€/mois 🎉','#3fb950']].map(([s,c,col])=>`
+        <div style="display:flex;justify-content:space-between;padding:0.5rem 0.8rem;border-radius:8px;background:rgba(255,255,255,0.02);font-size:0.82rem">
+          <span style="color:var(--muted)">${s}</span>
+          <span style="color:${col};font-weight:700">${c}</span>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showView(id,btn){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('show'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('v-'+id).classList.add('show');
+  btn.classList.add('active');
+}
+function toggleStep(el){el.classList.toggle('open')}
+function copyCode(btn){
+  const pre=btn.closest('.code-block').querySelector('pre');
+  navigator.clipboard?.writeText(pre.textContent).then(()=>{
+    btn.textContent='✅';setTimeout(()=>btn.textContent='📋',2000);
+  });
+}
+</script>
+</body>
+</html>

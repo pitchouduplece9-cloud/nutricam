@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Hub Central · Tous les modules</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Cabinet+Grotesk:wght@400;500;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#06100a;--surface:#0c1a10;--card:#111f15;--card2:#162219;
+  --green:#22c55e;--gl:#16a34a;--y:#fbbf24;--red:#ef4444;
+  --blue:#3b82f6;--purple:#a855f7;--orange:#f97316;--teal:#14b8a6;--pink:#ec4899;
+  --border:rgba(255,255,255,0.07);--text:#ddeee2;--muted:#4d7259;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4rem 2rem;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 30%,rgba(34,197,94,0.08),transparent),radial-gradient(ellipse 60% 50% at 80% 70%,rgba(251,191,36,0.04),transparent),radial-gradient(ellipse 50% 40% at 20% 80%,rgba(59,130,246,0.04),transparent);pointer-events:none}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black,transparent)}
+.hero-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);color:var(--green);font-size:0.72rem;font-weight:800;padding:0.4rem 1.1rem;border-radius:100px;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:0.1em;animation:fadeDown 0.6s ease}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.hero-title{font-family:'Fraunces',serif;font-size:clamp(3rem,8vw,6.5rem);font-weight:900;color:#fff;line-height:0.95;margin-bottom:1rem;animation:fadeUp 0.7s 0.1s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.hero-title .accent{color:var(--y);font-style:italic}
+.hero-sub{color:var(--muted);font-size:1.05rem;max-width:560px;line-height:1.7;margin-bottom:2.5rem;animation:fadeUp 0.7s 0.2s ease both}
+.hero-stats{display:flex;gap:2.5rem;flex-wrap:wrap;justify-content:center;margin-bottom:3rem;animation:fadeUp 0.7s 0.3s ease both}
+.hs-val{font-family:'Fraunces',serif;font-size:2.2rem;font-weight:900;color:#fff}
+.hs-label{font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:0.2rem}
+.hero-cta{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fadeUp 0.7s 0.4s ease both}
+.cta-primary{background:linear-gradient(135deg,var(--gl),var(--green));color:#fff;padding:0.95rem 2.5rem;border-radius:14px;font-size:0.95rem;font-weight:800;cursor:pointer;border:none;font-family:'Cabinet Grotesk',sans-serif;transition:all 0.2s;display:flex;align-items:center;gap:0.5rem}
+.cta-primary:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(22,163,74,0.3)}
+.cta-secondary{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:var(--text);padding:0.95rem 2rem;border-radius:14px;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;transition:all 0.2s}
+.cta-secondary:hover{background:rgba(255,255,255,0.1)}
+.scroll-indicator{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0.4rem;color:var(--muted);font-size:0.72rem;animation:bounce2 2s ease-in-out infinite}
+@keyframes bounce2{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+
+/* ── SEARCH ── */
+.search-section{padding:2.5rem 2rem;max-width:700px;margin:0 auto}
+.search-box{background:var(--surface);border:1.5px solid var(--border);border-radius:18px;display:flex;align-items:center;gap:0.8rem;padding:0.9rem 1.4rem;transition:border-color 0.2s}
+.search-box:focus-within{border-color:rgba(34,197,94,0.4)}
+.search-icon{font-size:1.1rem;color:var(--muted);flex-shrink:0}
+.search-box input{background:none;border:none;color:#fff;font-size:1rem;flex:1;outline:none;font-family:'Cabinet Grotesk',sans-serif}
+.search-box input::placeholder{color:var(--muted)}
+.search-count{font-size:0.75rem;color:var(--muted);white-space:nowrap;font-family:'DM Mono',monospace}
+
+/* ── FILTER PILLS ── */
+.filter-section{padding:0 2rem 2rem;max-width:1300px;margin:0 auto}
+.filter-pills{display:flex;gap:0.5rem;flex-wrap:wrap}
+.fp{background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:0.4rem 1rem;font-size:0.78rem;font-weight:700;cursor:pointer;transition:all 0.2s;color:var(--muted)}
+.fp:hover{color:var(--text)}
+.fp.active{color:#000;border-color:transparent}
+
+/* ── MODULES GRID ── */
+.modules-section{max-width:1300px;margin:0 auto;padding:0 2rem 4rem}
+.ms-category{margin-bottom:3rem}
+.ms-cat-header{display:flex;align-items:center;gap:0.8rem;margin-bottom:1.2rem}
+.ms-cat-icon{font-size:1.4rem}
+.ms-cat-title{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;color:#fff}
+.ms-cat-count{background:rgba(255,255,255,0.06);border:1px solid var(--border);font-size:0.65rem;font-weight:800;padding:0.15rem 0.55rem;border-radius:100px;color:var(--muted);font-family:'DM Mono',monospace}
+.modules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
+.module-card{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;cursor:pointer;transition:all 0.25s;text-decoration:none;display:block;position:relative}
+.module-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,0.15);box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+.module-card.featured{border-color:rgba(251,191,36,0.25);background:linear-gradient(135deg,var(--card),rgba(251,191,36,0.03))}
+.mc-top{height:140px;display:flex;align-items:center;justify-content:center;font-size:4rem;position:relative;overflow:hidden;flex-shrink:0}
+.mc-new-badge{position:absolute;top:0.7rem;right:0.7rem;background:var(--y);color:#000;font-size:0.58rem;font-weight:800;padding:0.15rem 0.5rem;border-radius:4px;text-transform:uppercase;letter-spacing:0.06em}
+.mc-featured-badge{position:absolute;top:0.7rem;left:0.7rem;background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.3);color:var(--y);font-size:0.58rem;font-weight:800;padding:0.15rem 0.5rem;border-radius:4px;text-transform:uppercase;letter-spacing:0.06em}
+.mc-body{padding:1.2rem 1.3rem}
+.mc-category{font-size:0.62rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.4rem}
+.mc-title{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:900;color:#fff;margin-bottom:0.4rem;line-height:1.25}
+.mc-desc{font-size:0.78rem;color:var(--muted);line-height:1.55;margin-bottom:0.8rem}
+.mc-footer{display:flex;align-items:center;justify-content:space-between}
+.mc-tags{display:flex;gap:0.3rem;flex-wrap:wrap}
+.mc-tag{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:4px;padding:0.12rem 0.45rem;font-size:0.62rem;font-weight:700;color:var(--muted)}
+.mc-arrow{font-size:0.9rem;color:var(--muted);transition:transform 0.2s}
+.module-card:hover .mc-arrow{transform:translateX(3px);color:var(--green)}
+
+/* STATUS DOTS */
+.mc-status{position:absolute;bottom:0.8rem;right:0.8rem;width:8px;height:8px;border-radius:50%}
+
+/* ── FOOTER ── */
+.hub-footer{background:var(--surface);border-top:1px solid var(--border);padding:3rem 2rem;text-align:center}
+.hf-logo{font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:#fff;margin-bottom:0.4rem}
+.hf-logo span{color:var(--y)}
+.hf-tagline{color:var(--muted);font-size:0.88rem;margin-bottom:1.5rem}
+.hf-meta{font-size:0.72rem;color:var(--muted);font-family:'DM Mono',monospace}
+
+@media(max-width:768px){.modules-grid{grid-template-columns:1fr}.hero-stats{gap:1.5rem}.filter-section,.modules-section{padding:0 1rem 3rem}.hero{padding:3rem 1rem}.search-section{padding:2rem 1rem}}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-badge">🌿 Startup complète · 29 modules · Cameroun 🇨🇲</div>
+  <h1 class="hero-title">Nutri<span class="accent">Cam</span><br/>Hub</h1>
+  <p class="hero-sub">Tous les modules de la plateforme nutritionnelle africaine en un seul endroit. Naviguez entre les 29 composants du projet NutriCam.</p>
+  <div class="hero-stats">
+    <div><div class="hs-val">29</div><div class="hs-label">Modules</div></div>
+    <div><div class="hs-val">52+</div><div class="hs-label">Recettes</div></div>
+    <div><div class="hs-val">1 247</div><div class="hs-label">Utilisateurs</div></div>
+    <div><div class="hs-val">100%</div><div class="hs-label">Made in 🇨🇲</div></div>
+  </div>
+  <div class="hero-cta">
+    <button class="cta-primary" onclick="document.querySelector('.search-section').scrollIntoView({behavior:'smooth'})">🔍 Explorer les modules</button>
+    <button class="cta-secondary" onclick="openRandom()">🎲 Module aléatoire</button>
+  </div>
+  <div class="scroll-indicator">↓ Défiler</div>
+</section>
+
+<!-- SEARCH -->
+<div class="search-section">
+  <div class="search-box">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="search-input" placeholder="Rechercher un module... ex: recettes, dashboard, paiement" oninput="filterModules(this.value)"/>
+    <div class="search-count" id="search-count">29 modules</div>
+  </div>
+</div>
+
+<!-- FILTERS -->
+<div class="filter-section">
+  <div class="filter-pills" id="filter-pills"></div>
+</div>
+
+<!-- MODULES -->
+<div class="modules-section" id="modules-section"></div>
+
+<!-- FOOTER -->
+<div class="hub-footer">
+  <div class="hf-logo">Nutri<span>Cam</span></div>
+  <div class="hf-tagline">Mange bien. Vis fort. · La première plateforme nutritionnelle africaine</div>
+  <div class="hf-meta">NutriCam SAS · Yaoundé, Cameroun 🇨🇲 · v1.0.0 · 29 modules · Janvier 2025</div>
+</div>
+
+<script>
+const categories = [
+  { id:'produit', label:'🍲 Produit', color:'#22c55e', bg:'rgba(34,197,94,0.12)' },
+  { id:'business', label:'📊 Business', color:'#fbbf24', bg:'rgba(251,191,36,0.12)' },
+  { id:'technique', label:'⚙️ Technique', color:'#3b82f6', bg:'rgba(59,130,246,0.12)' },
+  { id:'medical', label:'🏥 Médical', color:'#a855f7', bg:'rgba(168,85,247,0.12)' },
+  { id:'legal', label:'⚖️ Légal', color:'#f97316', bg:'rgba(249,115,22,0.12)' },
+  { id:'brand', label:'🎨 Brand', color:'#ec4899', bg:'rgba(236,72,153,0.12)' },
+  { id:'communaute', label:'👥 Communauté', color:'#14b8a6', bg:'rgba(20,184,166,0.12)' },
+];
+
+const modules = [
+  // PRODUIT
+  { id:'landing', cat:'produit', emoji:'🌿', bg:'linear-gradient(135deg,#052a0c,#1a7a3e)', title:'Landing Page', desc:'Page d\'accueil complète avec calculateur calories, 6 profils, 52 recettes et plans tarifaires.', tags:['Next.js','SEO','CRO'], file:'nutricam-landing.html', featured:true, new:false },
+  { id:'dashboard', cat:'produit', emoji:'📊', bg:'linear-gradient(135deg,#0a1f0f,#22a854)', title:'Dashboard Utilisateur', desc:'Tableau de bord avec anneau calorique animé, journal repas, hydratation et objectifs.', tags:['SVG','Tracking','Charts'], file:'nutricam-dashboard.html' },
+  { id:'recipes', cat:'produit', emoji:'🍲', bg:'linear-gradient(135deg,#0a2d14,#1a7a3e)', title:'52 Recettes Camerounaises', desc:'Base complète avec filtres, macros, valeurs nutritionnelles et conseils santé scientifiques.', tags:['52 plats','Filtres','DB'], file:'nutricam-recipes.html', featured:true },
+  { id:'meal-planner', cat:'produit', emoji:'📅', bg:'linear-gradient(135deg,#0c1a3d,#2563eb)', title:'Planificateur Repas IA', desc:'Génération de plan 7 jours en 4 étapes : profil → objectif → allergies → résultat IA.', tags:['IA','7 jours','Personnalisé'], file:'nutricam-meal-planner.html' },
+  { id:'scanner', cat:'produit', emoji:'📷', bg:'linear-gradient(135deg,#0a1a0f,#16a34a)', title:'Scanner Produits', desc:'1 200+ produits camerounais avec score Nutri-A→E, tableau nutritionnel et journal.', tags:['Barcode','1200 produits','IG'], file:'nutricam-scanner.html', featured:true },
+  { id:'chatbot', cat:'produit', emoji:'🤖', bg:'linear-gradient(135deg,#1a0533,#7c3aed)', title:'Coach IA NutriCam', desc:'Chatbot nutritionnel Claude API spécialisé gastronomie camerounaise, disponible 24h/24.', tags:['Claude API','IA','FR'], file:'nutricam-chatbot.html', featured:true },
+  { id:'kids', cat:'produit', emoji:'👶', bg:'linear-gradient(135deg,#3d1a00,#f97316)', title:'Module Enfants OMS', desc:'5 groupes d\'âge (0-13 ans), courbes croissance OMS, micronutriments, recettes adaptées.', tags:['OMS','0-13 ans','Pédiatrie'], file:'nutricam-kids.html' },
+  { id:'detox', cat:'produit', emoji:'🌿', bg:'linear-gradient(135deg,#0a2d14,#0d6120)', title:'Détox & Transformation', desc:'10 boissons détox locales, plan perte de poids 1 500 kcal et plan prise de masse 2 800 kcal.', tags:['Détox','Régime','Sport'], file:'nutricam-detox-transformation.html' },
+  { id:'statistics', cat:'produit', emoji:'📈', bg:'linear-gradient(135deg,#0a1f0f,#166534)', title:'Statistiques Personnelles', desc:'30 jours d\'analytics : calories, poids, hydratation, macros, badges, insights IA.', tags:['Analytics','Charts','Badges'], file:'nutricam-statistics.html' },
+  { id:'notifications', cat:'produit', emoji:'🔔', bg:'linear-gradient(135deg,#07100a,#1a4d20)', title:'Centre de Notifications', desc:'Split-view avec 12 notifications, filtres, détails contextuels et toasts en temps réel.', tags:['Push','Real-time','UX'], file:'nutricam-notifications.html' },
+  { id:'onboarding', cat:'produit', emoji:'🚀', bg:'linear-gradient(135deg,#0d2b14,#1a7a3e)', title:'Onboarding IA 8 Étapes', desc:'Parcours de personnalisation : profil, objectif, mensurations, allergies, plats préférés.', tags:['8 étapes','Personnalisation','UX'], file:'nutricam-onboarding.html' },
+  { id:'app-mockups', cat:'produit', emoji:'📱', bg:'linear-gradient(135deg,#0d1117,#22a854)', title:'Maquettes App Mobile', desc:'Téléphone 3D interactif avec 5 écrans navigables (iOS/Android React Native).', tags:['React Native','iOS','Android'], file:'nutricam-app-mockups.html' },
+  { id:'paiement', cat:'produit', emoji:'💳', bg:'linear-gradient(135deg,#0a2d14,#1a7a3e)', title:'Paiement Mobile Money', desc:'Checkout MTN MoMo, Orange Money, carte bancaire avec OTP et code promo fonctionnel.', tags:['MTN','Orange','Stripe'], file:'nutricam-paiement.html' },
+  // BUSINESS
+  { id:'business-plan', cat:'business', emoji:'📋', bg:'linear-gradient(135deg,#1a1000,#7a4f00)', title:'Business Plan Interactif', desc:'7 sections : vision, marché, modèle éco, tech, roadmap 24 mois, finances 3 ans, équipe.', tags:['FCFA','Projections','P&L'], file:'nutricam-business-plan.html', featured:true },
+  { id:'investor-portal', cat:'business', emoji:'🔐', bg:'linear-gradient(135deg,#060c07,#0c4a1a)', title:'Portail Investisseurs', desc:'Accès sécurisé, KPIs live, graphiques revenus, cohortes rétention, data room.', tags:['Confidentiel','MRR','Cohortes'], file:'nutricam-investor-portal.html', new:true },
+  { id:'partenaires', cat:'business', emoji:'🤝', bg:'linear-gradient(135deg,#07100a,#0a3d15)', title:'Page Partenaires B2B', desc:'Restaurants, cliniques, entreprises, API, programme affiliés 20%, formulaire contact.', tags:['B2B','API','Affiliés'], file:'nutricam-partenaires.html' },
+  { id:'launch-plan', cat:'business', emoji:'🗓️', bg:'linear-gradient(135deg,#0a1f0f,#22a854)', title:'Plan de Lancement 90 Jours', desc:'3 phases, 12 semaines, 48 tâches cochables + 4 templates emails marketing complets.', tags:['90 jours','Emails','KPIs'], file:'nutricam-launch-plan.html' },
+  // TECHNIQUE
+  { id:'admin', cat:'technique', emoji:'⚙️', bg:'linear-gradient(135deg,#080e09,#0e2812)', title:'Dashboard Admin', desc:'Sidebar 11 sections, gestion recettes/users/abonnements, éditeur, logs, toggles.', tags:['Admin','CRUD','Analytics'], file:'nutricam-admin.html' },
+  { id:'deploy-guide', cat:'technique', emoji:'🚀', bg:'linear-gradient(135deg,#0d1117,#161b22)', title:'Guide de Déploiement', desc:'Documentation GitHub-style : install, env vars, Vercel, AWS, Docker, CI/CD, checklist.', tags:['DevOps','AWS','Docker'], file:'nutricam-deploy-guide.html' },
+  { id:'status', cat:'technique', emoji:'🖥️', bg:'linear-gradient(135deg,#07100a,#0a2d14)', title:'Page de Statut Système', desc:'10 services monitored, uptime 99.97%, graphique 90 jours, historique incidents.', tags:['Uptime','Monitoring','SLA'], file:'nutricam-status.html', new:true },
+  // MÉDICAL
+  { id:'medical', cat:'medical', emoji:'🏥', bg:'linear-gradient(135deg,#0f0514,#3d1075)', title:'Suivi Médical Complet', desc:'Grossesse (40 semaines), diabète IG, hypertension PA, senior, sportif. Validé CHU.', tags:['Grossesse','Diabète','HTA'], file:'nutricam-medical.html', new:true, featured:true },
+  // LÉGAL & BRAND
+  { id:'legal', cat:'legal', emoji:'⚖️', bg:'linear-gradient(135deg,#1a0f00,#5c3700)', title:'Documents Légaux CGU/RGPD', desc:'Politique confidentialité, CGU, mentions légales, cookies, droits RGPD navigables.', tags:['RGPD','CGU','Cameroun'], file:'nutricam-legal.html' },
+  { id:'brand-guide', cat:'brand', emoji:'🎨', bg:'linear-gradient(135deg,#0a120b,#1a3d1d)', title:'Brand Guide Charte Graphique', desc:'Logo (6 déclinaisons), couleurs, typographie, icônes, composants, voix & ton.', tags:['Logo','Couleurs','Typo'], file:'nutricam-brand-guide.html' },
+  { id:'about', cat:'brand', emoji:'🌿', bg:'linear-gradient(135deg,#07100a,#0e3320)', title:'Page À propos & Équipe', desc:'Histoire, 4 membres fondateurs, conseil scientifique (4 experts), timeline 2024→2025.', tags:['Équipe','Histoire','Valeurs'], file:'nutricam-about.html' },
+  { id:'carte-visite', cat:'brand', emoji:'💼', bg:'linear-gradient(135deg,#0a1f0f,#16a34a)', title:'Carte de Visite Digitale', desc:'Carte 3D flip interactive, 4 profils, téléchargement vCard (.vcf), partage natif.', tags:['vCard','3D Flip','NFC'], file:'nutricam-carte-visite.html' },
+  // COMMUNAUTÉ & CONTENT
+  { id:'community', cat:'communaute', emoji:'👥', bg:'linear-gradient(135deg,#081209,#0f3318)', title:'Communauté & Forum', desc:'4 892 membres, posts, likes, tendances, leaderboard, membres en ligne.', tags:['Forum','Social','4892 membres'], file:'nutricam-community.html', new:true },
+  { id:'blog', cat:'communaute', emoji:'📚', bg:'linear-gradient(135deg,#0a1f0f,#1a5c32)', title:'Blog Nutrition Africaine', desc:'Article complet sur le ndolé + 6 articles, filtres catégories, newsletter.', tags:['SEO','Articles','Scientifique'], file:'nutricam-blog.html' },
+  { id:'faq', cat:'communaute', emoji:'💬', bg:'linear-gradient(135deg,#07100a,#0d3318)', title:'FAQ & Support Client', desc:'35 Q/R en 7 catégories, 3 cartes contact, chatbot flottant fonctionnel.', tags:['Support','35 Q/R','Chat'], file:'nutricam-faq.html' },
+];
+
+let activeFilter = 'all';
+
+// Render filter pills
+const filterPillsEl = document.getElementById('filter-pills');
+filterPillsEl.innerHTML = `<button class="fp active" style="background:var(--green);color:#000" onclick="setFilter('all',this)">✨ Tous (${modules.length})</button>` +
+  categories.map(c => `<button class="fp" onclick="setFilter('${c.id}',this)" data-cat="${c.id}">${c.label} (${modules.filter(m=>m.cat===c.id).length})</button>`).join('');
+
+function setFilter(f, btn) {
+  activeFilter = f;
+  document.querySelectorAll('.fp').forEach(b => { b.classList.remove('active'); b.style.background=''; b.style.color=''; });
+  btn.classList.add('active');
+  const cat = categories.find(c=>c.id===f);
+  if(cat){ btn.style.background=cat.bg; btn.style.color=cat.color; }
+  else { btn.style.background='var(--green)'; btn.style.color='#000'; }
+  renderModules(document.getElementById('search-input').value);
+}
+
+function filterModules(q) { renderModules(q); }
+
+function renderModules(q='') {
+  const filtered = modules.filter(m => {
+    const matchCat = activeFilter === 'all' || m.cat === activeFilter;
+    const matchQ = !q || m.title.toLowerCase().includes(q.toLowerCase()) || m.desc.toLowerCase().includes(q.toLowerCase()) || m.tags.some(t=>t.toLowerCase().includes(q.toLowerCase()));
+    return matchCat && matchQ;
+  });
+  document.getElementById('search-count').textContent = filtered.length + ' module' + (filtered.length!==1?'s':'');
+
+  // Group by category
+  const groups = {};
+  filtered.forEach(m => { if(!groups[m.cat]) groups[m.cat]=[]; groups[m.cat].push(m); });
+
+  const catOrder = categories.map(c=>c.id);
+  let html = '';
+  catOrder.forEach(catId => {
+    if(!groups[catId]) return;
+    const cat = categories.find(c=>c.id===catId);
+    html += `<div class="ms-category">
+      <div class="ms-cat-header">
+        <div class="ms-cat-icon">${cat.label.split(' ')[0]}</div>
+        <div class="ms-cat-title">${cat.label.split(' ').slice(1).join(' ')}</div>
+        <div class="ms-cat-count">${groups[catId].length}</div>
+      </div>
+      <div class="modules-grid">
+        ${groups[catId].map(m => renderCard(m, cat)).join('')}
+      </div>
+    </div>`;
+  });
+  document.getElementById('modules-section').innerHTML = html || '<div style="text-align:center;padding:4rem;color:var(--muted);font-size:0.9rem">Aucun module trouvé pour cette recherche</div>';
+}
+
+function renderCard(m, cat) {
+  return `<a class="module-card ${m.featured?'featured':''}" href="${m.file}" target="_blank">
+    <div class="mc-top" style="background:${m.bg}">
+      ${m.new?'<div class="mc-new-badge">Nouveau</div>':''}
+      ${m.featured?'<div class="mc-featured-badge">⭐ Featured</div>':''}
+      <span style="font-size:4rem">${m.emoji}</span>
+    </div>
+    <div class="mc-body">
+      <div class="mc-category" style="color:${cat.color}">${cat.label}</div>
+      <div class="mc-title">${m.title}</div>
+      <div class="mc-desc">${m.desc}</div>
+      <div class="mc-footer">
+        <div class="mc-tags">${m.tags.slice(0,3).map(t=>`<span class="mc-tag">${t}</span>`).join('')}</div>
+        <span class="mc-arrow">→</span>
+      </div>
+    </div>
+    <div class="mc-status" style="background:${m.new?'#fbbf24':'#22c55e'}"></div>
+  </a>`;
+}
+
+function openRandom() {
+  const m = modules[Math.floor(Math.random()*modules.length)];
+  window.open(m.file, '_blank');
+}
+
+renderModules();
+</script>
+</body>
+</html>

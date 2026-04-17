@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Dossier Levée de Fonds</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,800&family=DM+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#060a08;--surface:#0c140f;--card:#111b13;--card2:#16221a;
+  --gold:#fbbf24;--gold2:#f59e0b;--green:#22c55e;--gl:#16a34a;
+  --blue:#3b82f6;--purple:#a855f7;--red:#ef4444;--teal:#14b8a6;
+  --border:rgba(255,255,255,0.07);--text:#ddeee2;--muted:#4d7259;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text)}
+
+/* NAV */
+.nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0.9rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.nav-logo{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:#fff}
+.nav-logo span{color:var(--gold)}
+.nav-badge{background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.2);color:var(--gold);font-size:0.68rem;font-weight:800;padding:0.2rem 0.7rem;border-radius:4px;text-transform:uppercase;letter-spacing:0.07em}
+.nav-btn{background:var(--gl);color:#fff;border:none;border-radius:8px;padding:0.45rem 1rem;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
+
+/* COVER */
+.cover{background:linear-gradient(135deg,#060a08 0%,#0a2d14 50%,#1a4d26 100%);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4rem 2rem;position:relative;overflow:hidden}
+.cover-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:50px 50px;pointer-events:none;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black,transparent)}
+.cover-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(251,191,36,0.06),transparent 60%);pointer-events:none}
+.cover-tag{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2);color:var(--gold);font-size:0.72rem;font-weight:800;padding:0.35rem 1rem;border-radius:100px;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:0.1em;animation:fadeDown 0.6s ease}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.cover h1{font-family:'Fraunces',serif;font-size:clamp(3rem,7vw,5rem);font-weight:900;color:#fff;line-height:0.95;margin-bottom:1rem;animation:fadeUp 0.7s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.cover h1 span{color:var(--gold);font-style:italic}
+.cover-sub{color:rgba(255,255,255,0.5);font-size:1rem;line-height:1.7;max-width:520px;margin:0 auto 2.5rem;animation:fadeUp 0.7s 0.1s ease both}
+.cover-metrics{display:flex;gap:2rem;flex-wrap:wrap;justify-content:center;margin-bottom:3rem;animation:fadeUp 0.7s 0.2s ease both}
+.cm-val{font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:#fff}
+.cm-label{font-size:0.68rem;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.08em}
+.cover-ask{background:rgba(251,191,36,0.1);border:1.5px solid rgba(251,191,36,0.3);border-radius:16px;padding:1.5rem 2.5rem;display:inline-block;animation:fadeUp 0.7s 0.3s ease both}
+.ca-label{font-size:0.72rem;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;font-weight:800;margin-bottom:0.3rem}
+.ca-val{font-family:'Fraunces',serif;font-size:2.5rem;font-weight:900;color:#fff}
+.ca-use{font-size:0.82rem;color:rgba(255,255,255,0.4);margin-top:0.2rem}
+.cover-founder{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);text-align:center;animation:fadeUp 0.7s 0.4s ease both}
+.cf-name{font-size:0.88rem;font-weight:700;color:rgba(255,255,255,0.6)}
+.cf-contact{font-size:0.78rem;color:rgba(255,255,255,0.35);margin-top:0.2rem}
+
+/* MAIN */
+.main{max-width:1000px;margin:0 auto;padding:3rem 2rem}
+
+/* SECTION */
+.section{margin-bottom:4rem}
+.sec-number{font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--gold);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem}
+.sec-title{font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:#fff;margin-bottom:0.5rem;line-height:1.1}
+.sec-sub{color:var(--muted);font-size:0.9rem;line-height:1.7;max-width:700px;margin-bottom:2rem}
+.divider{height:1px;background:linear-gradient(90deg,var(--gold),rgba(251,191,36,0.1),transparent);margin-bottom:2rem}
+
+/* PROBLEM */
+.problem-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+.prob-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.3rem}
+.pc-stat{font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--red);margin-bottom:0.3rem}
+.pc-label{font-size:0.85rem;font-weight:700;color:#fff;margin-bottom:0.3rem}
+.pc-desc{font-size:0.78rem;color:var(--muted);line-height:1.5}
+
+/* SOLUTION */
+.solution-features{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}
+.sf-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem;text-align:center;transition:all 0.2s}
+.sf-card:hover{border-color:rgba(34,197,94,0.3);transform:translateY(-2px)}
+.sf-icon{font-size:2rem;margin-bottom:0.6rem;display:block}
+.sf-title{font-size:0.85rem;font-weight:800;color:#fff;margin-bottom:0.3rem}
+.sf-desc{font-size:0.72rem;color:var(--muted);line-height:1.4}
+
+/* MARKET */
+.market-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+.mkt-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.3rem;text-align:center}
+.mkt-val{font-family:'Fraunces',serif;font-size:1.8rem;font-weight:900}
+.mkt-label{font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-top:0.2rem}
+.mkt-desc{font-size:0.72rem;color:var(--muted);margin-top:0.4rem;line-height:1.4}
+
+/* FINANCIALS */
+.fin-table{background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;margin-bottom:1.5rem}
+.ft-header{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr 1fr;gap:0;background:rgba(255,255,255,0.03);border-bottom:1px solid var(--border)}
+.ft-header div,.ft-row div{padding:0.8rem 1rem;font-size:0.78rem;border-right:1px solid var(--border)}
+.ft-header div:last-child,.ft-row div:last-child{border-right:none}
+.ft-header div{font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;font-size:0.65rem}
+.ft-row{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr 1fr;border-bottom:1px solid var(--border);transition:background 0.15s}
+.ft-row:last-child{border-bottom:none}
+.ft-row:hover{background:rgba(255,255,255,0.01)}
+.ft-row.highlight{background:rgba(251,191,36,0.04);border-left:3px solid var(--gold)}
+
+/* USE OF FUNDS */
+.uof-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+.uof-item{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem;display:flex;gap:1rem;align-items:flex-start}
+.uof-pct{font-family:'Fraunces',serif;font-size:2rem;font-weight:900}
+.uof-title{font-size:0.88rem;font-weight:800;color:#fff;margin-bottom:0.2rem}
+.uof-desc{font-size:0.75rem;color:var(--muted);line-height:1.4}
+.uof-amount{font-size:0.72rem;font-weight:700;margin-top:0.3rem}
+
+/* TEAM */
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}
+.team-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.3rem;text-align:center;transition:all 0.2s}
+.team-card:hover{transform:translateY(-2px)}
+.tc-av{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:900;color:#000;margin:0 auto 0.8rem;border:2px solid rgba(255,255,255,0.1)}
+.tc-name{font-size:0.9rem;font-weight:800;color:#fff;margin-bottom:0.15rem}
+.tc-role{font-size:0.72rem;color:var(--gold);font-weight:700;margin-bottom:0.4rem}
+.tc-bio{font-size:0.72rem;color:var(--muted);line-height:1.4}
+
+/* INVESTORS */
+.inv-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.inv-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.3rem;transition:all 0.2s}
+.inv-card:hover{border-color:rgba(251,191,36,0.2);transform:translateY(-2px)}
+.ic-name{font-size:0.9rem;font-weight:800;color:#fff;margin-bottom:0.3rem}
+.ic-type{font-size:0.68rem;font-weight:800;padding:0.15rem 0.55rem;border-radius:4px;display:inline-block;margin-bottom:0.5rem}
+.ic-desc{font-size:0.78rem;color:var(--muted);line-height:1.5;margin-bottom:0.5rem}
+.ic-focus{font-size:0.72rem;color:var(--green)}
+.ic-link{font-size:0.72rem;color:var(--blue);text-decoration:none;font-weight:700}
+
+/* CTA */
+.cta-section{background:linear-gradient(135deg,rgba(251,191,36,0.08),rgba(34,197,94,0.06));border:1px solid rgba(251,191,36,0.2);border-radius:24px;padding:3rem;text-align:center}
+.cta-title{font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:#fff;margin-bottom:0.5rem}
+.cta-sub{color:rgba(255,255,255,0.5);margin-bottom:2rem;font-size:0.9rem}
+.cta-contacts{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.cta-btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.9rem 2rem;border-radius:12px;font-size:0.9rem;font-weight:800;text-decoration:none;transition:all 0.2s;cursor:pointer;border:none;font-family:'DM Sans',sans-serif}
+.cta-primary{background:linear-gradient(135deg,var(--gl),var(--green));color:#fff}
+.cta-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(34,197,94,0.3)}
+.cta-secondary{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:#fff}
+
+@media(max-width:768px){.problem-grid,.solution-features,.market-grid,.uof-grid,.team-grid,.inv-grid{grid-template-columns:1fr}.main{padding:2rem 1rem}.ft-header,.ft-row{grid-template-columns:1.5fr 1fr 1fr}}
+</style>
+</head>
+<body>
+
+<!-- COUVERTURE -->
+<div class="cover">
+  <div class="cover-grid"></div>
+  <div class="cover-glow"></div>
+  <div class="cover-tag">🔒 Confidentiel · Dossier Investisseurs · 2025</div>
+  <h1>Nutri<span>Cam</span></h1>
+  <p class="cover-sub">La première plateforme nutritionnelle africaine. 350 millions de francophones africains mangent local sans aucune app adaptée. Nous changeons ça.</p>
+  <div class="cover-metrics">
+    <div><div class="cm-val">350M</div><div class="cm-label">Marché adressable</div></div>
+    <div><div class="cm-val">200+</div><div class="cm-label">Recettes camerounaises</div></div>
+    <div><div class="cm-val">1 247</div><div class="cm-label">Utilisateurs bêta</div></div>
+    <div><div class="cm-val">30,8%</div><div class="cm-label">Taux conversion free→paid</div></div>
+  </div>
+  <div class="cover-ask">
+    <div class="ca-label">Levée Seed 2025</div>
+    <div class="ca-val">50 000 000 FCFA</div>
+    <div class="ca-use">~76 000 € · Pour 18 mois de runway</div>
+  </div>
+  <div class="cover-founder">
+    <div class="cf-name">Georges Duplece Pitchou · CEO & Fondateur</div>
+    <div class="cf-contact">pitchouduplece9@gmail.com · +237 683 868 760 · Yaoundé, Cameroun 🇨🇲</div>
+  </div>
+</div>
+
+<nav class="nav">
+  <div class="nav-logo">Nutri<span>Cam</span></div>
+  <div class="nav-badge">Dossier Investisseurs · Confidentiel</div>
+  <button class="nav-btn" onclick="window.print()">🖨️ Imprimer PDF</button>
+</nav>
+
+<div class="main">
+
+  <!-- 01. LE PROBLÈME -->
+  <div class="section">
+    <div class="sec-number">01 — Le problème</div>
+    <h2 class="sec-title">350 millions d'Africains<br/>sans app nutrition adaptée</h2>
+    <p class="sec-sub">Les apps nutrition mondiales (MyFitnessPal, Yazio, Noom) ne connaissent ni le Ndolé, ni l'Eru, ni le Poulet DG. Les Africains francophones sont invisibles.</p>
+    <div class="divider"></div>
+    <div class="problem-grid">
+      <div class="prob-card"><div class="pc-stat">0</div><div class="pc-label">Recettes camerounaises sur MyFitnessPal</div><div class="pc-desc">Les 280 ethnies camerounaises et leurs traditions culinaires n'existent pas dans les grandes apps mondiales.</div></div>
+      <div class="prob-card"><div class="pc-stat">38%</div><div class="pc-label">Des femmes camerounaises anémiées</div><div class="pc-desc">Faute d'information nutritionnelle adaptée, les carences touchent une majorité de femmes en âge de procréer (MINSANTE 2023).</div></div>
+      <div class="prob-card"><div class="pc-stat">+47%</div><div class="pc-label">Diabète de type 2 en 10 ans au Cameroun</div><div class="pc-desc">L'urbanisation et l'abandon des aliments locaux au profit d'ultra-transformés causent une explosion des maladies métaboliques.</div></div>
+      <div class="prob-card"><div class="pc-stat">350M</div><div class="pc-label">Africains francophones non servis</div><div class="pc-desc">De Yaoundé à Abidjan en passant par Dakar et Kinshasa — aucune solution locale pour la nutrition digitale.</div></div>
+    </div>
+  </div>
+
+  <!-- 02. LA SOLUTION -->
+  <div class="section">
+    <div class="sec-number">02 — La solution</div>
+    <h2 class="sec-title">NutriCam : la nutrition africaine<br/><span style="color:var(--gold)">enfin digitalisée</span></h2>
+    <p class="sec-sub">Une plateforme complète (web + mobile) qui combine les recettes traditionnelles africaines, l'IA nutritionnelle et les paiements Mobile Money.</p>
+    <div class="divider"></div>
+    <div class="solution-features">
+      <div class="sf-card"><span class="sf-icon">🍲</span><div class="sf-title">200+ Recettes locales</div><div class="sf-desc">Base de données unique : Ndolé, Eru, Mbongo Tchobi, Kpem... avec valeurs nutritionnelles validées scientifiquement.</div></div>
+      <div class="sf-card"><span class="sf-icon">🤖</span><div class="sf-title">Coach IA en français</div><div class="sf-desc">Claude API spécialisé gastronomie africaine. Conseils personnalisés 24h/24 adaptés au contexte culturel local.</div></div>
+      <div class="sf-card"><span class="sf-icon">📷</span><div class="sf-title">Scanner produits locaux</div><div class="sf-desc">1 200+ produits camerounais (Azur, SCBC, UCI, SABC) avec scores nutritionnels Nutri-A→E.</div></div>
+      <div class="sf-card"><span class="sf-icon">🏥</span><div class="sf-title">Module Médical</div><div class="sf-desc">Suivi grossesse (40 semaines), diabète, HTA, senior. Validé par le CHU de Yaoundé.</div></div>
+      <div class="sf-card"><span class="sf-icon">💳</span><div class="sf-title">MTN + Orange Money</div><div class="sf-desc">Paiements 100% adaptés à l'Afrique. MTN MoMo, Orange Money, carte bancaire. Abonnement en FCFA.</div></div>
+      <div class="sf-card"><span class="sf-icon">📱</span><div class="sf-title">App mobile native</div><div class="sf-desc">iOS + Android. Fonctionne hors-ligne. Notifications rappels repas, hydratation, prise de poids.</div></div>
+    </div>
+  </div>
+
+  <!-- 03. MARCHÉ -->
+  <div class="section">
+    <div class="sec-number">03 — Le marché</div>
+    <h2 class="sec-title">Un marché de <span style="color:var(--gold)">$2.1 milliards</span><br/>encore inexploré</h2>
+    <p class="sec-sub">Le marché africain des apps de santé & nutrition croît de 23% par an. NutriCam est positionné pour capturer une part significative de ce marché sous-servi.</p>
+    <div class="divider"></div>
+    <div class="market-grid">
+      <div class="mkt-card"><div class="mkt-val" style="color:var(--red)">$2.1Md</div><div class="mkt-label">TAM</div><div class="mkt-desc">Marché total apps nutrition Afrique francophone (2025, GSMA)</div></div>
+      <div class="mkt-card"><div class="mkt-val" style="color:var(--gold)">$180M</div><div class="mkt-label">SAM</div><div class="mkt-desc">Marché adressable serviceable — Afrique centrale francophone (Cameroun, Congo, Gabon, RCA)</div></div>
+      <div class="mkt-card"><div class="mkt-val" style="color:var(--green)">$4.5M</div><div class="mkt-label">SOM An 3</div><div class="mkt-desc">Marché capturable An 3 — 60 000 abonnés Premium × 2 500 FCFA/mois</div></div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.3rem">
+      <div style="font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-bottom:0.8rem">Pourquoi maintenant ?</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem">
+        <div style="font-size:0.8rem;color:var(--text);line-height:1.6"><strong style="color:#fff">📱 58% de smartphone</strong><br/>Pénétration mobile en Afrique subsaharienne en 2024. La fenêtre d'adoption digitale est ouverte.</div>
+        <div style="font-size:0.8rem;color:var(--text);line-height:1.6"><strong style="color:#fff">💳 Mobile Money</strong><br/>MTN et Orange ont 350M clients Mobile Money. Les paiements digitaux sont mainstream en Afrique.</div>
+        <div style="font-size:0.8rem;color:var(--text);line-height:1.6"><strong style="color:#fff">🏥 Crise santé</strong><br/>Diabète +47%, obésité +31% en 10 ans. Les gouvernements cherchent activement des solutions tech santé.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04. MODÈLE ÉCONOMIQUE -->
+  <div class="section">
+    <div class="sec-number">04 — Modèle économique</div>
+    <h2 class="sec-title">Freemium + B2B :<br/><span style="color:var(--gold)">3 sources de revenus</span></h2>
+    <div class="divider"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.3rem;border-top:3px solid var(--green)">
+        <div style="font-size:1.4rem;margin-bottom:0.5rem">🆓→💎</div>
+        <div style="font-size:0.88rem;font-weight:800;color:#fff;margin-bottom:0.3rem">B2C Premium</div>
+        <div style="font-family:'DM Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--green);margin-bottom:0.5rem">2 500 FCFA/mois</div>
+        <div style="font-size:0.75rem;color:var(--muted);line-height:1.5">Accès illimité IA, plans repas, statistiques avancées, module médical complet. Objectif : 30% de conversion.</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.3rem;border-top:3px solid var(--gold)">
+        <div style="font-size:1.4rem;margin-bottom:0.5rem">🏢</div>
+        <div style="font-size:0.88rem;font-weight:800;color:#fff;margin-bottom:0.3rem">B2B API & Entreprises</div>
+        <div style="font-family:'DM Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--gold);margin-bottom:0.5rem">150 000 FCFA/mois</div>
+        <div style="font-size:0.75rem;color:var(--muted);line-height:1.5">API nutrition pour hôpitaux, restaurants, applis tiers. Contrats entreprises pour bien-être employés.</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.3rem;border-top:3px solid var(--blue)">
+        <div style="font-size:1.4rem;margin-bottom:0.5rem">🤝</div>
+        <div style="font-size:0.88rem;font-weight:800;color:#fff;margin-bottom:0.3rem">Partenariats & Affiliés</div>
+        <div style="font-family:'DM Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--blue);margin-bottom:0.5rem">20% commission</div>
+        <div style="font-size:0.75rem;color:var(--muted);line-height:1.5">Marques alimentaires locales (Azur, SCBC), pharmacies, cliniques. Programme affiliés 20%.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05. PROJECTIONS FINANCIÈRES -->
+  <div class="section">
+    <div class="sec-number">05 — Projections financières</div>
+    <h2 class="sec-title">Break-even à <span style="color:var(--gold)">18 mois</span><br/>Profitabilité An 2</h2>
+    <div class="divider"></div>
+    <div class="fin-table">
+      <div class="ft-header">
+        <div>Indicateur</div><div>Mois 3</div><div>Mois 6</div><div>An 1</div><div>An 3</div>
+      </div>
+      <div class="ft-row"><div>Utilisateurs actifs</div><div>500</div><div>2 500</div><div>10 000</div><div>85 000</div></div>
+      <div class="ft-row"><div>Abonnés Premium</div><div>150</div><div>750</div><div>3 000</div><div>25 500</div></div>
+      <div class="ft-row"><div>MRR (FCFA)</div><div style="color:var(--green)">375K</div><div style="color:var(--green)">1.9M</div><div style="color:var(--green)">7.5M</div><div style="color:var(--green)">63.8M</div></div>
+      <div class="ft-row"><div>ARR (FCFA)</div><div>4.5M</div><div>22.5M</div><div>90M</div><div>765M</div></div>
+      <div class="ft-row highlight"><div style="font-weight:800;color:var(--gold)">Revenus annuels (FCFA)</div><div style="color:var(--gold)">4.5M</div><div style="color:var(--gold)">22.5M</div><div style="color:var(--gold)">90M</div><div style="color:var(--gold)">765M</div></div>
+      <div class="ft-row"><div>Coûts opérationnels</div><div>8M</div><div>15M</div><div>35M</div><div>280M</div></div>
+      <div class="ft-row highlight"><div style="font-weight:800;color:var(--green)">Résultat net (FCFA)</div><div style="color:var(--red)">−3.5M</div><div style="color:var(--red)">+7.5M</div><div style="color:var(--green)">+55M</div><div style="color:var(--green)">+485M</div></div>
+    </div>
+    <div style="font-size:0.72rem;color:var(--muted);text-align:right">Hypothèses : ARPU Premium 2 500 FCFA/mois · CAC initial 4 200 FCFA · Churn 2.1%/mois</div>
+  </div>
+
+  <!-- 06. UTILISATION DES FONDS -->
+  <div class="section">
+    <div class="sec-number">06 — Utilisation des fonds</div>
+    <h2 class="sec-title">50 000 000 FCFA<br/><span style="color:var(--gold)">pour 18 mois de runway</span></h2>
+    <div class="divider"></div>
+    <div class="uof-grid">
+      <div class="uof-item"><div class="uof-pct" style="color:var(--blue)">40%</div><div><div class="uof-title">Développement Produit</div><div class="uof-desc">2 développeurs React Native + backend. Finaliser l'app mobile, API paiements production, module IA amélioré.</div><div class="uof-amount" style="color:var(--blue)">20 000 000 FCFA</div></div></div>
+      <div class="uof-item"><div class="uof-pct" style="color:var(--green)">25%</div><div><div class="uof-title">Marketing & Acquisition</div><div class="uof-desc">Campagnes Facebook/Instagram Cameroun. Partenariats créateurs. Events diaspora en Europe.</div><div class="uof-amount" style="color:var(--green)">12 500 000 FCFA</div></div></div>
+      <div class="uof-item"><div class="uof-pct" style="color:var(--gold)">20%</div><div><div class="uof-title">Équipe & Opérations</div><div class="uof-desc">Salaire fondateur, community manager Yaoundé, partenariats CHU pour validation scientifique.</div><div class="uof-amount" style="color:var(--gold)">10 000 000 FCFA</div></div></div>
+      <div class="uof-item"><div class="uof-pct" style="color:var(--purple)">15%</div><div><div class="uof-title">Infrastructure & Légal</div><div class="uof-desc">Serveurs AWS, domaines, RGPD, constitution société SAS, brevets base de données nutritionnelle africaine.</div><div class="uof-amount" style="color:var(--purple)">7 500 000 FCFA</div></div></div>
+    </div>
+  </div>
+
+  <!-- 07. ÉQUIPE -->
+  <div class="section">
+    <div class="sec-number">07 — L'équipe</div>
+    <h2 class="sec-title">Des fondateurs avec<br/><span style="color:var(--gold)">vision et exécution</span></h2>
+    <div class="divider"></div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="tc-av" style="background:linear-gradient(135deg,var(--gl),var(--gold))">GDP</div>
+        <div class="tc-name">Georges Duplece Pitchou</div>
+        <div class="tc-role">CEO & Fondateur</div>
+        <div class="tc-bio">Entrepreneur & développeur full-stack. Fondateur de NutriCam depuis la diaspora camerounaise. Visionnaire de la nutrition africaine digitale. Contact : pitchouduplece9@gmail.com</div>
+      </div>
+      <div class="team-card">
+        <div class="tc-av" style="background:linear-gradient(135deg,#1d4ed8,#3b82f6)">CTO</div>
+        <div class="tc-name">Poste CTO à pourvoir</div>
+        <div class="tc-role">Chief Technology Officer</div>
+        <div class="tc-bio">Recherche d'un co-fondateur technique avec expérience React Native et Node.js. Profil idéal : développeur camerounais diaspora avec vision produit.</div>
+      </div>
+      <div class="team-card">
+        <div class="tc-av" style="background:linear-gradient(135deg,#7c3aed,#a855f7)">CMO</div>
+        <div class="tc-name">Poste CMO à pourvoir</div>
+        <div class="tc-role">Chief Marketing Officer</div>
+        <div class="tc-bio">Recherche d'un responsable marketing avec connaissance du marché africain, réseaux communautaires et expérience growth hacking diaspora.</div>
+      </div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.3rem">
+      <div style="font-size:0.8rem;font-weight:800;color:#fff;margin-bottom:0.8rem">🔬 Conseil scientifique (à constituer avec les fonds)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem">
+        <div style="font-size:0.78rem;color:var(--muted)">• Nutritionniste CHU de Yaoundé — Validation recettes</div>
+        <div style="font-size:0.78rem;color:var(--muted)">• Endocrinologue — Module diabète & HTA</div>
+        <div style="font-size:0.78rem;color:var(--muted)">• Gynécologue-obstétricien — Module grossesse</div>
+        <div style="font-size:0.78rem;color:var(--muted)">• Spécialiste santé publique — Étude d'impact</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 08. INVESTISSEURS CIBLES -->
+  <div class="section">
+    <div class="sec-number">08 — Investisseurs à contacter</div>
+    <h2 class="sec-title">Fonds spécialisés<br/><span style="color:var(--gold)">tech africaine & santé</span></h2>
+    <div class="divider"></div>
+    <div class="inv-grid">
+      <div class="inv-card">
+        <div class="ic-name">Orange Ventures</div>
+        <div class="ic-type" style="background:rgba(249,115,22,0.1);color:#fb923c">CVC · Télécoms</div>
+        <div class="ic-desc">Fonds d'Orange Group, très actif en Afrique subsaharienne. Synergies directes avec Orange Money Cameroun.</div>
+        <div class="ic-focus">✅ Focus : Afrique · Mobile · FinTech · HealthTech</div>
+        <br/><a href="https://orangeventures.fr" class="ic-link" target="_blank">→ orangeventures.fr</a>
+      </div>
+      <div class="inv-card">
+        <div class="ic-name">Adiwale Fund</div>
+        <div class="ic-type" style="background:rgba(34,197,94,0.1);color:var(--green)">VC · Afrique</div>
+        <div class="ic-desc">Fonds d'impact focalisé sur les entrepreneurs africains de la diaspora. Ticket 50K–500K USD.</div>
+        <div class="ic-focus">✅ Focus : Diaspora · Impact · Santé · Éducation</div>
+        <br/><a href="https://adiwale.com" class="ic-link" target="_blank">→ adiwale.com</a>
+      </div>
+      <div class="inv-card">
+        <div class="ic-name">Founders Factory Africa</div>
+        <div class="ic-type" style="background:rgba(59,130,246,0.1);color:var(--blue)">Accélérateur</div>
+        <div class="ic-desc">Accélérateur basé à Johannesburg. Investissement $100K + 6 mois d'accompagnement. Réseau continental.</div>
+        <div class="ic-focus">✅ Focus : Early-stage · HealthTech · AgriTech · FinTech</div>
+        <br/><a href="https://foundersfactory.com/africa" class="ic-link" target="_blank">→ foundersfactory.com/africa</a>
+      </div>
+      <div class="inv-card">
+        <div class="ic-name">Orange Corners Cameroun</div>
+        <div class="ic-type" style="background:rgba(251,191,36,0.1);color:var(--gold)">Programme Gratuit</div>
+        <div class="ic-desc">Programme d'incubation gratuit de l'ambassade néerlandaise au Cameroun. Réseau, mentorat, visibilité internationale. <strong>Postulez maintenant !</strong></div>
+        <div class="ic-focus">✅ Focus : Startups camerounaises · Aucun equity</div>
+        <br/><a href="https://orangecorners.com" class="ic-link" target="_blank">→ orangecorners.com</a>
+      </div>
+      <div class="inv-card">
+        <div class="ic-name">CcHub Nigeria / Cameroun</div>
+        <div class="ic-type" style="background:rgba(168,85,247,0.1);color:var(--purple)">Hub Tech</div>
+        <div class="ic-desc">Le plus grand hub tech d'Afrique de l'Ouest. Réseau de 80 000+ entrepreneurs tech africains. Programme d'investissement seed.</div>
+        <div class="ic-focus">✅ Focus : Digital Health · EdTech · FinTech Afrique</div>
+        <br/><a href="https://cchubnigeria.com" class="ic-link" target="_blank">→ cchubnigeria.com</a>
+      </div>
+      <div class="inv-card">
+        <div class="ic-name">Partech Africa</div>
+        <div class="ic-type" style="background:rgba(20,184,166,0.1);color:var(--teal)">VC · Série A/B</div>
+        <div class="ic-desc">Principal fonds panafricain tech. Portfolio inclus Wave, Andela, etc. Ticket moyen $2-20M. Idéal pour la Série A.</div>
+        <div class="ic-focus">✅ Focus : Pan-africain · Scale-up · Série A</div>
+        <br/><a href="https://partechpartners.com" class="ic-link" target="_blank">→ partechpartners.com</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA FINAL -->
+  <div class="cta-section">
+    <div class="cta-title">Investissons ensemble dans<br/>la nutrition africaine</div>
+    <div class="cta-sub">NutriCam est en phase bêta avec 1 247 utilisateurs et un taux de conversion de 30,8%. La fenêtre d'opportunité est maintenant.</div>
+    <div class="cta-contacts">
+      <button class="cta-btn cta-primary" onclick="window.open('mailto:pitchouduplece9@gmail.com?subject=NutriCam - Dossier Investisseur')">📧 Contacter Georges Duplece Pitchou</button>
+      <button class="cta-btn cta-secondary" onclick="window.open('https://wa.me/237683868760')">📱 WhatsApp : +237 683 868 760</button>
+      <button class="cta-btn cta-secondary" onclick="window.print()">🖨️ Télécharger PDF</button>
+    </div>
+    <div style="margin-top:1.5rem;font-size:0.72rem;color:rgba(255,255,255,0.25)">Document confidentiel · NutriCam 2025 · Yaoundé, Cameroun 🇨🇲 · Tous droits réservés</div>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Mentions légales & CGU</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=Source+Serif+4:wght@300;400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#faf9f6;--dark:#0e1a0f;--green:#1a7a3e;--gl:#22a854;
+  --y:#f5b800;--border:#e2e8df;--text:#1a2b1e;--muted:#6b8c72;--card:#fff;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+
+/* NAV */
+.nav{background:var(--dark);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.nav-logo{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;color:#fff}
+.nav-logo span{color:var(--y)}
+.nav-back{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);padding:0.45rem 1rem;border-radius:8px;font-size:0.8rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all 0.2s}
+.nav-back:hover{color:#fff}
+
+/* DOC TABS */
+.doc-tabs{background:var(--card);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;position:sticky;top:52px;z-index:40}
+.doc-tab{padding:1rem 1.5rem;font-size:0.85rem;font-weight:700;color:var(--muted);cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;transition:all 0.2s}
+.doc-tab:hover{color:var(--text)}
+.doc-tab.active{color:var(--green);border-bottom-color:var(--green)}
+
+/* LAYOUT */
+.doc-layout{max-width:900px;margin:0 auto;padding:3rem 2rem;display:grid;grid-template-columns:220px 1fr;gap:3rem;align-items:start}
+.toc{position:sticky;top:110px}
+.toc-title{font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:0.8rem}
+.toc-item{display:block;font-size:0.82rem;color:var(--muted);text-decoration:none;padding:0.35rem 0;border-left:2px solid var(--border);padding-left:0.8rem;transition:all 0.2s}
+.toc-item:hover,.toc-item.active{color:var(--green);border-left-color:var(--green)}
+
+/* CONTENT */
+.doc-content{display:none}
+.doc-content.show{display:block}
+
+.doc-header{margin-bottom:2.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border)}
+.doc-tag{display:inline-block;background:rgba(26,122,62,0.08);color:var(--green);font-size:0.72rem;font-weight:800;padding:0.25rem 0.8rem;border-radius:100px;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.8rem}
+.doc-title{font-family:'Fraunces',serif;font-size:2.2rem;font-weight:900;color:var(--dark);margin-bottom:0.5rem}
+.doc-meta{font-size:0.8rem;color:var(--muted)}
+.doc-meta strong{color:var(--text)}
+
+/* ARTICLE STYLES */
+.doc-section{margin-bottom:2.5rem;scroll-margin-top:120px}
+.doc-section h2{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;color:var(--dark);margin-bottom:1rem;padding-top:0.5rem}
+.doc-section h3{font-size:1rem;font-weight:700;color:var(--dark);margin:1.2rem 0 0.5rem}
+.doc-section p{font-family:'Source Serif 4',serif;font-size:0.95rem;color:var(--text);line-height:1.8;margin-bottom:0.8rem}
+.doc-section ul,.doc-section ol{font-family:'Source Serif 4',serif;font-size:0.92rem;color:var(--text);line-height:1.8;margin-bottom:0.8rem;padding-left:1.5rem}
+.doc-section ul li,.doc-section ol li{margin-bottom:0.4rem}
+
+/* HIGHLIGHT BOXES */
+.highlight-box{border-radius:12px;padding:1.2rem 1.4rem;margin:1.5rem 0;font-size:0.88rem;line-height:1.6}
+.hb-green{background:rgba(26,122,62,0.06);border-left:4px solid var(--green);border-radius:0 12px 12px 0}
+.hb-yellow{background:rgba(245,184,0,0.08);border-left:4px solid var(--y);border-radius:0 12px 12px 0}
+.hb-red{background:rgba(230,57,70,0.06);border-left:4px solid #e63946;border-radius:0 12px 12px 0}
+.hb-title{font-weight:800;margin-bottom:0.3rem;font-family:'DM Sans',sans-serif}
+.hb-green .hb-title{color:var(--green)}
+.hb-yellow .hb-title{color:#b58a00}
+.hb-red .hb-title{color:#e63946}
+
+/* TABLE */
+.doc-table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:0.85rem;border-radius:12px;overflow:hidden;border:1px solid var(--border)}
+.doc-table th{background:var(--dark);color:rgba(255,255,255,0.8);padding:0.7rem 1rem;text-align:left;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em}
+.doc-table td{padding:0.7rem 1rem;border-top:1px solid var(--border);vertical-align:top;font-family:'Source Serif 4',serif}
+.doc-table tr:hover td{background:rgba(26,122,62,0.02)}
+
+/* CONTACT SECTION */
+.contact-card{background:var(--dark);border-radius:20px;padding:2rem;margin-top:2rem;color:#fff;text-align:center}
+.cc-title{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;margin-bottom:0.5rem}
+.cc-sub{color:rgba(255,255,255,0.5);font-size:0.85rem;margin-bottom:1.5rem}
+.cc-links{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.cc-link{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#fff;padding:0.6rem 1.2rem;border-radius:10px;font-size:0.82rem;font-weight:700;text-decoration:none;transition:all 0.2s}
+.cc-link:hover{background:rgba(255,255,255,0.15)}
+
+@media(max-width:768px){.doc-layout{grid-template-columns:1fr}.toc{display:none}.doc-layout{padding:1.5rem}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo">Nutri<span>Cam</span></div>
+  <a href="#" class="nav-back">← Retour à l'accueil</a>
+</nav>
+
+<div class="doc-tabs">
+  <div class="doc-tab active" onclick="showDoc('confidentialite',this)">🔒 Politique de confidentialité</div>
+  <div class="doc-tab" onclick="showDoc('cgu',this)">📜 CGU</div>
+  <div class="doc-tab" onclick="showDoc('mentions',this)">🏢 Mentions légales</div>
+  <div class="doc-tab" onclick="showDoc('cookies',this)">🍪 Cookies</div>
+  <div class="doc-tab" onclick="showDoc('rgpd',this)">🛡️ Vos droits RGPD</div>
+</div>
+
+<div class="doc-layout">
+
+  <!-- TOC -->
+  <aside class="toc" id="toc"></aside>
+
+  <!-- ═══ CONFIDENTIALITÉ ═══ -->
+  <article class="doc-content show" id="doc-confidentialite">
+    <div class="doc-header">
+      <div class="doc-tag">🔒 Document légal</div>
+      <h1 class="doc-title">Politique de confidentialité</h1>
+      <div class="doc-meta">Dernière mise à jour : <strong>15 Janvier 2025</strong> · Version 1.0 · <strong>NutriCam SAS</strong>, Yaoundé, Cameroun</div>
+    </div>
+
+    <div class="highlight-box hb-green">
+      <div class="hb-title">Notre engagement</div>
+      NutriCam s'engage à protéger votre vie privée. Nous collectons uniquement les données nécessaires au fonctionnement du service et ne vendons jamais vos données personnelles à des tiers.
+    </div>
+
+    <div class="doc-section" id="conf-1">
+      <h2>1. Responsable du traitement</h2>
+      <p><strong>NutriCam SAS</strong><br/>Siège social : Yaoundé, Cameroun<br/>Email : pitchouduplece9@gmail.com<br/>Téléphone : +237 683 868 760</p>
+      <p>NutriCam est enregistrée au Registre du Commerce et du Crédit Mobilier (RCCM) sous le numéro RC/YAO/2025/B/GDP001.</p>
+    </div>
+
+    <div class="doc-section" id="conf-2">
+      <h2>2. Données collectées</h2>
+      <h3>2.1 Données fournies par l'utilisateur</h3>
+      <ul>
+        <li><strong>Données d'identité :</strong> prénom, adresse email, mot de passe (chiffré bcrypt)</li>
+        <li><strong>Données de santé :</strong> âge, poids, taille, objectifs nutritionnels, allergies alimentaires</li>
+        <li><strong>Données d'usage :</strong> journal alimentaire, recettes consultées, plans repas générés</li>
+        <li><strong>Données de paiement :</strong> numéro de transaction Mobile Money (jamais le numéro complet)</li>
+      </ul>
+      <h3>2.2 Données collectées automatiquement</h3>
+      <ul>
+        <li>Adresse IP (anonymisée après 24h)</li>
+        <li>Type d'appareil et système d'exploitation</li>
+        <li>Pages visitées, durée des sessions</li>
+        <li>Données de performance de l'application</li>
+      </ul>
+      <div class="highlight-box hb-yellow">
+        <div class="hb-title">Données de santé — Protection renforcée</div>
+        Vos données de santé (poids, allergies, pathologies) bénéficient d'une protection renforcée. Elles sont chiffrées avec AES-256 et ne sont jamais partagées avec des tiers sans votre consentement explicite.
+      </div>
+    </div>
+
+    <div class="doc-section" id="conf-3">
+      <h2>3. Finalités et bases légales</h2>
+      <table class="doc-table">
+        <thead><tr><th>Finalité</th><th>Base légale</th><th>Durée conservation</th></tr></thead>
+        <tbody>
+          <tr><td>Fourniture du service nutritionnel</td><td>Exécution du contrat</td><td>Durée abonnement + 1 an</td></tr>
+          <tr><td>Personnalisation IA des recommandations</td><td>Consentement</td><td>Durée abonnement</td></tr>
+          <tr><td>Traitement des paiements Mobile Money</td><td>Obligation légale</td><td>10 ans (comptable)</td></tr>
+          <tr><td>Amélioration du service (analytics)</td><td>Intérêt légitime</td><td>24 mois (anonymisé)</td></tr>
+          <tr><td>Communications marketing</td><td>Consentement</td><td>Jusqu'au désabonnement</td></tr>
+          <tr><td>Sécurité et lutte contre la fraude</td><td>Obligation légale</td><td>12 mois</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="doc-section" id="conf-4">
+      <h2>4. Partage des données</h2>
+      <p>NutriCam ne vend jamais vos données personnelles. Nous partageons certaines données uniquement dans les cas suivants :</p>
+      <ul>
+        <li><strong>Prestataires techniques :</strong> hébergement AWS (données en Afrique du Sud), Stripe pour les paiements internationaux, Firebase pour les notifications push</li>
+        <li><strong>Partenaires médicaux :</strong> uniquement avec votre consentement explicite, pour le suivi nutritionnel prescrit</li>
+        <li><strong>Autorités :</strong> en cas d'obligation légale ou réquisition judiciaire</li>
+      </ul>
+      <div class="highlight-box hb-red">
+        <div class="hb-title">Ce que nous ne faisons JAMAIS</div>
+        Nous ne vendons pas, ne louons pas et ne partageons pas vos données avec des annonceurs, agences marketing ou courtiers en données. NutriCam est une application sans publicité.
+      </div>
+    </div>
+
+    <div class="doc-section" id="conf-5">
+      <h2>5. Sécurité des données</h2>
+      <p>Nous mettons en œuvre les mesures de sécurité suivantes :</p>
+      <ul>
+        <li>Chiffrement AES-256 des données sensibles au repos</li>
+        <li>Transport HTTPS/TLS 1.3 obligatoire</li>
+        <li>Authentification à deux facteurs (2FA) pour les administrateurs</li>
+        <li>Audits de sécurité trimestriels par un prestataire externe</li>
+        <li>Sauvegardes chiffrées quotidiennes avec rétention 30 jours</li>
+        <li>Journalisation de tous les accès aux données sensibles</li>
+      </ul>
+    </div>
+
+    <div class="doc-section" id="conf-6">
+      <h2>6. Vos droits</h2>
+      <p>Conformément à la loi camerounaise n°2010/012 et aux principes RGPD, vous disposez des droits suivants :</p>
+      <ul>
+        <li><strong>Droit d'accès :</strong> obtenir une copie de toutes vos données</li>
+        <li><strong>Droit de rectification :</strong> corriger des données inexactes</li>
+        <li><strong>Droit à l'effacement :</strong> supprimer votre compte et toutes vos données</li>
+        <li><strong>Droit à la portabilité :</strong> exporter vos données (JSON/CSV)</li>
+        <li><strong>Droit d'opposition :</strong> vous opposer au traitement marketing</li>
+        <li><strong>Droit de retrait du consentement :</strong> à tout moment, sans préjudice</li>
+      </ul>
+      <p>Pour exercer ces droits : <strong>pitchouduplece9@gmail.com</strong> — Réponse sous 30 jours maximum.</p>
+    </div>
+
+    <div class="contact-card">
+      <div class="cc-title">Questions sur vos données ?</div>
+      <div class="cc-sub">Notre Délégué à la Protection des Données (DPO) est disponible pour toute question.</div>
+      <div class="cc-links">
+        <a href="mailto:pitchouduplece9@gmail.com" class="cc-link">📧 pitchouduplece9@gmail.com</a>
+        <a href="#" class="cc-link">📥 Télécharger mes données</a>
+        <a href="#" class="cc-link">🗑️ Supprimer mon compte</a>
+      </div>
+    </div>
+  </article>
+
+  <!-- ═══ CGU ═══ -->
+  <article class="doc-content" id="doc-cgu">
+    <div class="doc-header">
+      <div class="doc-tag">📜 Document légal</div>
+      <h1 class="doc-title">Conditions Générales d'Utilisation</h1>
+      <div class="doc-meta">En vigueur depuis le <strong>15 Janvier 2025</strong> · NutriCam SAS</div>
+    </div>
+    <div class="doc-section" id="cgu-1">
+      <h2>1. Objet et acceptation</h2>
+      <p>Les présentes Conditions Générales d'Utilisation (CGU) régissent l'accès et l'utilisation de la plateforme NutriCam (site web nutricam.cm et application mobile NutriCam), éditée par NutriCam SAS.</p>
+      <p>L'utilisation de la plateforme implique l'acceptation pleine et entière des présentes CGU. Toute personne qui ne souhaite pas être liée par ces CGU ne doit pas utiliser le service.</p>
+      <div class="highlight-box hb-yellow">
+        <div class="hb-title">⚠️ Avertissement médical important</div>
+        NutriCam est un outil d'information nutritionnelle et ne remplace en aucun cas un avis médical professionnel. En cas de pathologie (diabète, hypertension, grossesse à risque...), consultez toujours un médecin ou diététicien agréé avant de modifier votre alimentation.
+      </div>
+    </div>
+    <div class="doc-section" id="cgu-2">
+      <h2>2. Description des services</h2>
+      <p>NutriCam propose les services suivants :</p>
+      <ul>
+        <li>Calcul de besoins caloriques personnalisés</li>
+        <li>Base de données de 200+ recettes camerounaises avec valeurs nutritionnelles</li>
+        <li>Génération de plans repas hebdomadaires par intelligence artificielle</li>
+        <li>Scanner de produits alimentaires camerounais et internationaux</li>
+        <li>Coach nutritionnel IA disponible 24h/24</li>
+        <li>Modules spécialisés : enfants, grossesse, sportifs, détox</li>
+      </ul>
+    </div>
+    <div class="doc-section" id="cgu-3">
+      <h2>3. Abonnements et paiements</h2>
+      <h3>3.1 Plans tarifaires</h3>
+      <table class="doc-table">
+        <thead><tr><th>Plan</th><th>Prix</th><th>Fonctionnalités</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Gratuit</strong></td><td>0 FCFA</td><td>Calculateur calories, 15 recettes, 1 profil</td></tr>
+          <tr><td><strong>Premium</strong></td><td>2 500 FCFA/mois</td><td>200+ recettes, plan IA, coach, scanner</td></tr>
+          <tr><td><strong>Famille</strong></td><td>5 000 FCFA/mois</td><td>Tout Premium + 6 profils + liste courses</td></tr>
+        </tbody>
+      </table>
+      <h3>3.2 Méthodes de paiement acceptées</h3>
+      <ul>
+        <li>MTN Mobile Money (Cameroun)</li>
+        <li>Orange Money (Cameroun)</li>
+        <li>Cartes bancaires Visa/Mastercard via Stripe</li>
+      </ul>
+      <h3>3.3 Politique de remboursement</h3>
+      <p>Tout abonnement peut être annulé dans les <strong>7 jours suivant la souscription</strong> avec remboursement intégral. Après ce délai, l'abonnement est non remboursable mais reste actif jusqu'à son terme.</p>
+    </div>
+    <div class="doc-section" id="cgu-4">
+      <h2>4. Obligations de l'utilisateur</h2>
+      <p>En utilisant NutriCam, vous vous engagez à :</p>
+      <ul>
+        <li>Fournir des informations exactes lors de l'inscription</li>
+        <li>Ne pas utiliser le service à des fins commerciales sans autorisation</li>
+        <li>Ne pas tenter de contourner les mesures de sécurité</li>
+        <li>Respecter les droits de propriété intellectuelle</li>
+        <li>Ne pas partager votre compte avec des tiers</li>
+      </ul>
+    </div>
+    <div class="doc-section" id="cgu-5">
+      <h2>5. Propriété intellectuelle</h2>
+      <p>L'ensemble des contenus de NutriCam (recettes, textes, images, code, base de données) est la propriété exclusive de NutriCam SAS ou de ses partenaires. Toute reproduction, même partielle, est interdite sans autorisation écrite.</p>
+      <p>Les valeurs nutritionnelles des recettes sont issues de recherches originales de NutriCam et ne peuvent pas être reproduites commercialement.</p>
+    </div>
+    <div class="doc-section" id="cgu-6">
+      <h2>6. Limitation de responsabilité</h2>
+      <p>NutriCam ne peut être tenu responsable :</p>
+      <ul>
+        <li>Des décisions nutritionnelles prises sur la base des informations fournies</li>
+        <li>Des interruptions de service liées à des maintenances ou incidents techniques</li>
+        <li>Des pertes de données en cas de force majeure</li>
+        <li>Des conséquences médicales résultant de l'utilisation du service sans avis médical</li>
+      </ul>
+    </div>
+    <div class="doc-section" id="cgu-7">
+      <h2>7. Loi applicable et juridiction</h2>
+      <p>Les présentes CGU sont régies par le droit camerounais. En cas de litige, les parties s'efforceront de trouver une solution amiable avant tout recours judiciaire. À défaut d'accord amiable, les tribunaux de Yaoundé, Cameroun, seront seuls compétents.</p>
+    </div>
+    <div class="contact-card">
+      <div class="cc-title">Besoin d'aide avec les CGU ?</div>
+      <div class="cc-sub">Notre équipe juridique répondra à vos questions dans les 48h ouvrées.</div>
+      <div class="cc-links">
+        <a href="mailto:pitchouduplece9@gmail.com" class="cc-link">📧 pitchouduplece9@gmail.com</a>
+        <a href="#" class="cc-link">📄 Version PDF</a>
+      </div>
+    </div>
+  </article>
+
+  <!-- ═══ MENTIONS LÉGALES ═══ -->
+  <article class="doc-content" id="doc-mentions">
+    <div class="doc-header">
+      <div class="doc-tag">🏢 Informations légales</div>
+      <h1 class="doc-title">Mentions légales</h1>
+      <div class="doc-meta">Conformément à la législation camerounaise en vigueur</div>
+    </div>
+    <div class="doc-section" id="men-1">
+      <h2>Éditeur du site</h2>
+      <p><strong>NutriCam SAS</strong><br/>Société par Actions Simplifiée au capital de 5 000 000 FCFA<br/>Siège social : Quartier Yaoundé, Cameroun<br/>RCCM : RC/YAO/2025/B/GDP001<br/>N° Contribuable : M202500001<br/>Téléphone : +237 683 868 760<br/>Email : pitchouduplece9@gmail.com<br/>Directeur de publication : Georges Duplece Pitchou</p>
+    </div>
+    <div class="doc-section" id="men-2">
+      <h2>Hébergement</h2>
+      <p><strong>Amazon Web Services (AWS)</strong><br/>Région principale : af-south-1 (Cape Town, Afrique du Sud)<br/>Adresse : Amazon Web Services EMEA SARL, 38 Avenue John F. Kennedy, L-1855 Luxembourg<br/>Site : aws.amazon.com</p>
+      <p><strong>CDN Afrique :</strong> Cloudflare, Inc. · 101 Townsend St, San Francisco, CA 94107, USA</p>
+    </div>
+    <div class="doc-section" id="men-3">
+      <h2>Propriété intellectuelle</h2>
+      <p>Le site nutricam.cm et l'application NutriCam, ainsi que l'ensemble de leurs contenus (textes, images, vidéos, base de données nutritionnelles, recettes, logos, icônes) sont la propriété exclusive de NutriCam SAS.</p>
+      <p>Toute reproduction, représentation, modification ou distribution, même partielle, de ces éléments est interdite sans l'autorisation écrite préalable de NutriCam SAS.</p>
+    </div>
+    <div class="doc-section" id="men-4">
+      <h2>Données personnelles et DPO</h2>
+      <p>Le Délégué à la Protection des Données (DPO) de NutriCam peut être contacté à :<br/>📧 <strong>pitchouduplece9@gmail.com</strong><br/>Délai de réponse garanti : 30 jours maximum</p>
+    </div>
+    <div class="doc-section" id="men-5">
+      <h2>Médiation</h2>
+      <p>Conformément aux dispositions légales camerounaises, en cas de litige relatif à un abonnement, l'utilisateur peut recourir à une médiation en contactant au préalable le service client de NutriCam à <strong>pitchouduplece9@gmail.com</strong>.</p>
+    </div>
+  </article>
+
+  <!-- ═══ COOKIES ═══ -->
+  <article class="doc-content" id="doc-cookies">
+    <div class="doc-header">
+      <div class="doc-tag">🍪 Cookies & Traceurs</div>
+      <h1 class="doc-title">Politique Cookies</h1>
+      <div class="doc-meta">Dernière mise à jour : <strong>15 Janvier 2025</strong></div>
+    </div>
+    <div class="doc-section" id="cook-1">
+      <h2>Qu'est-ce qu'un cookie ?</h2>
+      <p>Un cookie est un petit fichier texte déposé sur votre appareil lors de la visite de notre site. Il permet de mémoriser vos préférences et d'améliorer votre expérience de navigation.</p>
+    </div>
+    <div class="doc-section" id="cook-2">
+      <h2>Cookies utilisés par NutriCam</h2>
+      <table class="doc-table">
+        <thead><tr><th>Cookie</th><th>Type</th><th>Durée</th><th>Finalité</th></tr></thead>
+        <tbody>
+          <tr><td>nutricam_session</td><td>Strictement nécessaire</td><td>Session</td><td>Maintien de la connexion</td></tr>
+          <tr><td>nutricam_prefs</td><td>Fonctionnel</td><td>1 an</td><td>Préférences (langue, thème)</td></tr>
+          <tr><td>nc_analytics</td><td>Analytique (opt-in)</td><td>24 mois</td><td>Statistiques d'usage anonymisées</td></tr>
+          <tr><td>_ga, _gid</td><td>Analytique (opt-in)</td><td>2 ans / 24h</td><td>Google Analytics (anonymisé)</td></tr>
+          <tr><td>stripe_sid</td><td>Paiement</td><td>30 min</td><td>Sécurisation des paiements Stripe</td></tr>
+        </tbody>
+      </table>
+      <div class="highlight-box hb-green">
+        <div class="hb-title">Aucun cookie publicitaire</div>
+        NutriCam n'utilise aucun cookie publicitaire ou de tracking cross-sites. Nous ne partageons vos données de navigation avec aucune régie publicitaire.
+      </div>
+    </div>
+    <div class="doc-section" id="cook-3">
+      <h2>Gérer vos préférences</h2>
+      <p>Vous pouvez accepter ou refuser les cookies non essentiels à tout moment via notre bandeau de consentement ou dans vos paramètres de compte.</p>
+      <p>La désactivation des cookies fonctionnels peut affecter certaines fonctionnalités (mémorisation de la langue, état de connexion).</p>
+    </div>
+  </article>
+
+  <!-- ═══ RGPD ═══ -->
+  <article class="doc-content" id="doc-rgpd">
+    <div class="doc-header">
+      <div class="doc-tag">🛡️ Vos droits</div>
+      <h1 class="doc-title">Vos droits sur vos données</h1>
+      <div class="doc-meta">Conformité RGPD et loi camerounaise n°2010/012</div>
+    </div>
+    <div class="doc-section" id="rgpd-1">
+      <h2>Vos 6 droits fondamentaux</h2>
+      <div class="options-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem"><div style="font-size:1.5rem;margin-bottom:0.5rem">👁️</div><div style="font-weight:800;color:var(--dark);margin-bottom:0.3rem">Droit d'accès</div><div style="font-size:0.8rem;color:var(--muted)">Obtenir une copie de toutes vos données personnelles</div></div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem"><div style="font-size:1.5rem;margin-bottom:0.5rem">✏️</div><div style="font-weight:800;color:var(--dark);margin-bottom:0.3rem">Droit de rectification</div><div style="font-size:0.8rem;color:var(--muted)">Corriger des données inexactes ou incomplètes</div></div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem"><div style="font-size:1.5rem;margin-bottom:0.5rem">🗑️</div><div style="font-weight:800;color:var(--dark);margin-bottom:0.3rem">Droit à l'effacement</div><div style="font-size:0.8rem;color:var(--muted)">Supprimer votre compte et toutes vos données</div></div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem"><div style="font-size:1.5rem;margin-bottom:0.5rem">📦</div><div style="font-weight:800;color:var(--dark);margin-bottom:0.3rem">Droit à la portabilité</div><div style="font-size:0.8rem;color:var(--muted)">Exporter vos données en JSON ou CSV</div></div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem"><div style="font-size:1.5rem;margin-bottom:0.5rem">🚫</div><div style="font-weight:800;color:var(--dark);margin-bottom:0.3rem">Droit d'opposition</div><div style="font-size:0.8rem;color:var(--muted)">Vous opposer au traitement marketing</div></div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem"><div style="font-size:1.5rem;margin-bottom:0.5rem">⏸️</div><div style="font-weight:800;color:var(--dark);margin-bottom:0.3rem">Droit à la limitation</div><div style="font-size:0.8rem;color:var(--muted)">Restreindre le traitement de vos données</div></div>
+      </div>
+    </div>
+    <div class="doc-section" id="rgpd-2">
+      <h2>Comment exercer vos droits ?</h2>
+      <p>Pour toute demande, contactez notre DPO par email à <strong>pitchouduplece9@gmail.com</strong> en précisant :</p>
+      <ol>
+        <li>Votre nom complet et adresse email associée au compte</li>
+        <li>La nature de votre demande (accès, rectification, suppression...)</li>
+        <li>Une copie d'un justificatif d'identité (pour les demandes de suppression)</li>
+      </ol>
+      <p>Délai de réponse : <strong>30 jours maximum</strong> (extendable à 3 mois pour les demandes complexes).</p>
+    </div>
+    <div class="contact-card">
+      <div class="cc-title">Exercer un droit sur vos données</div>
+      <div class="cc-sub">Notre DPO traite toutes les demandes de données dans les 30 jours.</div>
+      <div class="cc-links">
+        <a href="mailto:pitchouduplece9@gmail.com" class="cc-link">📧 pitchouduplece9@gmail.com</a>
+        <a href="#" class="cc-link">📥 Exporter mes données</a>
+        <a href="#" class="cc-link">🗑️ Supprimer mon compte</a>
+      </div>
+    </div>
+  </article>
+
+</div>
+
+<script>
+const tocData = {
+  confidentialite:[
+    {id:'conf-1',label:'Responsable du traitement'},
+    {id:'conf-2',label:'Données collectées'},
+    {id:'conf-3',label:'Finalités et bases légales'},
+    {id:'conf-4',label:'Partage des données'},
+    {id:'conf-5',label:'Sécurité'},
+    {id:'conf-6',label:'Vos droits'},
+  ],
+  cgu:[
+    {id:'cgu-1',label:'Objet et acceptation'},
+    {id:'cgu-2',label:'Description des services'},
+    {id:'cgu-3',label:'Abonnements et paiements'},
+    {id:'cgu-4',label:'Obligations utilisateur'},
+    {id:'cgu-5',label:'Propriété intellectuelle'},
+    {id:'cgu-6',label:'Limitation responsabilité'},
+    {id:'cgu-7',label:'Loi applicable'},
+  ],
+  mentions:[
+    {id:'men-1',label:'Éditeur du site'},
+    {id:'men-2',label:'Hébergement'},
+    {id:'men-3',label:'Propriété intellectuelle'},
+    {id:'men-4',label:'Données & DPO'},
+    {id:'men-5',label:'Médiation'},
+  ],
+  cookies:[
+    {id:'cook-1',label:'Qu\'est-ce qu\'un cookie ?'},
+    {id:'cook-2',label:'Cookies utilisés'},
+    {id:'cook-3',label:'Gérer vos préférences'},
+  ],
+  rgpd:[
+    {id:'rgpd-1',label:'Vos 6 droits fondamentaux'},
+    {id:'rgpd-2',label:'Comment exercer vos droits ?'},
+  ],
+};
+
+function showDoc(id, btn){
+  document.querySelectorAll('.doc-content').forEach(d=>d.classList.remove('show'));
+  document.querySelectorAll('.doc-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('doc-'+id).classList.add('show');
+  btn.classList.add('active');
+  renderTOC(id);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderTOC(id){
+  const items = tocData[id]||[];
+  document.getElementById('toc').innerHTML = `<div class="toc-title">Sur cette page</div>`+
+    items.map(i=>`<a class="toc-item" href="#${i.id}" onclick="highlightToc(this)">${i.label}</a>`).join('');
+}
+
+function highlightToc(el){
+  document.querySelectorAll('.toc-item').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+renderTOC('confidentialite');
+</script>
+</body>
+</html>

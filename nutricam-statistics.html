@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Mes Statistiques</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f3faf5;--dark:#081209;--green:#1a7a3e;--gl:#22a854;--glight:#4ade80;
+  --y:#f5b800;--red:#e63946;--blue:#2563eb;--purple:#7c3aed;--orange:#f97316;--teal:#0d9488;
+  --card:#fff;--border:#daeee2;--text:#192b1c;--muted:#6b8c72;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* NAV */
+.nav{background:var(--dark);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.nav-logo{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:#fff}
+.nav-logo span{color:var(--y)}
+.nav-user{display:flex;align-items:center;gap:0.7rem}
+.nav-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gl),var(--y));display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:800;color:#000}
+.nav-name{font-size:0.82rem;color:rgba(255,255,255,0.7)}
+
+/* MAIN */
+.main{max-width:1200px;margin:0 auto;padding:2rem}
+
+/* PERIOD SELECTOR */
+.period-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
+.pb-title{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:var(--dark)}
+.period-tabs{display:flex;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:4px;gap:3px}
+.pt{background:transparent;border:none;border-radius:9px;padding:0.45rem 1.1rem;font-size:0.8rem;font-weight:700;color:var(--muted);cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif}
+.pt.active{background:var(--dark);color:#fff}
+
+/* KPI ROW */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.3rem;position:relative;overflow:hidden;transition:transform 0.2s}
+.kpi:hover{transform:translateY(-2px)}
+.kpi-accent{position:absolute;top:0;left:0;right:0;height:3px}
+.kpi-label{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-bottom:0.5rem}
+.kpi-val{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--dark)}
+.kpi-change{font-size:0.72rem;margin-top:0.3rem;display:flex;align-items:center;gap:0.3rem}
+.kpi-up{color:var(--gl)}.kpi-down{color:var(--red)}.kpi-neutral{color:var(--muted)}
+.kpi-icon{position:absolute;top:1rem;right:1rem;font-size:1.3rem;opacity:0.2}
+
+/* CHART GRID */
+.chart-grid{display:grid;grid-template-columns:3fr 2fr;gap:1.5rem;margin-bottom:1.5rem}
+.chart-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.5rem}
+.cc-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.3rem}
+.cc-title{font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:800;color:var(--dark)}
+.cc-badge{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:0.28rem 0.7rem;font-size:0.72rem;font-weight:700;color:var(--muted)}
+
+/* BAR CHART */
+.bars-wrap{display:flex;align-items:flex-end;gap:5px;height:130px;margin-bottom:0.6rem}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.bar-bg{width:100%;background:rgba(26,122,62,0.06);border-radius:5px;flex:1;position:relative;overflow:hidden}
+.bar-fill{position:absolute;bottom:0;left:0;right:0;border-radius:5px;transition:height 1.2s ease}
+.bar-val{font-size:0.58rem;color:var(--muted);font-family:'DM Mono',monospace}
+.bar-lbl{font-size:0.6rem;color:var(--muted);font-weight:700}
+.chart-goal-line{display:flex;align-items:center;gap:0.5rem;font-size:0.72rem;color:var(--muted);border-top:1px dashed rgba(245,184,0,0.3);padding-top:0.5rem}
+
+/* MACRO PIE */
+.macro-ring{display:flex;flex-direction:column;align-items:center;gap:1rem}
+.macro-legend{width:100%}
+.ml-row{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.6rem}
+.ml-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.ml-lbl{font-size:0.78rem;color:var(--muted);flex:1}
+.ml-val{font-size:0.82rem;font-weight:800;color:var(--text)}
+.ml-bar{flex:1;height:4px;background:var(--bg);border-radius:2px;overflow:hidden}
+.ml-fill{height:100%;border-radius:2px}
+
+/* WEIGHT CHART */
+.weight-chart-wrap{position:relative;height:130px;margin-bottom:0.5rem}
+.wc-svg{width:100%;height:100%}
+
+/* FOOD LOG TABLE */
+.food-log{background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;margin-bottom:1.5rem}
+.fl-header{padding:1.1rem 1.4rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.fl-title{font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:800;color:var(--dark)}
+.fl-filter{display:flex;gap:0.3rem}
+.flf{background:transparent;border:none;font-size:0.75rem;font-weight:700;color:var(--muted);padding:0.3rem 0.7rem;border-radius:7px;cursor:pointer;transition:all 0.15s;font-family:'DM Sans',sans-serif}
+.flf.active,.flf:hover{background:rgba(26,122,62,0.08);color:var(--green)}
+.fl-table{width:100%;border-collapse:collapse}
+.fl-table th{padding:0.65rem 1.2rem;text-align:left;font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);background:rgba(0,0,0,0.01)}
+.fl-table td{padding:0.75rem 1.2rem;font-size:0.83rem;border-top:1px solid var(--border);vertical-align:middle}
+.fl-table tr:hover td{background:rgba(26,122,62,0.02)}
+.td-meal-info{display:flex;align-items:center;gap:0.7rem}
+.td-emoji{font-size:1.3rem}
+.td-name{font-weight:600;color:var(--text)}
+.td-cat{font-size:0.68rem;color:var(--muted)}
+.td-cal{font-weight:800;color:var(--dark);font-family:'DM Mono',monospace}
+.td-bar-wrap{width:80px}
+.td-bar-bg{height:5px;background:var(--bg);border-radius:3px;overflow:hidden}
+.td-bar-fill{height:100%;border-radius:3px;background:var(--gl)}
+.td-score{font-size:0.75rem;font-weight:800;padding:0.18rem 0.6rem;border-radius:6px}
+
+/* BADGES SECTION */
+.badges-section{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.5rem;margin-bottom:1.5rem}
+.bs-header{font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:800;color:var(--dark);margin-bottom:1.2rem}
+.badges-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:0.8rem}
+.badge-card{background:var(--bg);border:1.5px solid var(--border);border-radius:14px;padding:1.1rem;text-align:center;transition:all 0.2s}
+.badge-card.earned{border-color:rgba(26,122,62,0.3);background:rgba(26,122,62,0.04)}
+.badge-card.locked{opacity:0.45}
+.bc-icon{font-size:2rem;display:block;margin-bottom:0.4rem}
+.bc-name{font-size:0.75rem;font-weight:800;color:var(--dark);margin-bottom:0.2rem}
+.bc-desc{font-size:0.65rem;color:var(--muted);line-height:1.4}
+.bc-earned-tag{font-size:0.62rem;font-weight:700;color:var(--gl);margin-top:0.3rem}
+
+/* INSIGHTS */
+.insights-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+.insight-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem}
+.ic-icon{font-size:1.5rem;margin-bottom:0.5rem}
+.ic-title{font-size:0.82rem;font-weight:800;color:var(--dark);margin-bottom:0.3rem}
+.ic-text{font-size:0.78rem;color:var(--muted);line-height:1.5}
+.ic-highlight{color:var(--green);font-weight:800}
+
+/* EXPORT */
+.export-bar{display:flex;gap:0.8rem;justify-content:flex-end;padding-bottom:2rem}
+.export-btn{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:0.6rem 1.2rem;font-size:0.8rem;font-weight:700;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;display:flex;align-items:center;gap:0.4rem}
+.export-btn:hover{border-color:var(--gl);color:var(--green)}
+.export-btn.primary{background:var(--dark);border-color:var(--dark);color:#fff}
+.export-btn.primary:hover{background:var(--green)}
+
+@media(max-width:900px){.kpi-row{grid-template-columns:1fr 1fr}.chart-grid{grid-template-columns:1fr}.insights-row{grid-template-columns:1fr}.main{padding:1rem}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo">Nutri<span>Cam</span> <span style="font-size:0.8rem;color:rgba(255,255,255,0.4);font-family:'DM Sans',sans-serif;font-weight:400">· Mes Stats</span></div>
+  <div class="nav-user">
+    <div class="nav-av">GDP</div>
+    <div class="nav-name">Georges D. Pitchou</div>
+  </div>
+</nav>
+
+<div class="main">
+
+  <!-- PERIOD -->
+  <div class="period-bar">
+    <div class="pb-title">📊 Mes statistiques nutritionnelles</div>
+    <div class="period-tabs">
+      <button class="pt" onclick="setPeriod(7,this)">7 jours</button>
+      <button class="pt active" onclick="setPeriod(30,this)">30 jours</button>
+      <button class="pt" onclick="setPeriod(90,this)">3 mois</button>
+      <button class="pt" onclick="setPeriod(365,this)">1 an</button>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-row" id="kpi-row">
+    <div class="kpi"><div class="kpi-accent" style="background:linear-gradient(90deg,var(--green),var(--y))"></div><div class="kpi-icon">🔥</div><div class="kpi-label">Calories moy/jour</div><div class="kpi-val" id="kpi-cal">1 742</div><div class="kpi-change"><span class="kpi-down">▼ −108</span> vs objectif 1 850</div></div>
+    <div class="kpi"><div class="kpi-accent" style="background:var(--glight)"></div><div class="kpi-icon">💪</div><div class="kpi-label">Protéines moy/jour</div><div class="kpi-val" id="kpi-prot">94<span style="font-size:1rem">g</span></div><div class="kpi-change"><span class="kpi-down">▼ −26g</span> vs objectif 120g</div></div>
+    <div class="kpi"><div class="kpi-accent" style="background:var(--blue)"></div><div class="kpi-icon">💧</div><div class="kpi-label">Hydratation moy</div><div class="kpi-val" id="kpi-water">2.1<span style="font-size:1rem">L</span></div><div class="kpi-change"><span class="kpi-up">▲ +0.3L</span> vs mois dernier</div></div>
+    <div class="kpi"><div class="kpi-accent" style="background:var(--y)"></div><div class="kpi-icon">⚖️</div><div class="kpi-label">Évolution poids</div><div class="kpi-val" id="kpi-weight">−3.2<span style="font-size:1rem">kg</span></div><div class="kpi-change"><span class="kpi-up">▲ Objectif +45%</span></div></div>
+  </div>
+
+  <!-- CHARTS -->
+  <div class="chart-grid">
+    <!-- CALORIES BAR CHART -->
+    <div class="chart-card">
+      <div class="cc-header">
+        <div class="cc-title">🔥 Calories sur 30 jours</div>
+        <div class="cc-badge">Jan 2025</div>
+      </div>
+      <div class="bars-wrap" id="cal-bars"></div>
+      <div class="chart-goal-line">
+        <div style="width:24px;height:1px;border-top:2px dashed rgba(245,184,0,0.6)"></div>
+        Objectif : 1 850 kcal/jour · Moyenne : 1 742 kcal
+      </div>
+    </div>
+
+    <!-- MACRO RINGS -->
+    <div class="chart-card">
+      <div class="cc-header">
+        <div class="cc-title">🥗 Répartition macros</div>
+        <div class="cc-badge">Moyenne</div>
+      </div>
+      <div class="macro-ring">
+        <svg width="130" height="130" viewBox="0 0 130 130">
+          <circle cx="65" cy="65" r="52" fill="none" stroke="rgba(26,122,62,0.08)" stroke-width="18"/>
+          <!-- Glucides 47% -->
+          <circle cx="65" cy="65" r="52" fill="none" stroke="#fbbf24" stroke-width="18"
+            stroke-dasharray="154 327" stroke-dashoffset="0" stroke-linecap="butt" transform="rotate(-90 65 65)"/>
+          <!-- Lipides 24% -->
+          <circle cx="65" cy="65" r="52" fill="none" stroke="#f87171" stroke-width="18"
+            stroke-dasharray="79 327" stroke-dashoffset="-154" stroke-linecap="butt" transform="rotate(-90 65 65)"/>
+          <!-- Protéines 29% -->
+          <circle cx="65" cy="65" r="52" fill="none" stroke="#4ade80" stroke-width="18"
+            stroke-dasharray="94 327" stroke-dashoffset="-233" stroke-linecap="butt" transform="rotate(-90 65 65)"/>
+          <text x="65" y="61" text-anchor="middle" fill="#1a2b1e" font-size="11" font-weight="800" font-family="Syne,sans-serif">1742</text>
+          <text x="65" y="74" text-anchor="middle" fill="#6b8c72" font-size="7" font-family="DM Sans,sans-serif">kcal/jour</text>
+        </svg>
+        <div class="macro-legend">
+          <div class="ml-row"><div class="ml-dot" style="background:#fbbf24"></div><div class="ml-lbl">Glucides</div><div class="ml-bar"><div class="ml-fill" style="width:47%;background:#fbbf24"></div></div><div class="ml-val">204g · 47%</div></div>
+          <div class="ml-row"><div class="ml-dot" style="background:#4ade80"></div><div class="ml-lbl">Protéines</div><div class="ml-bar"><div class="ml-fill" style="width:29%;background:#4ade80"></div></div><div class="ml-val">94g · 29%</div></div>
+          <div class="ml-row"><div class="ml-dot" style="background:#f87171"></div><div class="ml-lbl">Lipides</div><div class="ml-bar"><div class="ml-fill" style="width:24%;background:#f87171"></div></div><div class="ml-val">57g · 24%</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEIGHT + HYDRATION -->
+  <div class="chart-grid" style="grid-template-columns:1fr 1fr;margin-bottom:1.5rem">
+    <div class="chart-card">
+      <div class="cc-header">
+        <div class="cc-title">⚖️ Courbe de poids</div>
+        <div class="cc-badge">−3.2 kg ce mois</div>
+      </div>
+      <div class="weight-chart-wrap">
+        <svg class="wc-svg" viewBox="0 0 400 130" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="wgradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#22a854" stop-opacity="0.15"/>
+              <stop offset="100%" stop-color="#22a854" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <!-- Goal line -->
+          <line x1="0" y1="115" x2="400" y2="115" stroke="rgba(245,184,0,0.3)" stroke-width="1" stroke-dasharray="6,4"/>
+          <text x="5" y="112" fill="rgba(245,184,0,0.7)" font-size="9" font-family="DM Sans,sans-serif">62kg</text>
+          <!-- Area -->
+          <path d="M0,50 C30,52 60,55 80,60 C110,67 130,70 160,72 C190,74 220,76 250,82 C280,88 310,92 340,96 C370,100 390,100 400,100 L400,130 L0,130 Z" fill="url(#wgradient)"/>
+          <!-- Line -->
+          <path d="M0,50 C30,52 60,55 80,60 C110,67 130,70 160,72 C190,74 220,76 250,82 C280,88 310,92 340,96 C370,100 390,100 400,100" fill="none" stroke="#22a854" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Dots -->
+          <circle cx="0" cy="50" r="4" fill="#22a854"/><circle cx="80" cy="60" r="4" fill="#22a854"/><circle cx="160" cy="72" r="4" fill="#22a854"/><circle cx="250" cy="82" r="4" fill="#22a854"/><circle cx="400" cy="100" r="5" fill="var(--y)" stroke="white" stroke-width="2"/>
+          <!-- Labels -->
+          <text x="0" y="44" fill="#6b8c72" font-size="8" font-family="DM Mono,monospace">67.6</text>
+          <text x="75" y="54" fill="#6b8c72" font-size="8" font-family="DM Mono,monospace">66.1</text>
+          <text x="155" y="66" fill="#6b8c72" font-size="8" font-family="DM Mono,monospace">65.0</text>
+          <text x="245" y="76" fill="#6b8c72" font-size="8" font-family="DM Mono,monospace">64.4</text>
+          <text x="375" y="94" fill="#1a7a3e" font-size="9" font-weight="700" font-family="DM Mono,monospace">64.4</text>
+        </svg>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:0.62rem;color:var(--muted);margin-top:0.3rem;font-family:'DM Mono',monospace">
+        <span>01 Jan</span><span>08 Jan</span><span>15 Jan</span><span>Auj.</span>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="cc-header">
+        <div class="cc-title">💧 Hydratation quotidienne</div>
+        <div class="cc-badge">Objectif 2.5L</div>
+      </div>
+      <div class="bars-wrap" id="water-bars" style="height:100px"></div>
+      <div style="font-size:0.72rem;color:var(--muted);display:flex;gap:1rem;margin-top:0.5rem">
+        <span>🟢 Objectif atteint</span><span>🟡 Partiel</span><span>🔴 Insuffisant</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSIGHTS -->
+  <div class="insights-row">
+    <div class="insight-card">
+      <div class="ic-icon">🏆</div>
+      <div class="ic-title">Meilleur jour</div>
+      <div class="ic-text">Le <span class="ic-highlight">Mercredi 8 Jan</span> vous avez atteint 98% de tous vos objectifs nutritionnels. Répliquez cette journée type !</div>
+    </div>
+    <div class="insight-card">
+      <div class="ic-icon">📉</div>
+      <div class="ic-title">Point à améliorer</div>
+      <div class="ic-text">Vos <span class="ic-highlight">protéines sont déficitaires</span> de 22% en moyenne. Ajoutez une portion de crevettes ou poisson au dîner.</div>
+    </div>
+    <div class="insight-card">
+      <div class="ic-icon">🌿</div>
+      <div class="ic-title">Habitude positive</div>
+      <div class="ic-text">Vous buvez votre <span class="ic-highlight">détox matinale</span> 9 jours sur 10. Cette habitude a contribué à −1.2kg sur le mois.</div>
+    </div>
+  </div>
+
+  <!-- FOOD LOG -->
+  <div class="food-log">
+    <div class="fl-header">
+      <div class="fl-title">🍽️ Aliments les plus consommés (30 jours)</div>
+      <div class="fl-filter">
+        <button class="flf active">Tout</button>
+        <button class="flf">Plats</button>
+        <button class="flf">Snacks</button>
+      </div>
+    </div>
+    <table class="fl-table">
+      <thead><tr><th>Aliment</th><th>Fréquence</th><th>Calories moy.</th><th>Part du total</th><th>Score nutri.</th></tr></thead>
+      <tbody id="food-log-body"></tbody>
+    </table>
+  </div>
+
+  <!-- BADGES -->
+  <div class="badges-section">
+    <div class="bs-header">🏅 Mes badges NutriCam</div>
+    <div class="badges-grid" id="badges-grid"></div>
+  </div>
+
+  <!-- EXPORT -->
+  <div class="export-bar">
+    <button class="export-btn">📊 Exporter CSV</button>
+    <button class="export-btn">📄 Rapport PDF</button>
+    <button class="export-btn primary" onclick="shareStats()">📤 Partager mes progrès</button>
+  </div>
+
+</div>
+
+<script>
+// DATA
+const foodLogData = [
+  {e:'🍲',name:'Ndolé aux crevettes',cat:'Plat principal',freq:'12×',cal:380,pct:78,score:'A'},
+  {e:'🥣',name:'Bouillie de maïs',cat:'Petit-déjeuner',freq:'24×',cal:320,pct:95,score:'A'},
+  {e:'🐟',name:'Poisson braisé',cat:'Plat principal',freq:'8×',cal:290,pct:65,score:'A'},
+  {e:'🥜',name:'Arachides grillées',cat:'Collation',freq:'20×',cal:180,pct:42,score:'B'},
+  {e:'🍌',name:'Plantains bouillis',cat:'Accompagnement',freq:'15×',cal:150,pct:55,score:'A'},
+  {e:'🌺',name:'Jus de bissap',cat:'Boisson',freq:'18×',cal:45,pct:90,score:'A'},
+  {e:'☕',name:'Café au lait',cat:'Petit-déjeuner',freq:'28×',cal:60,pct:99,score:'B'},
+  {e:'🥬',name:'Eru & Waterleaf',cat:'Plat principal',freq:'6×',cal:310,pct:48,score:'A'},
+];
+
+const badgesData = [
+  {icon:'🔥',name:'Semaine parfaite',desc:'7 jours consécutifs',earned:true},
+  {icon:'⚖️',name:'Minus 3kg',desc:'Perte de 3 kilos',earned:true},
+  {icon:'💧',name:'Hydro Master',desc:'2.5L/jour pendant 7j',earned:true},
+  {icon:'🍲',name:'Chef Camerounais',desc:'50 recettes essayées',earned:true},
+  {icon:'🌿',name:'Détox Queen',desc:'30 détox consécutives',earned:false},
+  {icon:'💪',name:'Protéines Pro',desc:'120g/jour pendant 7j',earned:false},
+  {icon:'🎯',name:'Objectif atteint',desc:'Poids cible 62kg',earned:false},
+  {icon:'📅',name:'Mois complet',desc:'30 jours de suivi',earned:false},
+];
+
+// 30 days data
+const days30 = Array.from({length:30},(_,i)=>{
+  const base=1850, variance=Math.sin(i*0.5)*200+Math.random()*150-75;
+  return Math.round(Math.max(1200,Math.min(2500,base+variance)));
+});
+const water30 = Array.from({length:30},(_,i)=>{
+  const base=2.2; return Math.round((base+Math.sin(i*0.4)*0.5+Math.random()*0.6-0.3)*10)/10;
+});
+
+function renderCalBars(){
+  const max=Math.max(...days30);
+  document.getElementById('cal-bars').innerHTML = days30.map((v,i)=>{
+    const pct=(v/max)*100;
+    const color=v>=1850?'#22a854':v>=1500?'#fbbf24':'#f87171';
+    return `<div class="bar-col">
+      <div class="bar-val" style="color:${color}">${i===29?v:''}</div>
+      <div class="bar-bg"><div class="bar-fill" style="height:${pct}%;background:${color}"></div></div>
+      ${i%5===0?`<div class="bar-lbl">${i+1}</div>`:'<div class="bar-lbl"></div>'}
+    </div>`;
+  }).join('');
+}
+
+function renderWaterBars(){
+  const max=Math.max(...water30);
+  document.getElementById('water-bars').innerHTML = water30.map((v,i)=>{
+    const color=v>=2.5?'#22a854':v>=1.5?'rgba(245,184,0,0.7)':'#f87171';
+    return `<div class="bar-col">
+      <div class="bar-bg"><div class="bar-fill" style="height:${(v/max)*100}%;background:${color}"></div></div>
+      ${i%5===0?`<div class="bar-lbl">${i+1}</div>`:'<div class="bar-lbl"></div>'}
+    </div>`;
+  }).join('');
+}
+
+function renderFoodLog(){
+  const scoreColors={A:'rgba(34,197,94,0.1)',B:'rgba(245,184,0,0.1)',C:'rgba(249,115,22,0.1)'};
+  const scoreTextColors={A:'#16a34a',B:'#b45309',C:'#c2410c'};
+  document.getElementById('food-log-body').innerHTML = foodLogData.map(f=>`
+    <tr>
+      <td><div class="td-meal-info"><div class="td-emoji">${f.e}</div><div><div class="td-name">${f.name}</div><div class="td-cat">${f.cat}</div></div></div></td>
+      <td><span style="font-family:'DM Mono',monospace;font-size:0.82rem;font-weight:700;color:var(--text)">${f.freq}</span></td>
+      <td><span class="td-cal">🔥 ${f.cal}</span></td>
+      <td><div class="td-bar-wrap"><div style="font-size:0.7rem;color:var(--muted);margin-bottom:3px">${f.pct}%</div><div class="td-bar-bg"><div class="td-bar-fill" style="width:${f.pct}%"></div></div></div></td>
+      <td><span class="td-score" style="background:${scoreColors[f.score]};color:${scoreTextColors[f.score]}">Nutri-${f.score}</span></td>
+    </tr>
+  `).join('');
+}
+
+function renderBadges(){
+  document.getElementById('badges-grid').innerHTML = badgesData.map(b=>`
+    <div class="badge-card ${b.earned?'earned':'locked'}">
+      <span class="bc-icon">${b.earned?b.icon:'🔒'}</span>
+      <div class="bc-name">${b.name}</div>
+      <div class="bc-desc">${b.desc}</div>
+      ${b.earned?'<div class="bc-earned-tag">✓ Débloqué</div>':''}
+    </div>
+  `).join('');
+}
+
+function setPeriod(days, btn){
+  document.querySelectorAll('.pt').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const factor = days===7?1.05:days===90?0.95:days===365?0.88:1;
+  document.getElementById('kpi-cal').textContent = Math.round(1742*factor).toLocaleString();
+}
+
+function shareStats(){ alert('Fonctionnalité de partage disponible dans l\'app mobile NutriCam !'); }
+
+renderCalBars();
+renderWaterBars();
+renderFoodLog();
+renderBadges();
+</script>
+</body>
+</html>

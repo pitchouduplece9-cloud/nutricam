@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Paiement & Abonnement</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f4faf5;--dark:#0a1f0f;--green:#1a7a3e;--gl:#22a854;--glight:#4ade80;
+  --y:#f5b800;--red:#e63946;--blue:#2563eb;--orange:#ea580c;
+  --mtn:#ffd700;--orange-money:#ff6600;
+  --card:#fff;--border:#ddeee3;--text:#1a2b1e;--muted:#6b8c72;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* NAV */
+.nav{background:var(--dark);padding:1rem 2.5rem;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;color:#fff}
+.nav-logo span{color:var(--y)}
+.nav-secure{display:flex;align-items:center;gap:0.5rem;color:rgba(255,255,255,0.5);font-size:0.78rem}
+.nav-back{color:rgba(255,255,255,0.6);font-size:0.82rem;text-decoration:none;transition:color 0.2s}
+.nav-back:hover{color:#fff}
+
+/* PLAN SELECTOR */
+.plan-selector{background:var(--dark);padding:2rem 2.5rem 3rem;border-bottom:1px solid rgba(255,255,255,0.06)}
+.ps-title{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:#fff;text-align:center;margin-bottom:0.4rem}
+.ps-sub{color:rgba(255,255,255,0.4);text-align:center;font-size:0.85rem;margin-bottom:2rem}
+.plans-row{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;max-width:900px;margin:0 auto}
+.plan-pill{background:rgba(255,255,255,0.05);border:2px solid rgba(255,255,255,0.08);border-radius:16px;padding:1.2rem 1.8rem;cursor:pointer;transition:all 0.25s;text-align:center;min-width:200px;position:relative}
+.plan-pill:hover{border-color:rgba(34,197,94,0.3);background:rgba(255,255,255,0.07)}
+.plan-pill.selected{border-color:var(--gl);background:rgba(34,197,94,0.08)}
+.plan-pill.selected::after{content:'✓';position:absolute;top:0.7rem;right:0.9rem;color:var(--gl);font-weight:900;font-size:0.9rem}
+.pp-popular{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--y);color:#000;font-size:0.62rem;font-weight:800;padding:0.2rem 0.8rem;border-radius:100px;text-transform:uppercase;letter-spacing:0.06em;white-space:nowrap}
+.pp-name{color:rgba(255,255,255,0.6);font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.4rem}
+.pp-price{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:#fff}
+.pp-period{color:rgba(255,255,255,0.35);font-size:0.72rem}
+.pp-features{margin-top:0.6rem;display:flex;flex-direction:column;gap:0.2rem}
+.pp-feat{font-size:0.72rem;color:rgba(255,255,255,0.5)}
+
+/* MAIN CHECKOUT */
+.checkout-main{max-width:920px;margin:0 auto;padding:2.5rem 2rem;display:grid;grid-template-columns:1.2fr 1fr;gap:2.5rem;align-items:start}
+
+/* PAYMENT METHODS */
+.payment-section{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2rem;position:relative}
+.ps-step{display:flex;align-items:center;gap:0.7rem;margin-bottom:1.5rem}
+.step-badge{width:28px;height:28px;border-radius:50%;background:var(--dark);color:#fff;font-size:0.75rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ps-step-title{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:800;color:var(--dark)}
+
+/* METHOD TABS */
+.method-tabs{display:flex;gap:0.5rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.method-tab{flex:1;min-width:100px;background:var(--bg);border:2px solid var(--border);border-radius:12px;padding:0.8rem 0.6rem;text-align:center;cursor:pointer;transition:all 0.2s;position:relative}
+.method-tab:hover{border-color:var(--gl)}
+.method-tab.selected{border-color:var(--green);background:rgba(26,122,62,0.04)}
+.method-tab.selected::after{content:'✓';position:absolute;top:0.4rem;right:0.5rem;color:var(--green);font-size:0.7rem;font-weight:900}
+.mt-logo{font-size:1.4rem;margin-bottom:0.3rem;display:block}
+.mt-name{font-size:0.72rem;font-weight:700;color:var(--text)}
+.mt-sub{font-size:0.62rem;color:var(--muted)}
+
+/* FORM */
+.pay-form{display:none}.pay-form.show{display:block}
+.form-group{margin-bottom:1rem}
+.form-label{display:block;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:0.4rem}
+.form-input{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:11px;padding:0.75rem 1rem;font-size:0.9rem;font-family:'DM Sans',sans-serif;color:var(--text);outline:none;transition:border-color 0.2s}
+.form-input:focus{border-color:var(--green)}
+.form-input::placeholder{color:#bbb}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem}
+
+/* Phone input */
+.phone-input-wrap{display:flex;gap:0.5rem}
+.phone-prefix{background:var(--bg);border:1.5px solid var(--border);border-radius:11px;padding:0.75rem 0.8rem;font-size:0.85rem;font-weight:700;color:var(--text);white-space:nowrap;display:flex;align-items:center;gap:0.4rem;cursor:pointer;min-width:90px;justify-content:center}
+
+/* OTP */
+.otp-section{display:none;text-align:center;padding:1.5rem 0}
+.otp-section.show{display:block}
+.otp-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:var(--dark);margin-bottom:0.3rem}
+.otp-sub{font-size:0.8rem;color:var(--muted);margin-bottom:1.2rem}
+.otp-inputs{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1rem}
+.otp-input{width:44px;height:52px;border:2px solid var(--border);border-radius:12px;text-align:center;font-size:1.3rem;font-weight:800;font-family:'DM Mono',monospace;color:var(--dark);background:var(--bg);outline:none;transition:all 0.2s}
+.otp-input:focus{border-color:var(--green);background:#fff}
+.otp-resend{font-size:0.78rem;color:var(--muted)}
+.otp-resend a{color:var(--green);font-weight:700;text-decoration:none;cursor:pointer}
+
+/* Pay Button */
+.pay-btn{width:100%;background:linear-gradient(135deg,var(--green),var(--gl));border:none;border-radius:14px;padding:1rem;font-size:1rem;font-weight:800;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:0.6rem;box-shadow:0 8px 30px rgba(26,122,62,0.25);margin-top:1.5rem}
+.pay-btn:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(26,122,62,0.35)}
+.pay-btn:active{transform:translateY(0)}
+.pay-btn.loading{opacity:0.8;cursor:not-allowed}
+
+/* Security badges */
+.security-row{display:flex;gap:0.8rem;flex-wrap:wrap;margin-top:1.2rem;justify-content:center}
+.sec-badge{display:flex;align-items:center;gap:0.3rem;font-size:0.68rem;color:var(--muted);background:var(--bg);padding:0.3rem 0.7rem;border-radius:8px;border:1px solid var(--border)}
+
+/* ORDER SUMMARY */
+.order-summary{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;position:sticky;top:1.5rem}
+.os-header{background:var(--dark);padding:1.4rem 1.5rem}
+.os-plan-name{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:#fff;margin-bottom:0.2rem}
+.os-plan-sub{color:rgba(255,255,255,0.45);font-size:0.78rem}
+.os-body{padding:1.5rem}
+.os-features{display:flex;flex-direction:column;gap:0.6rem;margin-bottom:1.5rem}
+.os-feat{display:flex;align-items:center;gap:0.6rem;font-size:0.82rem;color:var(--text)}
+.os-feat-check{color:var(--green);font-weight:900;font-size:0.8rem;flex-shrink:0}
+.os-divider{height:1px;background:var(--border);margin:0.5rem 0}
+.os-price-row{display:flex;justify-content:space-between;font-size:0.85rem;padding:0.4rem 0}
+.os-price-row.total{font-weight:800;font-size:1rem;color:var(--dark)}
+.os-price-row .price{font-family:'DM Mono',monospace}
+.os-price-row.total .price{color:var(--green)}
+.os-billing{font-size:0.72rem;color:var(--muted);margin-top:0.5rem;line-height:1.5}
+
+/* PROMO CODE */
+.promo-row{display:flex;gap:0.5rem;margin:1rem 0}
+.promo-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:0.6rem 0.8rem;font-size:0.82rem;font-family:'DM Sans',sans-serif;color:var(--text);outline:none;transition:border-color 0.2s}
+.promo-input:focus{border-color:var(--green)}
+.promo-btn{background:var(--dark);color:#fff;border:none;border-radius:10px;padding:0.6rem 1.1rem;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s}
+.promo-btn:hover{background:var(--green)}
+.promo-success{font-size:0.75rem;color:var(--green);font-weight:700;display:none}
+.promo-success.show{display:block}
+
+/* SUCCESS SCREEN */
+.success-screen{display:none;max-width:520px;margin:4rem auto;padding:2rem;text-align:center}
+.success-screen.show{display:block;animation:scaleIn 0.5s ease}
+@keyframes scaleIn{from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
+.success-icon{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--gl));margin:0 auto 1.5rem;display:flex;align-items:center;justify-content:center;font-size:2.5rem;box-shadow:0 12px 40px rgba(26,122,62,0.3)}
+.success-title{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--dark);margin-bottom:0.5rem}
+.success-sub{color:var(--muted);line-height:1.7;margin-bottom:2rem}
+.success-details{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:2rem;text-align:left}
+.sd-row{display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid var(--border);font-size:0.85rem}
+.sd-row:last-child{border-bottom:none;font-weight:800}
+.sd-key{color:var(--muted)}
+.sd-val{color:var(--text);font-weight:600}
+.success-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.sb-primary{background:var(--green);color:#fff;border:none;border-radius:12px;padding:0.85rem 2rem;font-size:0.9rem;font-weight:800;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s}
+.sb-primary:hover{background:var(--gl)}
+.sb-secondary{background:transparent;color:var(--green);border:1.5px solid var(--border);border-radius:12px;padding:0.85rem 2rem;font-size:0.9rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s}
+.sb-secondary:hover{border-color:var(--green)}
+
+@media(max-width:768px){.checkout-main{grid-template-columns:1fr}.plans-row{flex-direction:column;align-items:center}.order-summary{position:static}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo">Nutri<span>Cam</span></div>
+  <div class="nav-secure">🔒 Paiement 100% sécurisé · SSL/TLS</div>
+  <a href="#" class="nav-back">← Retour</a>
+</nav>
+
+<!-- PLAN SELECTOR -->
+<div class="plan-selector">
+  <div class="ps-title">Choisissez votre plan</div>
+  <div class="ps-sub">Sans engagement · Annulable à tout moment</div>
+  <div class="plans-row">
+    <div class="plan-pill" onclick="selectPlan('free',this)">
+      <div class="pp-name">Gratuit</div>
+      <div class="pp-price">0 <span style="font-size:1rem;color:rgba(255,255,255,0.4)">FCFA</span></div>
+      <div class="pp-period">pour toujours</div>
+      <div class="pp-features">
+        <div class="pp-feat">✓ Calculateur calories</div>
+        <div class="pp-feat">✓ 15 recettes</div>
+      </div>
+    </div>
+    <div class="plan-pill selected" onclick="selectPlan('premium',this)">
+      <div class="pp-popular">⭐ Le plus populaire</div>
+      <div class="pp-name">Premium</div>
+      <div class="pp-price">2 500 <span style="font-size:1rem;color:rgba(255,255,255,0.4)">FCFA</span></div>
+      <div class="pp-period">/mois · sans engagement</div>
+      <div class="pp-features">
+        <div class="pp-feat">✓ 200+ recettes complètes</div>
+        <div class="pp-feat">✓ Coach IA + Plan 7 jours</div>
+        <div class="pp-feat">✓ Scanner produits</div>
+      </div>
+    </div>
+    <div class="plan-pill" onclick="selectPlan('famille',this)">
+      <div class="pp-name">Famille</div>
+      <div class="pp-price">5 000 <span style="font-size:1rem;color:rgba(255,255,255,0.4)">FCFA</span></div>
+      <div class="pp-period">/mois · jusqu'à 6 profils</div>
+      <div class="pp-features">
+        <div class="pp-feat">✓ Tout de Premium</div>
+        <div class="pp-feat">✓ 6 profils famille</div>
+        <div class="pp-feat">✓ Liste courses</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKOUT -->
+<div class="checkout-main" id="checkout-main">
+
+  <!-- PAYMENT FORM -->
+  <div class="payment-section">
+    <div class="ps-step">
+      <div class="step-badge">1</div>
+      <div class="ps-step-title">Méthode de paiement</div>
+    </div>
+    <div class="method-tabs">
+      <div class="method-tab selected" onclick="selectMethod('mtn',this)">
+        <span class="mt-logo">📱</span>
+        <div class="mt-name">MTN</div>
+        <div class="mt-sub">Mobile Money</div>
+      </div>
+      <div class="method-tab" onclick="selectMethod('orange',this)">
+        <span class="mt-logo">🟠</span>
+        <div class="mt-name">Orange</div>
+        <div class="mt-sub">Money</div>
+      </div>
+      <div class="method-tab" onclick="selectMethod('card',this)">
+        <span class="mt-logo">💳</span>
+        <div class="mt-name">Carte</div>
+        <div class="mt-sub">Visa / MC</div>
+      </div>
+    </div>
+
+    <!-- MTN FORM -->
+    <div class="pay-form show" id="form-mtn">
+      <div class="form-group">
+        <div class="form-label">Numéro MTN Mobile Money</div>
+        <div class="phone-input-wrap">
+          <div class="phone-prefix">🇨🇲 +237</div>
+          <input class="form-input" type="tel" id="mtn-number" placeholder="683 868 760" maxlength="9" oninput="validateMTN(this)"/>
+        </div>
+        <div style="font-size:0.72rem;color:var(--muted);margin-top:0.3rem">Format : 683 868 760 (9 chiffres)</div>
+      </div>
+      <div class="form-group">
+        <div class="form-label">Nom du compte MTN</div>
+        <input class="form-input" type="text" placeholder="Nom associé au compte MTN"/>
+      </div>
+      <div style="background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.2);border-radius:12px;padding:0.9rem 1.1rem;font-size:0.8rem;color:var(--text);line-height:1.6">
+        <strong style="color:#b8860b">📱 Comment ça marche :</strong><br/>
+        1. Entrez votre numéro MTN MoMo<br/>
+        2. Vous recevrez une notification USSD sur votre téléphone<br/>
+        3. Confirmez avec votre code PIN MTN MoMo<br/>
+        4. Accès immédiat à Premium
+      </div>
+      <button class="pay-btn" id="btn-mtn" onclick="initiatePayment('mtn')">
+        📱 Payer avec MTN MoMo · <span id="mtn-amount">2 500 FCFA</span>
+      </button>
+    </div>
+
+    <!-- ORANGE FORM -->
+    <div class="pay-form" id="form-orange">
+      <div class="form-group">
+        <div class="form-label">Numéro Orange Money</div>
+        <div class="phone-input-wrap">
+          <div class="phone-prefix">🇨🇲 +237</div>
+          <input class="form-input" type="tel" placeholder="683 868 760" maxlength="9"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="form-label">Nom du compte Orange Money</div>
+        <input class="form-input" type="text" placeholder="Nom associé au compte"/>
+      </div>
+      <div style="background:rgba(255,102,0,0.07);border:1px solid rgba(255,102,0,0.15);border-radius:12px;padding:0.9rem 1.1rem;font-size:0.8rem;color:var(--text);line-height:1.6">
+        <strong style="color:#cc5200">🟠 Orange Money :</strong><br/>
+        Composez <strong>#150#</strong> sur votre téléphone Orange pour vérifier votre solde avant paiement.
+      </div>
+      <button class="pay-btn" style="background:linear-gradient(135deg,#cc5200,#ff6600)" onclick="initiatePayment('orange')">
+        🟠 Payer avec Orange Money · <span id="orange-amount">2 500 FCFA</span>
+      </button>
+    </div>
+
+    <!-- CARD FORM -->
+    <div class="pay-form" id="form-card">
+      <div class="form-group">
+        <div class="form-label">Numéro de carte</div>
+        <input class="form-input" type="text" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCard(this)" id="card-num"/>
+      </div>
+      <div class="form-row-2">
+        <div class="form-group">
+          <div class="form-label">Date d'expiration</div>
+          <input class="form-input" type="text" placeholder="MM/AA" maxlength="5" oninput="formatExpiry(this)"/>
+        </div>
+        <div class="form-group">
+          <div class="form-label">CVV</div>
+          <input class="form-input" type="password" placeholder="•••" maxlength="4"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="form-label">Nom sur la carte</div>
+        <input class="form-input" type="text" placeholder="MARIE KAMGA"/>
+      </div>
+      <div style="display:flex;gap:0.5rem;align-items:center;font-size:0.72rem;color:var(--muted);margin-bottom:0.5rem">
+        <span>🔒 Sécurisé par Stripe</span>
+        <span>·</span><span>Visa/Mastercard acceptés</span>
+      </div>
+      <button class="pay-btn" onclick="initiatePayment('card')">
+        💳 Payer par carte · <span id="card-amount">2 500 FCFA</span>
+      </button>
+    </div>
+
+    <!-- OTP SECTION -->
+    <div class="otp-section" id="otp-section">
+      <div style="font-size:2.5rem;margin-bottom:0.8rem">📲</div>
+      <div class="otp-title">Confirmez le paiement</div>
+      <div class="otp-sub" id="otp-sub">Un code de confirmation a été envoyé<br/>au <strong id="otp-phone">+237 683 868 760</strong></div>
+      <div class="otp-inputs">
+        <input class="otp-input" type="number" maxlength="1" id="otp1" oninput="moveOTP(this,'otp2')"/>
+        <input class="otp-input" type="number" maxlength="1" id="otp2" oninput="moveOTP(this,'otp3')"/>
+        <input class="otp-input" type="number" maxlength="1" id="otp3" oninput="moveOTP(this,'otp4')"/>
+        <input class="otp-input" type="number" maxlength="1" id="otp4" oninput="moveOTP(this,'otp5')"/>
+        <input class="otp-input" type="number" maxlength="1" id="otp5" oninput="moveOTP(this,'otp6')"/>
+        <input class="otp-input" type="number" maxlength="1" id="otp6" oninput="checkOTP()"/>
+      </div>
+      <div class="otp-resend">Pas reçu ? <a onclick="resendOTP()">Renvoyer le code</a></div>
+      <button class="pay-btn" onclick="confirmOTP()">✅ Confirmer le paiement</button>
+    </div>
+
+    <div class="security-row">
+      <div class="sec-badge">🔒 SSL 256-bit</div>
+      <div class="sec-badge">🛡️ 3D Secure</div>
+      <div class="sec-badge">↩️ Remboursable 7j</div>
+      <div class="sec-badge">📱 Sans commission</div>
+    </div>
+  </div>
+
+  <!-- ORDER SUMMARY -->
+  <div class="order-summary">
+    <div class="os-header">
+      <div class="os-plan-name" id="os-plan-name">⭐ Plan Premium</div>
+      <div class="os-plan-sub" id="os-plan-sub">Accès complet · 1 profil · Sans engagement</div>
+    </div>
+    <div class="os-body">
+      <div class="os-features" id="os-features"></div>
+      <div class="promo-row">
+        <input class="promo-input" type="text" id="promo-code" placeholder="Code promo..."/>
+        <button class="promo-btn" onclick="applyPromo()">Appliquer</button>
+      </div>
+      <div class="promo-success" id="promo-success">✅ Code NUTRICAM20 appliqué ! −20%</div>
+      <div class="os-divider"></div>
+      <div class="os-price-row"><span class="os-key">Abonnement mensuel</span><span class="price" id="os-base-price">2 500 FCFA</span></div>
+      <div class="os-price-row" id="os-discount-row" style="display:none;color:#16a34a"><span>Réduction −20%</span><span class="price">−500 FCFA</span></div>
+      <div class="os-price-row"><span>TVA (0% — Cameroun)</span><span class="price">0 FCFA</span></div>
+      <div class="os-divider"></div>
+      <div class="os-price-row total"><span>Total aujourd'hui</span><span class="price" id="os-total">2 500 FCFA</span></div>
+      <div class="os-billing" id="os-billing">Renouvellement automatique chaque mois. Annulez à tout moment depuis votre compte sans frais.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS SCREEN -->
+<div class="success-screen" id="success-screen">
+  <div class="success-icon">✅</div>
+  <h2 class="success-title">Paiement réussi !</h2>
+  <p class="success-sub">Bienvenue dans NutriCam Premium ! Votre accès est actif immédiatement. Un reçu a été envoyé à votre adresse email.</p>
+  <div class="success-details">
+    <div class="sd-row"><span class="sd-key">Plan</span><span class="sd-val" id="sd-plan">Premium</span></div>
+    <div class="sd-row"><span class="sd-key">Méthode</span><span class="sd-val" id="sd-method">MTN Mobile Money</span></div>
+    <div class="sd-row"><span class="sd-key">Transaction</span><span class="sd-val" style="font-family:'DM Mono',monospace;font-size:0.8rem" id="sd-txid">TXN-2025011412384</span></div>
+    <div class="sd-row"><span class="sd-key">Date</span><span class="sd-val" id="sd-date"></span></div>
+    <div class="sd-row"><span class="sd-key">Total payé</span><span class="sd-val" style="color:var(--green)" id="sd-amount">2 500 FCFA</span></div>
+  </div>
+  <div class="success-btns">
+    <button class="sb-primary" onclick="goToDashboard()">🚀 Accéder à mon tableau de bord</button>
+    <button class="sb-secondary" onclick="downloadReceipt()">📄 Télécharger le reçu</button>
+  </div>
+</div>
+
+<script>
+const plans = {
+  free:{ name:'🆓 Plan Gratuit', sub:'Accès aux fonctionnalités de base', price:0, features:['Calculateur de calories','15 recettes camerounaises','1 profil utilisateur'] },
+  premium:{ name:'⭐ Plan Premium', sub:'Accès complet · 1 profil · Sans engagement', price:2500, features:['200+ recettes complètes','Plan repas 7j IA','Coach nutritionnel IA 24/7','Scanner de produits','Détox + Transformation','Module enfants OMS'] },
+  famille:{ name:'👨‍👩‍👧 Plan Famille', sub:'Jusqu\'à 6 profils · Accès complet', price:5000, features:['Tout de Premium','6 profils familiaux','Plans enfants adaptés','Liste de courses intelligente','Synchronisation famille','Support prioritaire'] },
+};
+let currentPlan = 'premium';
+let currentMethod = 'mtn';
+let promoApplied = false;
+
+function selectPlan(id, el){
+  currentPlan = id;
+  document.querySelectorAll('.plan-pill').forEach(p=>p.classList.remove('selected'));
+  el.classList.add('selected');
+  updateSummary();
+  if(id==='free'){
+    document.getElementById('checkout-main').style.display='none';
+    document.getElementById('success-screen').classList.add('show');
+    document.getElementById('sd-plan').textContent='Gratuit';
+    document.getElementById('sd-method').textContent='Gratuit — aucun paiement';
+    document.getElementById('sd-amount').textContent='0 FCFA';
+    document.getElementById('sd-date').textContent=new Date().toLocaleDateString('fr-FR');
+    document.getElementById('sd-txid').textContent='Gratuit';
+  } else {
+    document.getElementById('checkout-main').style.display='grid';
+    document.getElementById('success-screen').classList.remove('show');
+  }
+}
+
+function updateSummary(){
+  const p = plans[currentPlan];
+  document.getElementById('os-plan-name').textContent = p.name;
+  document.getElementById('os-plan-sub').textContent = p.sub;
+  document.getElementById('os-features').innerHTML = p.features.map(f=>`<div class="os-feat"><span class="os-feat-check">✓</span>${f}</div>`).join('');
+  const price = promoApplied ? Math.round(p.price*0.8) : p.price;
+  document.getElementById('os-base-price').textContent = p.price.toLocaleString()+' FCFA';
+  document.getElementById('os-total').textContent = price.toLocaleString()+' FCFA';
+  ['mtn-amount','orange-amount','card-amount'].forEach(id=>{
+    const el=document.getElementById(id); if(el)el.textContent=price.toLocaleString()+' FCFA';
+  });
+}
+
+function selectMethod(method, el){
+  currentMethod=method;
+  document.querySelectorAll('.method-tab').forEach(t=>t.classList.remove('selected'));
+  el.classList.add('selected');
+  document.querySelectorAll('.pay-form').forEach(f=>{f.classList.remove('show')});
+  document.getElementById('form-'+method).classList.add('show');
+  document.getElementById('otp-section').classList.remove('show');
+}
+
+function applyPromo(){
+  const code = document.getElementById('promo-code').value.toUpperCase();
+  if(code==='NUTRICAM20'||code==='AFRICA20'||code==='CAMEROUN'){
+    promoApplied=true;
+    document.getElementById('promo-success').classList.add('show');
+    document.getElementById('os-discount-row').style.display='flex';
+    updateSummary();
+  }
+}
+
+function initiatePayment(method){
+  const phoneEl = document.getElementById('mtn-number');
+  const phone = phoneEl?.value || '683 868 760';
+  document.getElementById('otp-phone').textContent = '+237 '+phone;
+  document.getElementById('form-'+method).style.display='none';
+  document.getElementById('otp-section').classList.add('show');
+  setTimeout(()=>document.getElementById('otp1')?.focus(), 100);
+}
+
+function moveOTP(el, nextId){
+  if(el.value.length>=1) document.getElementById(nextId)?.focus();
+}
+
+function checkOTP(){
+  const code = ['otp1','otp2','otp3','otp4','otp5','otp6'].map(id=>document.getElementById(id)?.value||'').join('');
+  if(code.length===6) setTimeout(confirmOTP, 300);
+}
+
+function confirmOTP(){
+  const p = plans[currentPlan];
+  const price = promoApplied ? Math.round(p.price*0.8) : p.price;
+  const methodLabels = {mtn:'MTN Mobile Money',orange:'Orange Money',card:'Carte bancaire'};
+  document.getElementById('sd-plan').textContent = p.name;
+  document.getElementById('sd-method').textContent = methodLabels[currentMethod];
+  document.getElementById('sd-txid').textContent = 'TXN-'+Date.now().toString().slice(-13);
+  document.getElementById('sd-date').textContent = new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});
+  document.getElementById('sd-amount').textContent = price.toLocaleString()+' FCFA';
+  document.getElementById('checkout-main').style.display='none';
+  document.getElementById('success-screen').classList.add('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function formatCard(el){ el.value=el.value.replace(/\D/g,'').replace(/(.{4})/g,'$1 ').trim().slice(0,19); }
+function formatExpiry(el){ el.value=el.value.replace(/\D/g,'').replace(/^(\d{2})/,'$1/').slice(0,5); }
+function goToDashboard(){ alert('Redirection vers le tableau de bord NutriCam...'); }
+function downloadReceipt(){ alert('Téléchargement du reçu PDF...'); }
+function resendOTP(){ alert('Code renvoyé !'); }
+
+updateSummary();
+</script>
+</body>
+</html>

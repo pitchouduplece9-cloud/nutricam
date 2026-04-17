@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Partenaires & B2B</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f6faf7;--dark:#070f08;--dark2:#0e1e10;--green:#1a7a3e;--gl:#22a854;--glight:#4ade80;
+  --y:#f5b800;--red:#e63946;--blue:#2563eb;--teal:#0d9488;
+  --card:#fff;--border:#d8ece0;--text:#192b1c;--muted:#607a67;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text)}
+
+/* NAV */
+.nav{background:var(--dark);padding:1.1rem 3rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.nav-logo{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;color:#fff}
+.nav-logo span{color:var(--y)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:rgba(255,255,255,0.55);text-decoration:none;font-size:0.85rem;font-weight:600;transition:color 0.2s}
+.nav-links a:hover,.nav-links a.active{color:#fff}
+.nav-cta{background:var(--gl);color:#fff !important;padding:0.5rem 1.2rem;border-radius:100px;transition:background 0.2s !important}
+.nav-cta:hover{background:var(--glight) !important;color:#000 !important}
+
+/* ══ HERO B2B ══ */
+.b2b-hero{background:linear-gradient(135deg,var(--dark) 0%,#0b2d14 55%,#1a7a3e 100%);padding:5rem 3rem;position:relative;overflow:hidden}
+.b2b-hero::before{content:'🤝';position:absolute;right:3rem;top:50%;transform:translateY(-50%);font-size:14rem;opacity:0.05;pointer-events:none}
+.bh-inner{max-width:680px}
+.bh-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);font-size:0.72rem;font-weight:700;padding:0.35rem 1rem;border-radius:100px;margin-bottom:1.2rem;text-transform:uppercase;letter-spacing:0.08em}
+.b2b-hero h1{font-family:'Fraunces',serif;font-size:clamp(2.2rem,4vw,3.5rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:0.9rem}
+.b2b-hero h1 span{color:var(--y)}
+.b2b-hero p{color:rgba(255,255,255,0.6);line-height:1.7;max-width:560px;font-size:0.95rem;margin-bottom:2rem}
+.hero-cta-row{display:flex;gap:1rem;flex-wrap:wrap}
+.hcta-primary{background:var(--y);color:#000;padding:0.9rem 2rem;border-radius:12px;font-weight:800;font-size:0.95rem;text-decoration:none;transition:all 0.2s;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif}
+.hcta-primary:hover{background:#e5a800;transform:translateY(-2px)}
+.hcta-secondary{background:rgba(255,255,255,0.08);color:#fff;padding:0.9rem 2rem;border-radius:12px;font-weight:700;font-size:0.95rem;text-decoration:none;border:1px solid rgba(255,255,255,0.15);transition:all 0.2s}
+.hcta-secondary:hover{background:rgba(255,255,255,0.14)}
+
+/* ══ PARTNER TYPES ══ */
+.partner-types{padding:5rem 3rem;max-width:1200px;margin:0 auto}
+.section-header{text-align:center;margin-bottom:3.5rem}
+.sh-badge{display:inline-block;font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--green);margin-bottom:0.7rem}
+.sh-title{font-family:'Fraunces',serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:900;color:var(--dark);margin-bottom:0.7rem}
+.sh-sub{color:var(--muted);max-width:520px;margin:0 auto;line-height:1.7;font-size:0.92rem}
+.partner-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.partner-card{background:var(--card);border:1px solid var(--border);border-radius:22px;overflow:hidden;transition:all 0.25s}
+.partner-card:hover{transform:translateY(-5px);box-shadow:0 20px 60px rgba(0,0,0,0.1)}
+.pc-visual{height:180px;display:flex;align-items:center;justify-content:center;font-size:5rem;position:relative;overflow:hidden}
+.pc-body{padding:1.8rem}
+.pc-tag{font-size:0.67rem;font-weight:800;text-transform:uppercase;letter-spacing:0.09em;margin-bottom:0.6rem}
+.pc-title{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;color:var(--dark);margin-bottom:0.6rem}
+.pc-desc{font-size:0.85rem;color:var(--muted);line-height:1.65;margin-bottom:1.3rem}
+.pc-features{display:flex;flex-direction:column;gap:0.4rem;margin-bottom:1.4rem}
+.pcf-item{display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:var(--text)}
+.pcf-check{flex-shrink:0;font-size:0.75rem}
+.pc-cta{background:var(--dark);color:#fff;border:none;border-radius:11px;padding:0.75rem 1.5rem;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.2s;display:flex;align-items:center;gap:0.4rem;width:100%;justify-content:center}
+.pc-cta:hover{background:var(--green)}
+.pc-pricing{font-size:0.75rem;color:var(--muted);text-align:center;margin-top:0.6rem}
+
+/* ══ HOW IT WORKS ══ */
+.how-section{background:var(--dark);padding:5rem 3rem;position:relative;overflow:hidden}
+.how-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gl),transparent)}
+.how-inner{max-width:1100px;margin:0 auto}
+.steps-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;position:relative;margin-top:3rem}
+.steps-flow::before{content:'';position:absolute;top:40px;left:12%;right:12%;height:1px;background:linear-gradient(90deg,var(--gl),var(--y));z-index:0;opacity:0.3}
+.step-node{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:1.8rem 1.4rem;text-align:center;position:relative;z-index:1;transition:all 0.2s}
+.step-node:hover{background:rgba(255,255,255,0.07);transform:translateY(-3px)}
+.sn-num{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--gl));color:#fff;font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;box-shadow:0 4px 20px rgba(34,197,94,0.3)}
+.sn-icon{font-size:1.4rem;margin-bottom:0.5rem}
+.sn-title{font-family:'Fraunces',serif;font-size:0.95rem;font-weight:700;color:#fff;margin-bottom:0.4rem}
+.sn-desc{font-size:0.78rem;color:rgba(255,255,255,0.45);line-height:1.5}
+
+/* ══ API SECTION ══ */
+.api-section{padding:5rem 3rem;max-width:1200px;margin:0 auto}
+.api-layout{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+.api-info h2{font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--dark);margin-bottom:0.8rem}
+.api-info p{color:var(--muted);line-height:1.7;margin-bottom:1.5rem}
+.api-features{display:flex;flex-direction:column;gap:0.8rem;margin-bottom:2rem}
+.api-feat{display:flex;align-items:flex-start;gap:0.8rem}
+.af-icon{width:36px;height:36px;border-radius:10px;background:rgba(26,122,62,0.1);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.af-text{font-size:0.85rem;color:var(--text);line-height:1.5}
+.af-text strong{color:var(--dark)}
+.api-code{background:var(--dark);border-radius:18px;overflow:hidden;font-family:'DM Mono',monospace}
+.ac-toolbar{background:rgba(255,255,255,0.04);padding:0.8rem 1.2rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid rgba(255,255,255,0.06)}
+.ac-dot{width:10px;height:10px;border-radius:50%}
+.ac-d1{background:#ef4444}.ac-d2{background:#fbbf24}.ac-d3{background:#22c55e}
+.ac-title{font-size:0.72rem;color:rgba(255,255,255,0.3);margin-left:0.4rem;font-family:'Plus Jakarta Sans',sans-serif}
+.ac-body{padding:1.4rem;overflow-x:auto}
+.ac-body pre{font-size:0.78rem;line-height:1.8;color:#e2ede5}
+.code-key{color:#fbbf24}
+.code-str{color:#4ade80}
+.code-num{color:#60a5fa}
+.code-comment{color:rgba(255,255,255,0.25)}
+.code-method{color:#c084fc}
+
+/* ══ AFFILIATES ══ */
+.affiliate-section{background:linear-gradient(135deg,#f0fdf4,#e8f8ec);padding:5rem 3rem;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.aff-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+.aff-info h2{font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--dark);margin-bottom:0.8rem}
+.aff-info p{color:var(--muted);line-height:1.7;margin-bottom:1.5rem}
+.commission-card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:2rem;text-align:center;box-shadow:0 8px 30px rgba(0,0,0,0.06)}
+.cc-icon{font-size:3rem;margin-bottom:0.8rem}
+.cc-pct{font-family:'Fraunces',serif;font-size:3.5rem;font-weight:900;color:var(--green)}
+.cc-label{font-size:0.82rem;color:var(--muted);margin-bottom:1rem}
+.cc-example{background:var(--bg);border-radius:12px;padding:1rem;font-size:0.85rem}
+.ce-row{display:flex;justify-content:space-between;padding:0.3rem 0;font-size:0.82rem}
+.ce-key{color:var(--muted)}
+.ce-val{font-weight:700;color:var(--text)}
+.aff-steps{display:flex;flex-direction:column;gap:0.8rem;margin:1.5rem 0}
+.as-item{display:flex;align-items:center;gap:0.8rem;padding:0.7rem 1rem;background:rgba(26,122,62,0.06);border-radius:10px;border-left:3px solid var(--green)}
+.as-num{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:900;color:var(--green);flex-shrink:0}
+.as-text{font-size:0.82rem;color:var(--text)}
+
+/* ══ PARTNERS LOGOS ══ */
+.partners-logos{padding:3.5rem 3rem;background:var(--card);border-top:1px solid var(--border)}
+.pl-inner{max-width:1000px;margin:0 auto}
+.pl-title{text-align:center;font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:2rem}
+.logos-row{display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center;align-items:center}
+.logo-pill{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:0.7rem 1.5rem;font-size:0.85rem;font-weight:800;color:var(--muted);display:flex;align-items:center;gap:0.5rem;transition:all 0.2s}
+.logo-pill:hover{border-color:var(--gl);color:var(--green)}
+
+/* ══ CONTACT FORM ══ */
+.contact-section{padding:5rem 3rem;max-width:800px;margin:0 auto}
+.contact-form{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:2.5rem}
+.cf-title{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:900;color:var(--dark);margin-bottom:0.4rem}
+.cf-sub{color:var(--muted);font-size:0.85rem;margin-bottom:2rem}
+.cf-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.cf-field{display:flex;flex-direction:column;gap:0.4rem}
+.cf-label{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted)}
+.cf-input,.cf-select,.cf-textarea{background:var(--bg);border:1.5px solid var(--border);border-radius:11px;padding:0.75rem 1rem;font-size:0.9rem;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none;transition:border-color 0.2s;width:100%}
+.cf-input:focus,.cf-select:focus,.cf-textarea:focus{border-color:var(--green)}
+.cf-textarea{resize:vertical;min-height:90px}
+.cf-submit{background:linear-gradient(135deg,var(--dark),#0e3320);color:#fff;border:none;border-radius:13px;padding:0.95rem 2.5rem;font-size:0.95rem;font-weight:800;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.2s;display:flex;align-items:center;gap:0.5rem;margin-top:1rem}
+.cf-submit:hover{background:var(--green);transform:translateY(-2px)}
+
+@media(max-width:900px){.partner-grid{grid-template-columns:1fr}.api-layout{grid-template-columns:1fr}.aff-inner{grid-template-columns:1fr}.steps-flow{grid-template-columns:1fr 1fr}.nav-links{display:none}.b2b-hero,.partner-types,.api-section,.affiliate-section,.contact-section,.how-section{padding:3rem 1.5rem}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo">Nutri<span>Cam</span></div>
+  <ul class="nav-links">
+    <li><a href="#">Restauration</a></li>
+    <li><a href="#">Entreprises</a></li>
+    <li><a href="#">API</a></li>
+    <li><a href="#">Affiliés</a></li>
+    <li><a href="#" class="nav-cta">Nous contacter</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="b2b-hero">
+  <div class="bh-inner">
+    <div class="bh-badge">🤝 Partenariats B2B · API · Affiliés</div>
+    <h1>Intégrez NutriCam<br/>dans votre <span>business</span></h1>
+    <p>API nutritionnelle, programme d'affiliation, labellisation restaurants, bien-être entreprise. Rejoignez l'écosystème NutriCam et générez de nouvelles sources de revenus.</p>
+    <div class="hero-cta-row">
+      <a href="#contact" class="hcta-primary">📩 Devenir partenaire</a>
+      <a href="#api" class="hcta-secondary">📖 Documentation API</a>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNER TYPES -->
+<section class="partner-types">
+  <div class="section-header">
+    <div class="sh-badge">Types de partenariats</div>
+    <h2 class="sh-title">Un modèle pour chaque acteur</h2>
+    <p class="sh-sub">NutriCam propose 4 types de partenariats adaptés aux acteurs de la santé, de la restauration et de l'entreprise.</p>
+  </div>
+  <div class="partner-grid">
+    <div class="partner-card">
+      <div class="pc-visual" style="background:linear-gradient(135deg,#0a2d14,#1a7a3e)">🍽️</div>
+      <div class="pc-body">
+        <div class="pc-tag" style="color:#16a34a">🍽️ Restauration & Hôtellerie</div>
+        <h3 class="pc-title">Label NutriCam Restaurant</h3>
+        <p class="pc-desc">Affichez les valeurs nutritionnelles de vos plats. Attirez les clients soucieux de leur santé. Bénéficiez du badge "NutriCam Certifié".</p>
+        <div class="pc-features">
+          <div class="pcf-item"><span class="pcf-check" style="color:#16a34a">✓</span>Calcul automatique des calories de votre menu</div>
+          <div class="pcf-item"><span class="pcf-check" style="color:#16a34a">✓</span>Badge "NutriCam Certifié" sur votre devanture</div>
+          <div class="pcf-item"><span class="pcf-check" style="color:#16a34a">✓</span>Profil restaurant dans l'app NutriCam</div>
+          <div class="pcf-item"><span class="pcf-check" style="color:#16a34a">✓</span>Dashboard analytics clients nutrition</div>
+        </div>
+        <button class="pc-cta">En savoir plus →</button>
+        <div class="pc-pricing">À partir de 50 000 FCFA/mois</div>
+      </div>
+    </div>
+    <div class="partner-card">
+      <div class="pc-visual" style="background:linear-gradient(135deg,#1e1b4b,#2563eb)">🏥</div>
+      <div class="pc-body">
+        <div class="pc-tag" style="color:#2563eb">🏥 Santé & Médecine</div>
+        <h3 class="pc-title">Partenariat Clinique & Hôpital</h3>
+        <p class="pc-desc">Prescrivez NutriCam à vos patients diabétiques, hypertendus ou en surpoids. Suivez leur compliance nutritionnelle en temps réel.</p>
+        <div class="pc-features">
+          <div class="pcf-item"><span class="pcf-check" style="color:#2563eb">✓</span>Prescriptions nutritionnelles numériques</div>
+          <div class="pcf-item"><span class="pcf-check" style="color:#2563eb">✓</span>Dashboard suivi patient (médecin)</div>
+          <div class="pcf-item"><span class="pcf-check" style="color:#2563eb">✓</span>Alertes compliance alimentaire</div>
+          <div class="pcf-item"><span class="pcf-check" style="color:#2563eb">✓</span>Rapport nutritionnel mensuel patient</div>
+        </div>
+        <button class="pc-cta" style="background:#2563eb">Contacter l'équipe →</button>
+        <div class="pc-pricing">Commission 20% / abonnement patient</div>
+      </div>
+    </div>
+    <div class="partner-card">
+      <div class="pc-visual" style="background:linear-gradient(135deg,#3d1a00,#ea580c)">🏢</div>
+      <div class="pc-body">
+        <div class="pc-tag" style="color:#ea580c">🏢 Bien-être Entreprise</div>
+        <h3 class="pc-title">Programme RH & Employés</h3>
+        <p class="pc-desc">Offrez NutriCam à vos employés comme avantage bien-être. Réduisez l'absentéisme, améliorez la productivité et la satisfaction.</p>
+        <div class="pc-features">
+          <div class="pcf-item"><span class="pcf-check" style="color:#ea580c">✓</span>Licences groupées pour toute l'équipe</div>
+          <div class="pcf-item"><span class="pcf-check" style="color:#ea580c">✓</span>Dashboard RH agrégé (anonymisé)</div>
+          <div class="pcf-item"><span class="pcf-check" style="color:#ea580c">✓</span>Ateliers nutrition sur site possibles</div>
+          <div class="pcf-item"><span class="pcf-check" style="color:#ea580c">✓</span>Facturation mensuelle centralisée</div>
+        </div>
+        <button class="pc-cta" style="background:#ea580c">Demander un devis →</button>
+        <div class="pc-pricing">À partir de 500 000 FCFA/mois</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section">
+  <div class="how-inner">
+    <div class="section-header" style="margin-bottom:0">
+      <div class="sh-badge" style="color:var(--y)">Processus</div>
+      <h2 class="sh-title" style="color:#fff">Devenir partenaire en 4 étapes</h2>
+      <p class="sh-sub" style="color:rgba(255,255,255,0.45)">Simple, rapide, sans engagement minimum.</p>
+    </div>
+    <div class="steps-flow">
+      <div class="step-node">
+        <div class="sn-num">1</div>
+        <div class="sn-icon">📩</div>
+        <div class="sn-title">Prise de contact</div>
+        <div class="sn-desc">Remplissez le formulaire ci-dessous. Réponse sous 48h ouvrées.</div>
+      </div>
+      <div class="step-node">
+        <div class="sn-num">2</div>
+        <div class="sn-icon">🤝</div>
+        <div class="sn-title">Réunion découverte</div>
+        <div class="sn-desc">Appel vidéo de 30 min avec notre équipe partenariats.</div>
+      </div>
+      <div class="step-node">
+        <div class="sn-num">3</div>
+        <div class="sn-icon">📄</div>
+        <div class="sn-title">Convention signée</div>
+        <div class="sn-desc">Contrat adapté, accès API ou dashboard partenaire.</div>
+      </div>
+      <div class="step-node">
+        <div class="sn-num">4</div>
+        <div class="sn-icon">🚀</div>
+        <div class="sn-title">Lancement</div>
+        <div class="sn-desc">Onboarding dédié, formation et support technique continu.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- API -->
+<section class="api-section" id="api">
+  <div class="api-layout">
+    <div class="api-info">
+      <div class="sh-badge" style="margin-bottom:0.7rem">📡 API NutriCam</div>
+      <h2>Intégrez notre base nutritionnelle dans votre app</h2>
+      <p>L'API NutriCam expose nos 200+ recettes camerounaises, valeurs nutritionnelles et recommandations IA. Idéale pour les développeurs d'applications santé et nutrition.</p>
+      <div class="api-features">
+        <div class="api-feat"><div class="af-icon">🍲</div><div class="af-text"><strong>Base recettes complète :</strong> 200+ plats avec ingrédients, étapes, valeurs nutritionnelles par portion</div></div>
+        <div class="api-feat"><div class="af-icon">🔍</div><div class="af-text"><strong>Recherche intelligente :</strong> Full-text multilingue, filtres par région, catégorie, calories, profil</div></div>
+        <div class="api-feat"><div class="af-icon">📦</div><div class="af-text"><strong>Scanner produits :</strong> Lookup par code-barres, 1200+ produits camerounais</div></div>
+        <div class="api-feat"><div class="af-icon">🤖</div><div class="af-text"><strong>Génération IA :</strong> Endpoint plan repas personnalisé selon profil utilisateur</div></div>
+      </div>
+      <a href="#contact" class="hcta-primary" style="display:inline-flex;align-items:center;gap:0.5rem">📖 Accéder à la doc complète</a>
+    </div>
+    <div class="api-code">
+      <div class="ac-toolbar">
+        <div class="ac-dot ac-d1"></div><div class="ac-dot ac-d2"></div><div class="ac-dot ac-d3"></div>
+        <div class="ac-title">GET /api/v1/recipes</div>
+      </div>
+      <div class="ac-body"><pre><span class="code-comment">// Request</span>
+<span class="code-method">GET</span> https://api.nutricam.cm/v1/recipes
+  ?region=<span class="code-str">Littoral</span>
+  &amp;category=<span class="code-str">plat</span>
+  &amp;maxCalories=<span class="code-num">400</span>
+  &amp;profile=<span class="code-str">sportif</span>
+
+<span class="code-comment">// Response 200 OK</span>
+{
+  <span class="code-key">"status"</span>: <span class="code-str">"success"</span>,
+  <span class="code-key">"count"</span>: <span class="code-num">12</span>,
+  <span class="code-key">"recipes"</span>: [
+    {
+      <span class="code-key">"id"</span>: <span class="code-str">"recipe_001"</span>,
+      <span class="code-key">"name"</span>: <span class="code-str">"Ndolé aux crevettes"</span>,
+      <span class="code-key">"region"</span>: <span class="code-str">"Littoral"</span>,
+      <span class="code-key">"calories"</span>: <span class="code-num">380</span>,
+      <span class="code-key">"proteins"</span>: <span class="code-num">28</span>,
+      <span class="code-key">"carbs"</span>: <span class="code-num">18</span>,
+      <span class="code-key">"fat"</span>: <span class="code-num">22</span>,
+      <span class="code-key">"cookTime"</span>: <span class="code-num">90</span>,
+      <span class="code-key">"difficulty"</span>: <span class="code-str">"medium"</span>
+    }
+  ],
+  <span class="code-key">"rateLimit"</span>: {
+    <span class="code-key">"remaining"</span>: <span class="code-num">487</span>,
+    <span class="code-key">"resetAt"</span>: <span class="code-str">"2025-01-14T11:00:00Z"</span>
+  }
+}</pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- AFFILIATES -->
+<section class="affiliate-section">
+  <div class="aff-inner">
+    <div class="aff-info">
+      <div class="sh-badge" style="margin-bottom:0.7rem">💸 Programme affiliés</div>
+      <h2>Gagnez 20% sur chaque abonnement</h2>
+      <p>Recommandez NutriCam à votre audience et touchez une commission récurrente sur chaque abonnement souscrit via votre lien.</p>
+      <div class="aff-steps">
+        <div class="as-item"><div class="as-num">1</div><div class="as-text">Inscrivez-vous gratuitement au programme affilié</div></div>
+        <div class="as-item"><div class="as-num">2</div><div class="as-text">Recevez votre lien unique et vos visuels prêts à l'emploi</div></div>
+        <div class="as-item"><div class="as-num">3</div><div class="as-text">Partagez sur votre blog, YouTube, Instagram ou WhatsApp</div></div>
+        <div class="as-item"><div class="as-num">4</div><div class="as-text">Recevez vos commissions chaque mois via MTN MoMo</div></div>
+      </div>
+      <a href="#contact" class="hcta-primary" style="display:inline-flex;align-items:center;gap:0.5rem">🚀 Rejoindre le programme</a>
+    </div>
+    <div class="commission-card">
+      <div class="cc-icon">💰</div>
+      <div class="cc-pct">20%</div>
+      <div class="cc-label">Commission récurrente mensuelle</div>
+      <div class="cc-example">
+        <div style="font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:0.6rem">Exemple de gains</div>
+        <div class="ce-row"><span class="ce-key">10 abonnés Premium</span><span class="ce-val" style="color:var(--green)">+5 000 FCFA/mois</span></div>
+        <div class="ce-row"><span class="ce-key">50 abonnés Premium</span><span class="ce-val" style="color:var(--green)">+25 000 FCFA/mois</span></div>
+        <div class="ce-row"><span class="ce-key">100 abonnés Premium</span><span class="ce-val" style="color:var(--green)">+50 000 FCFA/mois</span></div>
+        <div class="ce-row"><span class="ce-key">Cookie tracking</span><span class="ce-val">90 jours</span></div>
+        <div class="ce-row"><span class="ce-key">Paiement</span><span class="ce-val">MTN MoMo · le 1er du mois</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNERS LOGOS -->
+<div class="partners-logos">
+  <div class="pl-inner">
+    <div class="pl-title">Ils nous font confiance · Partenaires potentiels</div>
+    <div class="logos-row">
+      <div class="logo-pill">🏥 CHU Yaoundé</div>
+      <div class="logo-pill">🏥 CHU Douala</div>
+      <div class="logo-pill">📱 MTN Cameroun</div>
+      <div class="logo-pill">📱 Orange Cameroun</div>
+      <div class="logo-pill">⛽ Total Énergie Cam.</div>
+      <div class="logo-pill">🍺 SABC (Brasseries)</div>
+      <div class="logo-pill">🎓 UY I Yaoundé</div>
+      <div class="logo-pill">🏟️ FECAFOOT</div>
+      <div class="logo-pill">🛒 Dovv Supermarché</div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT FORM -->
+<section class="contact-section" id="contact">
+  <div class="contact-form">
+    <div class="cf-title">📩 Formulaire de contact partenariat</div>
+    <div class="cf-sub">Notre équipe partenariats vous répondra dans les 48h ouvrées.</div>
+    <div class="cf-grid">
+      <div class="cf-field"><label class="cf-label">Prénom & Nom</label><input class="cf-input" type="text" placeholder="Georges D. Pitchou"/></div>
+      <div class="cf-field"><label class="cf-label">Organisation</label><input class="cf-input" type="text" placeholder="Clinique Saint-Michel"/></div>
+    </div>
+    <div class="cf-grid">
+      <div class="cf-field"><label class="cf-label">Email professionnel</label><input class="cf-input" type="email" placeholder="contact@organisation.cm"/></div>
+      <div class="cf-field"><label class="cf-label">Téléphone</label><input class="cf-input" type="tel" placeholder="+237 683 868 760"/></div>
+    </div>
+    <div class="cf-field" style="margin-bottom:1rem"><label class="cf-label">Type de partenariat</label>
+      <select class="cf-select">
+        <option value="">Sélectionnez un type...</option>
+        <option>🍽️ Label Restaurant / Hôtel</option>
+        <option>🏥 Clinique / Hôpital</option>
+        <option>🏢 Bien-être Entreprise</option>
+        <option>📡 Intégration API</option>
+        <option>💸 Programme Affilié</option>
+        <option>🎓 Partenariat Académique</option>
+        <option>Autre</option>
+      </select>
+    </div>
+    <div class="cf-field" style="margin-bottom:1rem"><label class="cf-label">Votre message</label><textarea class="cf-textarea" placeholder="Décrivez votre projet ou vos besoins..."></textarea></div>
+    <button class="cf-submit" onclick="submitForm()">🚀 Envoyer ma demande</button>
+  </div>
+</section>
+
+<script>
+function submitForm(){
+  const btn = document.querySelector('.cf-submit');
+  btn.textContent='✅ Demande envoyée !';
+  btn.style.background='var(--green)';
+  setTimeout(()=>{btn.innerHTML='🚀 Envoyer ma demande';btn.style.background=''},3000);
+}
+</script>
+</body>
+</html>

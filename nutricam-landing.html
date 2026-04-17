@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Mange Bien. Vis Fort.</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --green: #1a6b3c;
+    --green-light: #2d9b5a;
+    --yellow: #f5c842;
+    --red: #c0392b;
+    --cream: #fdf6ec;
+    --dark: #0e1a12;
+    --text: #1c2b1f;
+    --muted: #5a7263;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: rgba(253,246,236,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(26,107,60,0.1);
+  }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; font-weight: 900;
+    color: var(--green);
+    letter-spacing: -1px;
+  }
+  .logo span { color: var(--yellow); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none; color: var(--text);
+    font-size: 0.9rem; font-weight: 500; letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--green); }
+  .nav-cta {
+    background: var(--green); color: #fff !important;
+    padding: 0.6rem 1.4rem; border-radius: 100px;
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--green-light) !important; color: #fff !important; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 8rem 4rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -200px; right: -200px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(245,200,66,0.18) 0%, transparent 70%);
+    border-radius: 50%; pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute; bottom: -100px; left: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(26,107,60,0.12) 0%, transparent 70%);
+    border-radius: 50%; pointer-events: none;
+  }
+
+  .hero-text { position: relative; z-index: 2; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(26,107,60,0.08); border: 1px solid rgba(26,107,60,0.2);
+    color: var(--green); padding: 0.4rem 1rem; border-radius: 100px;
+    font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    line-height: 1.05; font-weight: 900;
+    color: var(--dark);
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.7s 0.1s ease both;
+  }
+  .hero h1 em { color: var(--green); font-style: normal; }
+  .hero h1 .yellow { color: var(--yellow); -webkit-text-stroke: 1px #c9a500; }
+  .hero-sub {
+    font-size: 1.1rem; color: var(--muted); line-height: 1.7;
+    max-width: 480px; margin-bottom: 2.5rem;
+    animation: fadeUp 0.7s 0.2s ease both;
+  }
+  .hero-actions {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    animation: fadeUp 0.7s 0.3s ease both;
+  }
+  .btn-primary {
+    background: var(--green); color: #fff;
+    padding: 0.9rem 2rem; border-radius: 100px;
+    font-weight: 600; font-size: 1rem; text-decoration: none;
+    border: none; cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+    box-shadow: 0 8px 30px rgba(26,107,60,0.3);
+  }
+  .btn-primary:hover { background: var(--green-light); transform: translateY(-2px); }
+  .btn-secondary {
+    background: transparent; color: var(--green);
+    padding: 0.9rem 2rem; border-radius: 100px;
+    font-weight: 600; font-size: 1rem; text-decoration: none;
+    border: 2px solid var(--green); cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { background: var(--green); color: #fff; }
+
+  .hero-stats {
+    display: flex; gap: 2rem; margin-top: 3rem;
+    animation: fadeUp 0.7s 0.4s ease both;
+  }
+  .stat-item { text-align: center; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem; font-weight: 900; color: var(--green);
+    display: block;
+  }
+  .stat-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+
+  /* HERO VISUAL */
+  .hero-visual {
+    position: relative; z-index: 2;
+    display: flex; justify-content: center; align-items: center;
+    animation: fadeIn 1s 0.3s ease both;
+  }
+  .phone-mockup {
+    width: 260px; height: 520px;
+    background: var(--dark);
+    border-radius: 40px;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.25), 0 0 0 6px #2a3d2e;
+    position: relative; overflow: hidden;
+    transform: rotate(-4deg);
+  }
+  .phone-screen {
+    position: absolute; inset: 10px;
+    border-radius: 32px; overflow: hidden;
+    background: linear-gradient(160deg, #0e1a12 0%, #1a6b3c 100%);
+    display: flex; flex-direction: column;
+  }
+  .phone-topbar {
+    background: rgba(255,255,255,0.05);
+    padding: 1rem 1.2rem 0.8rem;
+    display: flex; flex-direction: column; gap: 0.4rem;
+  }
+  .phone-logo {
+    font-family: 'Playfair Display', serif;
+    color: #fff; font-size: 1.1rem; font-weight: 900;
+  }
+  .phone-logo span { color: var(--yellow); }
+  .phone-greeting { color: rgba(255,255,255,0.6); font-size: 0.7rem; }
+
+  .phone-card {
+    margin: 0.8rem; background: rgba(255,255,255,0.08);
+    border-radius: 16px; padding: 1rem;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .phone-cal-title { color: rgba(255,255,255,0.7); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+  .phone-cal-val { color: #fff; font-size: 1.6rem; font-weight: 700; font-family: 'Playfair Display', serif; }
+  .phone-cal-val span { color: var(--yellow); font-size: 0.8rem; }
+  .phone-progress { height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; margin-top: 0.5rem; overflow: hidden; }
+  .phone-progress-bar { height: 100%; width: 62%; background: linear-gradient(90deg, var(--green-light), var(--yellow)); border-radius: 3px; }
+
+  .phone-dishes {
+    display: flex; flex-direction: column; gap: 0.5rem;
+    padding: 0 0.8rem 0.8rem;
+    flex: 1;
+  }
+  .dish-row {
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px; padding: 0.7rem 0.9rem;
+    display: flex; align-items: center; justify-content: space-between;
+    border: 1px solid rgba(255,255,255,0.07);
+  }
+  .dish-name { color: #fff; font-size: 0.72rem; font-weight: 500; }
+  .dish-cals { color: var(--yellow); font-size: 0.68rem; font-weight: 700; }
+  .dish-emoji { font-size: 1.1rem; margin-right: 0.5rem; }
+
+  .floating-card {
+    position: absolute;
+    background: #fff;
+    border-radius: 16px;
+    padding: 0.9rem 1.2rem;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    animation: float 3s ease-in-out infinite;
+  }
+  .fc-1 { top: 60px; right: -20px; min-width: 160px; }
+  .fc-2 { bottom: 80px; left: -30px; min-width: 140px; }
+  .fc-icon { font-size: 1.4rem; margin-bottom: 0.3rem; }
+  .fc-label { font-size: 0.7rem; color: var(--muted); font-weight: 500; }
+  .fc-val { font-size: 0.95rem; font-weight: 700; color: var(--dark); }
+
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  /* PROFILES SECTION */
+  .profiles {
+    padding: 6rem 4rem;
+    background: var(--dark);
+    position: relative; overflow: hidden;
+  }
+  .profiles::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 1px; background: linear-gradient(90deg, transparent, var(--green), transparent);
+  }
+  .section-label {
+    text-align: center; color: var(--yellow);
+    font-size: 0.8rem; font-weight: 700; letter-spacing: 0.15em;
+    text-transform: uppercase; margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 900; text-align: center;
+    color: #fff; margin-bottom: 1rem;
+  }
+  .section-sub { text-align: center; color: rgba(255,255,255,0.5); max-width: 520px; margin: 0 auto 3.5rem; line-height: 1.7; }
+
+  .profiles-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem; max-width: 1100px; margin: 0 auto;
+  }
+  .profile-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px; padding: 2rem 1.5rem;
+    text-align: center; cursor: pointer;
+    transition: all 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .profile-card::before {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--green), var(--yellow));
+    transform: scaleX(0); transition: transform 0.3s;
+  }
+  .profile-card:hover { background: rgba(255,255,255,0.08); transform: translateY(-4px); }
+  .profile-card:hover::before { transform: scaleX(1); }
+  .profile-emoji { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+  .profile-name { color: #fff; font-weight: 700; font-size: 1rem; margin-bottom: 0.4rem; }
+  .profile-desc { color: rgba(255,255,255,0.45); font-size: 0.78rem; line-height: 1.5; }
+
+  /* CALORIE CALCULATOR */
+  .calc-section {
+    padding: 6rem 4rem;
+    background: var(--cream);
+  }
+  .calc-container {
+    max-width: 900px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
+    align-items: center;
+  }
+  .calc-form {
+    background: #fff;
+    border-radius: 28px; padding: 2.5rem;
+    box-shadow: 0 4px 40px rgba(0,0,0,0.07);
+  }
+  .calc-form h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; color: var(--dark);
+    margin-bottom: 0.3rem;
+  }
+  .calc-form p { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.8rem; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-group label { font-size: 0.78rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .form-group input, .form-group select {
+    border: 1.5px solid #e0e8e3; border-radius: 10px;
+    padding: 0.7rem 0.9rem; font-size: 0.9rem;
+    font-family: 'DM Sans', sans-serif;
+    background: #f9fdf9; color: var(--dark);
+    transition: border 0.2s;
+    outline: none;
+  }
+  .form-group input:focus, .form-group select:focus { border-color: var(--green); }
+  .form-group-full { margin-bottom: 1rem; }
+
+  .calc-btn {
+    width: 100%; background: var(--green); color: #fff;
+    border: none; border-radius: 12px; padding: 1rem;
+    font-size: 1rem; font-weight: 700; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s, transform 0.2s;
+    margin-top: 0.5rem;
+  }
+  .calc-btn:hover { background: var(--green-light); transform: translateY(-1px); }
+
+  .calc-result {
+    display: none; margin-top: 1.5rem;
+    background: linear-gradient(135deg, var(--dark), #1a6b3c);
+    border-radius: 16px; padding: 1.5rem; text-align: center;
+  }
+  .calc-result.show { display: block; animation: fadeUp 0.4s ease; }
+  .result-cals { font-family: 'Playfair Display', serif; font-size: 2.8rem; color: var(--yellow); font-weight: 900; }
+  .result-label { color: rgba(255,255,255,0.7); font-size: 0.8rem; margin-bottom: 0.5rem; }
+  .result-tip { color: rgba(255,255,255,0.6); font-size: 0.78rem; margin-top: 0.8rem; line-height: 1.5; }
+  .macros { display: flex; justify-content: space-around; margin-top: 1rem; }
+  .macro { text-align: center; }
+  .macro-val { color: #fff; font-weight: 700; font-size: 1rem; }
+  .macro-label { color: rgba(255,255,255,0.5); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  .calc-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem; color: var(--dark); margin-bottom: 1rem;
+  }
+  .calc-info p { color: var(--muted); line-height: 1.7; margin-bottom: 1.5rem; }
+  .feature-list { display: flex; flex-direction: column; gap: 0.8rem; }
+  .feature-item { display: flex; align-items: center; gap: 0.8rem; }
+  .feature-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: rgba(26,107,60,0.1);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; flex-shrink: 0;
+  }
+  .feature-text { font-size: 0.88rem; color: var(--text); line-height: 1.4; }
+
+  /* DISHES SECTION */
+  .dishes {
+    padding: 6rem 4rem;
+    background: #0e1a12;
+  }
+  .dishes-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem; max-width: 1200px; margin: 0 auto;
+  }
+  .dish-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px; overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .dish-card:hover { transform: translateY(-6px); box-shadow: 0 30px 70px rgba(0,0,0,0.3); }
+  .dish-header {
+    padding: 2rem 1.5rem 1.5rem;
+    position: relative;
+  }
+  .dish-bg-emoji {
+    position: absolute; top: -10px; right: 10px;
+    font-size: 5rem; opacity: 0.15; pointer-events: none;
+  }
+  .dish-tag {
+    display: inline-block;
+    background: rgba(245,200,66,0.15); color: var(--yellow);
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 0.25rem 0.7rem;
+    border-radius: 100px; margin-bottom: 0.8rem;
+  }
+  .dish-title { color: #fff; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .dish-cal-badge {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    color: var(--green-light); font-size: 0.78rem; font-weight: 600;
+  }
+  .dish-body { padding: 0 1.5rem 1.5rem; }
+  .dish-desc { color: rgba(255,255,255,0.45); font-size: 0.8rem; line-height: 1.5; margin-bottom: 1rem; }
+  .dish-meta { display: flex; gap: 1rem; }
+  .meta-pill {
+    background: rgba(255,255,255,0.06); border-radius: 100px;
+    padding: 0.3rem 0.8rem; font-size: 0.72rem; color: rgba(255,255,255,0.5);
+    display: flex; align-items: center; gap: 0.3rem;
+  }
+  .dish-btn {
+    width: calc(100% - 3rem); margin: 0 1.5rem 1.5rem;
+    background: transparent; border: 1px solid rgba(255,255,255,0.15);
+    color: #fff; border-radius: 10px; padding: 0.7rem;
+    font-size: 0.85rem; font-weight: 600; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+  .dish-btn:hover { background: var(--green); border-color: var(--green); }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 999;
+    background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+    align-items: center; justify-content: center; padding: 2rem;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--dark); border-radius: 28px; padding: 2.5rem;
+    max-width: 600px; width: 100%; max-height: 80vh; overflow-y: auto;
+    border: 1px solid rgba(255,255,255,0.1);
+    animation: fadeUp 0.35s ease;
+  }
+  .modal-close {
+    float: right; background: rgba(255,255,255,0.08); border: none;
+    color: #fff; width: 36px; height: 36px; border-radius: 50%;
+    cursor: pointer; font-size: 1.1rem; display: flex; align-items: center;
+    justify-content: center; transition: background 0.2s;
+  }
+  .modal-close:hover { background: rgba(255,255,255,0.15); }
+  .modal-tag { color: var(--yellow); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+  .modal h2 { font-family: 'Playfair Display', serif; color: #fff; font-size: 2rem; margin-bottom: 1rem; }
+  .modal-section { margin-top: 1.5rem; }
+  .modal-section h4 { color: var(--green-light); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.8rem; }
+  .ingredient-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .ingredient-pill {
+    background: rgba(255,255,255,0.06); border-radius: 8px;
+    padding: 0.4rem 0.8rem; color: rgba(255,255,255,0.8); font-size: 0.8rem;
+  }
+  .steps-list { display: flex; flex-direction: column; gap: 0.8rem; }
+  .step-row { display: flex; gap: 1rem; }
+  .step-num {
+    width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+    background: var(--green); color: #fff; font-weight: 700; font-size: 0.8rem;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step-text { color: rgba(255,255,255,0.7); font-size: 0.85rem; line-height: 1.6; padding-top: 3px; }
+  .modal-macro-row { display: flex; gap: 1rem; margin-top: 1rem; }
+  .modal-macro { flex: 1; background: rgba(255,255,255,0.04); border-radius: 12px; padding: 0.8rem; text-align: center; }
+  .modal-macro-val { color: #fff; font-weight: 700; display: block; }
+  .modal-macro-label { color: rgba(255,255,255,0.4); font-size: 0.72rem; }
+
+  /* PLANS */
+  .plans {
+    padding: 6rem 4rem;
+    background: var(--cream);
+  }
+  .plans-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem; max-width: 900px; margin: 0 auto;
+  }
+  .plan-card {
+    background: #fff; border-radius: 24px; padding: 2.5rem 2rem;
+    border: 2px solid transparent; transition: all 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .plan-card.featured {
+    background: var(--green); color: #fff;
+    border-color: var(--green);
+    transform: scale(1.05);
+    box-shadow: 0 30px 80px rgba(26,107,60,0.3);
+  }
+  .plan-card:not(.featured):hover { border-color: var(--green); transform: translateY(-4px); }
+  .plan-badge {
+    position: absolute; top: 1.2rem; right: 1.2rem;
+    background: var(--yellow); color: var(--dark);
+    font-size: 0.68rem; font-weight: 800; padding: 0.25rem 0.7rem;
+    border-radius: 100px; text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .plan-name {
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem;
+  }
+  .plan-card.featured .plan-name { color: rgba(255,255,255,0.7); }
+  .plan-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem; font-weight: 900; color: var(--dark);
+    margin-bottom: 0.2rem;
+  }
+  .plan-card.featured .plan-price { color: #fff; }
+  .plan-period { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.5rem; }
+  .plan-card.featured .plan-period { color: rgba(255,255,255,0.65); }
+  .plan-features { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 2rem; }
+  .plan-features li { font-size: 0.85rem; color: var(--text); display: flex; align-items: center; gap: 0.5rem; }
+  .plan-card.featured .plan-features li { color: rgba(255,255,255,0.85); }
+  .plan-features li::before { content: '✓'; color: var(--green); font-weight: 800; }
+  .plan-card.featured .plan-features li::before { color: var(--yellow); }
+  .plan-btn {
+    width: 100%; border-radius: 12px; padding: 0.9rem;
+    font-weight: 700; font-size: 0.9rem; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; border: 2px solid var(--green);
+    transition: all 0.2s;
+  }
+  .plan-btn-outline { background: transparent; color: var(--green); }
+  .plan-btn-outline:hover { background: var(--green); color: #fff; }
+  .plan-btn-solid { background: var(--yellow); color: var(--dark); border-color: var(--yellow); }
+  .plan-btn-solid:hover { background: #e5b800; border-color: #e5b800; }
+
+  /* CTA */
+  .cta-section {
+    padding: 6rem 4rem;
+    background: linear-gradient(135deg, var(--dark) 0%, #0a2d16 100%);
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .cta-section::before {
+    content: '🌿';
+    position: absolute; font-size: 20rem; opacity: 0.03;
+    top: 50%; left: 50%; transform: translate(-50%,-50%);
+    pointer-events: none;
+  }
+  .cta-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem); color: #fff; margin-bottom: 1rem;
+  }
+  .cta-section h2 span { color: var(--yellow); }
+  .cta-section p { color: rgba(255,255,255,0.6); margin-bottom: 2.5rem; max-width: 500px; margin-left: auto; margin-right: auto; }
+  .cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .store-btn {
+    display: flex; align-items: center; gap: 0.8rem;
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+    color: #fff; padding: 0.9rem 1.6rem; border-radius: 14px;
+    text-decoration: none; transition: background 0.2s;
+    font-size: 0.9rem;
+  }
+  .store-btn:hover { background: rgba(255,255,255,0.14); }
+  .store-icon { font-size: 1.6rem; }
+  .store-text { display: flex; flex-direction: column; }
+  .store-sub { font-size: 0.65rem; color: rgba(255,255,255,0.5); }
+  .store-name { font-weight: 700; font-size: 0.95rem; }
+
+  /* FOOTER */
+  footer {
+    background: #070f09;
+    padding: 3rem 4rem;
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 900; color: #fff; }
+  .footer-logo span { color: var(--yellow); }
+  footer p { color: rgba(255,255,255,0.3); font-size: 0.8rem; }
+  .footer-links { display: flex; gap: 1.5rem; }
+  .footer-links a { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 0.8rem; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--green-light); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; } to { opacity: 1; }
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 6rem 1.5rem 3rem; gap: 2rem; }
+    .hero-visual { display: none; }
+    .profiles, .calc-section, .dishes, .plans, .cta-section { padding: 4rem 1.5rem; }
+    .calc-container { grid-template-columns: 1fr; }
+    .plans-grid { grid-template-columns: 1fr; }
+    .plan-card.featured { transform: none; }
+    footer { flex-direction: column; align-items: flex-start; padding: 2rem 1.5rem; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Nutri<span>Cam</span></div>
+  <ul class="nav-links">
+    <li><a href="#profiles">Profils</a></li>
+    <li><a href="#calc">Calories</a></li>
+    <li><a href="#dishes">Plats Cam</a></li>
+    <li><a href="#plans">Tarifs</a></li>
+    <li><a href="#cta" class="nav-cta">Commencer</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-badge">🌿 Nutrition · Cameroun · Santé</div>
+    <h1>Mange <em>bien</em>,<br/>vis <span class="yellow">fort</span>.</h1>
+    <p class="hero-sub">La première plateforme nutritionnelle camerounaise. Calories, macros et recettes traditionnelles adaptés à votre profil — sportif, enfant, adulte ou senior.</p>
+    <div class="hero-actions">
+      <a href="#calc" class="btn-primary">Calculer mes calories</a>
+      <a href="#dishes" class="btn-secondary">Voir les recettes</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="stat-num">200+</span>
+        <span class="stat-label">Recettes cam</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">6</span>
+        <span class="stat-label">Profils</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">100%</span>
+        <span class="stat-label">Gratuit de base</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="phone-mockup">
+      <div class="phone-screen">
+        <div class="phone-topbar">
+          <div class="phone-logo">Nutri<span>Cam</span></div>
+          <div class="phone-greeting">Bonjour, Marie 👋</div>
+        </div>
+        <div class="phone-card">
+          <div class="phone-cal-title">Calories du jour</div>
+          <div class="phone-cal-val">1 480 <span>/ 2 000 kcal</span></div>
+          <div class="phone-progress"><div class="phone-progress-bar"></div></div>
+        </div>
+        <div class="phone-dishes">
+          <div class="dish-row">
+            <div><span class="dish-emoji">🍲</span><span class="dish-name">Ndolé</span></div>
+            <span class="dish-cals">380 kcal</span>
+          </div>
+          <div class="dish-row">
+            <div><span class="dish-emoji">🌽</span><span class="dish-name">Miondo + sauce</span></div>
+            <span class="dish-cals">290 kcal</span>
+          </div>
+          <div class="dish-row">
+            <div><span class="dish-emoji">🐟</span><span class="dish-name">Poisson braisé</span></div>
+            <span class="dish-cals">320 kcal</span>
+          </div>
+          <div class="dish-row">
+            <div><span class="dish-emoji">🥜</span><span class="dish-name">Arachides grillées</span></div>
+            <span class="dish-cals">180 kcal</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="floating-card fc-1">
+      <div class="fc-icon">💪</div>
+      <div class="fc-label">Protéines</div>
+      <div class="fc-val">87g / 120g</div>
+    </div>
+    <div class="floating-card fc-2">
+      <div class="fc-icon">🥗</div>
+      <div class="fc-label">Recette du jour</div>
+      <div class="fc-val">Eru & Waterleaf</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROFILES -->
+<section class="profiles" id="profiles">
+  <div class="section-label">Pour tout le monde</div>
+  <h2 class="section-title">Un plan adapté à <em style="color:var(--yellow);font-style:normal">chaque profil</em></h2>
+  <p class="section-sub">Que vous soyez athlète de haut niveau, maman allaitante ou enfant en pleine croissance, NutriCam calcule vos besoins exacts.</p>
+  <div class="profiles-grid">
+    <div class="profile-card">
+      <span class="profile-emoji">🏃</span>
+      <div class="profile-name">Sportif</div>
+      <div class="profile-desc">Masse musculaire, récupération, énergie optimale pour la performance</div>
+    </div>
+    <div class="profile-card">
+      <span class="profile-emoji">🧑‍💼</span>
+      <div class="profile-name">Adulte actif</div>
+      <div class="profile-desc">Équilibre nutrition-vie quotidienne, maintien du poids ideal</div>
+    </div>
+    <div class="profile-card">
+      <span class="profile-emoji">👧</span>
+      <div class="profile-name">Enfant</div>
+      <div class="profile-desc">Croissance saine, apports en micronutriments pour le développement</div>
+    </div>
+    <div class="profile-card">
+      <span class="profile-emoji">🤰</span>
+      <div class="profile-name">Femme enceinte</div>
+      <div class="profile-desc">Besoins spéciaux grossesse et allaitement, folates, fer, calcium</div>
+    </div>
+    <div class="profile-card">
+      <span class="profile-emoji">👴</span>
+      <div class="profile-name">Senior</div>
+      <div class="profile-desc">Maintien musculaire, densité osseuse, alimentation légère</div>
+    </div>
+    <div class="profile-card">
+      <span class="profile-emoji">🎓</span>
+      <div class="profile-name">Étudiant</div>
+      <div class="profile-desc">Budget serré, recettes simples, énergie pour les études</div>
+    </div>
+  </div>
+</section>
+
+<!-- CALCULATOR -->
+<section class="calc-section" id="calc">
+  <div class="calc-container">
+    <div class="calc-form">
+      <h3>Calculez vos calories</h3>
+      <p>Obtenez votre apport calorique quotidien personnalisé en 30 secondes.</p>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Âge</label>
+          <input type="number" id="age" placeholder="25" min="1" max="120"/>
+        </div>
+        <div class="form-group">
+          <label>Sexe</label>
+          <select id="gender">
+            <option value="male">Homme</option>
+            <option value="female">Femme</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Poids (kg)</label>
+          <input type="number" id="weight" placeholder="70" min="1"/>
+        </div>
+        <div class="form-group">
+          <label>Taille (cm)</label>
+          <input type="number" id="height" placeholder="170" min="1"/>
+        </div>
+      </div>
+      <div class="form-group form-group-full">
+        <label>Activité physique</label>
+        <select id="activity">
+          <option value="1.2">Sédentaire (bureau, peu de sport)</option>
+          <option value="1.375">Légèrement actif (1-2x/semaine)</option>
+          <option value="1.55" selected>Modérément actif (3-5x/semaine)</option>
+          <option value="1.725">Très actif (6-7x/semaine)</option>
+          <option value="1.9">Athlète (2x/jour, compétition)</option>
+        </select>
+      </div>
+      <div class="form-group form-group-full">
+        <label>Objectif</label>
+        <select id="goal">
+          <option value="lose">Perdre du poids</option>
+          <option value="maintain" selected>Maintenir mon poids</option>
+          <option value="gain">Prendre de la masse</option>
+        </select>
+      </div>
+      <button class="calc-btn" onclick="calcCalories()">🧮 Calculer maintenant</button>
+      <div class="calc-result" id="calc-result">
+        <div class="result-label">Votre besoin calorique quotidien</div>
+        <div class="result-cals" id="result-cals">—</div>
+        <div style="color:rgba(255,255,255,0.6);font-size:0.78rem">kcal / jour</div>
+        <div class="macros">
+          <div class="macro"><div class="macro-val" id="m-prot">—</div><div class="macro-label">Protéines (g)</div></div>
+          <div class="macro"><div class="macro-val" id="m-carb">—</div><div class="macro-label">Glucides (g)</div></div>
+          <div class="macro"><div class="macro-val" id="m-fat">—</div><div class="macro-label">Lipides (g)</div></div>
+        </div>
+        <div class="result-tip" id="result-tip"></div>
+      </div>
+    </div>
+
+    <div class="calc-info">
+      <h3>Science + tradition camerounaise</h3>
+      <p>NutriCam utilise la formule Mifflin-St Jeor, reconnue par les diététiciens, combinée à notre base de données unique des plats camerounais.</p>
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="feature-icon">🔬</div>
+          <span class="feature-text">Calcul BMR précis avec formule scientifique validée</span>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🍲</div>
+          <span class="feature-text">200+ plats camerounais avec valeurs nutritionnelles exactes</span>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">📊</div>
+          <span class="feature-text">Suivi quotidien des macros : protéines, glucides, lipides</span>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🎯</div>
+          <span class="feature-text">Plan personnalisé adapté à votre profil et vos objectifs</span>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">💬</div>
+          <span class="feature-text">Conseils nutritionnels en français et langues locales</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DISHES -->
+<section class="dishes" id="dishes">
+  <div class="section-label" style="color:var(--yellow)">Gastronomie</div>
+  <h2 class="section-title" style="color:#fff">Plats <em style="color:var(--green-light);font-style:normal">camerounais</em> & nutrition</h2>
+  <p class="section-sub">Découvrez les recettes traditionnelles avec leurs valeurs nutritionnelles, ingrédients et temps de cuisson détaillés.</p>
+  <div class="dishes-grid">
+
+    <div class="dish-card">
+      <div class="dish-header">
+        <div class="dish-bg-emoji">🍲</div>
+        <div class="dish-tag">Plat national</div>
+        <div class="dish-title">Ndolé aux crevettes</div>
+        <div class="dish-cal-badge">🔥 380 kcal / portion</div>
+      </div>
+      <div class="dish-body">
+        <div class="dish-desc">Feuilles de ndolé mijotées avec crevettes, arachides et viande fumée. Riche en protéines et fibres.</div>
+        <div class="dish-meta">
+          <div class="meta-pill">⏱ 90 min</div>
+          <div class="meta-pill">👥 4 pers.</div>
+          <div class="meta-pill">🌶 Moyen</div>
+        </div>
+      </div>
+      <button class="dish-btn" onclick="openModal('ndole')">Voir la recette complète →</button>
+    </div>
+
+    <div class="dish-card">
+      <div class="dish-header">
+        <div class="dish-bg-emoji">🥜</div>
+        <div class="dish-tag">Classique</div>
+        <div class="dish-title">Poulet DG</div>
+        <div class="dish-cal-badge">🔥 520 kcal / portion</div>
+      </div>
+      <div class="dish-body">
+        <div class="dish-desc">Poulet sauté au directeur général, plantains frits, poivrons et légumes sautés à la sauce tomate.</div>
+        <div class="dish-meta">
+          <div class="meta-pill">⏱ 45 min</div>
+          <div class="meta-pill">👥 2 pers.</div>
+          <div class="meta-pill">🌶 Doux</div>
+        </div>
+      </div>
+      <button class="dish-btn" onclick="openModal('pouletdg')">Voir la recette complète →</button>
+    </div>
+
+    <div class="dish-card">
+      <div class="dish-header">
+        <div class="dish-bg-emoji">🐟</div>
+        <div class="dish-tag">Littoral</div>
+        <div class="dish-title">Poisson braisé / Mbanga</div>
+        <div class="dish-cal-badge">🔥 290 kcal / portion</div>
+      </div>
+      <div class="dish-body">
+        <div class="dish-desc">Soupe de palme avec poisson fumé, feuilles de mbanga. Riche en oméga-3 et vitamines.</div>
+        <div class="dish-meta">
+          <div class="meta-pill">⏱ 60 min</div>
+          <div class="meta-pill">👥 4 pers.</div>
+          <div class="meta-pill">🌶 Épicé</div>
+        </div>
+      </div>
+      <button class="dish-btn" onclick="openModal('mbanga')">Voir la recette complète →</button>
+    </div>
+
+    <div class="dish-card">
+      <div class="dish-header">
+        <div class="dish-bg-emoji">🌽</div>
+        <div class="dish-tag">Accompagnement</div>
+        <div class="dish-title">Miondo & Sauce arachide</div>
+        <div class="dish-cal-badge">🔥 340 kcal / portion</div>
+      </div>
+      <div class="dish-body">
+        <div class="dish-desc">Bâtons de manioc fermenté accompagnés de sauce arachide onctueuse. Riche en glucides complexes.</div>
+        <div class="dish-meta">
+          <div class="meta-pill">⏱ 120 min</div>
+          <div class="meta-pill">👥 6 pers.</div>
+          <div class="meta-pill">🌶 Doux</div>
+        </div>
+      </div>
+      <button class="dish-btn" onclick="openModal('miondo')">Voir la recette complète →</button>
+    </div>
+
+    <div class="dish-card">
+      <div class="dish-header">
+        <div class="dish-bg-emoji">🥬</div>
+        <div class="dish-tag">Santé</div>
+        <div class="dish-title">Eru & Waterleaf</div>
+        <div class="dish-cal-badge">🔥 310 kcal / portion</div>
+      </div>
+      <div class="dish-body">
+        <div class="dish-desc">Feuilles de jungle mixte avec huile de palme, viande et crevettes. Très riche en fer et calcium.</div>
+        <div class="dish-meta">
+          <div class="meta-pill">⏱ 75 min</div>
+          <div class="meta-pill">👥 4 pers.</div>
+          <div class="meta-pill">🌶 Moyen</div>
+        </div>
+      </div>
+      <button class="dish-btn" onclick="openModal('eru')">Voir la recette complète →</button>
+    </div>
+
+    <div class="dish-card">
+      <div class="dish-header">
+        <div class="dish-bg-emoji">🍌</div>
+        <div class="dish-tag">Dessert / Snack</div>
+        <div class="dish-title">Plantains frits (Alloco)</div>
+        <div class="dish-cal-badge">🔥 210 kcal / portion</div>
+      </div>
+      <div class="dish-body">
+        <div class="dish-desc">Plantains mûrs frits à la perfection. Source d'énergie rapide, potassium et vitamines B6.</div>
+        <div class="dish-meta">
+          <div class="meta-pill">⏱ 15 min</div>
+          <div class="meta-pill">👥 2 pers.</div>
+          <div class="meta-pill">🌶 Doux</div>
+        </div>
+      </div>
+      <button class="dish-btn" onclick="openModal('alloco')">Voir la recette complète →</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- MODAL RECETTE -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal-content">
+    <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<!-- PLANS -->
+<section class="plans" id="plans">
+  <div class="section-label">Tarifs</div>
+  <h2 class="section-title">Commencez <em style="color:var(--green);font-style:normal">gratuitement</em></h2>
+  <p class="section-sub">Accès gratuit aux fonctionnalités essentielles. Passez Premium pour un accompagnement complet.</p>
+  <div class="plans-grid">
+    <div class="plan-card">
+      <div class="plan-name">Gratuit</div>
+      <div class="plan-price">0 FCFA</div>
+      <div class="plan-period">pour toujours</div>
+      <ul class="plan-features">
+        <li>Calcul calories quotidien</li>
+        <li>10 recettes camerounaises</li>
+        <li>1 profil utilisateur</li>
+        <li>Suivi hebdomadaire basique</li>
+      </ul>
+      <button class="plan-btn plan-btn-outline">Commencer gratuitement</button>
+    </div>
+    <div class="plan-card featured">
+      <div class="plan-badge">⭐ Populaire</div>
+      <div class="plan-name">Premium</div>
+      <div class="plan-price">2 500 FCFA</div>
+      <div class="plan-period">/ mois · sans engagement</div>
+      <ul class="plan-features">
+        <li>Tout du plan gratuit</li>
+        <li>200+ recettes complètes</li>
+        <li>Plan repas personnalisé</li>
+        <li>Suivi macros quotidien</li>
+        <li>Conseils diététicien IA</li>
+        <li>Mode sportif & objectifs</li>
+      </ul>
+      <button class="plan-btn plan-btn-solid">Démarrer Premium</button>
+    </div>
+    <div class="plan-card">
+      <div class="plan-name">Famille</div>
+      <div class="plan-price">5 000 FCFA</div>
+      <div class="plan-period">/ mois · jusqu'à 6 profils</div>
+      <ul class="plan-features">
+        <li>Tout du plan Premium</li>
+        <li>6 profils familiaux</li>
+        <li>Plans enfants adaptés</li>
+        <li>Synchronisation repas famille</li>
+        <li>Liste courses intelligente</li>
+      </ul>
+      <button class="plan-btn plan-btn-outline">Choisir Famille</button>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+  <h2>Prêt à transformer<br/><span>votre alimentation</span> ?</h2>
+  <p>Téléchargez NutriCam gratuitement. Disponible sur iOS et Android. Rejoignez la révolution nutritionnelle africaine.</p>
+  <div class="cta-btns">
+    <a href="#" class="store-btn">
+      <span class="store-icon">🍎</span>
+      <span class="store-text">
+        <span class="store-sub">Télécharger sur</span>
+        <span class="store-name">App Store</span>
+      </span>
+    </a>
+    <a href="#" class="store-btn">
+      <span class="store-icon">▶</span>
+      <span class="store-text">
+        <span class="store-sub">Disponible sur</span>
+        <span class="store-name">Google Play</span>
+      </span>
+    </a>
+    <a href="#" class="store-btn">
+      <span class="store-icon">🌐</span>
+      <span class="store-text">
+        <span class="store-sub">Accéder au</span>
+        <span class="store-name">Site Web</span>
+      </span>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Nutri<span>Cam</span></div>
+  <p>© 2025 NutriCam · Fait avec ❤️ au Cameroun</p>
+  <div class="footer-links">
+    <a href="#">À propos</a>
+    <a href="#">Confidentialité</a>
+    <a href="#">Contact</a>
+    <a href="#">Blog</a>
+  </div>
+</footer>
+
+<script>
+// CALORIE CALCULATOR
+function calcCalories() {
+  const age = parseFloat(document.getElementById('age').value);
+  const gender = document.getElementById('gender').value;
+  const weight = parseFloat(document.getElementById('weight').value);
+  const height = parseFloat(document.getElementById('height').value);
+  const activity = parseFloat(document.getElementById('activity').value);
+  const goal = document.getElementById('goal').value;
+
+  if (!age || !weight || !height) {
+    alert('Veuillez remplir tous les champs.');
+    return;
+  }
+
+  // Mifflin-St Jeor
+  let bmr = gender === 'male'
+    ? 10 * weight + 6.25 * height - 5 * age + 5
+    : 10 * weight + 6.25 * height - 5 * age - 161;
+
+  let tdee = bmr * activity;
+
+  if (goal === 'lose') tdee -= 500;
+  else if (goal === 'gain') tdee += 300;
+
+  tdee = Math.round(tdee);
+  const prot = Math.round(weight * 1.6);
+  const fat  = Math.round((tdee * 0.28) / 9);
+  const carb = Math.round((tdee - prot * 4 - fat * 9) / 4);
+
+  const tips = {
+    lose: '💡 Déficit de 500 kcal/jour pour perdre ~0,5 kg/semaine. Privilégiez les feuilles de ndolé, légumes et poisson.',
+    maintain: '💡 Apport d\'entretien. Variez entre ndolé, eru et poulet braisé pour couvrir vos micronutriments.',
+    gain: '💡 Surplus de 300 kcal/jour. Ajoutez miondo, arachides et viandes pour augmenter votre masse musculaire.'
+  };
+
+  document.getElementById('result-cals').textContent = tdee.toLocaleString();
+  document.getElementById('m-prot').textContent = prot + 'g';
+  document.getElementById('m-carb').textContent = carb + 'g';
+  document.getElementById('m-fat').textContent = fat + 'g';
+  document.getElementById('result-tip').textContent = tips[goal];
+  document.getElementById('calc-result').classList.add('show');
+}
+
+// RECIPE DATA
+const recipes = {
+  ndole: {
+    tag: 'Plat national · Littoral',
+    name: 'Ndolé aux crevettes',
+    cals: 380, prot: 28, carb: 18, fat: 22,
+    ingredients: ['500g feuilles de ndolé', '300g crevettes fraîches', '200g viande de bœuf fumée', '150g arachides grillées', '2 oignons', '3 gousses d\'ail', '1 cube Maggi', '100ml huile de palme', 'Sel, poivre, piment'],
+    steps: [
+      'Faire tremper les feuilles de ndolé 30 min dans l\'eau chaude, puis essorer et ciseler finement.',
+      'Mixer les arachides grillées avec un peu d\'eau jusqu\'à obtenir une pâte épaisse.',
+      'Faire revenir l\'oignon et l\'ail émincés dans l\'huile de palme 5 min à feu moyen.',
+      'Ajouter la viande fumée coupée en morceaux, faire dorer 10 min.',
+      'Incorporer les feuilles de ndolé, la pâte d\'arachides, le cube et 200ml d\'eau. Mijoter 25 min.',
+      'Ajouter les crevettes décortiquées, cuire 10 min supplémentaires. Rectifier l\'assaisonnement.',
+      'Servir chaud avec du miondo, du riz blanc ou des plantains bouillis.'
+    ]
+  },
+  pouletdg: {
+    tag: 'Classique urbain · Yaoundé',
+    name: 'Poulet DG',
+    cals: 520, prot: 42, carb: 38, fat: 21,
+    ingredients: ['1 poulet entier coupé', '3 plantains mûrs', '2 poivrons (rouge + vert)', '2 tomates fraîches', '1 oignon', '4 gousses d\'ail', '1 cube Maggi', 'Persil, thym', 'Huile de tournesol, sel, poivre'],
+    steps: [
+      'Assaisonner le poulet avec ail, sel, poivre, thym et cube. Mariner 30 min.',
+      'Faire frire les plantains coupés en rondelles obliques dans l\'huile chaude jusqu\'à dorure. Réserver.',
+      'Faire dorer les morceaux de poulet dans la même huile, 8 min par face. Réserver.',
+      'Faire revenir l\'oignon haché, ajouter poivrons et tomates en dés. Cuire 8 min.',
+      'Remettre le poulet dans la sauce, couvrir et cuire 15 min à feu doux.',
+      'Ajouter les plantains frits, mélanger délicatement et cuire 5 min ensemble.',
+      'Garnir de persil frais et servir immédiatement.'
+    ]
+  },
+  mbanga: {
+    tag: 'Littoral · Traditionnel',
+    name: 'Soupe Mbanga au poisson',
+    cals: 290, prot: 24, carb: 12, fat: 16,
+    ingredients: ['500g poisson fumé (tilapia)', '400ml huile de palme rouge', '200g feuilles de mbanga', '1 oignon', '2 piments frais', '1 cube Maggi', 'Sel, ail en poudre', '500ml eau'],
+    steps: [
+      'Nettoyer et émietter le poisson fumé, retirer les arêtes. Réserver.',
+      'Chauffer l\'huile de palme dans une cocotte, faire revenir l\'oignon émincé 5 min.',
+      'Ajouter les piments entiers, le cube et l\'eau. Porter à ébullition.',
+      'Incorporer le poisson fumé, cuire 15 min à feu moyen.',
+      'Ajouter les feuilles de mbanga lavées et ciselées. Cuire encore 20 min.',
+      'Rectifier le sel et servir avec du miondo ou riz blanc bien chaud.'
+    ]
+  },
+  miondo: {
+    tag: 'Accompagnement · Sud',
+    name: 'Miondo & Sauce arachide',
+    cals: 340, prot: 12, carb: 58, fat: 18,
+    ingredients: ['1 kg manioc fermenté (chikwangue)', 'Feuilles de bananier pour l\'emballage', '300g arachides grillées', '1 oignon', '2 tomates', '1 cube Maggi', 'Piment, sel', '2 c.à.s huile de palme'],
+    steps: [
+      'Piler ou mixer les arachides grillées en pâte fine. Réserver.',
+      'Faire revenir l\'oignon haché dans l\'huile de palme 3 min.',
+      'Ajouter les tomates en dés, le cube, le piment. Cuire 10 min.',
+      'Incorporer la pâte d\'arachides et 250ml d\'eau chaude. Mélanger et mijoter 15 min.',
+      'En parallèle, faire bouillir les bâtons de miondo dans l\'eau salée 20 min.',
+      'Servir les miondo chauds nappés de sauce arachide crémeuse.'
+    ]
+  },
+  eru: {
+    tag: 'Sud-Ouest · Santé',
+    name: 'Eru & Waterleaf',
+    cals: 310, prot: 26, carb: 8, fat: 20,
+    ingredients: ['400g feuilles d\'eru séchées', '300g feuilles de waterleaf fraîches', '250g viande de bœuf', '200g crevettes séchées', '150ml huile de palme', '1 oignon', 'Sel, crayfish (crevettes moulues)', '1 cube Maggi'],
+    steps: [
+      'Réhydrater les feuilles d\'eru dans l\'eau chaude 45 min. Égoutter et ciseler finement.',
+      'Cuire la viande en petits morceaux dans l\'eau salée avec l\'oignon 20 min.',
+      'Dans la casserole, ajouter l\'huile de palme, crayfish, cube et crevettes séchées.',
+      'Incorporer les feuilles d\'eru, mélanger et cuire à couvert 20 min à feu doux.',
+      'Ajouter le waterleaf en fin de cuisson, mélanger 5 min sans couvercle.',
+      'Servir chaud avec de la farine de maïs (fufu) ou du riz.'
+    ]
+  },
+  alloco: {
+    tag: 'Snack · Énergie',
+    name: 'Plantains frits (Alloco)',
+    cals: 210, prot: 2, carb: 42, fat: 8,
+    ingredients: ['3 plantains très mûrs (peau noire)', 'Huile de tournesol pour friture', '1 pincée de sel', '1 pincée de piment en poudre (optionnel)'],
+    steps: [
+      'Éplucher les plantains et les couper en rondelles obliques de 1 cm d\'épaisseur.',
+      'Chauffer l\'huile dans une poêle à 180°C (tester avec un bout de plantain).',
+      'Faire frire les rondelles 3-4 min de chaque côté jusqu\'à dorure caramel.',
+      'Égoutter sur du papier absorbant. Saupoudrer de sel et piment selon goût.',
+      'Servir immédiatement avec du poisson braisé, du poulet ou en collation seul.'
+    ]
+  }
+};
+
+function openModal(id) {
+  const r = recipes[id];
+  if (!r) return;
+  document.getElementById('modal-body').innerHTML = `
+    <div class="modal-tag">${r.tag}</div>
+    <h2>${r.name}</h2>
+    <div class="modal-macro-row">
+      <div class="modal-macro"><span class="modal-macro-val">${r.cals} kcal</span><span class="modal-macro-label">Calories</span></div>
+      <div class="modal-macro"><span class="modal-macro-val">${r.prot}g</span><span class="modal-macro-label">Protéines</span></div>
+      <div class="modal-macro"><span class="modal-macro-val">${r.carb}g</span><span class="modal-macro-label">Glucides</span></div>
+      <div class="modal-macro"><span class="modal-macro-val">${r.fat}g</span><span class="modal-macro-label">Lipides</span></div>
+    </div>
+    <div class="modal-section">
+      <h4>🛒 Ingrédients</h4>
+      <div class="ingredient-list">${r.ingredients.map(i=>`<span class="ingredient-pill">${i}</span>`).join('')}</div>
+    </div>
+    <div class="modal-section">
+      <h4>👨‍🍳 Préparation étape par étape</h4>
+      <div class="steps-list">${r.steps.map((s,i)=>`<div class="step-row"><div class="step-num">${i+1}</div><div class="step-text">${s}</div></div>`).join('')}</div>
+    </div>
+  `;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModalDirect();
+}
+function closeModalDirect() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Détox & Transformation Corporelle</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f5f9f5;--dark:#0a1f0f;--green:#1a7a3e;--gl:#22a854;
+  --y:#f5b800;--red:#e63946;--blue:#2563eb;--purple:#7c3aed;
+  --orange:#ea580c;--teal:#0d9488;
+  --card:#fff;--border:#ddeee3;--text:#1a2b1e;--muted:#6b8c72;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text)}
+
+/* NAV */
+.topbar{background:var(--dark);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;color:#fff}
+.logo span{color:var(--y)}
+.tab-nav{display:flex;gap:0.3rem}
+.tnav-btn{padding:0.45rem 1rem;border-radius:8px;border:none;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.2s;color:rgba(255,255,255,0.6);background:transparent}
+.tnav-btn.active{background:rgba(255,255,255,0.12);color:#fff}
+.tnav-btn:hover{color:#fff}
+
+/* HERO TABS */
+.hero{padding:0;background:var(--dark);position:relative;overflow:hidden}
+.hero-slides{display:flex;transition:transform 0.4s ease;width:300%}
+.hero-slide{width:33.333%;padding:3rem 2.5rem 4rem;position:relative;overflow:hidden}
+.hs-detox{background:linear-gradient(135deg,#0a1f0f 0%,#064e3b 60%,#10b981 100%)}
+.hs-perte{background:linear-gradient(135deg,#1e0a0a 0%,#7f1d1d 60%,#ef4444 100%)}
+.hs-masse{background:linear-gradient(135deg,#0a0e1f 0%,#1e3a5f 60%,#2563eb 100%)}
+.hero-slide::after{position:absolute;right:2rem;top:50%;transform:translateY(-50%);font-size:10rem;opacity:0.07;pointer-events:none}
+.hs-detox::after{content:'🌿'}
+.hs-perte::after{content:'🔥'}
+.hs-masse::after{content:'💪'}
+.hs-label{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.75);font-size:0.72rem;font-weight:700;padding:0.3rem 0.9rem;border-radius:100px;margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.08em}
+.hero-slide h1{font-family:'Fraunces',serif;font-size:clamp(1.8rem,3.5vw,2.6rem);color:#fff;font-weight:900;line-height:1.1;margin-bottom:0.8rem}
+.hero-slide p{color:rgba(255,255,255,0.65);max-width:500px;line-height:1.7;font-size:0.92rem}
+.hero-dots{display:flex;justify-content:center;gap:0.5rem;padding:1rem 0;background:var(--dark)}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.2);cursor:pointer;transition:all 0.2s}
+.dot.active{background:#fff;width:24px;border-radius:4px}
+
+/* SECTION TABS */
+.section-tabs{background:var(--card);border-bottom:1px solid var(--border);display:flex;position:sticky;top:0;z-index:30;overflow-x:auto}
+.stab{flex:1;min-width:150px;padding:1rem;text-align:center;cursor:pointer;font-size:0.85rem;font-weight:700;color:var(--muted);border-bottom:3px solid transparent;transition:all 0.2s;white-space:nowrap}
+.stab.active{color:var(--green);border-bottom-color:var(--green)}
+.stab:hover{color:var(--text)}
+
+/* MAIN */
+.main{max-width:1200px;margin:0 auto;padding:2.5rem 2rem}
+.section{display:none}.section.show{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.section.show{animation:fadeUp 0.35s ease}
+
+/* HEADINGS */
+.sec-head{margin-bottom:2rem}
+.sec-head h2{font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--dark);margin-bottom:0.4rem}
+.sec-head p{color:var(--muted);font-size:0.9rem;line-height:1.6}
+
+/* DETOX GRID */
+.detox-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem;margin-bottom:2.5rem}
+.detox-card{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;transition:all 0.25s}
+.detox-card:hover{transform:translateY(-4px);box-shadow:0 16px 50px rgba(0,0,0,0.1)}
+.dc-banner{height:8px}
+.dc-body{padding:1.5rem}
+.dc-emoji{font-size:2.4rem;margin-bottom:0.7rem;display:block}
+.dc-tag{display:inline-block;font-size:0.65rem;font-weight:800;padding:0.2rem 0.6rem;border-radius:100px;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.6rem}
+.dc-name{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:var(--dark);margin-bottom:0.5rem}
+.dc-desc{font-size:0.82rem;color:var(--muted);line-height:1.6;margin-bottom:1.2rem}
+.dc-section-title{font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.6rem}
+.dc-ingredients{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.2rem}
+.dc-ing{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:0.3rem 0.7rem;font-size:0.75rem;color:var(--text)}
+.dc-steps{display:flex;flex-direction:column;gap:0.6rem;margin-bottom:1.2rem}
+.dc-step{display:flex;gap:0.7rem;align-items:flex-start}
+.dc-step-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:800;flex-shrink:0;color:#fff}
+.dc-step-text{font-size:0.8rem;color:var(--text);line-height:1.5;padding-top:2px}
+.dc-benefits{display:flex;flex-wrap:wrap;gap:0.4rem}
+.dc-benefit{font-size:0.7rem;font-weight:700;padding:0.22rem 0.6rem;border-radius:100px}
+.dc-frequency{background:var(--bg);border-radius:12px;padding:0.9rem;margin-top:1rem;display:flex;align-items:center;gap:0.6rem;font-size:0.78rem;color:var(--muted)}
+.dc-frequency strong{color:var(--text)}
+
+/* PROGRAMME DÉTOX */
+.detox-programme{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2rem;margin-bottom:2.5rem}
+.dp-title{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:900;color:var(--dark);margin-bottom:0.4rem}
+.dp-sub{color:var(--muted);font-size:0.85rem;margin-bottom:1.8rem}
+.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:0.6rem}
+.day-col{background:var(--bg);border-radius:12px;padding:0.8rem 0.5rem;text-align:center}
+.day-col.highlight{background:linear-gradient(135deg,rgba(26,122,62,0.1),rgba(34,168,84,0.08));border:1.5px solid rgba(26,122,62,0.2)}
+.dc-day{font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:0.5rem}
+.dc-drink{font-size:1.2rem;margin-bottom:0.3rem}
+.dc-drink-name{font-size:0.65rem;font-weight:700;color:var(--text);line-height:1.3}
+.dc-tip{font-size:0.6rem;color:var(--muted);margin-top:0.3rem}
+
+/* TRANSFORMATION CARDS */
+.transform-section{margin-bottom:2.5rem}
+.ts-tabs{display:flex;gap:0.5rem;margin-bottom:1.5rem}
+.ts-tab{padding:0.55rem 1.4rem;border-radius:100px;border:1.5px solid var(--border);font-size:0.82rem;font-weight:700;color:var(--muted);cursor:pointer;transition:all 0.2s;background:var(--card)}
+.ts-tab.active{background:var(--dark);color:#fff;border-color:var(--dark)}
+
+.transform-layout{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+
+.plan-column{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+.pc-header{padding:1.5rem;position:relative}
+.pc-header.perte{background:linear-gradient(135deg,#fef2f2,#fee2e2)}
+.pc-header.masse{background:linear-gradient(135deg,#eff6ff,#dbeafe)}
+.pc-icon{font-size:2rem;margin-bottom:0.5rem}
+.pc-title{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900}
+.pc-title.perte{color:#991b1b}
+.pc-title.masse{color:#1d4ed8}
+.pc-subtitle{font-size:0.8rem;margin-top:0.2rem}
+.pc-body{padding:1.5rem}
+
+.calorie-target{border-radius:14px;padding:1.2rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between}
+.ct-perte{background:#fef2f2;border:1px solid #fecaca}
+.ct-masse{background:#eff6ff;border:1px solid #bfdbfe}
+.ct-val{font-family:'Fraunces',serif;font-size:2.2rem;font-weight:900}
+.ct-val.p{color:#dc2626}
+.ct-val.m{color:#2563eb}
+.ct-label{font-size:0.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em}
+.ct-arrow{font-size:1.8rem}
+
+.macro-bars{display:flex;flex-direction:column;gap:0.8rem;margin-bottom:1.5rem}
+.mb-row{display:flex;align-items:center;gap:0.8rem}
+.mb-label{font-size:0.78rem;font-weight:700;width:80px;flex-shrink:0}
+.mb-bar-bg{flex:1;height:8px;background:var(--bg);border-radius:4px;overflow:hidden}
+.mb-bar{height:100%;border-radius:4px;transition:width 1s ease}
+.mb-val{font-size:0.78rem;font-weight:800;width:45px;text-align:right;flex-shrink:0}
+
+.plan-section-title{font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.8rem}
+.food-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-bottom:1.5rem}
+.food-item{background:var(--bg);border-radius:10px;padding:0.7rem 0.8rem;display:flex;gap:0.5rem;align-items:flex-start}
+.fi-emoji{font-size:1.2rem;flex-shrink:0}
+.fi-name{font-size:0.78rem;font-weight:700;color:var(--text)}
+.fi-cal{font-size:0.68rem;color:var(--muted)}
+.avoid-list{display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1.5rem}
+.avoid-item{display:flex;align-items:center;gap:0.6rem;font-size:0.8rem;color:var(--text);padding:0.5rem 0.8rem;background:#fef9f9;border-radius:8px}
+.avoid-x{color:#dc2626;font-weight:900;font-size:0.9rem;flex-shrink:0}
+.yes-item{display:flex;align-items:center;gap:0.6rem;font-size:0.8rem;color:var(--text);padding:0.5rem 0.8rem;background:#f0fdf4;border-radius:8px}
+.yes-check{color:var(--green);font-weight:900;flex-shrink:0}
+
+/* EXEMPLE JOURNÉE */
+.day-example{background:var(--bg);border-radius:14px;padding:1.2rem;margin-bottom:1rem}
+.de-meal{display:flex;align-items:flex-start;gap:0.7rem;margin-bottom:0.7rem}
+.de-meal:last-child{margin-bottom:0}
+.de-time{font-size:0.65rem;font-weight:800;color:var(--muted);text-transform:uppercase;width:60px;flex-shrink:0;padding-top:2px;letter-spacing:0.05em}
+.de-food{font-size:0.8rem;color:var(--text);flex:1;line-height:1.5}
+.de-kcal{font-size:0.72rem;font-weight:800;white-space:nowrap}
+
+/* TIPS BOX */
+.tips-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem}
+.tip-box{border-radius:14px;padding:1.2rem}
+.tip-box.green{background:rgba(26,122,62,0.06);border:1px solid rgba(26,122,62,0.15)}
+.tip-box.red{background:rgba(230,57,70,0.06);border:1px solid rgba(230,57,70,0.2)}
+.tip-box.blue{background:rgba(37,99,235,0.06);border:1px solid rgba(37,99,235,0.2)}
+.tip-box.orange{background:rgba(234,88,12,0.06);border:1px solid rgba(234,88,12,0.2)}
+.tb-icon{font-size:1.3rem;margin-bottom:0.4rem}
+.tb-title{font-family:'Fraunces',serif;font-size:0.95rem;font-weight:900;color:var(--dark);margin-bottom:0.3rem}
+.tb-text{font-size:0.78rem;color:var(--muted);line-height:1.6}
+
+/* PROGRESS TRACKER */
+.progress-section{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2rem;margin-top:2rem}
+.ps-title{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;color:var(--dark);margin-bottom:1.5rem}
+.weeks-timeline{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:1rem}
+.week-card{border-radius:14px;padding:1.2rem;border:1.5px solid var(--border)}
+.wc-week{font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.4rem}
+.wc-goal{font-size:0.85rem;font-weight:700;color:var(--dark);margin-bottom:0.3rem}
+.wc-desc{font-size:0.72rem;color:var(--muted);line-height:1.4}
+.wc-badge{display:inline-block;margin-top:0.5rem;font-size:0.65rem;font-weight:800;padding:0.15rem 0.5rem;border-radius:100px;text-transform:uppercase}
+
+@media(max-width:768px){
+  .transform-layout{grid-template-columns:1fr}
+  .tips-row{grid-template-columns:1fr}
+  .week-grid{grid-template-columns:repeat(4,1fr)}
+  .food-grid{grid-template-columns:1fr}
+  .weeks-timeline{grid-template-columns:1fr 1fr}
+  .main{padding:1.5rem}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">Nutri<span>Cam</span></div>
+  <div class="tab-nav">
+    <button class="tnav-btn active" onclick="heroTo(0,this)">🌿 Détox</button>
+    <button class="tnav-btn" onclick="heroTo(1,this)">🔥 Perte de poids</button>
+    <button class="tnav-btn" onclick="heroTo(2,this)">💪 Prise de masse</button>
+  </div>
+</div>
+
+<!-- HERO SLIDER -->
+<div class="hero">
+  <div class="hero-slides" id="hero-slides">
+    <div class="hero-slide hs-detox">
+      <div class="hs-label">🌿 Boissons détox naturelles</div>
+      <h1>Purifiez votre corps<br/>avec la nature camerounaise</h1>
+      <p>30 boissons détox 100% naturelles à base d'ingrédients locaux : gingembre, bissap, moringa, citronnelle. Drainantes, antioxydantes et immunostimulantes.</p>
+    </div>
+    <div class="hero-slide hs-perte">
+      <div class="hs-label">🔥 Perte de poids</div>
+      <h1>Perdre du poids<br/>sans quitter la cuisine camerounaise</h1>
+      <p>Plan hypocalorique intelligent basé sur les plats traditionnels. −500 kcal/jour = −2 kg/mois sans frustration ni régime drastique.</p>
+    </div>
+    <div class="hero-slide hs-masse">
+      <div class="hs-label">💪 Prise de masse</div>
+      <h1>Construire du muscle<br/>avec des protéines locales</h1>
+      <p>Plan hypercalorique riche en protéines camerounaises (poisson, crevettes, légumineuses). +300 kcal/jour pour une prise de masse propre et durable.</p>
+    </div>
+  </div>
+  <div class="hero-dots">
+    <div class="dot active" onclick="heroTo(0,null,this)"></div>
+    <div class="dot" onclick="heroTo(1,null,this)"></div>
+    <div class="dot" onclick="heroTo(2,null,this)"></div>
+  </div>
+</div>
+
+<!-- SECTION TABS -->
+<div class="section-tabs">
+  <div class="stab active" onclick="showSection('detox',this)">🌿 Boissons Détox</div>
+  <div class="stab" onclick="showSection('transform',this)">⚖️ Perte & Prise de poids</div>
+  <div class="stab" onclick="showSection('programme',this)">📅 Programme 4 semaines</div>
+</div>
+
+<div class="main">
+
+  <!-- DÉTOX -->
+  <div class="section show" id="sec-detox">
+    <div class="sec-head">
+      <h2>🌿 Boissons Détox Naturelles Camerounaises</h2>
+      <p>30 recettes de boissons purifiantes à base d'ingrédients locaux. Chaque boisson cible un organe ou un objectif santé spécifique.</p>
+    </div>
+
+    <div class="detox-programme">
+      <div class="dp-title">Programme Détox 7 jours</div>
+      <div class="dp-sub">Une boisson différente chaque jour, ciblant un organe ou un système. Boire le matin à jeun pour un effet maximal.</div>
+      <div class="week-grid">
+        <div class="day-col highlight"><div class="dc-day">Lun</div><div class="dc-drink">🫚</div><div class="dc-drink-name">Eau citron+gingembre</div><div class="dc-tip">Foie & digestion</div></div>
+        <div class="day-col"><div class="dc-day">Mar</div><div class="dc-drink">🌺</div><div class="dc-drink-name">Bissap detox</div><div class="dc-tip">Reins & diurétique</div></div>
+        <div class="day-col highlight"><div class="dc-day">Mer</div><div class="dc-drink">🌿</div><div class="dc-drink-name">Jus moringa</div><div class="dc-tip">Immunité</div></div>
+        <div class="day-col"><div class="dc-day">Jeu</div><div class="dc-drink">🌾</div><div class="dc-drink-name">Eau citronnelle</div><div class="dc-tip">Système nerveux</div></div>
+        <div class="day-col highlight"><div class="dc-day">Ven</div><div class="dc-drink">🥬</div><div class="dc-drink-name">Green Cam</div><div class="dc-tip">Antioxydants</div></div>
+        <div class="day-col"><div class="dc-day">Sam</div><div class="dc-drink">🍍</div><div class="dc-drink-name">Ananas menthe</div><div class="dc-tip">Anti-inflammatoire</div></div>
+        <div class="day-col highlight"><div class="dc-day">Dim</div><div class="dc-drink">🥭</div><div class="dc-drink-name">Detox Mangue</div><div class="dc-tip">Énergie & peau</div></div>
+      </div>
+    </div>
+
+    <div class="detox-grid" id="detox-grid"></div>
+  </div>
+
+  <!-- TRANSFORMATION -->
+  <div class="section" id="sec-transform">
+    <div class="sec-head">
+      <h2>⚖️ Perte de poids & Prise de masse</h2>
+      <p>Plans nutritionnels scientifiques adaptés aux ingrédients camerounais. Exemples de journées types et aliments clés.</p>
+    </div>
+
+    <div class="transform-layout">
+
+      <!-- PERTE DE POIDS -->
+      <div class="plan-column">
+        <div class="pc-header perte">
+          <div class="pc-icon">🔥</div>
+          <div class="pc-title perte">Perte de poids</div>
+          <div class="pc-subtitle" style="color:#991b1b">Déficit calorique intelligent · −0,5 kg/semaine</div>
+        </div>
+        <div class="pc-body">
+          <div class="calorie-target ct-perte">
+            <div><div class="ct-label">Objectif calorique</div><div class="ct-val p">1 500 kcal</div><div style="font-size:0.72rem;color:#dc2626">−500 kcal vs maintenance</div></div>
+            <div class="ct-arrow">📉</div>
+          </div>
+          <div class="plan-section-title" style="color:#dc2626">📊 Répartition macros</div>
+          <div class="macro-bars">
+            <div class="mb-row"><div class="mb-label">Protéines</div><div class="mb-bar-bg"><div class="mb-bar" style="width:30%;background:#4ade80"></div></div><div class="mb-val" style="color:#16a34a">110g</div></div>
+            <div class="mb-row"><div class="mb-label">Glucides</div><div class="mb-bar-bg"><div class="mb-bar" style="width:40%;background:#fbbf24"></div></div><div class="mb-val" style="color:#d97706">150g</div></div>
+            <div class="mb-row"><div class="mb-label">Lipides</div><div class="mb-bar-bg"><div class="mb-bar" style="width:25%;background:#f87171"></div></div><div class="mb-val" style="color:#dc2626">45g</div></div>
+          </div>
+          <div class="plan-section-title" style="color:#dc2626">✅ Aliments à privilégier</div>
+          <div class="food-grid" id="perte-foods"></div>
+          <div class="plan-section-title" style="color:#dc2626">❌ Aliments à limiter</div>
+          <div class="avoid-list" id="perte-avoid"></div>
+          <div class="plan-section-title" style="color:#dc2626">🍽️ Journée type — 1 500 kcal</div>
+          <div class="day-example" id="perte-day"></div>
+        </div>
+      </div>
+
+      <!-- PRISE DE MASSE -->
+      <div class="plan-column">
+        <div class="pc-header masse">
+          <div class="pc-icon">💪</div>
+          <div class="pc-title masse">Prise de masse</div>
+          <div class="pc-subtitle" style="color:#1d4ed8">Surplus calorique propre · +0,5 kg muscle/semaine</div>
+        </div>
+        <div class="pc-body">
+          <div class="calorie-target ct-masse">
+            <div><div class="ct-label">Objectif calorique</div><div class="ct-val m">2 800 kcal</div><div style="font-size:0.72rem;color:#2563eb">+300 kcal vs maintenance</div></div>
+            <div class="ct-arrow">📈</div>
+          </div>
+          <div class="plan-section-title" style="color:#2563eb">📊 Répartition macros</div>
+          <div class="macro-bars">
+            <div class="mb-row"><div class="mb-label">Protéines</div><div class="mb-bar-bg"><div class="mb-bar" style="width:35%;background:#4ade80"></div></div><div class="mb-val" style="color:#16a34a">160g</div></div>
+            <div class="mb-row"><div class="mb-label">Glucides</div><div class="mb-bar-bg"><div class="mb-bar" style="width:50%;background:#fbbf24"></div></div><div class="mb-val" style="color:#d97706">350g</div></div>
+            <div class="mb-row"><div class="mb-label">Lipides</div><div class="mb-bar-bg"><div class="mb-bar" style="width:28%;background:#f87171"></div></div><div class="mb-val" style="color:#dc2626">80g</div></div>
+          </div>
+          <div class="plan-section-title" style="color:#2563eb">✅ Aliments à privilégier</div>
+          <div class="food-grid" id="masse-foods"></div>
+          <div class="plan-section-title" style="color:#2563eb">⚡ Timing autour du sport</div>
+          <div class="avoid-list" id="masse-timing"></div>
+          <div class="plan-section-title" style="color:#2563eb">🍽️ Journée type — 2 800 kcal</div>
+          <div class="day-example" id="masse-day"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tips-row">
+      <div class="tip-box green"><div class="tb-icon">🔬</div><div class="tb-title">Science derrière la perte de poids</div><div class="tb-text">1g de graisse = 9 kcal. Pour perdre 1 kg de graisse, il faut brûler 7 700 kcal. Un déficit de 500 kcal/jour = 1 kg perdu en 15 jours. Jamais plus de 1 kg/semaine pour préserver le muscle.</div></div>
+      <div class="tip-box blue"><div class="tb-icon">💪</div><div class="tb-title">Science derrière la prise de masse</div><div class="tb-text">La synthèse protéique musculaire nécessite 1,6-2g de protéines/kg/jour. Le surplus calorique doit être modéré (+200-300 kcal) pour maximiser le muscle et minimiser la graisse prise.</div></div>
+      <div class="tip-box red"><div class="tb-icon">⚠️</div><div class="tb-title">Erreurs fréquentes à éviter</div><div class="tb-text">Perte de poids : trop peu de protéines = perte de muscle. Prise de masse : trop de calories = excès de graisse. Dans les deux cas, sauter des repas est contre-productif.</div></div>
+      <div class="tip-box orange"><div class="tb-icon">🌿</div><div class="tb-title">Avantage des ingrédients locaux</div><div class="tb-text">Les protéines locales (crevettes, poisson, légumineuses) sont aussi efficaces que les protéines en poudre importées, à 5-10x moins cher. Le ndolé couvre 28g de protéines par portion.</div></div>
+    </div>
+  </div>
+
+  <!-- PROGRAMME 4 SEMAINES -->
+  <div class="section" id="sec-programme">
+    <div class="sec-head">
+      <h2>📅 Programme de Transformation 4 Semaines</h2>
+      <p>Plan progressif combinant alimentation et mode de vie. Choisissez votre objectif.</p>
+    </div>
+    <div class="ts-tabs" style="margin-bottom:1.5rem">
+      <div class="ts-tab active" onclick="setProgType('perte',this)">📉 Perte de poids</div>
+      <div class="ts-tab" onclick="setProgType('masse',this)">📈 Prise de masse</div>
+      <div class="ts-tab" onclick="setProgType('detox',this)">🌿 Détox & Reset</div>
+    </div>
+    <div class="progress-section">
+      <div class="ps-title" id="prog-title">Programme Perte de poids — 4 semaines</div>
+      <div class="weeks-timeline" id="weeks-timeline"></div>
+    </div>
+    <div style="margin-top:2rem" id="prog-details"></div>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+// ── DATA ──
+const detoxDrinks = [
+  {
+    emoji:'🫚', name:'Eau Citron-Gingembre Matinal', tag:'Foie & Digestion', tagColor:'#16a34a', tagBg:'rgba(22,163,74,0.1)',
+    banner:'linear-gradient(90deg,#16a34a,#4ade80)',
+    desc:'La détox de base. Alcalinise le corps, stimule la production de bile et active le métabolisme dès le réveil.',
+    ingredients:['2 citrons verts pressés','Gingembre frais 4cm râpé','500ml eau tiède','Miel 1 c.à.c (optionnel)','Pincée de poivre de Cayenne'],
+    steps:['Pressez les citrons verts.','Râpez finement le gingembre et pressez-le pour en extraire le jus.','Mélangez jus citron, jus gingembre et eau tiède (pas bouillante).','Ajoutez miel et poivre selon goût.','Boire à jeun, 30 min avant le petit-déjeuner.'],
+    benefits:['Foie','Digestion','Métabolisme','Immunité'],
+    benColors:['#16a34a','#d97706','#dc2626','#7c3aed'],
+    frequency:'🌅 Chaque matin à jeun · Cure de 21 jours recommandée'
+  },
+  {
+    emoji:'🌺', name:'Détox Bissap-Hibiscus', tag:'Reins & Drainage', tagColor:'#dc2626', tagBg:'rgba(220,38,38,0.1)',
+    banner:'linear-gradient(90deg,#dc2626,#f87171)',
+    desc:'Diurétique naturel puissant. Le bissap (hibiscus) est riche en anthocyanes qui protègent les reins et réduisent la rétention d\'eau.',
+    ingredients:['80g fleurs d\'hibiscus séchées','1L eau froide','Gingembre frais 3cm','2 citrons verts','Miel ou sucre de palme 2 c.à.s','Feuilles de menthe fraîche'],
+    steps:['Versez les fleurs d\'hibiscus dans l\'eau froide.','Portez à ébullition, puis laissez infuser 10 min hors du feu.','Filtrez et pressez bien les fleurs pour extraire toute la couleur.','Ajoutez jus de citron, gingembre râpé et miel.','Servez froid sur glace avec feuilles de menthe.'],
+    benefits:['Reins','Anti-hypertension','Antioxydants','Diurétique'],
+    benColors:['#dc2626','#2563eb','#7c3aed','#0891b2'],
+    frequency:'🥤 1-2 verres/jour · Éviter le soir (diurétique)'
+  },
+  {
+    emoji:'🌿', name:'Jus de Moringa Vert', tag:'Immunité & Énergie', tagColor:'#0891b2', tagBg:'rgba(8,145,178,0.1)',
+    banner:'linear-gradient(90deg,#0891b2,#22d3ee)',
+    desc:'Le "superaliment" africain par excellence. Le moringa contient 7x plus de vitamine C que l\'orange et 2x plus de protéines que le yaourt.',
+    ingredients:['1 poignée feuilles de moringa fraîches','200ml eau de coco fraîche','1 citron vert pressé','Gingembre frais 2cm','1 c.à.c miel de fleurs'],
+    steps:['Lavez soigneusement les feuilles de moringa.','Mixez les feuilles avec l\'eau de coco jusqu\'à obtenir un liquide homogène.','Filtrez à travers une passoire fine.','Ajoutez jus de citron, gingembre pressé et miel.','Consommez immédiatement (les nutriments s\'oxydent rapidement).'],
+    benefits:['Vitamine C x7','Fer','Calcium','Anti-inflammatoire'],
+    benColors:['#16a34a','#dc2626','#2563eb','#d97706'],
+    frequency:'☀️ Matin ou après-midi · 4-5 fois par semaine max'
+  },
+  {
+    emoji:'🌾', name:'Eau Citronnelle-Verveine', tag:'Stress & Nerveux', tagColor:'#7c3aed', tagBg:'rgba(124,58,237,0.1)',
+    banner:'linear-gradient(90deg,#7c3aed,#a78bfa)',
+    desc:'Calmante et digestive. La citronnelle africaine soulage l\'anxiété, améliore le sommeil et détend le système nerveux.',
+    ingredients:['4 tiges citronnelle fraîche','Feuilles de verveine fraîche (optionnel)','Gingembre 2cm','1L eau','Miel 2 c.à.s','1 citron jaune'],
+    steps:['Écrasez les tiges de citronnelle avec le plat d\'un couteau.','Portez l\'eau à frémissement (80°C — pas ébullition).','Infusez citronnelle et verveine 10 min.','Ajoutez gingembre en tranches, miel et jus de citron.','Servir chaud le soir ou froid le jour.'],
+    benefits:['Anti-stress','Sommeil','Digestion','Antiseptique'],
+    benColors:['#7c3aed','#0891b2','#d97706','#16a34a'],
+    frequency:'🌙 Soir avant sommeil · Idéal en période de stress'
+  },
+  {
+    emoji:'🥬', name:'Green Cam Boost', tag:'Antioxydants & Peau', tagColor:'#16a34a', tagBg:'rgba(22,163,74,0.1)',
+    banner:'linear-gradient(90deg,#166534,#22c55e)',
+    desc:'Cocktail vert africain ultra-nutritif : épinards, moringa, concombre et citron. Détoxifiant, anti-âge et énergisant.',
+    ingredients:['1 poignée épinards frais ou feuilles amarante','1 poignée feuilles de moringa','1/2 concombre local','2 citrons verts','Gingembre frais 3cm','300ml eau fraîche','Pincée de sel de mer'],
+    steps:['Lavez soigneusement tous les légumes.','Mixez épinards, moringa et concombre avec l\'eau.','Filtrez ou laissez épais selon préférence.','Ajoutez jus de citron, gingembre pressé et sel.','Consommez dans les 30 min pour préserver la vitamine C.'],
+    benefits:['Anti-âge','Peau','Fer','Vitamine K'],
+    benColors:['#7c3aed','#f59e0b','#dc2626','#16a34a'],
+    frequency:'🌅 Matin ou 16h · 3-4 fois par semaine'
+  },
+  {
+    emoji:'🍍', name:'Ananas-Menthe Anti-inflammation', tag:'Articulations & Recovery', tagColor:'#d97706', tagBg:'rgba(217,119,6,0.1)',
+    banner:'linear-gradient(90deg,#d97706,#fbbf24)',
+    desc:'La bromélaïne de l\'ananas est un anti-inflammatoire naturel puissant. Idéal après le sport et pour les douleurs articulaires.',
+    ingredients:['1/2 ananas frais coupé','Menthe fraîche 1 bouquet','Gingembre frais 4cm','Jus de 2 citrons verts','400ml eau fraîche','1 c.à.s miel'],
+    steps:['Coupez l\'ananas en morceaux, retirez le cœur dur.','Mixez l\'ananas avec l\'eau jusqu\'à consistance lisse.','Filtrez pour enlever les fibres.','Ajoutez jus de citron, gingembre râpé et miel.','Garnir de feuilles de menthe fraîche. Servir sur glace.'],
+    benefits:['Anti-inflammatoire','Récupération','Digestion','Vitamine C'],
+    benColors:['#dc2626','#2563eb','#d97706','#16a34a'],
+    frequency:'🏃 Post-sport ou soir · Idéal après entraînement'
+  },
+  {
+    emoji:'🥭', name:'Mangue-Curcuma Éclat de Peau', tag:'Peau & Beauté', tagColor:'#ea580c', tagBg:'rgba(234,88,12,0.1)',
+    banner:'linear-gradient(90deg,#ea580c,#fb923c)',
+    desc:'La combinaison mangue (vitamine A, C) et curcuma (curcumine anti-oxydante) pour une peau éclatante et un foie sain.',
+    ingredients:['2 mangues bien mûres','Curcuma frais 3cm ou 1 c.à.c poudre','Gingembre 2cm','Lait de coco 200ml','Poivre noir pincée (active curcumine)','Citron vert 1'],
+    steps:['Épluchez et coupez les mangues en morceaux.','Mixez mangues et lait de coco jusqu\'à onctuosité.','Ajoutez curcuma frais ou en poudre et gingembre.','Poivre noir obligatoire : active la biodisponibilité du curcuma de 2000%.','Ajoutez jus de citron, mélangez et servez frais.'],
+    benefits:['Peau éclatante','Foie','Anti-cancer','Anti-âge'],
+    benColors:['#ea580c','#16a34a','#7c3aed','#d97706'],
+    frequency:'☀️ Après-midi · 3-4 fois par semaine · Cure 1 mois'
+  },
+  {
+    emoji:'🌰', name:'Lait de Coco-Cacao Cru', tag:'Énergie & Moral', tagColor:'#92400e', tagBg:'rgba(146,64,14,0.1)',
+    banner:'linear-gradient(90deg,#92400e,#d97706)',
+    desc:'Détox douceur : cacao cru du Cameroun (riche en magnésium et sérotonine) + lait de coco. Booste le moral naturellement.',
+    ingredients:['2 c.à.s cacao cru en poudre (pas chocolat sucré)','300ml lait de coco naturel','Miel 1 c.à.s','Pincée de cannelle','Poivre noir 1 pincée','Eau chaude 100ml'],
+    steps:['Délayez le cacao cru dans l\'eau chaude.','Chauffez le lait de coco sans faire bouillir.','Mélangez cacao délayé avec lait de coco.','Ajoutez miel, cannelle et poivre noir.','Fouettez jusqu\'à mousse. Servir chaud ou tiède.'],
+    benefits:['Magnésium','Sérotonine','Énergie','Anti-dépresseur'],
+    benColors:['#2563eb','#7c3aed','#d97706','#16a34a'],
+    frequency:'☕ Matin ou après-midi · Remplace café pour moins d\'anxiété'
+  },
+  {
+    emoji:'🧄', name:'Shot Ail-Citron-Miel', tag:'Immunité & Bactéries', tagColor:'#dc2626', tagBg:'rgba(220,38,38,0.08)',
+    banner:'linear-gradient(90deg,#dc2626,#f97316)',
+    desc:'Le shot le plus puissant de la pharmacopée naturelle. L\'allicine de l\'ail est un antibiotique naturel documenté scientifiquement.',
+    ingredients:['4 gousses d\'ail frais (pas en poudre)','2 citrons verts pressés','Miel de fleurs 1 c.à.s','Gingembre frais 3cm','Pincée de poivre de Cayenne','50ml eau tiède'],
+    steps:['Écrasez l\'ail et laissez reposer 10 min (active l\'allicine).','Pressez le jus d\'ail en passant par une passoire fine.','Ajoutez jus de citron, gingembre pressé et miel.','Diluez dans l\'eau tiède, ajoutez Cayenne.','Boire en 1-2 gorgées. Rincer la bouche après.'],
+    benefits:['Antibactérien','Antiviral','Immunité','Tension artérielle'],
+    benColors:['#dc2626','#7c3aed','#16a34a','#2563eb'],
+    frequency:'⚡ En cure de 7 jours · 1 shot/matin · Prévention grippe/rhume'
+  },
+  {
+    emoji:'🍃', name:'Infusion Neem & Basilic Africain', tag:'Diabète & Glycémie', tagColor:'#0891b2', tagBg:'rgba(8,145,178,0.1)',
+    banner:'linear-gradient(90deg,#0891b2,#10b981)',
+    desc:'Le neem (Azadirachta indica) et le basilic africain (Ocimum gratissimum) sont utilisés en médecine traditionnelle pour contrôler la glycémie.',
+    ingredients:['10 feuilles de neem fraîches','1 bouquet basilic africain (nchuawiri)','Gingembre 2cm','1 citron vert','500ml eau','Miel selon goût'],
+    steps:['Lavez soigneusement feuilles de neem et basilic.','Portez l\'eau à ébullition.','Ajoutez les feuilles, couvrez et infusez 8-10 min hors du feu.','Filtrez soigneusement.','Ajoutez gingembre, citron et miel.','Boire tiède, 1 heure avant les repas.'],
+    benefits:['Glycémie','Anti-diabète','Antiseptique','Digestion'],
+    benColors:['#2563eb','#dc2626','#16a34a','#d97706'],
+    frequency:'🩺 3 fois/semaine · Consulter médecin si diabétique traité'
+  },
+];
+
+const perteFoods = [
+  {e:'🐟',n:'Poisson braisé',c:'120 kcal · 24g prot.'},
+  {e:'🥬',n:'Eru & légumes feuilles',c:'90 kcal · 8g fibres'},
+  {e:'🫘',n:'Haricots rouges',c:'180 kcal · 12g prot.'},
+  {e:'🍌',n:'Plantain bouilli',c:'120 kcal · IG moyen'},
+  {e:'🍅',n:'Tomates fraîches',c:'20 kcal · Lycopène'},
+  {e:'🥚',n:'Œufs à la coque',c:'75 kcal · 6g prot.'},
+  {e:'🦐',n:'Crevettes grillées',c:'100 kcal · 20g prot.'},
+  {e:'🥗',n:'Salade amarante',c:'40 kcal · Fer & VitC'},
+];
+
+const perteAvoid = [
+  {x:true, text:'Alloco (plantains frits) — trop caloriques'},
+  {x:true, text:'Sodas et jus industriels sucrés'},
+  {x:true, text:'Sauce arachide en grande quantité'},
+  {x:true, text:'Chin-chin et beignets frits'},
+  {x:true, text:'Alcool (calories vides, stimule l\'appétit)'},
+];
+
+const perteDayMeals = [
+  {time:'07:00', food:'Eau citron+gingembre à jeun', kcal:'0 kcal'},
+  {time:'07:30', food:'Bouillie de sorgho légère + œuf cuit', kcal:'280 kcal'},
+  {time:'12:30', food:'Poisson braisé + haricots + salade tomates', kcal:'420 kcal'},
+  {time:'16:00', food:'Fruits tropicaux frais (mangue ou papaye)', kcal:'100 kcal'},
+  {time:'19:30', food:'Eru & waterleaf + plantain bouilli (petit)', kcal:'310 kcal'},
+  {time:'21:00', food:'Tisane citronnelle-gingembre', kcal:'10 kcal'},
+];
+
+const masseFoods = [
+  {e:'🍲',n:'Ndolé complet',c:'380 kcal · 28g prot.'},
+  {e:'🐔',n:'Poulet DG',c:'520 kcal · 42g prot.'},
+  {e:'🥜',n:'Arachides 50g',c:'290 kcal · 13g prot.'},
+  {e:'🍚',n:'Riz blanc 200g',c:'260 kcal · Énergie'},
+  {e:'🐟',n:'Tilapia entier',c:'350 kcal · 38g prot.'},
+  {e:'🥚',n:'3 œufs brouillés',c:'225 kcal · 18g prot.'},
+  {e:'🍌',n:'2 plantains bouillis',c:'300 kcal · 78g glucides'},
+  {e:'🫘',n:'Haricots + riz',c:'390 kcal · 18g prot.'},
+];
+
+const masseTimings = [
+  {x:false, text:'2h avant sport : Riz + poulet léger (énergie lente)'},
+  {x:false, text:'30 min avant : Plantain mûr + café (pré-workout naturel)'},
+  {x:false, text:'Immédiatement après : Eau + crevettes ou œufs (protéines rapides)'},
+  {x:false, text:'1h après : Repas complet riche (ndolé + riz ou poulet DG)'},
+  {x:false, text:'Avant sommeil : Lait entier + arachides (protéines lentes)'},
+];
+
+const masseDayMeals = [
+  {time:'07:00', food:'Bouillie maïs enrichie + 3 œufs brouillés + café', kcal:'580 kcal'},
+  {time:'10:00', food:'Arachides 50g + banane + lait', kcal:'380 kcal'},
+  {time:'13:00', food:'Ndolé aux crevettes + riz blanc 200g', kcal:'680 kcal'},
+  {time:'16:00', food:'Plantain bouilli + poisson', kcal:'350 kcal'},
+  {time:'19:30', food:'Poulet DG complet + macabo cuit', kcal:'620 kcal'},
+  {time:'21:30', food:'Lait entier 250ml + arachides 30g', kcal:'280 kcal'},
+];
+
+const programmes = {
+  perte: [
+    {week:'Sem. 1', goal:'Transition', desc:'Réduire les sodas et fritures. Introduction détox matin. −200 kcal vs habitudes.', badge:'🟡 Préparation', badgeColor:'#d97706', badgeBg:'rgba(217,119,6,0.1)'},
+    {week:'Sem. 2', goal:'Déficit actif', desc:'Plan 1500 kcal appliqué. 3 repas + 1 collation. Détox matinale systématique.', badge:'🟢 En cours', badgeColor:'#16a34a', badgeBg:'rgba(22,163,74,0.1)'},
+    {week:'Sem. 3', goal:'Consolidation', desc:'Maintenir le rythme. Ajouter 30 min marche/jour. Peser 1x/semaine.', badge:'🔵 Consolidation', badgeColor:'#2563eb', badgeBg:'rgba(37,99,235,0.1)'},
+    {week:'Sem. 4', goal:'Résultats', desc:'Bilan : −1,5 à 2 kg. Ajuster si besoin. Transition vers plan maintenance.', badge:'⭐ Résultats', badgeColor:'#7c3aed', badgeBg:'rgba(124,58,237,0.1)'},
+  ],
+  masse: [
+    {week:'Sem. 1', goal:'Mise en place', desc:'Augmenter progressivement les portions. +300 kcal vs habitudes. 3 entraînements/sem.', badge:'🟡 Démarrage', badgeColor:'#d97706', badgeBg:'rgba(217,119,6,0.1)'},
+    {week:'Sem. 2', goal:'Surcharge progressive', desc:'Plan 2800 kcal plein régime. Timing repas autour du sport. Hydratation 3L/jour.', badge:'🟢 Actif', badgeColor:'#16a34a', badgeBg:'rgba(22,163,74,0.1)'},
+    {week:'Sem. 3', goal:'Intensification', desc:'Augmenter poids entraînement. Ajouter collation nocturne (lait + arachides).', badge:'🔵 Intensif', badgeColor:'#2563eb', badgeBg:'rgba(37,99,235,0.1)'},
+    {week:'Sem. 4', goal:'Bilan & cycle 2', desc:'Bilan : +0,5 à 1 kg de masse maigre. Prendre des mesures corporelles.', badge:'⭐ Bilan', badgeColor:'#7c3aed', badgeBg:'rgba(124,58,237,0.1)'},
+  ],
+  detox: [
+    {week:'Sem. 1', goal:'Élimination', desc:'Une boisson détox chaque matin à jeun. Supprimer alcool, sodas, graisses saturées.', badge:'🌿 Nettoyage', badgeColor:'#16a34a', badgeBg:'rgba(22,163,74,0.1)'},
+    {week:'Sem. 2', goal:'Draining', desc:'Ajouter detox le soir. 2,5L eau/jour. Priorité aux légumes et fruits frais.', badge:'💧 Drainage', badgeColor:'#0891b2', badgeBg:'rgba(8,145,178,0.1)'},
+    {week:'Sem. 3', goal:'Régénération', desc:'Introduire le moringa. Alimentation 80% végétale. Réduire la viande rouge.', badge:'✨ Régénération', badgeColor:'#7c3aed', badgeBg:'rgba(124,58,237,0.1)'},
+    {week:'Sem. 4', goal:'Équilibre', desc:'Transition vers alimentation équilibrée. Garder 1 détox/matin comme habitude durable.', badge:'⚖️ Équilibre', badgeColor:'#d97706', badgeBg:'rgba(217,119,6,0.1)'},
+  ]
+};
+
+// ── RENDER ──
+function renderDetox(){
+  document.getElementById('detox-grid').innerHTML = detoxDrinks.map(d=>`
+    <div class="detox-card">
+      <div class="dc-banner" style="background:${d.banner}"></div>
+      <div class="dc-body">
+        <span class="dc-emoji">${d.emoji}</span>
+        <span class="dc-tag" style="color:${d.tagColor};background:${d.tagBg}">${d.tag}</span>
+        <div class="dc-name">${d.name}</div>
+        <div class="dc-desc">${d.desc}</div>
+        <div class="dc-section-title" style="color:${d.tagColor}">🛒 Ingrédients</div>
+        <div class="dc-ingredients">${d.ingredients.map(i=>`<span class="dc-ing">${i}</span>`).join('')}</div>
+        <div class="dc-section-title" style="color:${d.tagColor}">👨‍🍳 Préparation</div>
+        <div class="dc-steps">${d.steps.map((s,i)=>`<div class="dc-step"><div class="dc-step-num" style="background:${d.tagColor}">${i+1}</div><div class="dc-step-text">${s}</div></div>`).join('')}</div>
+        <div class="dc-section-title" style="color:${d.tagColor}">✅ Bienfaits</div>
+        <div class="dc-benefits">${d.benefits.map((b,i)=>`<span class="dc-benefit" style="background:${d.benColors[i]}22;color:${d.benColors[i]}">${b}</span>`).join('')}</div>
+        <div class="dc-frequency">${d.frequency}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderFoods(){
+  document.getElementById('perte-foods').innerHTML = perteFoods.map(f=>`<div class="food-item"><div class="fi-emoji">${f.e}</div><div><div class="fi-name">${f.n}</div><div class="fi-cal">${f.c}</div></div></div>`).join('');
+  document.getElementById('masse-foods').innerHTML = masseFoods.map(f=>`<div class="food-item"><div class="fi-emoji">${f.e}</div><div><div class="fi-name">${f.n}</div><div class="fi-cal">${f.c}</div></div></div>`).join('');
+  document.getElementById('perte-avoid').innerHTML = perteAvoid.map(a=>`<div class="avoid-item"><div class="avoid-x">✗</div>${a.text}</div>`).join('');
+  document.getElementById('masse-timing').innerHTML = masseTimings.map(a=>`<div class="yes-item"><div class="yes-check">→</div>${a.text}</div>`).join('');
+  const dayHTML = (meals, pColor) => meals.map(m=>`<div class="de-meal"><div class="de-time">${m.time}</div><div class="de-food">${m.food}</div><div class="de-kcal" style="color:${pColor}">${m.kcal}</div></div>`).join('');
+  document.getElementById('perte-day').innerHTML = dayHTML(perteDayMeals,'#dc2626');
+  document.getElementById('masse-day').innerHTML = dayHTML(masseDayMeals,'#2563eb');
+}
+
+function renderProg(type){
+  const p = programmes[type];
+  document.getElementById('weeks-timeline').innerHTML = p.map(w=>`
+    <div class="week-card">
+      <div class="wc-week">${w.week}</div>
+      <div class="wc-goal">${w.goal}</div>
+      <div class="wc-desc">${w.desc}</div>
+      <span class="wc-badge" style="background:${w.badgeBg};color:${w.badgeColor}">${w.badge}</span>
+    </div>
+  `).join('');
+  const titles={perte:'Programme Perte de poids — 4 semaines',masse:'Programme Prise de masse — 4 semaines',detox:'Programme Détox & Reset — 4 semaines'};
+  document.getElementById('prog-title').textContent=titles[type];
+}
+
+function setProgType(type, btn){
+  document.querySelectorAll('.ts-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  renderProg(type);
+}
+
+// ── NAV ──
+function showSection(id, btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('show'));
+  document.querySelectorAll('.stab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('show');
+  btn.classList.add('active');
+}
+
+let heroIdx=0;
+function heroTo(i, navBtn, dot){
+  heroIdx=i;
+  document.getElementById('hero-slides').style.transform=`translateX(-${i*33.333}%)`;
+  document.querySelectorAll('.dot').forEach((d,j)=>d.classList.toggle('active',j===i));
+  document.querySelectorAll('.tnav-btn').forEach((b,j)=>b.classList.toggle('active',j===i));
+}
+
+// INIT
+renderDetox(); renderFoods(); renderProg('perte');
+</script>
+</body>
+</html>

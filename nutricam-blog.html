@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam Blog – Nutrition africaine & santé</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#faf9f5;--dark:#0e1a0f;--green:#1a7a3e;--gl:#22a854;
+  --y:#f5b800;--red:#e63946;--border:#e2ece4;--text:#1a2b1e;--muted:#6b8c72;--card:#fff;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text)}
+
+/* NAV */
+.nav{background:var(--dark);padding:1rem 2.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.nav-logo{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;color:#fff}
+.nav-logo span{color:var(--y)}
+.nav-links{display:flex;gap:1.5rem;list-style:none}
+.nav-links a{color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.85rem;font-weight:600;transition:color 0.2s}
+.nav-links a:hover{color:#fff}
+.nav-search{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:0.45rem 0.9rem;color:rgba(255,255,255,0.6);font-size:0.8rem;font-family:'DM Sans',sans-serif;outline:none;width:180px;transition:all 0.2s}
+.nav-search:focus{border-color:rgba(34,197,94,0.4);color:#fff}
+
+/* HERO BLOG */
+.blog-hero{background:linear-gradient(135deg,var(--dark) 0%,#0b3019 60%,#1a7a3e 100%);padding:4rem 2.5rem;text-align:center;position:relative;overflow:hidden}
+.blog-hero::before{content:'🌿📚🍲';position:absolute;bottom:-1rem;left:50%;transform:translateX(-50%);font-size:6rem;opacity:0.06;letter-spacing:2rem;pointer-events:none}
+.bh-label{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);font-size:0.72rem;font-weight:700;padding:0.3rem 0.9rem;border-radius:100px;margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.08em}
+.bh-title{font-family:'Fraunces',serif;font-size:clamp(2rem,4vw,3rem);font-weight:900;color:#fff;margin-bottom:0.7rem}
+.bh-title span{color:var(--y)}
+.bh-sub{color:rgba(255,255,255,0.6);max-width:520px;margin:0 auto;line-height:1.7;font-size:0.95rem}
+
+/* CATEGORY FILTERS */
+.cat-strip{background:var(--card);border-bottom:1px solid var(--border);padding:0 2.5rem;display:flex;gap:0;overflow-x:auto;position:sticky;top:52px;z-index:40}
+.cat-strip::-webkit-scrollbar{display:none}
+.cat-btn{padding:0.9rem 1.3rem;font-size:0.82rem;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:all 0.2s}
+.cat-btn:hover{color:var(--text)}
+.cat-btn.active{color:var(--green);border-bottom-color:var(--green)}
+
+/* FEATURED ARTICLE */
+.featured-section{max-width:1200px;margin:0 auto;padding:3rem 2.5rem 2rem}
+.featured-article{display:grid;grid-template-columns:1.4fr 1fr;gap:2rem;background:var(--card);border-radius:24px;overflow:hidden;border:1px solid var(--border);margin-bottom:3rem;cursor:pointer;transition:all 0.25s}
+.featured-article:hover{box-shadow:0 20px 60px rgba(0,0,0,0.1);transform:translateY(-3px)}
+.fa-visual{background:linear-gradient(135deg,#0a2d14,#1a7a3e);display:flex;align-items:center;justify-content:center;min-height:300px;font-size:7rem;position:relative;overflow:hidden}
+.fa-visual::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,0.1),transparent)}
+.fa-content{padding:2.5rem}
+.fa-badge{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(26,122,62,0.08);color:var(--green);font-size:0.7rem;font-weight:800;padding:0.25rem 0.8rem;border-radius:100px;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:1rem}
+.fa-title{font-family:'Fraunces',serif;font-size:1.8rem;font-weight:900;color:var(--dark);line-height:1.15;margin-bottom:0.8rem}
+.fa-excerpt{font-family:'Source Serif 4',serif;font-size:0.92rem;color:var(--muted);line-height:1.7;margin-bottom:1.5rem}
+.fa-meta{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.fa-author{display:flex;align-items:center;gap:0.5rem;font-size:0.8rem}
+.fa-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--gl),var(--y));display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:800;color:#000;flex-shrink:0}
+.fa-author-name{font-weight:700;color:var(--text)}
+.fa-date{font-size:0.75rem;color:var(--muted)}
+.fa-read{font-size:0.75rem;color:var(--muted);background:var(--bg);padding:0.2rem 0.6rem;border-radius:100px;margin-left:auto}
+
+/* ARTICLE GRID */
+.articles-section{max-width:1200px;margin:0 auto;padding:0 2.5rem 4rem}
+.articles-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+.ah-title{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;color:var(--dark)}
+.ah-link{font-size:0.82rem;color:var(--green);font-weight:700;text-decoration:none}
+.articles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-bottom:3rem}
+.article-card{background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;cursor:pointer;transition:all 0.25s}
+.article-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,0.1)}
+.ac-visual{height:160px;display:flex;align-items:center;justify-content:center;font-size:4.5rem;position:relative;overflow:hidden}
+.ac-body{padding:1.3rem}
+.ac-category{font-size:0.67rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.5rem}
+.ac-title{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:900;color:var(--dark);line-height:1.25;margin-bottom:0.5rem}
+.ac-excerpt{font-size:0.78rem;color:var(--muted);line-height:1.5;margin-bottom:1rem}
+.ac-footer{display:flex;align-items:center;justify-content:space-between}
+.ac-author{font-size:0.72rem;color:var(--muted);font-weight:600}
+.ac-read{font-size:0.7rem;color:var(--muted);background:var(--bg);padding:0.18rem 0.5rem;border-radius:100px}
+
+/* ARTICLE FULL VIEW */
+.article-full{display:none;max-width:760px;margin:0 auto;padding:2rem 2.5rem 4rem}
+.article-full.show{display:block;animation:fadeUp 0.35s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.af-back{display:inline-flex;align-items:center;gap:0.4rem;color:var(--muted);font-size:0.82rem;font-weight:700;cursor:pointer;margin-bottom:1.5rem;transition:color 0.2s}
+.af-back:hover{color:var(--green)}
+.af-header{margin-bottom:2.5rem}
+.af-cat{font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.8rem}
+.af-big-title{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:var(--dark);line-height:1.15;margin-bottom:1rem}
+.af-lead{font-family:'Source Serif 4',serif;font-size:1.05rem;color:var(--muted);line-height:1.8;border-left:4px solid var(--green);padding-left:1.2rem;margin-bottom:1.5rem}
+.af-meta-row{display:flex;align-items:center;gap:1rem;padding:1rem 1.2rem;background:var(--card);border-radius:12px;border:1px solid var(--border);margin-bottom:2rem;flex-wrap:wrap}
+.af-art-body h2{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:900;color:var(--dark);margin:2rem 0 0.8rem}
+.af-art-body h3{font-size:1rem;font-weight:700;color:var(--dark);margin:1.5rem 0 0.5rem}
+.af-art-body p{font-family:'Source Serif 4',serif;font-size:0.97rem;color:var(--text);line-height:1.85;margin-bottom:1rem}
+.af-art-body ul,.af-art-body ol{font-family:'Source Serif 4',serif;font-size:0.95rem;color:var(--text);line-height:1.8;margin-bottom:1rem;padding-left:1.5rem}
+.af-art-body li{margin-bottom:0.4rem}
+.af-art-body strong{color:var(--dark);font-weight:700}
+.af-fact-box{background:rgba(26,122,62,0.06);border-radius:14px;padding:1.4rem;margin:1.5rem 0;border-left:4px solid var(--green);border-radius:0 14px 14px 0}
+.af-fact-box h4{color:var(--green);font-weight:800;margin-bottom:0.5rem}
+.af-fact-box p{font-family:'Source Serif 4',serif;font-size:0.9rem;color:var(--text);line-height:1.7}
+.af-nutrition-table{width:100%;border-collapse:collapse;margin:1.5rem 0;border-radius:12px;overflow:hidden;border:1px solid var(--border)}
+.af-nutrition-table th{background:var(--dark);color:rgba(255,255,255,0.8);padding:0.65rem 1rem;text-align:left;font-size:0.73rem;text-transform:uppercase;letter-spacing:0.06em}
+.af-nutrition-table td{padding:0.6rem 1rem;font-size:0.85rem;border-top:1px solid var(--border)}
+.af-nutrition-table tr:hover td{background:rgba(26,122,62,0.02)}
+.newsletter-cta{background:var(--dark);border-radius:20px;padding:2rem;text-align:center;margin-top:3rem}
+.nc-title{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;color:#fff;margin-bottom:0.5rem}
+.nc-sub{color:rgba(255,255,255,0.5);font-size:0.85rem;margin-bottom:1.5rem}
+.nc-form{display:flex;gap:0.6rem;max-width:380px;margin:0 auto}
+.nc-input{flex:1;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:0.7rem 1rem;color:#fff;font-size:0.85rem;font-family:'DM Sans',sans-serif;outline:none}
+.nc-input::placeholder{color:rgba(255,255,255,0.35)}
+.nc-btn{background:var(--gl);border:none;border-radius:10px;padding:0.7rem 1.4rem;color:#fff;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:all 0.2s}
+.nc-btn:hover{background:#1db854}
+
+@media(max-width:900px){.featured-article{grid-template-columns:1fr}.fa-visual{min-height:200px}.articles-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.articles-grid{grid-template-columns:1fr}.articles-section,.featured-section{padding:0 1rem 2rem}.nav{padding:1rem}.cat-strip{padding:0 1rem}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo">Nutri<span>Cam</span> Blog</div>
+  <ul class="nav-links">
+    <li><a href="#">Nutrition</a></li>
+    <li><a href="#">Recettes</a></li>
+    <li><a href="#">Santé</a></li>
+    <li><a href="#">Sport</a></li>
+  </ul>
+  <input class="nav-search" type="text" placeholder="🔍 Rechercher un article..."/>
+</nav>
+
+<div class="blog-hero">
+  <div class="bh-label">📚 Blog NutriCam · Nutrition africaine</div>
+  <h1 class="bh-title">Manger camerounais,<br/>vivre en <span>bonne santé</span></h1>
+  <p class="bh-sub">Articles scientifiques sur la nutrition africaine, recettes expliquées, conseils santé adaptés à notre mode de vie et notre gastronomie.</p>
+</div>
+
+<div class="cat-strip">
+  <div class="cat-btn active" onclick="filterCat('tous',this)">🌿 Tous les articles</div>
+  <div class="cat-btn" onclick="filterCat('nutrition',this)">📊 Nutrition</div>
+  <div class="cat-btn" onclick="filterCat('recettes',this)">🍲 Recettes expliquées</div>
+  <div class="cat-btn" onclick="filterCat('sante',this)">💊 Santé</div>
+  <div class="cat-btn" onclick="filterCat('sport',this)">🏃 Sport & Performance</div>
+  <div class="cat-btn" onclick="filterCat('enfants',this)">👶 Enfants</div>
+  <div class="cat-btn" onclick="filterCat('detox',this)">🌿 Détox</div>
+</div>
+
+<!-- BLOG LIST VIEW -->
+<div id="blog-list-view">
+  <div class="featured-section">
+    <div class="featured-article" onclick="openArticle(0)">
+      <div class="fa-visual">🍲</div>
+      <div class="fa-content">
+        <div class="fa-badge">⭐ Article vedette · Nutrition</div>
+        <h2 class="fa-title">Pourquoi le Ndolé est l'un des plats les plus nutritifs d'Afrique subsaharienne</h2>
+        <p class="fa-excerpt">Analyse scientifique complète des feuilles de vernonia amygdalina (ndolé) : composition en micronutriments, propriétés anti-oxydantes et antidiabétiques documentées dans la littérature médicale internationale.</p>
+        <div class="fa-meta">
+          <div class="fa-author"><div class="fa-avatar">DK</div><div><div class="fa-author-name">Dr. Diane Kengne</div><div class="fa-date">14 Janvier 2025</div></div></div>
+          <div class="fa-read">⏱ 8 min</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="articles-section">
+    <div class="articles-header">
+      <div class="ah-title">Articles récents</div>
+      <a href="#" class="ah-link">Voir tout →</a>
+    </div>
+    <div class="articles-grid" id="articles-grid"></div>
+  </div>
+</div>
+
+<!-- ARTICLE FULL VIEW -->
+<div class="article-full" id="article-full">
+  <div class="af-back" onclick="closeFull()">← Retour aux articles</div>
+  <div id="article-content"></div>
+  <div class="newsletter-cta">
+    <div class="nc-title">📧 Recevoir nos articles</div>
+    <div class="nc-sub">Chaque semaine, les meilleurs conseils nutrition camerounaise dans votre boîte mail.</div>
+    <div class="nc-form">
+      <input class="nc-input" type="email" placeholder="votre@email.com"/>
+      <button class="nc-btn">S'abonner</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const articles = [
+  {
+    id:0, emoji:'🍲', cat:'nutrition', catLabel:'Nutrition', catColor:'#16a34a',
+    title:'Pourquoi le Ndolé est l\'un des plats les plus nutritifs d\'Afrique subsaharienne',
+    excerpt:'Analyse scientifique des propriétés du ndolé : fer, antioxydants, anti-diabétique.',
+    author:'Dr. Diane Kengne', role:'Diététicienne · CHU Yaoundé', avatar:'DK', date:'14 Jan 2025', readTime:'8 min',
+    visual:'#0a2d14',
+    content:`
+<div class="af-cat" style="color:#16a34a">📊 Nutrition · Science</div>
+<h1 class="af-big-title">Pourquoi le Ndolé est l'un des plats les plus nutritifs d'Afrique subsaharienne</h1>
+<p class="af-lead">Le Ndolé, plat national du Cameroun, cache derrière sa saveur légèrement amère un profil nutritionnel exceptionnel que la science commence tout juste à documenter. Analyse complète.</p>
+<div class="af-meta-row">
+  <div class="fa-avatar" style="background:linear-gradient(135deg,#16a34a,#fbbf24)">DK</div>
+  <div><div style="font-size:0.82rem;font-weight:700">Dr. Diane Kengne</div><div style="font-size:0.7rem;color:#6b8c72">Diététicienne · CHU Yaoundé</div></div>
+  <div style="margin-left:auto;display:flex;gap:0.8rem;font-size:0.75rem;color:#6b8c72">
+    <span>14 Janvier 2025</span><span>⏱ 8 min de lecture</span><span>👁 2 847 vues</span>
+  </div>
+</div>
+<div class="af-art-body">
+<h2>Introduction : un plat sous-étudié aux propriétés remarquables</h2>
+<p>La <em>Vernonia amygdalina</em>, connue localement sous le nom de ndolé, de ndoleh ou de "bitter leaf" en anglais, est une plante médicinale et alimentaire utilisée depuis des siècles en Afrique centrale et occidentale. Pourtant, sa composition nutritionnelle précise n'a été documentée scientifiquement que depuis les années 2000.</p>
+<p>Les résultats sont stupéfiants : les feuilles de ndolé figurent parmi les végétaux les plus denses en micronutriments de toute la zone tropicale africaine.</p>
+
+<div class="af-fact-box">
+  <h4>📌 Fait scientifique clé</h4>
+  <p>Une étude publiée dans le <em>Journal of Food Science and Technology</em> (Okolie et al., 2019) a démontré que 100g de feuilles de ndolé fraîches apportent plus de fer biodisponible que 200g d'épinards européens, grâce à la présence de cofacteurs vitaminiques facilitant l'absorption.</p>
+</div>
+
+<h2>Composition nutritionnelle des feuilles de ndolé</h2>
+<p>Voici la composition nutritionnelle moyenne pour 100g de feuilles de ndolé fraîches :</p>
+<table class="af-nutrition-table">
+  <thead><tr><th>Nutriment</th><th>Pour 100g frais</th><th>% AJR adulte</th><th>Comparaison</th></tr></thead>
+  <tbody>
+    <tr><td>Calories</td><td>42 kcal</td><td>2%</td><td>Ultra-faible en calories</td></tr>
+    <tr><td>Protéines</td><td>5.8g</td><td>12%</td><td>2× les épinards</td></tr>
+    <tr><td>Fibres</td><td>8.2g</td><td>27%</td><td>Très riche</td></tr>
+    <tr><td><strong>Fer</strong></td><td><strong>8.9mg</strong></td><td><strong>50%</strong></td><td>3× les épinards</td></tr>
+    <tr><td>Calcium</td><td>145mg</td><td>15%</td><td>Bonne source</td></tr>
+    <tr><td>Vitamine A</td><td>620 µg</td><td>69%</td><td>Excellent</td></tr>
+    <tr><td>Vitamine C</td><td>55mg</td><td>61%</td><td>Supérieur à l'orange</td></tr>
+    <tr><td>Acide folique</td><td>82 µg</td><td>21%</td><td>Précieux pour grossesse</td></tr>
+  </tbody>
+</table>
+
+<h2>Propriétés médicinales documentées</h2>
+<h3>Anti-diabétique</h3>
+<p>Plusieurs études cliniques menées au Cameroun et au Nigéria ont démontré que les sesquiterpènes présents dans les feuilles de ndolé réduisent significativement la glycémie post-prandiale. Une étude de 2021 (Université de Douala) a observé une réduction de 18% de la glycémie 2h après un repas chez des patients diabétiques ayant consommé 100g de ndolé.</p>
+<h3>Antioxydant puissant</h3>
+<p>La capacité antioxydante (mesure ORAC) des feuilles de ndolé est 4 fois supérieure à celle des myrtilles, souvent citées comme référence en matière d'antioxydants. Les polyphénols qu'elles contiennent protègent notamment les cellules du foie du stress oxydatif.</p>
+<h3>Propriétés anti-inflammatoires</h3>
+<p>Les vernodaline et vernolide présentes dans les feuilles ont montré des propriétés anti-inflammatoires comparables à l'ibuprofène à faibles doses dans des études in vitro, sans les effets secondaires gastro-intestinaux associés.</p>
+
+<h2>L'impact de la cuisson sur les nutriments</h2>
+<p>La traditionnelle préparation du ndolé (trempage prolongé pour réduire l'amertume, puis longue cuisson) affecte certains nutriments :</p>
+<ul>
+  <li><strong>Vitamine C :</strong> réduite de 60-70% par la chaleur → servir avec une tomate crue pour compenser</li>
+  <li><strong>Fer :</strong> la cuisson améliore sa biodisponibilité en détruisant certains inhibiteurs</li>
+  <li><strong>Fibres :</strong> maintenues à 80% après cuisson standard</li>
+  <li><strong>Antioxydants polyphénoliques :</strong> partiellement stables, conservés à 55-65%</li>
+</ul>
+<div class="af-fact-box">
+  <h4>💡 Recommandation pratique</h4>
+  <p>Pour maximiser l'apport nutritionnel du ndolé : 1) Réduire le temps de trempage à 20-30 min (suffisant pour l'amertume). 2) Ajouter des tomates fraîches en service pour la vitamine C. 3) Associer avec du poisson ou des crevettes dont la vitamine B12 améliore le métabolisme du fer végétal.</p>
+</div>
+
+<h2>Ndolé dans le contexte des maladies camerounaises</h2>
+<p>Au regard de la prévalence croissante de l'anémie ferriprive (estimée à 38% chez les femmes camerounaises en âge de procréer selon le MINSANTE 2023), du diabète de type 2 (+47% en 10 ans) et des maladies cardiovasculaires, le ndolé représente une réponse alimentaire locale, accessible et culturellement acceptée à ces défis de santé publique.</p>
+<p>À 380 kcal par portion complète avec crevettes et riz, le plat de ndolé couvre 30% des besoins en fer, 20% des besoins en calcium et 25% des besoins en protéines d'un adulte en une seule assiette. C'est l'un des meilleurs rapports qualité nutritionnelle/coût de toute la gastronomie africaine.</p>
+
+<h2>Conclusion</h2>
+<p>Le ndolé n'est pas simplement un plat national savoureux. C'est un aliment fonctionnel dont les propriétés médicinales et nutritionnelles surpassent de nombreux "superaliments" importés et commercialisés à prix élevé. Manger du ndolé 2 à 3 fois par semaine contribue significativement à la prévention de l'anémie, du diabète et des maladies inflammatoires.</p>
+<p>Pour les praticiens de santé camerounais, intégrer le ndolé dans les prescriptions nutritionnelles représente une opportunité unique alliant efficacité médicale, accessibilité économique et acceptation culturelle.</p>
+</div>`
+  },
+  {
+    id:1, emoji:'💪', cat:'sport', catLabel:'Sport & Performance', catColor:'#2563eb',
+    title:'Les 5 meilleurs aliments camerounais pour la récupération musculaire',
+    excerpt:'Crevettes, tilapia, eru, arachides et macabo : pourquoi ces aliments locaux valent mieux que les protéines en poudre importées.',
+    author:'Coach Paul Bello', role:'Préparateur physique · FECAFOOT', avatar:'PB', date:'10 Jan 2025', readTime:'5 min',
+    visual:'#1e1b4b',
+  },
+  {
+    id:2, emoji:'👶', cat:'enfants', catLabel:'Enfants & Croissance', catColor:'#f97316',
+    title:'Alimentation des enfants au Cameroun : les 7 erreurs fréquentes à corriger',
+    excerpt:'Sel en excès dès le berceau, bouillons industriels pour les nourrissons, trop peu de légumes verts — le point sur les pratiques à revoir.',
+    author:'Sage-femme Nathalie Ewane', role:'Maternité Centrale · Douala', avatar:'NE', date:'07 Jan 2025', readTime:'6 min',
+    visual:'#431407',
+  },
+  {
+    id:3, emoji:'🌿', cat:'detox', catLabel:'Détox naturelle', catColor:'#16a34a',
+    title:'Moringa : le "superaliment africain" que vous n\'utilisez pas assez',
+    excerpt:'7× plus de vitamine C que l\'orange, 4× plus de calcium que le lait. Le guide complet du moringa oleifera du Cameroun.',
+    author:'Dr. Diane Kengne', role:'Diététicienne · CHU Yaoundé', avatar:'DK', date:'03 Jan 2025', readTime:'7 min',
+    visual:'#14532d',
+  },
+  {
+    id:4, emoji:'🩺', cat:'sante', catLabel:'Santé & Prévention', catColor:'#e63946',
+    title:'Diabète de type 2 au Cameroun : le rôle de l\'alimentation traditionnelle dans la prévention',
+    excerpt:'+47% de cas en 10 ans. Comment les plats à faible indice glycémique de la cuisine camerounaise peuvent inverser cette tendance.',
+    author:'Dr. Emmanuel Nlend', role:'Endocrinologue · CHUY', avatar:'EN', date:'28 Déc 2024', readTime:'9 min',
+    visual:'#4a0505',
+  },
+  {
+    id:5, emoji:'🫙', cat:'nutrition', catLabel:'Nutrition', catColor:'#16a34a',
+    title:'Huile de palme rouge vs blanche : pourquoi choisir non raffinée change tout',
+    excerpt:'La différence entre les deux huiles va bien au-delà de la couleur. Vitamines A et E, antioxydants caroténoïdes : ce que la raffinerie détruit.',
+    author:'Pr. Albert Ngalame', role:'Biochimiste · Université de Yaoundé I', avatar:'AN', date:'22 Déc 2024', readTime:'4 min',
+    visual:'#431407',
+  },
+  {
+    id:6, emoji:'🍌', cat:'recettes', catLabel:'Recettes expliquées', catColor:'#d97706',
+    title:'Plantain bouilli vs frit : l\'impact sur les calories et l\'index glycémique',
+    excerpt:'La même banane plantain, deux préparations radicalement différentes sur le plan nutritionnel. Chiffres à l\'appui.',
+    author:'NutriCam Team', role:'Équipe nutritionnelle', avatar:'NC', date:'18 Déc 2024', readTime:'3 min',
+    visual:'#3d2b00',
+  },
+];
+
+function renderArticles(filtered){
+  document.getElementById('articles-grid').innerHTML = filtered.slice(1).map(a=>`
+    <div class="article-card" onclick="openArticle(${a.id})">
+      <div class="ac-visual" style="background:linear-gradient(135deg,${a.visual},${a.visual}dd)">${a.emoji}</div>
+      <div class="ac-body">
+        <div class="ac-category" style="color:${a.catColor}">${a.catLabel}</div>
+        <h3 class="ac-title">${a.title}</h3>
+        <p class="ac-excerpt">${a.excerpt}</p>
+        <div class="ac-footer">
+          <div class="ac-author">✍️ ${a.author}</div>
+          <div class="ac-read">⏱ ${a.readTime}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterCat(cat, btn){
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const filtered = cat==='tous' ? articles : articles.filter(a=>a.cat===cat);
+  renderArticles(filtered);
+}
+
+function openArticle(id){
+  const a = articles.find(x=>x.id===id);
+  if(!a) return;
+  let html = '';
+  if(a.content){
+    html = a.content;
+  } else {
+    html = `
+      <div class="af-cat" style="color:${a.catColor}">${a.catLabel}</div>
+      <h1 class="af-big-title">${a.title}</h1>
+      <p class="af-lead">${a.excerpt}</p>
+      <div class="af-meta-row">
+        <div class="fa-avatar" style="background:linear-gradient(135deg,var(--gl),var(--y))">${a.avatar}</div>
+        <div><div style="font-size:0.82rem;font-weight:700">${a.author}</div><div style="font-size:0.7rem;color:#6b8c72">${a.role}</div></div>
+        <div style="margin-left:auto;font-size:0.75rem;color:#6b8c72">${a.date} · ⏱ ${a.readTime}</div>
+      </div>
+      <div class="af-art-body">
+        <p>Cet article complet est en cours de rédaction par notre équipe de diététiciens et nutritionnistes camerounais. Revenez bientôt pour le lire en intégralité.</p>
+        <div class="af-fact-box"><h4>📬 Être notifié</h4><p>Abonnez-vous à notre newsletter pour recevoir cet article dès sa publication.</p></div>
+      </div>
+    `;
+  }
+  document.getElementById('article-content').innerHTML = html;
+  document.getElementById('blog-list-view').style.display = 'none';
+  document.getElementById('article-full').classList.add('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function closeFull(){
+  document.getElementById('article-full').classList.remove('show');
+  document.getElementById('blog-list-view').style.display = 'block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+renderArticles(articles);
+</script>
+</body>
+</html>

@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Scanner Produits</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#08100a;--surface:#0e1a10;--card:#132016;--card2:#172a1a;
+  --green:#22c55e;--gl:#16a34a;--y:#fbbf24;--red:#ef4444;--orange:#f97316;--blue:#3b82f6;
+  --border:rgba(255,255,255,0.07);--text:#e2ede5;--muted:#5a8066;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* ── HEADER ── */
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:1.2rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;backdrop-filter:blur(10px)}
+.logo{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;color:#fff}
+.logo span{color:var(--y)}
+.header-right{display:flex;align-items:center;gap:1rem}
+.hb{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:0.5rem 1rem;font-size:0.8rem;font-weight:700;color:var(--muted);cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif}
+.hb:hover{color:#fff;border-color:rgba(255,255,255,0.2)}
+.hb.primary{background:var(--gl);border-color:var(--gl);color:#fff}
+
+/* ── HERO SCANNER ── */
+.scanner-hero{background:linear-gradient(135deg,var(--bg) 0%,#0a2b14 60%,#0d3d1a 100%);padding:2.5rem 2rem;display:flex;gap:3rem;align-items:center;flex-wrap:wrap}
+.sh-text{flex:1;min-width:280px}
+.sh-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);color:var(--green);font-size:0.72rem;font-weight:700;padding:0.3rem 0.9rem;border-radius:100px;margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.08em}
+.sh-title{font-family:'Syne',sans-serif;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;color:#fff;line-height:1.1;margin-bottom:0.8rem}
+.sh-title span{color:var(--y)}
+.sh-sub{color:var(--muted);line-height:1.7;max-width:420px;font-size:0.9rem;margin-bottom:1.5rem}
+.sh-stats{display:flex;gap:2rem;flex-wrap:wrap}
+.sh-stat-val{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:var(--green)}
+.sh-stat-label{font-size:0.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em}
+
+/* ── SCANNER WIDGET ── */
+.scanner-widget{background:var(--card);border:1px solid var(--border);border-radius:24px;overflow:hidden;max-width:520px;flex-shrink:0;width:100%}
+.sw-toolbar{background:var(--surface);padding:0.8rem 1.2rem;display:flex;align-items:center;gap:0.7rem}
+.sw-dot{width:10px;height:10px;border-radius:50%}
+.sw-d1{background:#ef4444}.sw-d2{background:#fbbf24}.sw-d3{background:#22c55e}
+.sw-title{font-size:0.78rem;color:var(--muted);margin-left:0.5rem;font-family:'DM Mono',monospace}
+
+/* Search bar */
+.scan-search-wrap{padding:1.2rem;border-bottom:1px solid var(--border)}
+.scan-search{display:flex;gap:0.6rem;align-items:center;background:var(--card2);border:1.5px solid var(--border);border-radius:14px;padding:0.7rem 1rem;transition:border-color 0.2s}
+.scan-search:focus-within{border-color:rgba(34,197,94,0.4)}
+.scan-search input{background:none;border:none;color:#fff;font-size:0.9rem;flex:1;outline:none;font-family:'DM Sans',sans-serif}
+.scan-search input::placeholder{color:var(--muted)}
+.scan-search-icon{font-size:1rem;flex-shrink:0;color:var(--muted)}
+.scan-btn{background:var(--gl);border:none;border-radius:10px;padding:0.5rem 1rem;color:#fff;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;white-space:nowrap}
+.scan-btn:hover{background:var(--green)}
+
+/* Categories */
+.cat-tabs{padding:0.8rem 1.2rem;display:flex;gap:0.4rem;overflow-x:auto;border-bottom:1px solid var(--border)}
+.cat-tabs::-webkit-scrollbar{display:none}
+.cat-tab{background:var(--card2);border:1px solid var(--border);border-radius:100px;padding:0.35rem 0.85rem;font-size:0.75rem;font-weight:700;color:var(--muted);cursor:pointer;transition:all 0.2s;white-space:nowrap;flex-shrink:0}
+.cat-tab.active{background:var(--gl);border-color:var(--gl);color:#fff}
+.cat-tab:hover{color:#fff}
+
+/* Results */
+.scan-results{max-height:400px;overflow-y:auto;padding:0.8rem}
+.scan-results::-webkit-scrollbar{width:3px}
+.scan-results::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px}
+.sr-empty{text-align:center;padding:2.5rem;color:var(--muted);font-size:0.85rem}
+.sr-empty span{font-size:2.5rem;display:block;margin-bottom:0.7rem;filter:grayscale(0.5)}
+
+/* ── PRODUCT RESULT CARD ── */
+.product-card{background:var(--card2);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:0.6rem;transition:all 0.2s;cursor:pointer}
+.product-card:hover{border-color:rgba(34,197,94,0.3);transform:translateY(-1px)}
+.product-card.selected{border-color:var(--green);background:rgba(34,197,94,0.04)}
+.pc-top{padding:0.9rem 1rem;display:flex;align-items:center;gap:0.8rem}
+.pc-emoji{font-size:2rem;flex-shrink:0;width:44px;height:44px;background:rgba(255,255,255,0.04);border-radius:10px;display:flex;align-items:center;justify-content:center}
+.pc-info{flex:1;min-width:0}
+.pc-name{font-size:0.88rem;font-weight:700;color:#fff;margin-bottom:0.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pc-brand{font-size:0.7rem;color:var(--muted);margin-bottom:0.3rem}
+.pc-tags{display:flex;gap:0.3rem;flex-wrap:wrap}
+.pc-tag{font-size:0.62rem;font-weight:700;padding:0.12rem 0.45rem;border-radius:4px}
+.pc-cal{text-align:right;flex-shrink:0}
+.pc-cal-val{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:var(--y)}
+.pc-cal-unit{font-size:0.62rem;color:var(--muted)}
+.pc-score{display:flex;align-items:center;gap:0.3rem;margin-top:0.2rem;justify-content:flex-end}
+.score-dot{width:10px;height:10px;border-radius:50%}
+.score-label{font-size:0.62rem;font-weight:700}
+
+/* ── PRODUCT DETAIL PANEL ── */
+.product-detail{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:0;overflow:hidden;transition:all 0.35s;max-height:0;opacity:0}
+.product-detail.open{max-height:900px;opacity:1;margin-top:1rem}
+.pd-header{background:linear-gradient(135deg,var(--surface),var(--card2));padding:1.5rem;display:flex;gap:1.2rem;align-items:flex-start}
+.pd-emoji{font-size:3rem;flex-shrink:0}
+.pd-info{flex:1}
+.pd-name{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:0.3rem}
+.pd-brand{font-size:0.78rem;color:var(--muted);margin-bottom:0.5rem}
+.pd-nutri-score{display:inline-flex;align-items:center;gap:0.4rem;font-size:0.72rem;font-weight:700;padding:0.3rem 0.8rem;border-radius:8px}
+.pd-body{padding:1.2rem}
+/* nutri table */
+.nutri-table{width:100%;border-collapse:collapse;margin-bottom:1.2rem;background:var(--card2);border-radius:12px;overflow:hidden}
+.nutri-table th{background:rgba(255,255,255,0.04);padding:0.6rem 0.9rem;text-align:left;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted)}
+.nutri-table td{padding:0.55rem 0.9rem;font-size:0.8rem;border-top:1px solid var(--border)}
+.nutri-table tr:first-child td{border-top:none}
+.td-name{color:var(--text)}
+.td-100g{color:var(--muted);font-family:'DM Mono',monospace;font-size:0.75rem}
+.td-portion{color:#fff;font-weight:700;font-family:'DM Mono',monospace;font-size:0.75rem}
+.td-dv{font-size:0.7rem;font-weight:700}
+/* Gauge bars */
+.gauge-row{display:flex;flex-direction:column;gap:0.6rem;margin-bottom:1.2rem}
+.gr-item{display:flex;align-items:center;gap:0.7rem}
+.gr-label{font-size:0.75rem;font-weight:600;color:var(--text);width:80px;flex-shrink:0}
+.gr-bar-bg{flex:1;height:7px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden}
+.gr-bar{height:100%;border-radius:4px;transition:width 1s ease}
+.gr-val{font-size:0.75rem;font-weight:800;width:50px;text-align:right;flex-shrink:0}
+/* verdict */
+.pd-verdict{border-radius:14px;padding:1rem;margin-bottom:1.2rem;display:flex;gap:0.8rem;align-items:flex-start}
+.pv-icon{font-size:1.4rem;flex-shrink:0}
+.pv-title{font-size:0.85rem;font-weight:800;color:#fff;margin-bottom:0.2rem}
+.pv-text{font-size:0.78rem;color:var(--muted);line-height:1.5}
+/* add to journal */
+.pd-add-row{display:flex;gap:0.6rem;align-items:center}
+.pd-portion-select{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:0.6rem 0.8rem;color:#fff;font-size:0.85rem;font-family:'DM Sans',sans-serif;outline:none;flex:1}
+.pd-add-btn{background:var(--gl);border:none;border-radius:12px;padding:0.75rem 1.4rem;color:#fff;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;white-space:nowrap}
+.pd-add-btn:hover{background:var(--green)}
+
+/* ── BOTTOM TABS ── */
+.main-layout{display:grid;grid-template-columns:1fr 1fr;gap:2rem;padding:2rem;max-width:1300px;margin:0 auto}
+.panel-title{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:0.3rem}
+.panel-sub{font-size:0.82rem;color:var(--muted);margin-bottom:1.5rem;line-height:1.5}
+
+/* journal panel */
+.journal-panel{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:1.5rem}
+.jp-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem}
+.jp-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:#fff}
+.jp-cal{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:var(--green)}
+.jp-empty{text-align:center;padding:2rem;color:var(--muted);font-size:0.82rem}
+.journal-item{display:flex;align-items:center;gap:0.8rem;padding:0.7rem 0;border-bottom:1px solid var(--border);animation:slideIn 0.3s ease}
+@keyframes slideIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+.journal-item:last-child{border-bottom:none}
+.ji-emoji{font-size:1.4rem;flex-shrink:0}
+.ji-name{font-size:0.82rem;font-weight:600;color:#fff;flex:1}
+.ji-portion{font-size:0.68rem;color:var(--muted)}
+.ji-cal{font-size:0.85rem;font-weight:800;color:var(--y)}
+.ji-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.9rem;padding:0.2rem;transition:color 0.15s}
+.ji-del:hover{color:var(--red)}
+.jp-total{background:var(--card2);border-radius:12px;padding:0.9rem;margin-top:0.8rem;display:flex;align-items:center;justify-content:space-between}
+.jpt-label{font-size:0.75rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:0.05em}
+.jpt-val{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:#fff}
+.jpt-macros{display:flex;gap:1rem;margin-top:0.2rem}
+.jptm{font-size:0.7rem;font-weight:700}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .main-layout{grid-template-columns:1fr;padding:1rem}
+  .scanner-hero{padding:1.5rem}
+  .sh-stats{gap:1.2rem}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">Nutri<span>Cam</span> <span style="font-size:0.85rem;color:var(--muted);font-family:'DM Sans',sans-serif;font-weight:400">Scanner</span></div>
+  <div class="header-right">
+    <div class="hb">📊 Mon journal</div>
+    <div class="hb primary">+ Ajouter manuel</div>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="scanner-hero">
+  <div class="sh-text">
+    <div class="sh-badge">📷 IA · Base de données locale</div>
+    <h1 class="sh-title">Scannez n'importe quel<br/>produit <span>camerounais</span></h1>
+    <p class="sh-sub">Code-barres, recherche par nom ou catégorie. NutriCam reconnaît les marques locales (Azur, Sosucam, SCBC, UCI...) et affiche les valeurs nutritionnelles complètes.</p>
+    <div class="sh-stats">
+      <div><div class="sh-stat-val">1 200+</div><div class="sh-stat-label">Produits locaux</div></div>
+      <div><div class="sh-stat-val">45+</div><div class="sh-stat-label">Marques cam.</div></div>
+      <div><div class="sh-stat-val">100%</div><div class="sh-stat-label">Hors-ligne</div></div>
+    </div>
+  </div>
+
+  <div class="scanner-widget">
+    <div class="sw-toolbar">
+      <div class="sw-dot sw-d1"></div><div class="sw-dot sw-d2"></div><div class="sw-dot sw-d3"></div>
+      <div class="sw-title">nutricam://scanner</div>
+    </div>
+    <div class="scan-search-wrap">
+      <div class="scan-search">
+        <div class="scan-search-icon">🔍</div>
+        <input type="text" id="search-input" placeholder="Nom du produit, marque ou code-barres..." oninput="handleSearch(this.value)"/>
+        <button class="scan-btn" onclick="triggerScan()">📷 Scanner</button>
+      </div>
+    </div>
+    <div class="cat-tabs" id="cat-tabs">
+      <div class="cat-tab active" onclick="setCategory('tous',this)">🛒 Tous</div>
+      <div class="cat-tab" onclick="setCategory('huiles',this)">🫙 Huiles</div>
+      <div class="cat-tab" onclick="setCategory('cereales',this)">🌾 Céréales</div>
+      <div class="cat-tab" onclick="setCategory('conserves',this)">🥫 Conserves</div>
+      <div class="cat-tab" onclick="setCategory('boissons',this)">🥤 Boissons</div>
+      <div class="cat-tab" onclick="setCategory('laitiers',this)">🥛 Laitiers</div>
+      <div class="cat-tab" onclick="setCategory('snacks',this)">🍪 Snacks</div>
+      <div class="cat-tab" onclick="setCategory('condiments',this)">🧂 Condiments</div>
+    </div>
+    <div class="scan-results" id="scan-results">
+      <div class="sr-empty"><span>📷</span>Tapez un nom de produit ou scannez un code-barres</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="main-layout">
+
+  <!-- LEFT: DETAIL PANEL -->
+  <div>
+    <div class="panel-title">📋 Fiche nutritionnelle</div>
+    <div class="panel-sub">Sélectionnez un produit dans les résultats pour voir sa fiche complète.</div>
+    <div id="product-detail-panel">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:3rem;text-align:center">
+        <div style="font-size:3rem;margin-bottom:1rem">🔍</div>
+        <div style="color:var(--muted);font-size:0.85rem">Recherchez et sélectionnez un produit<br/>pour afficher sa fiche nutritionnelle</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: JOURNAL -->
+  <div>
+    <div class="panel-title">📓 Journal du jour</div>
+    <div class="panel-sub">Ajoutez les produits scannés à votre journal pour un suivi précis.</div>
+    <div class="journal-panel">
+      <div class="jp-header">
+        <div class="jp-title">Produits scannés aujourd'hui</div>
+        <div class="jp-cal" id="jp-total-cal">0 kcal</div>
+      </div>
+      <div id="journal-items">
+        <div class="jp-empty" id="jp-empty">Aucun produit ajouté. Scannez pour commencer !</div>
+      </div>
+      <div class="jp-total" id="jp-total-row" style="display:none">
+        <div>
+          <div class="jpt-label">Total journalier</div>
+          <div class="jpt-val" id="jp-total-full">0 kcal</div>
+          <div class="jpt-macros">
+            <span class="jptm" style="color:#4ade80" id="jp-prot">P: 0g</span>
+            <span class="jptm" style="color:#fbbf24" id="jp-carb">G: 0g</span>
+            <span class="jptm" style="color:#f87171" id="jp-fat">L: 0g</span>
+          </div>
+        </div>
+        <div style="font-size:2rem">📊</div>
+      </div>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:1.5rem;margin-top:1.5rem">
+      <div style="font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:800;color:#fff;margin-bottom:1rem">⚙️ Comment ça marche</div>
+      <div style="display:flex;flex-direction:column;gap:0.8rem">
+        <div style="display:flex;gap:0.8rem;align-items:flex-start">
+          <div style="width:24px;height:24px;border-radius:50%;background:var(--gl);color:#fff;font-size:0.7rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
+          <div style="font-size:0.8rem;color:var(--muted);line-height:1.5"><strong style="color:#fff">Scan ou recherche :</strong> Pointez la caméra vers le code-barres ou tapez le nom du produit dans la barre de recherche.</div>
+        </div>
+        <div style="display:flex;gap:0.8rem;align-items:flex-start">
+          <div style="width:24px;height:24px;border-radius:50%;background:var(--gl);color:#fff;font-size:0.7rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
+          <div style="font-size:0.8rem;color:var(--muted);line-height:1.5"><strong style="color:#fff">Reconnaissance IA :</strong> L'IA NutriCam identifie le produit en 0.3s et récupère toutes les valeurs nutritionnelles de notre base locale.</div>
+        </div>
+        <div style="display:flex;gap:0.8rem;align-items:flex-start">
+          <div style="width:24px;height:24px;border-radius:50%;background:var(--gl);color:#fff;font-size:0.7rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div>
+          <div style="font-size:0.8rem;color:var(--muted);line-height:1.5"><strong style="color:#fff">Analyse & Verdict :</strong> NutriCam attribue un score Nutri-Cam (A-E) et donne un conseil personnalisé selon votre profil.</div>
+        </div>
+        <div style="display:flex;gap:0.8rem;align-items:flex-start">
+          <div style="width:24px;height:24px;border-radius:50%;background:var(--gl);color:#fff;font-size:0.7rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div>
+          <div style="font-size:0.8rem;color:var(--muted);line-height:1.5"><strong style="color:#fff">Ajout au journal :</strong> En un tap, ajoutez le produit à votre journal quotidien avec la portion souhaitée.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── PRODUCT DATABASE ──
+const products = [
+  // HUILES
+  { id:1, emoji:'🫙', name:'Huile de palme rouge Azur', brand:'AZUR · Cameroun', cat:'huiles', barcode:'6001002345678',
+    cal100:884, prot100:0, carb100:0, fat100:100, sugar100:0, fiber100:0, salt100:0,
+    portion:15, score:'C', origin:'Cameroun 🇨🇲',
+    tags:[{t:'Naturelle',c:'#16a34a',bg:'rgba(22,163,74,0.1)'},{t:'Non raffinée',c:'#d97706',bg:'rgba(217,119,6,0.1)'}],
+    verdict:{type:'info', icon:'ℹ️', title:'Huile de palme rouge non raffinée', text:'Riche en vitamine A (bêta-carotène) et vitamine E. À utiliser en petites quantités. Préférer non raffinée (rouge) à raffinée (blanche).'},
+  },
+  { id:2, emoji:'🫙', name:'Huile végétale Azur Tournesol', brand:'AZUR · Cameroun', cat:'huiles', barcode:'6001002345679',
+    cal100:900, prot100:0, carb100:0, fat100:100, sugar100:0, fiber100:0, salt100:0,
+    portion:10, score:'C', origin:'Cameroun 🇨🇲',
+    tags:[{t:'Riche oméga-6',c:'#2563eb',bg:'rgba(37,99,235,0.1)'}],
+    verdict:{type:'info', icon:'ℹ️', title:'Huile de tournesol', text:'Riche en acides gras insaturés (oméga-6). Bon pour cuisson à haute température. Éviter la réutilisation.'},
+  },
+  // CÉRÉALES
+  { id:3, emoji:'🌾', name:'Farine de maïs Sosucam', brand:'SOSUCAM · Cameroun', cat:'cereales', barcode:'6001002345680',
+    cal100:362, prot100:8, carb100:76, fat100:4, sugar100:2, fiber100:7, salt100:0.1,
+    portion:50, score:'B', origin:'Cameroun 🇨🇲',
+    tags:[{t:'Sans gluten',c:'#16a34a',bg:'rgba(22,163,74,0.1)'},{t:'Fibres',c:'#d97706',bg:'rgba(217,119,6,0.1)'}],
+    verdict:{type:'good', icon:'✅', title:'Excellente base nutritive', text:'Farine de maïs complète riche en fibres et glucides complexes. Index glycémique modéré. Idéale pour bouillie, couscous et pain.'},
+  },
+  { id:4, emoji:'🍚', name:'Riz long grain parfumé', brand:'Top Rice · Import', cat:'cereales', barcode:'6001002345681',
+    cal100:355, prot100:7, carb100:79, fat100:1, sugar100:0, fiber100:1, salt100:0,
+    portion:80, score:'B', origin:'Thaïlande',
+    tags:[{t:'Sans gluten',c:'#16a34a',bg:'rgba(22,163,74,0.1)'}],
+    verdict:{type:'info', icon:'ℹ️', title:'Riz blanc : énergie rapide', text:'Bon apport glucidique mais faible en fibres. Associer avec légumineuses ou légumes pour un repas complet.'},
+  },
+  { id:5, emoji:'🌾', name:'Farine de sorgho complète', brand:'Local Cam · Yaoundé', cat:'cereales', barcode:'6001002345682',
+    cal100:335, prot100:11, carb100:72, fat100:3, sugar100:2, fiber100:9, salt100:0,
+    portion:50, score:'A', origin:'Cameroun 🇨🇲',
+    tags:[{t:'Sans gluten',c:'#16a34a',bg:'rgba(22,163,74,0.1)'},{t:'Riche fer',c:'#ef4444',bg:'rgba(239,68,68,0.1)'},{t:'Bio',c:'#7c3aed',bg:'rgba(124,58,237,0.1)'}],
+    verdict:{type:'good', icon:'⭐', title:'Superaliment local !', text:'Le sorgho est plus nutritif que le blé et le maïs : plus de fer, de protéines et de fibres. Idéal pour bouillies et pâtes.'},
+  },
+  // CONSERVES
+  { id:6, emoji:'🥫', name:'Sardines à la tomate SCBC', brand:'SCBC · Douala', cat:'conserves', barcode:'6001002345683',
+    cal100:185, prot100:20, carb100:3, fat100:11, sugar100:2, fiber100:0, salt100:1.2,
+    portion:125, score:'B', origin:'Cameroun 🇨🇲',
+    tags:[{t:'Riche protéines',c:'#16a34a',bg:'rgba(22,163,74,0.1)'},{t:'Oméga-3',c:'#2563eb',bg:'rgba(37,99,235,0.1)'}],
+    verdict:{type:'good', icon:'✅', title:'Excellente source d\'oméga-3', text:'Sardines très riches en oméga-3 EPA/DHA. 2 portions/semaine couvrent les besoins. Surveiller le sodium.'},
+  },
+  { id:7, emoji:'🥫', name:'Thon à l\'huile UCI', brand:'UCI · Cameroun', cat:'conserves', barcode:'6001002345684',
+    cal100:200, prot100:26, carb100:0, fat100:11, sugar100:0, fiber100:0, salt100:0.8,
+    portion:80, score:'A', origin:'Cameroun 🇨🇲',
+    tags:[{t:'Protéines +++',c:'#16a34a',bg:'rgba(22,163,74,0.1)'},{t:'Sportif',c:'#2563eb',bg:'rgba(37,99,235,0.1)'}],
+    verdict:{type:'good', icon:'⭐', title:'Top source protéique locale', text:'Excellent rapport protéines/calories. Idéal pour sportifs et régimes protéinés. 80g = 20g de protéines pour 160 kcal.'},
+  },
+  // BOISSONS
+  { id:8, emoji:'🥤', name:'Coca-Cola 33cl', brand:'SEBC · Douala', cat:'boissons', barcode:'5449000000996',
+    cal100:42, prot100:0, carb100:11, fat100:0, sugar100:11, fiber100:0, salt100:0.01,
+    portion:330, score:'E', origin:'Cameroun 🇨🇲',
+    tags:[{t:'Sucre élevé',c:'#ef4444',bg:'rgba(239,68,68,0.1)'},{t:'À éviter',c:'#ef4444',bg:'rgba(239,68,68,0.08)'}],
+    verdict:{type:'bad', icon:'⚠️', title:'À limiter fortement', text:'Une canette = 35g de sucre = 7 cuillères à café de sucre. Associé à obésité, diabète et caries. Remplacer par bissap maison ou eau.'},
+  },
+  { id:9, emoji:'🍺', name:'Amstel Bock Beer 65cl', brand:'SABC · Bafoussam', cat:'boissons', barcode:'6001002345685',
+    cal100:50, prot100:0.5, carb100:5.5, fat100:0, sugar100:0.5, fiber100:0, salt100:0,
+    portion:650, score:'D', origin:'Cameroun 🇨🇲',
+    tags:[{t:'Alcool',c:'#ef4444',bg:'rgba(239,68,68,0.1)'},{t:'Calories vides',c:'#f97316',bg:'rgba(249,115,22,0.1)'}],
+    verdict:{type:'bad', icon:'🚫', title:'Calories vides + alcool', text:'Alcool : 7 kcal/g, aucun nutriment. Perturbe le sommeil, le métabolisme et l\'absorption des vitamines. Conseillé : max 1-2 verres/semaine.'},
+  },
+  { id:10, emoji:'🧃', name:'Pur Jus de Bissap Fruïta', brand:'Fruïta · Cameroun', cat:'boissons', barcode:'6001002345686',
+    cal100:35, prot100:0, carb100:8, fat100:0, sugar100:7, fiber100:0.5, salt100:0.01,
+    portion:200, score:'B', origin:'Cameroun 🇨🇲',
+    tags:[{t:'Vitamine C',c:'#16a34a',bg:'rgba(22,163,74,0.1)'},{t:'Antioxydants',c:'#7c3aed',bg:'rgba(124,58,237,0.1)'}],
+    verdict:{type:'good', icon:'✅', title:'Boisson saine locale', text:'Le bissap est naturellement riche en anthocyanes et vitamine C. Version sans sucre ajouté à privilégier. Propriétés diurétiques et anti-hypertensives.'},
+  },
+  // LAITIERS
+  { id:11, emoji:'🥛', name:'Lait en poudre entier Nido', brand:'Nestlé Cameroun', cat:'laitiers', barcode:'6001002345687',
+    cal100:500, prot100:26, carb100:39, fat100:28, sugar100:39, fiber100:0, salt100:0.4,
+    portion:25, score:'B', origin:'Import',
+    tags:[{t:'Calcium +++',c:'#2563eb',bg:'rgba(37,99,235,0.1)'},{t:'Vitamine D',c:'#d97706',bg:'rgba(217,119,6,0.1)'}],
+    verdict:{type:'info', icon:'ℹ️', title:'Bonne source de calcium', text:'1 portion (25g) = 300mg calcium soit 30% des AJR. Riche en protéines. Sucres naturels (lactose) : modérer si intolérance.'},
+  },
+  { id:12, emoji:'🫙', name:'Yaourt nature au lait entier', brand:'SCDP · Ngaoundéré', cat:'laitiers', barcode:'6001002345688',
+    cal100:60, prot100:4, carb100:5, fat100:3, sugar100:5, fiber100:0, salt100:0.08,
+    portion:125, score:'A', origin:'Cameroun 🇨🇲',
+    tags:[{t:'Probiotiques',c:'#7c3aed',bg:'rgba(124,58,237,0.1)'},{t:'Calcium',c:'#2563eb',bg:'rgba(37,99,235,0.1)'},{t:'Local',c:'#16a34a',bg:'rgba(22,163,74,0.1)'}],
+    verdict:{type:'good', icon:'⭐', title:'Aliment santé complet', text:'Yaourt local riche en bactéries probiotiques (lactobacilles). Excellent pour la flore intestinale. Très bon rapport qualité/prix vs importés.'},
+  },
+  // SNACKS
+  { id:13, emoji:'🍪', name:'Biscuits Petit Beurre LU', brand:'LU · Import', cat:'snacks', barcode:'3017760030091',
+    cal100:460, prot100:7, carb100:70, fat100:17, sugar100:22, fiber100:2, salt100:0.9,
+    portion:30, score:'D', origin:'France',
+    tags:[{t:'Sucres',c:'#ef4444',bg:'rgba(239,68,68,0.1)'},{t:'Graisses sat.',c:'#f97316',bg:'rgba(249,115,22,0.1)'}],
+    verdict:{type:'bad', icon:'⚠️', title:'Snack ultra-transformé', text:'Graisses saturées et sucres élevés. Additifs conservateurs. Remplacer par arachides grillées, fruits frais ou accra pour un snack local plus nutritif.'},
+  },
+  { id:14, emoji:'🥜', name:'Arachides grillées nature 100g', brand:'Local · Marchés Cam.', cat:'snacks', barcode:'0000000000001',
+    cal100:567, prot100:26, carb100:16, fat100:49, sugar100:4, fiber100:8, salt100:0,
+    portion:30, score:'B', origin:'Cameroun 🇨🇲',
+    tags:[{t:'Protéines végét.',c:'#16a34a',bg:'rgba(22,163,74,0.1)'},{t:'Fibres',c:'#d97706',bg:'rgba(217,119,6,0.1)'},{t:'Sans additifs',c:'#7c3aed',bg:'rgba(124,58,237,0.1)'}],
+    verdict:{type:'good', icon:'✅', title:'Excellent snack local', text:'30g d\'arachides = 7g protéines + bonnes graisses insaturées (oméga-6). Très satiétogènes. Sans additifs. À consommer en portion contrôlée.'},
+  },
+  // CONDIMENTS
+  { id:15, emoji:'🧂', name:'Cube Maggi poulet', brand:'Nestlé Cameroun', cat:'condiments', barcode:'7613034529855',
+    cal100:310, prot100:8, carb100:42, fat100:13, sugar100:0, fiber100:0, salt100:58,
+    portion:4, score:'E', origin:'Import',
+    tags:[{t:'Très salé',c:'#ef4444',bg:'rgba(239,68,68,0.1)'},{t:'Glutamate',c:'#f97316',bg:'rgba(249,115,22,0.1)'}],
+    verdict:{type:'bad', icon:'🚨', title:'Sodium très élevé - À limiter', text:'1 cube = 2.3g de sel soit 40% des AJR en sodium ! Usage excessif lié à hypertension. Substituts : crayfish (crevettes séchées), herbes fraîches, gingembre.'},
+  },
+  { id:16, emoji:'🫐', name:'Crayfish (crevettes séchées)', brand:'Local · Pêcheurs Cam.', cat:'condiments', barcode:'0000000000002',
+    cal100:290, prot100:62, carb100:0, fat100:4, sugar100:0, fiber100:0, salt100:3.5,
+    portion:5, score:'A', origin:'Cameroun 🇨🇲',
+    tags:[{t:'Protéines +++',c:'#16a34a',bg:'rgba(22,163,74,0.1)'},{t:'Naturel',c:'#7c3aed',bg:'rgba(124,58,237,0.1)'},{t:'Umami',c:'#d97706',bg:'rgba(217,119,6,0.1)'}],
+    verdict:{type:'good', icon:'⭐', title:'Condiment santé n°1 !', text:'Le crayfish est l\'un des condiments les plus nutritifs au monde : 62g de protéines/100g. Substitut naturel aux bouillons industriels. Idéal pour soupes, sauces et plats.'},
+  },
+];
+
+const scoreConfig = {
+  A:{ color:'#16a34a', bg:'rgba(22,163,74,0.12)', label:'Excellent' },
+  B:{ color:'#65a30d', bg:'rgba(101,163,13,0.12)', label:'Bon' },
+  C:{ color:'#d97706', bg:'rgba(217,119,6,0.12)', label:'Modéré' },
+  D:{ color:'#ea580c', bg:'rgba(234,88,12,0.12)', label:'Médiocre' },
+  E:{ color:'#dc2626', bg:'rgba(220,38,38,0.12)', label:'À éviter' },
+};
+
+let currentCategory = 'tous';
+let selectedProduct = null;
+let journalItems = [];
+
+// ── SEARCH ──
+function handleSearch(q){
+  if(!q){ document.getElementById('scan-results').innerHTML=`<div class="sr-empty"><span>📷</span>Tapez un nom de produit ou scannez un code-barres</div>`; return; }
+  const filtered = products.filter(p => {
+    const matchCat = currentCategory==='tous' || p.cat===currentCategory;
+    const matchQ = p.name.toLowerCase().includes(q.toLowerCase()) || p.brand.toLowerCase().includes(q.toLowerCase()) || p.barcode.includes(q);
+    return matchCat && matchQ;
+  });
+  renderResults(filtered);
+}
+
+function setCategory(cat, btn){
+  currentCategory=cat;
+  document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  const q = document.getElementById('search-input').value;
+  if(q) handleSearch(q);
+  else {
+    const filtered = cat==='tous' ? products : products.filter(p=>p.cat===cat);
+    renderResults(filtered);
+  }
+}
+
+function renderResults(list){
+  if(!list.length){
+    document.getElementById('scan-results').innerHTML=`<div class="sr-empty"><span>🔍</span>Aucun produit trouvé</div>`;
+    return;
+  }
+  document.getElementById('scan-results').innerHTML = list.map(p=>{
+    const sc = scoreConfig[p.score];
+    const calPortion = Math.round(p.cal100*p.portion/100);
+    return `<div class="product-card ${selectedProduct?.id===p.id?'selected':''}" onclick="selectProduct(${p.id})">
+      <div class="pc-top">
+        <div class="pc-emoji">${p.emoji}</div>
+        <div class="pc-info">
+          <div class="pc-name">${p.name}</div>
+          <div class="pc-brand">${p.brand} · ${p.origin}</div>
+          <div class="pc-tags">${p.tags.map(t=>`<span class="pc-tag" style="color:${t.c};background:${t.bg}">${t.t}</span>`).join('')}</div>
+        </div>
+        <div class="pc-cal">
+          <div class="pc-cal-val">${calPortion}</div>
+          <div class="pc-cal-unit">kcal/${p.portion}g</div>
+          <div class="pc-score"><div class="score-dot" style="background:${sc.color}"></div><span class="score-label" style="color:${sc.color}">Nutri-${p.score}</span></div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function selectProduct(id){
+  selectedProduct = products.find(p=>p.id===id);
+  if(!selectedProduct) return;
+  // Re-render results to show selected
+  const q = document.getElementById('search-input').value;
+  if(q) handleSearch(q);
+  else {
+    const filtered = currentCategory==='tous' ? products : products.filter(p=>p.cat===currentCategory);
+    renderResults(filtered);
+  }
+  renderDetail(selectedProduct);
+}
+
+function renderDetail(p){
+  const sc = scoreConfig[p.score];
+  const cal100 = p.cal100, por = p.portion;
+  const calP = Math.round(cal100*por/100);
+  const protP = Math.round(p.prot100*por/100);
+  const carbP = Math.round(p.carb100*por/100);
+  const fatP  = Math.round(p.fat100*por/100);
+  const sugP  = Math.round(p.sugar100*por/100);
+  const fibP  = Math.round(p.fiber100*por/100);
+  const saltP = (p.salt100*por/100).toFixed(2);
+
+  const verdictBg = {good:'rgba(22,163,74,0.08)',info:'rgba(59,130,246,0.08)',bad:'rgba(220,38,38,0.08)'}[p.verdict.type];
+  const verdictBorder = {good:'rgba(22,163,74,0.2)',info:'rgba(59,130,246,0.2)',bad:'rgba(220,38,38,0.2)'}[p.verdict.type];
+
+  document.getElementById('product-detail-panel').innerHTML = `
+    <div class="product-detail open">
+      <div class="pd-header">
+        <div class="pd-emoji">${p.emoji}</div>
+        <div class="pd-info">
+          <div class="pd-name">${p.name}</div>
+          <div class="pd-brand">${p.brand} · ${p.origin}</div>
+          <div class="pd-nutri-score" style="background:${sc.bg};color:${sc.color};border:1px solid ${sc.color}40">
+            Nutri-Cam Score : <strong>${p.score}</strong> · ${sc.label}
+          </div>
+        </div>
+      </div>
+      <div class="pd-body">
+        <div style="font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.7rem">📊 Valeurs nutritionnelles</div>
+        <table class="nutri-table">
+          <tr><th>Nutriment</th><th>Pour 100g</th><th>Portion ${p.portion}g</th><th>%AJR*</th></tr>
+          <tr><td class="td-name">Énergie</td><td class="td-100g">${p.cal100} kcal</td><td class="td-portion">${calP} kcal</td><td class="td-dv" style="color:${calP>300?'#ef4444':calP>150?'#f97316':'#22c55e'}">${Math.round(calP/2000*100)}%</td></tr>
+          <tr><td class="td-name">Protéines</td><td class="td-100g">${p.prot100}g</td><td class="td-portion">${protP}g</td><td class="td-dv" style="color:#4ade80">${Math.round(protP/50*100)}%</td></tr>
+          <tr><td class="td-name">Glucides</td><td class="td-100g">${p.carb100}g</td><td class="td-portion">${carbP}g</td><td class="td-dv" style="color:#fbbf24">${Math.round(carbP/260*100)}%</td></tr>
+          <tr><td class="td-name">dont Sucres</td><td class="td-100g">${p.sugar100}g</td><td class="td-portion">${sugP}g</td><td class="td-dv" style="color:${sugP>12?'#ef4444':'#22c55e'}">${Math.round(sugP/50*100)}%</td></tr>
+          <tr><td class="td-name">Lipides</td><td class="td-100g">${p.fat100}g</td><td class="td-portion">${fatP}g</td><td class="td-dv" style="color:#f87171">${Math.round(fatP/70*100)}%</td></tr>
+          <tr><td class="td-name">Fibres</td><td class="td-100g">${p.fiber100}g</td><td class="td-portion">${fibP}g</td><td class="td-dv" style="color:#a78bfa">${Math.round(fibP/30*100)}%</td></tr>
+          <tr><td class="td-name">Sel</td><td class="td-100g">${p.salt100}g</td><td class="td-portion">${saltP}g</td><td class="td-dv" style="color:${parseFloat(saltP)>1?'#ef4444':'#22c55e'}">${Math.round(parseFloat(saltP)/6*100)}%</td></tr>
+        </table>
+
+        <div class="gauge-row">
+          ${renderGauge('Protéines','#4ade80',protP,50)}
+          ${renderGauge('Glucides','#fbbf24',carbP,260)}
+          ${renderGauge('Lipides','#f87171',fatP,70)}
+          ${renderGauge('Fibres','#a78bfa',fibP,30)}
+        </div>
+
+        <div class="pd-verdict" style="background:${verdictBg};border:1px solid ${verdictBorder}">
+          <div class="pv-icon">${p.verdict.icon}</div>
+          <div><div class="pv-title">${p.verdict.title}</div><div class="pv-text">${p.verdict.text}</div></div>
+        </div>
+
+        <div style="font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.7rem">➕ Ajouter au journal</div>
+        <div class="pd-add-row">
+          <select class="pd-portion-select" id="portion-select-${p.id}" onchange="updatePortion(${p.id})">
+            <option value="${p.portion}">Portion standard (${p.portion}g) — ${calP} kcal</option>
+            <option value="${Math.round(p.portion/2)}">½ portion (${Math.round(p.portion/2)}g) — ${Math.round(calP/2)} kcal</option>
+            <option value="${p.portion*2}">Double portion (${p.portion*2}g) — ${calP*2} kcal</option>
+            <option value="100">100g — ${p.cal100} kcal</option>
+          </select>
+          <button class="pd-add-btn" onclick="addToJournal(${p.id})">+ Ajouter</button>
+        </div>
+        <div style="font-size:0.68rem;color:var(--muted);margin-top:0.5rem">*AJR = Apports Journaliers de Référence (adulte 2000 kcal)</div>
+      </div>
+    </div>`;
+}
+
+function renderGauge(name,color,val,max){
+  const pct = Math.min(100, Math.round(val/max*100));
+  return `<div class="gr-item">
+    <div class="gr-label">${name}</div>
+    <div class="gr-bar-bg"><div class="gr-bar" style="width:${pct}%;background:${color}"></div></div>
+    <div class="gr-val" style="color:${color}">${val}g</div>
+  </div>`;
+}
+
+function triggerScan(){
+  // Simulate scan finding a random product
+  const p = products[Math.floor(Math.random()*products.length)];
+  document.getElementById('search-input').value = p.name;
+  renderResults([p]);
+  setTimeout(()=>selectProduct(p.id), 300);
+}
+
+function addToJournal(id){
+  const p = products.find(x=>x.id===id);
+  if(!p) return;
+  const sel = document.getElementById(`portion-select-${id}`);
+  const portion = parseInt(sel?.value || p.portion);
+  const cal = Math.round(p.cal100*portion/100);
+  const prot = Math.round(p.prot100*portion/100);
+  const carb = Math.round(p.carb100*portion/100);
+  const fat  = Math.round(p.fat100*portion/100);
+  journalItems.push({id:Date.now(), name:p.name, emoji:p.emoji, portion, cal, prot, carb, fat});
+  renderJournal();
+  // Flash effect
+  const btn = document.querySelector('.pd-add-btn');
+  if(btn){ btn.textContent='✅ Ajouté !'; btn.style.background='#16a34a'; setTimeout(()=>{btn.textContent='+ Ajouter';btn.style.background='';}, 1500); }
+}
+
+function removeFromJournal(id){
+  journalItems = journalItems.filter(x=>x.id!==id);
+  renderJournal();
+}
+
+function renderJournal(){
+  const empty = document.getElementById('jp-empty');
+  const totalRow = document.getElementById('jp-total-row');
+  const items = document.getElementById('journal-items');
+  if(!journalItems.length){
+    if(empty) empty.style.display='block';
+    totalRow.style.display='none';
+    items.innerHTML='<div class="jp-empty" id="jp-empty">Aucun produit ajouté. Scannez pour commencer !</div>';
+    document.getElementById('jp-total-cal').textContent='0 kcal';
+    return;
+  }
+  const totCal  = journalItems.reduce((s,x)=>s+x.cal,0);
+  const totProt = journalItems.reduce((s,x)=>s+x.prot,0);
+  const totCarb = journalItems.reduce((s,x)=>s+x.carb,0);
+  const totFat  = journalItems.reduce((s,x)=>s+x.fat,0);
+  document.getElementById('jp-total-cal').textContent = totCal+' kcal';
+  document.getElementById('jp-total-full').textContent = totCal+' kcal';
+  document.getElementById('jp-prot').textContent='P: '+totProt+'g';
+  document.getElementById('jp-carb').textContent='G: '+totCarb+'g';
+  document.getElementById('jp-fat').textContent='L: '+totFat+'g';
+  totalRow.style.display='flex';
+  items.innerHTML = journalItems.map(x=>`
+    <div class="journal-item">
+      <div class="ji-emoji">${x.emoji}</div>
+      <div style="flex:1;min-width:0"><div class="ji-name">${x.name}</div><div class="ji-portion">${x.portion}g</div></div>
+      <div class="ji-cal">${x.cal} kcal</div>
+      <button class="ji-del" onclick="removeFromJournal(${x.id})">🗑</button>
+    </div>`).join('');
+}
+
+// Init: show all products
+renderResults(products);
+</script>
+</body>
+</html>

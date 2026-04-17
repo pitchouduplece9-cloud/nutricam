@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Coach IA Nutritionnel</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#08120a;--surface:#0f1e12;--card:#162119;--card2:#1c2a1f;
+  --green:#22c55e;--gl:#16a34a;--gd:#14532d;--y:#fbbf24;--muted:#4d7259;
+  --border:rgba(255,255,255,0.06);--text:#e2ede5;--dim:rgba(255,255,255,0.45);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--text);display:flex;height:100vh}
+
+/* SIDEBAR */
+.sidebar{width:280px;min-width:280px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;overflow:hidden}
+.sb-top{padding:1.5rem;border-bottom:1px solid var(--border)}
+.sb-logo{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;color:#fff;margin-bottom:0.2rem}
+.sb-logo span{color:var(--y)}
+.sb-sub{font-size:0.72rem;color:var(--muted)}
+.new-chat-btn{width:100%;margin-top:1rem;background:var(--gl);border:none;color:#fff;padding:0.7rem 1rem;border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:0.5rem;justify-content:center;font-family:'Instrument Sans',sans-serif;transition:background 0.2s}
+.new-chat-btn:hover{background:var(--green)}
+.sb-section{padding:1rem 1.5rem 0.5rem;font-size:0.65rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted)}
+.chat-history{flex:1;overflow-y:auto;padding:0 0.8rem 1rem}
+.chat-history::-webkit-scrollbar{width:4px}
+.chat-history::-webkit-scrollbar-track{background:transparent}
+.chat-history::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px}
+.ch-item{padding:0.7rem 0.8rem;border-radius:10px;cursor:pointer;transition:background 0.15s;margin-bottom:2px}
+.ch-item:hover{background:rgba(255,255,255,0.04)}
+.ch-item.active{background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.15)}
+.ch-title{font-size:0.82rem;font-weight:600;color:var(--text);margin-bottom:0.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ch-date{font-size:0.68rem;color:var(--muted)}
+.sb-bottom{padding:1rem 1.5rem;border-top:1px solid var(--border)}
+.sb-profile{display:flex;align-items:center;gap:0.8rem}
+.sp-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gl),var(--y));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.82rem;color:#000;flex-shrink:0}
+.sp-name{font-size:0.82rem;font-weight:600}
+.sp-plan{font-size:0.68rem;color:var(--muted)}
+
+/* CHAT MAIN */
+.chat-main{flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden}
+
+/* CHAT HEADER */
+.chat-header{padding:1rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:var(--surface)}
+.ch-ai{display:flex;align-items:center;gap:0.8rem}
+.ch-avatar{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--gl),var(--green));display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.ch-name{font-size:0.9rem;font-weight:700}
+.ch-status{display:flex;align-items:center;gap:0.4rem;font-size:0.72rem;color:var(--green)}
+.ch-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.ch-actions{display:flex;gap:0.5rem}
+.ch-act-btn{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--dim);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.85rem;transition:all 0.15s}
+.ch-act-btn:hover{background:rgba(255,255,255,0.1);color:#fff}
+
+/* MESSAGES */
+.messages{flex:1;overflow-y:auto;padding:1.5rem;display:flex;flex-direction:column;gap:1.2rem}
+.messages::-webkit-scrollbar{width:4px}
+.messages::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:2px}
+
+.msg{display:flex;gap:0.8rem;max-width:80%;animation:msgIn 0.3s ease}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.msg.user{align-self:flex-end;flex-direction:row-reverse}
+.msg.ai{align-self:flex-start}
+.msg-av{width:32px;height:32px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.9rem}
+.msg.ai .msg-av{background:linear-gradient(135deg,var(--gl),var(--green))}
+.msg.user .msg-av{background:linear-gradient(135deg,#1d4ed8,#3b82f6)}
+.msg-bubble{padding:0.9rem 1.1rem;border-radius:14px;font-size:0.88rem;line-height:1.65;max-width:100%}
+.msg.ai .msg-bubble{background:var(--card);border:1px solid var(--border);border-radius:4px 14px 14px 14px;color:var(--text)}
+.msg.user .msg-bubble{background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;border-radius:14px 4px 14px 14px}
+.msg-bubble strong{color:var(--green);font-weight:700}
+.msg-bubble em{color:var(--y);font-style:normal}
+.msg-time{font-size:0.65rem;color:var(--muted);margin-top:0.3rem;text-align:right}
+.msg.user .msg-time{text-align:left}
+
+/* RECIPE CARD IN CHAT */
+.chat-recipe{background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:1rem;margin-top:0.8rem;display:flex;gap:0.8rem;align-items:flex-start;cursor:pointer;transition:border-color 0.2s}
+.chat-recipe:hover{border-color:rgba(34,197,94,0.3)}
+.cr-emoji{font-size:1.8rem;flex-shrink:0}
+.cr-name{font-size:0.85rem;font-weight:700;color:#fff}
+.cr-cal{font-size:0.72rem;color:var(--y);font-weight:700;margin-bottom:0.2rem}
+.cr-desc{font-size:0.75rem;color:var(--muted);line-height:1.4}
+
+/* MACRO CARD IN CHAT */
+.chat-macros{background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:1rem;margin-top:0.8rem;display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem}
+.cm-item{text-align:center;background:rgba(255,255,255,0.03);border-radius:10px;padding:0.6rem}
+.cm-val{font-family:'DM Mono',monospace;font-size:1rem;font-weight:700}
+.cm-label{font-size:0.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em}
+
+/* TYPING INDICATOR */
+.typing{display:flex;gap:0.8rem;align-items:center;animation:msgIn 0.3s ease}
+.typing-dots{display:flex;gap:4px;padding:0.7rem 0.9rem;background:var(--card);border-radius:14px;border:1px solid var(--border)}
+.typing-dot{width:7px;height:7px;border-radius:50%;background:var(--muted)}
+.typing-dot:nth-child(1){animation:bounce 1.2s 0s infinite}
+.typing-dot:nth-child(2){animation:bounce 1.2s 0.2s infinite}
+.typing-dot:nth-child(3){animation:bounce 1.2s 0.4s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+
+/* QUICK SUGGESTIONS */
+.quick-wrap{padding:0 1.5rem 0.8rem;flex-shrink:0}
+.quick-label{font-size:0.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.6rem;font-weight:700}
+.quick-chips{display:flex;gap:0.5rem;flex-wrap:wrap}
+.quick-chip{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:100px;padding:0.4rem 0.9rem;font-size:0.78rem;color:var(--dim);cursor:pointer;transition:all 0.15s;white-space:nowrap;font-family:'Instrument Sans',sans-serif}
+.quick-chip:hover{background:rgba(34,197,94,0.08);border-color:rgba(34,197,94,0.25);color:var(--green)}
+
+/* INPUT BAR */
+.input-bar{padding:1rem 1.5rem 1.5rem;border-top:1px solid var(--border);flex-shrink:0;background:var(--surface)}
+.input-wrap{display:flex;gap:0.8rem;align-items:flex-end;background:var(--card);border:1.5px solid var(--border);border-radius:16px;padding:0.6rem 0.6rem 0.6rem 1rem;transition:border-color 0.2s}
+.input-wrap:focus-within{border-color:rgba(34,197,94,0.4)}
+.input-wrap textarea{flex:1;background:none;border:none;color:var(--text);font-size:0.9rem;line-height:1.5;resize:none;outline:none;font-family:'Instrument Sans',sans-serif;max-height:120px;min-height:24px}
+.input-wrap textarea::placeholder{color:var(--muted)}
+.input-btns{display:flex;gap:0.4rem;align-items:flex-end}
+.in-btn{width:36px;height:36px;border-radius:10px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.9rem;transition:all 0.15s}
+.in-btn-mic{background:rgba(255,255,255,0.05);color:var(--dim)}
+.in-btn-mic:hover{background:rgba(255,255,255,0.1);color:#fff}
+.in-btn-send{background:var(--gl);color:#fff}
+.in-btn-send:hover{background:var(--green)}
+.in-btn-send:disabled{opacity:0.4;cursor:not-allowed}
+
+/* WELCOME SCREEN */
+.welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center;gap:1.5rem}
+.wl-icon{font-size:4rem;margin-bottom:0.5rem}
+.wl-title{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:#fff}
+.wl-sub{color:var(--muted);max-width:440px;line-height:1.7;font-size:0.9rem}
+.wl-features{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;max-width:480px;width:100%;margin-top:0.5rem}
+.wl-feat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:0.9rem 1rem;text-align:left;display:flex;align-items:flex-start;gap:0.7rem}
+.wf-icon{font-size:1.1rem;flex-shrink:0}
+.wf-text{font-size:0.78rem;color:var(--dim);line-height:1.4}
+.wf-text strong{color:var(--text);display:block;margin-bottom:0.2rem}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .sidebar{display:none}
+  .msg{max-width:92%}
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sb-top">
+    <div class="sb-logo">Nutri<span>Cam</span></div>
+    <div class="sb-sub">Coach IA Nutritionnel</div>
+    <button class="new-chat-btn" onclick="newChat()">✏️ Nouvelle conversation</button>
+  </div>
+  <div class="sb-section">Conversations récentes</div>
+  <div class="chat-history" id="chat-history">
+    <div class="ch-item active"><div class="ch-title">Plan repas sportif</div><div class="ch-date">Aujourd'hui</div></div>
+    <div class="ch-item"><div class="ch-title">Calories ndolé aux crevettes</div><div class="ch-date">Hier</div></div>
+    <div class="ch-item"><div class="ch-title">Alimentation grossesse</div><div class="ch-date">13 Jan</div></div>
+    <div class="ch-item"><div class="ch-title">Substituts locaux protéines</div><div class="ch-date">12 Jan</div></div>
+    <div class="ch-item"><div class="ch-title">Perte de poids doucement</div><div class="ch-date">10 Jan</div></div>
+  </div>
+  <div class="sb-bottom">
+    <div class="sb-profile">
+      <div class="sp-av">GDP</div>
+      <div><div class="sp-name">Georges D. Pitchou</div><div class="sp-plan">⭐ Plan Premium</div></div>
+    </div>
+  </div>
+</aside>
+
+<!-- CHAT MAIN -->
+<div class="chat-main">
+  <div class="chat-header">
+    <div class="ch-ai">
+      <div class="ch-avatar">🥗</div>
+      <div>
+        <div class="ch-name">Coach NutriCam</div>
+        <div class="ch-status"><div class="ch-dot"></div>En ligne · Expert nutrition africaine</div>
+      </div>
+    </div>
+    <div class="ch-actions">
+      <button class="ch-act-btn" title="Rechercher">🔍</button>
+      <button class="ch-act-btn" title="Exporter">📤</button>
+      <button class="ch-act-btn" title="Paramètres">⚙️</button>
+    </div>
+  </div>
+
+  <div class="messages" id="messages">
+    <!-- WELCOME -->
+    <div class="welcome" id="welcome-screen">
+      <div class="wl-icon">🥗</div>
+      <div class="wl-title">Bonjour, je suis votre Coach NutriCam</div>
+      <div class="wl-sub">Je suis spécialisé en nutrition africaine et camerounaise. Posez-moi n'importe quelle question sur votre alimentation, vos calories, vos recettes ou votre santé.</div>
+      <div class="wl-features">
+        <div class="wl-feat"><div class="wf-icon">🍲</div><div class="wf-text"><strong>Recettes camerounaises</strong>Valeurs nutritionnelles, ingrédients, temps de cuisson</div></div>
+        <div class="wl-feat"><div class="wf-icon">🔥</div><div class="wf-text"><strong>Calcul calories</strong>Besoins quotidiens selon votre profil</div></div>
+        <div class="wl-feat"><div class="wf-icon">🎯</div><div class="wf-text"><strong>Objectifs santé</strong>Perte poids, masse, énergie, diabète</div></div>
+        <div class="wl-feat"><div class="wf-icon">👧</div><div class="wf-text"><strong>Nutrition enfants</strong>Portions, croissance, vitamines</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUICK SUGGESTIONS -->
+  <div class="quick-wrap" id="quick-wrap">
+    <div class="quick-label">Suggestions</div>
+    <div class="quick-chips" id="quick-chips">
+      <div class="quick-chip" onclick="sendSuggestion(this)">Combien de calories dans le ndolé ?</div>
+      <div class="quick-chip" onclick="sendSuggestion(this)">Plan repas pour sportif</div>
+      <div class="quick-chip" onclick="sendSuggestion(this)">Que manger pour perdre du poids ?</div>
+      <div class="quick-chip" onclick="sendSuggestion(this)">Alimentation femme enceinte</div>
+      <div class="quick-chip" onclick="sendSuggestion(this)">Recette ndolé complète</div>
+      <div class="quick-chip" onclick="sendSuggestion(this)">Alternatives locales aux protéines</div>
+    </div>
+  </div>
+
+  <div class="input-bar">
+    <div class="input-wrap">
+      <textarea id="user-input" placeholder="Posez votre question nutritionnelle..." rows="1" oninput="autoResize(this)" onkeydown="handleKey(event)"></textarea>
+      <div class="input-btns">
+        <button class="in-btn in-btn-mic" title="Micro">🎤</button>
+        <button class="in-btn in-btn-send" id="send-btn" onclick="sendMessage()" title="Envoyer">➤</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const knowledge = {
+  'ndolé': {
+    answer: `Le **ndolé** est le plat national camerounais et l'un des plus nutritifs de la gastronomie africaine !\n\n🔥 **Valeurs nutritionnelles (portion 350g avec riz) :**`,
+    macros: [{val:'380', label:'kcal', color:'#fbbf24'}, {val:'28g', label:'Protéines', color:'#4ade80'}, {val:'18g', label:'Glucides', color:'#60a5fa'}],
+    recipe: {e:'🍲', name:'Ndolé aux crevettes', kcal:380, desc:'Feuilles amères + crevettes + pâte d\'arachides. Riche en fer, protéines et fibres.'},
+    extra: `\n**Atouts nutritionnels :**\n• Très riche en **fer et antioxydants** (feuilles amères)\n• Bonne source de **protéines complètes** (crevettes)\n• Les arachides apportent des **graisses insaturées** bénéfiques\n• Index glycémique bas grâce aux fibres\n\n💡 *Astuce : Sans huile de palme en excès, le ndolé peut descendre à 280 kcal pour les régimes de perte de poids.*`
+  },
+  'sportif': {
+    answer: `Excellente question ! Un plan repas pour sportif camerounais doit couvrir entre **2200 et 2800 kcal/jour** selon l'intensité de l'effort.\n\n🏋️ **Principes clés :**\n• **Protéines élevées** : 1,6-2g/kg de poids corporel\n• **Glucides pré-entraînement** : plantains, riz, maïs\n• **Récupération post-entraînement** : dans les 30 min\n\n**Exemple journée type (75 kg) :**`,
+    macros: [{val:'2600', label:'kcal/jour', color:'#fbbf24'}, {val:'120g', label:'Protéines', color:'#4ade80'}, {val:'320g', label:'Glucides', color:'#60a5fa'}],
+    recipe: {e:'🐟', name:'Poisson braisé + plantain', kcal:420, desc:'Repas post-entraînement idéal : protéines maigres + glucides complexes + oméga-3.'},
+    extra: `\n**Timing des repas sportif :**\n• ☀️ **Matin** : Bouillie de maïs + œufs + café\n• 🏃 **Pré-sport** (1h avant) : Plantain bouilli + arachides\n• 💪 **Post-sport** (30 min) : Poisson + riz ou ndolé\n• 🌙 **Soir** : Poulet DG ou sardines + légumes\n\n💡 *Les aliments camerounais sont parfaitement adaptés aux besoins sportifs, sans suppléments coûteux importés !*`
+  },
+  'poids': {
+    answer: `Très bonne démarche ! Il est tout à fait possible de perdre du poids sainement en mangeant camerounais. Voici ma stratégie :\n\n📉 **Principe** : Déficit calorique de 300-500 kcal/jour = perte de 0,3-0,5 kg/semaine (rythme sain)\n\n✅ **Aliments à favoriser :**`,
+    macros: [{val:'-400', label:'kcal déficit', color:'#f87171'}, {val:'1600', label:'kcal/jour', color:'#fbbf24'}, {val:'0.5kg', label:'/semaine', color:'#4ade80'}],
+    recipe: {e:'🥬', name:'Eru & Waterleaf', kcal:310, desc:'Pauvre en glucides, riche en protéines et fer. Excellent pour les régimes avec variété.'},
+    extra: `\n**✅ À privilégier :**\n• Poisson braisé (protéines maigres, peu de graisses)\n• Légumes feuilles : eru, ndolé, waterleaf\n• Plantains **bouillis** (pas frits)\n• Haricots + légumineuses (fibres satiétogènes)\n\n**❌ À limiter :**\n• Alloco frits et friture en excès\n• Sodas et jus industriels\n• Sauces arachides en grande quantité\n• Huile de palme en excès\n\n💡 *Perdre du poids ne signifie pas abandonner la cuisine camerounaise, mais l'adapter intelligemment !*`
+  },
+  'enceinte': {
+    answer: `Félicitations ! La grossesse est une période où la nutrition est cruciale. Voici ce qu'une femme enceinte camerounaise devrait manger :\n\n🤰 **Besoins spéciaux :** +300 kcal/jour au 2ème trimestre, +500 au 3ème\n\n**Nutriments prioritaires :**`,
+    macros: [{val:'+300', label:'kcal/jour', color:'#fbbf24'}, {val:'71g', label:'Protéines', color:'#4ade80'}, {val:'1000mg', label:'Calcium/j', color:'#60a5fa'}],
+    recipe: {e:'🥬', name:'Eru & Waterleaf', kcal:310, desc:'Superaliment grossesse : très riche en fer, calcium et protéines végétales.'},
+    extra: `\n**🌟 Aliments essentiels grossesse :**\n• **Eru/Waterleaf** → Fer + calcium (anti-anémie)\n• **Poisson frais** → Oméga-3 pour le cerveau du bébé\n• **Lait + yaourt** → Calcium pour les os\n• **Légumineuses** → Acide folique (prévient spina-bifida)\n• **Huile de palme rouge** → Vitamine A\n• **Patate douce** → Bêta-carotène\n\n⚠️ **À éviter absolument :**\nPoisson cru, charcuteries, alcool, excès de sel\n\n💡 *Consulter systématiquement un gynécologue ou sage-femme pour un suivi personnalisé !*`
+  },
+  'recette ndolé': {
+    answer: `Voici la recette complète du **Ndolé aux crevettes** avec toutes les étapes détaillées !\n\n⏱️ Temps total : 90 min · 👥 4 personnes\n\n🛒 **Ingrédients :**\n• 500g feuilles de ndolé\n• 300g crevettes fraîches\n• 200g bœuf fumé\n• 150g arachides grillées\n• 2 oignons, 3 gousses d'ail\n• 100ml huile de palme rouge\n• 1 cube Maggi, sel, poivre\n\n👨‍🍳 **Préparation :**`,
+    macros: [{val:'90', label:'minutes', color:'#fbbf24'}, {val:'380', label:'kcal/pers.', color:'#f87171'}, {val:'28g', label:'Protéines', color:'#4ade80'}],
+    recipe: null,
+    extra: `\n**1.** Tremper les feuilles de ndolé 30 min dans eau chaude. Essorer et ciseler finement.\n**2.** Mixer les arachides avec peu d'eau en pâte lisse.\n**3.** Faire revenir oignon + ail dans l'huile de palme, 5 min.\n**4.** Ajouter le bœuf fumé en morceaux, dorer 10 min.\n**5.** Incorporer ndolé + pâte d'arachides + cube + 200ml eau. Mijoter 25 min.\n**6.** Ajouter les crevettes décortiquées, cuire 10 min.\n**7.** Servir chaud avec riz, miondo ou plantains.\n\n💡 *Pour réduire les calories : moins d'huile de palme (50ml) = -80 kcal par portion.*`
+  },
+  'protéines': {
+    answer: `Excellente question sur les **protéines locales camerounaises** ! Inutile d'acheter des protéines en poudre importées coûteuses — voici les meilleures sources locales :\n\n💪 **Top protéines camerounaises (pour 100g) :**`,
+    macros: [{val:'100g', label:'Crevettes séchées', color:'#fbbf24'}, {val:'32g', label:'de protéines', color:'#4ade80'}, {val:'150f', label:'CFA / portion', color:'#60a5fa'}],
+    recipe: {e:'🦐', name:'Crevettes sautées pimentées', kcal:190, desc:'30g de protéines pour seulement 190 kcal. Meilleure source protéinée locale.'},
+    extra: `\n**📊 Classement protéines locales :**\n\n🥇 **Crevettes séchées (crayfish)** : 32g/100g\n🥈 **Tilapia / carpe braisée** : 26g/100g\n🥉 **Bœuf grillé maigre** : 28g/100g\n4. **Haricots rouges cuits** : 9g/100g (végétal)\n5. **Arachides** : 26g/100g (mais caloriques !)\n6. **Œuf de poule** : 13g/100g\n7. **Poulet fermier** : 25g/100g\n\n💡 *Le crayfish (crevettes moulues) est l'un des condiments les plus riches en protéines au monde. 1 c.à.s dans vos sauces = +4g de protéines.*`
+  }
+};
+
+const timeNow = () => {
+  const n=new Date(); return `${n.getHours().toString().padStart(2,'0')}:${n.getMinutes().toString().padStart(2,'0')}`;
+};
+
+let messageCount = 0;
+
+function appendMsg(role, content, time=timeNow()){
+  const welcome = document.getElementById('welcome-screen');
+  if(welcome) welcome.remove();
+  const container = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className=`msg ${role}`;
+  div.innerHTML = `
+    <div class="msg-av">${role==='ai'?'🥗':'👤'}</div>
+    <div>
+      <div class="msg-bubble" id="bubble-${++messageCount}">${role==='ai'?formatMarkdown(content):escHtml(content)}</div>
+      <div class="msg-time">${time}</div>
+    </div>`;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+  return messageCount;
+}
+
+function appendRecipeCard(recipe){
+  const container = document.getElementById('messages');
+  const lastBubble = container.querySelector('.msg.ai:last-child .msg-bubble');
+  if(!lastBubble||!recipe)return;
+  const card = document.createElement('div');
+  card.className='chat-recipe';
+  card.innerHTML=`<div class="cr-emoji">${recipe.e}</div><div><div class="cr-cal">🔥 ${recipe.kcal} kcal</div><div class="cr-name">${recipe.name}</div><div class="cr-desc">${recipe.desc}</div></div>`;
+  lastBubble.appendChild(card);
+}
+
+function appendMacros(macros){
+  const container = document.getElementById('messages');
+  const lastBubble = container.querySelector('.msg.ai:last-child .msg-bubble');
+  if(!lastBubble)return;
+  const card = document.createElement('div');
+  card.className='chat-macros';
+  card.innerHTML=macros.map(m=>`<div class="cm-item"><div class="cm-val" style="color:${m.color}">${m.val}</div><div class="cm-label">${m.label}</div></div>`).join('');
+  lastBubble.appendChild(card);
+}
+
+function showTyping(){
+  const container = document.getElementById('messages');
+  const el = document.createElement('div');
+  el.className='typing'; el.id='typing-indicator';
+  el.innerHTML=`<div class="msg-av" style="background:linear-gradient(135deg,var(--gl),var(--green));width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0">🥗</div><div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
+  container.appendChild(el);
+  container.scrollTop=container.scrollHeight;
+}
+function removeTyping(){const t=document.getElementById('typing-indicator');if(t)t.remove();}
+
+function getResponse(input){
+  const q=input.toLowerCase();
+  if(q.includes('ndolé')||q.includes('ndole')){
+    if(q.includes('recette')||q.includes('cuisin')||q.includes('préparer')) return knowledge['recette ndolé'];
+    return knowledge['ndolé'];
+  }
+  if(q.includes('sportif')||q.includes('sport')||q.includes('muscl')||q.includes('performance')) return knowledge['sportif'];
+  if(q.includes('poids')||q.includes('maigrir')||q.includes('mince')||q.includes('régime')||q.includes('perte')) return knowledge['poids'];
+  if(q.includes('enceinte')||q.includes('grossesse')||q.includes('bébé')||q.includes('allaitement')) return knowledge['enceinte'];
+  if(q.includes('protéine')||q.includes('protein')||q.includes('alternative')||q.includes('substitut')) return knowledge['protéines'];
+  if(q.includes('calories')||q.includes('kcal')||q.includes('combien')) return knowledge['ndolé'];
+  // Generic
+  return {
+    answer:`Merci pour votre question ! En tant que Coach NutriCam, je suis spécialisé en nutrition camerounaise et africaine.\n\nVoici ce que je recommande de manière générale :\n\n**Principes fondamentaux d'une alimentation saine :**\n• **Diversité** : consommer des aliments de toutes les couleurs\n• **Équilibre** : 50% glucides, 25% protéines, 25% lipides\n• **Hydratation** : 2L d'eau minimum par jour\n• **Locavore** : les aliments camerounais frais sont excellents !\n\n**Questions que je peux traiter :**\n• Calories et valeurs nutritionnelles des plats camerounais\n• Plans repas personnalisés (sportif, enfant, enceinte...)\n• Recettes détaillées avec étapes de cuisson\n• Conseils de perte de poids avec cuisine locale\n• Nutrition médicale (diabète, hypertension, anémie)\n\n💡 *N'hésitez pas à préciser votre profil (âge, poids, objectif) pour une réponse plus personnalisée !*`,
+    macros:null, recipe:null, extra:null
+  };
+}
+
+function formatMarkdown(text){
+  return text
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g,'<em>$1</em>')
+    .replace(/\n/g,'<br/>');
+}
+function escHtml(t){return t.replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+async function sendMessage(){
+  const input=document.getElementById('user-input');
+  const text=input.value.trim();
+  if(!text)return;
+  input.value=''; input.style.height='auto';
+  document.getElementById('quick-wrap').style.display='none';
+  appendMsg('user',text);
+  showTyping();
+  await new Promise(r=>setTimeout(r,900+Math.random()*800));
+  removeTyping();
+  const resp=getResponse(text);
+  const fullText=resp.answer+(resp.extra||'');
+  appendMsg('ai',fullText);
+  if(resp.macros) appendMacros(resp.macros);
+  if(resp.recipe) appendRecipeCard(resp.recipe);
+}
+
+function sendSuggestion(chip){
+  document.getElementById('user-input').value=chip.textContent;
+  sendMessage();
+}
+
+function handleKey(e){
+  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}
+}
+function autoResize(ta){ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,120)+'px';}
+function newChat(){
+  const msgs=document.getElementById('messages');
+  msgs.innerHTML=`<div class="welcome" id="welcome-screen">
+    <div class="wl-icon">🥗</div>
+    <div class="wl-title">Nouvelle conversation</div>
+    <div class="wl-sub">Posez votre question sur la nutrition camerounaise ou africaine.</div>
+    <div class="wl-features">
+      <div class="wl-feat"><div class="wf-icon">🍲</div><div class="wf-text"><strong>Recettes camerounaises</strong>Valeurs nutritionnelles, ingrédients</div></div>
+      <div class="wl-feat"><div class="wf-icon">🔥</div><div class="wf-text"><strong>Calcul calories</strong>Besoins selon votre profil</div></div>
+      <div class="wl-feat"><div class="wf-icon">🎯</div><div class="wf-text"><strong>Objectifs santé</strong>Poids, masse, énergie</div></div>
+      <div class="wl-feat"><div class="wf-icon">👧</div><div class="wf-text"><strong>Nutrition enfants</strong>Portions, croissance</div></div>
+    </div>
+  </div>`;
+  document.getElementById('quick-wrap').style.display='block';
+}
+</script>
+</body>
+</html>

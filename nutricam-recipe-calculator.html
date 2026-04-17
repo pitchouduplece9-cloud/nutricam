@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Calculateur de Recette IA</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f4faf5;--dark:#08120a;--green:#1a7a3e;--gl:#22a854;--glight:#4ade80;
+  --y:#f5b800;--red:#e63946;--blue:#2563eb;--purple:#7c3aed;
+  --card:#fff;--border:#d8ece0;--text:#192b1c;--muted:#6b8c72;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+.nav{background:var(--dark);padding:1rem 2.5rem;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;color:#fff}
+.nav-logo span{color:var(--y)}
+.nav-badge{background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.25);color:#c084fc;font-size:0.68rem;font-weight:800;padding:0.22rem 0.7rem;border-radius:5px;text-transform:uppercase;letter-spacing:0.07em}
+
+/* HERO */
+.calc-hero{background:linear-gradient(135deg,var(--dark) 0%,#0a2d14 55%,#1a7a3e 100%);padding:3rem 2.5rem;position:relative;overflow:hidden}
+.ch-inner{max-width:700px}
+.ch-badge{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);font-size:0.72rem;font-weight:700;padding:0.3rem 0.9rem;border-radius:100px;margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.08em}
+.ch-title{font-family:'Fraunces',serif;font-size:clamp(1.9rem,4vw,2.8rem);font-weight:900;color:#fff;margin-bottom:0.6rem;line-height:1.1}
+.ch-title span{color:var(--y)}
+.ch-sub{color:rgba(255,255,255,0.5);font-size:0.9rem;line-height:1.7;max-width:550px}
+.ch-bg{position:absolute;right:3rem;top:50%;transform:translateY(-50%);font-size:10rem;opacity:0.04;pointer-events:none}
+
+/* MAIN */
+.calc-main{max-width:1100px;margin:0 auto;padding:2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start}
+
+/* INPUT PANEL */
+.input-panel{background:var(--card);border:1px solid var(--border);border-radius:22px;overflow:hidden}
+.ip-header{background:var(--dark);padding:1.2rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+.ip-title{font-family:'Fraunces',serif;font-size:1rem;font-weight:900;color:#fff}
+.ip-mode-tabs{display:flex;gap:0.3rem}
+.imt{background:rgba(255,255,255,0.07);border:none;color:rgba(255,255,255,0.5);padding:0.35rem 0.8rem;border-radius:7px;font-size:0.72rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s}
+.imt.active{background:rgba(34,197,94,0.2);color:#4ade80}
+.ip-body{padding:1.5rem}
+.form-field{margin-bottom:1rem}
+.fl{display:block;font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:0.4rem}
+.fi{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:11px;padding:0.7rem 1rem;font-size:0.88rem;font-family:'DM Sans',sans-serif;color:var(--text);outline:none;transition:border-color 0.2s}
+.fi:focus{border-color:var(--green)}
+.fi::placeholder{color:#b0c4b1}
+textarea.fi{resize:vertical;min-height:100px;line-height:1.6}
+
+/* INGREDIENTS */
+.ing-list{display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1rem}
+.ing-row{display:flex;gap:0.5rem;align-items:center;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:0.5rem 0.7rem}
+.ir-emoji{font-size:1.2rem;flex-shrink:0;width:28px;text-align:center}
+.ir-name{flex:1;background:none;border:none;color:var(--text);font-size:0.83rem;font-family:'DM Sans',sans-serif;outline:none}
+.ir-qty{width:60px;background:none;border:none;color:var(--text);font-size:0.8rem;text-align:right;font-family:'DM Mono',monospace;outline:none}
+.ir-unit{font-size:0.72rem;color:var(--muted);width:30px}
+.ir-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.85rem;padding:0.2rem;transition:color 0.15s}
+.ir-del:hover{color:var(--red)}
+.add-ing-btn{width:100%;background:rgba(26,122,62,0.06);border:1.5px dashed rgba(26,122,62,0.2);border-radius:11px;padding:0.65rem;font-size:0.8rem;font-weight:700;color:var(--green);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:0.4rem;margin-bottom:1rem}
+.add-ing-btn:hover{background:rgba(26,122,62,0.1)}
+
+/* CONTROLS */
+.controls-row{display:flex;gap:0.7rem;margin-bottom:1rem}
+.ctrl-btn{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:11px;padding:0.65rem;font-size:0.8rem;font-weight:700;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:0.4rem}
+.ctrl-btn:hover{color:var(--text);border-color:rgba(255,255,255,0.2)}
+.calc-btn{width:100%;background:linear-gradient(135deg,var(--green),var(--gl));border:none;border-radius:14px;padding:0.95rem;font-size:0.95rem;font-weight:800;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:0.5rem;box-shadow:0 6px 24px rgba(26,122,62,0.2)}
+.calc-btn:hover{transform:translateY(-2px);box-shadow:0 10px 35px rgba(26,122,62,0.3)}
+.calc-btn:disabled{opacity:0.6;cursor:not-allowed;transform:none}
+
+/* RESULT PANEL */
+.result-panel{background:var(--card);border:1px solid var(--border);border-radius:22px;overflow:hidden;position:sticky;top:1.5rem}
+.rp-empty{padding:3rem;text-align:center;color:var(--muted)}
+.rp-empty-icon{font-size:3.5rem;margin-bottom:1rem;display:block;opacity:0.4}
+.rp-header{background:linear-gradient(135deg,var(--dark),#0e3320);padding:1.4rem 1.5rem}
+.rph-name{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;color:#fff;margin-bottom:0.2rem}
+.rph-sub{font-size:0.75rem;color:rgba(255,255,255,0.45)}
+.rp-body{padding:1.5rem}
+
+/* CALORIE RING */
+.cal-display{display:flex;align-items:center;gap:1.2rem;margin-bottom:1.4rem}
+.cal-ring-svg{flex-shrink:0}
+
+/* MACROS BARS */
+.macro-bars{display:flex;flex-direction:column;gap:0.7rem;margin-bottom:1.5rem}
+.mb-row{display:flex;align-items:center;gap:0.7rem}
+.mb-label{font-size:0.75rem;font-weight:700;color:var(--text);width:80px;flex-shrink:0}
+.mb-bar-bg{flex:1;height:8px;background:var(--bg);border-radius:4px;overflow:hidden}
+.mb-fill{height:100%;border-radius:4px;transition:width 1s ease}
+.mb-val{font-size:0.75rem;font-weight:800;width:50px;text-align:right;font-family:'DM Mono',monospace;flex-shrink:0}
+
+/* MICRO TABLE */
+.micro-table{background:var(--bg);border-radius:12px;overflow:hidden;margin-bottom:1.4rem}
+.mt-row{display:flex;justify-content:space-between;padding:0.5rem 0.9rem;border-bottom:1px solid var(--border);font-size:0.78rem}
+.mt-row:last-child{border-bottom:none}
+.mt-name{color:var(--text);font-weight:600}
+.mt-val{color:var(--muted);font-family:'DM Mono',monospace}
+.mt-pct{font-size:0.68rem;font-weight:800;padding:0.1rem 0.4rem;border-radius:3px}
+
+/* AI COMMENT */
+.ai-comment{background:linear-gradient(135deg,rgba(26,122,62,0.06),rgba(26,122,62,0.03));border:1px solid rgba(26,122,62,0.15);border-radius:14px;padding:1.1rem;margin-bottom:1.4rem}
+.ac-header{display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem}
+.ac-icon{font-size:1rem}
+.ac-label{font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.07em;color:var(--green)}
+.ac-text{font-size:0.82rem;color:var(--text);line-height:1.65}
+.ac-text strong{color:var(--dark)}
+
+/* PORTION SELECTOR */
+.portion-selector{display:flex;align-items:center;gap:0.6rem;background:var(--bg);border-radius:10px;padding:0.6rem 0.9rem;margin-bottom:1.4rem}
+.ps-label{font-size:0.75rem;color:var(--muted);flex:1;font-weight:600}
+.ps-btn{background:var(--card);border:1px solid var(--border);width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;transition:all 0.15s;color:var(--text)}
+.ps-btn:hover{background:var(--green);color:#fff;border-color:var(--green)}
+.ps-count{font-family:'DM Mono',monospace;font-size:0.9rem;font-weight:700;color:var(--dark);width:30px;text-align:center}
+
+/* SAVE/SHARE */
+.result-actions{display:flex;gap:0.6rem}
+.ra-btn{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:11px;padding:0.65rem;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:0.4rem;color:var(--muted)}
+.ra-btn:hover{color:var(--text);border-color:rgba(0,0,0,0.15)}
+.ra-btn.primary{background:var(--green);border-color:var(--green);color:#fff}
+
+/* QUICK RECIPES */
+.quick-recipes{padding:0 2.5rem 3rem;max-width:1100px;margin:0 auto}
+.qr-title{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:var(--dark);margin-bottom:1rem}
+.qr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.7rem}
+.qr-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:0.9rem;cursor:pointer;transition:all 0.2s;display:flex;gap:0.7rem;align-items:center}
+.qr-card:hover{border-color:var(--gl);transform:translateY(-1px)}
+.qrc-emoji{font-size:1.5rem;flex-shrink:0}
+.qrc-name{font-size:0.82rem;font-weight:700;color:var(--text)}
+.qrc-cal{font-size:0.7rem;color:var(--green);font-weight:700}
+
+@media(max-width:900px){.calc-main{grid-template-columns:1fr}.result-panel{position:static}.calc-hero,.calc-main,.quick-recipes{padding:1.5rem 1rem}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div style="display:flex;align-items:center;gap:0.8rem">
+    <div class="nav-logo">Nutri<span>Cam</span></div>
+    <div class="nav-badge">🤖 IA Powered</div>
+  </div>
+</nav>
+
+<div class="calc-hero">
+  <div class="ch-bg">🧮</div>
+  <div class="ch-inner">
+    <div class="ch-badge">🧮 Calculateur nutritionnel IA</div>
+    <h1 class="ch-title">Calculez les calories de<br/>n'importe quelle <span>recette</span></h1>
+    <p class="ch-sub">Entrez vos ingrédients, notre IA calcule instantanément les calories, macros et micronutriments. Spécialisé dans les ingrédients camerounais.</p>
+  </div>
+</div>
+
+<div class="calc-main">
+
+  <!-- INPUT -->
+  <div class="input-panel">
+    <div class="ip-header">
+      <div class="ip-title">📝 Ma recette</div>
+      <div class="ip-mode-tabs">
+        <button class="imt active" onclick="setMode('ingredients',this)">🥬 Ingrédients</button>
+        <button class="imt" onclick="setMode('text',this)">📝 Texte libre</button>
+      </div>
+    </div>
+    <div class="ip-body">
+      <div class="form-field">
+        <label class="fl">Nom de la recette</label>
+        <input class="fi" type="text" id="recipe-name" placeholder="Ex: Ndolé aux crevettes maison"/>
+      </div>
+      <div class="form-field">
+        <label class="fl">Nombre de portions</label>
+        <input class="fi" type="number" id="portions" value="4" min="1" max="20"/>
+      </div>
+
+      <!-- INGREDIENTS MODE -->
+      <div id="mode-ingredients">
+        <label class="fl">Ingrédients</label>
+        <div class="ing-list" id="ing-list"></div>
+        <button class="add-ing-btn" onclick="addIngredient()">➕ Ajouter un ingrédient</button>
+      </div>
+
+      <!-- TEXT MODE -->
+      <div id="mode-text" style="display:none">
+        <label class="fl">Décrivez votre recette librement</label>
+        <textarea class="fi" id="recipe-text" placeholder="Ex: 500g de feuilles de ndolé, 300g de crevettes fraîches, 150g d'arachides grillées mixées, 2 cuillères d'huile de palme rouge, 1 oignon, sel..."></textarea>
+      </div>
+
+      <div class="controls-row">
+        <button class="ctrl-btn" onclick="loadPreset('ndole')">🍲 Ndolé</button>
+        <button class="ctrl-btn" onclick="loadPreset('poulet')">🐔 Poulet DG</button>
+        <button class="ctrl-btn" onclick="loadPreset('eru')">🥬 Eru</button>
+        <button class="ctrl-btn" onclick="clearForm()">🗑 Vider</button>
+      </div>
+      <button class="calc-btn" id="calc-btn" onclick="calculateNutrition()">
+        🤖 Calculer avec l'IA NutriCam
+      </button>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="result-panel" id="result-panel">
+    <div class="rp-empty">
+      <span class="rp-empty-icon">🧮</span>
+      <div style="font-family:'Fraunces',serif;font-size:1rem;font-weight:900;color:var(--dark);margin-bottom:0.4rem">Résultats ici</div>
+      <div style="font-size:0.82rem">Entrez vos ingrédients et cliquez<br/>sur "Calculer" pour voir les macros.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- QUICK RECIPES -->
+<div class="quick-recipes">
+  <div class="qr-title">⚡ Recettes rapides — Cliquez pour charger</div>
+  <div class="qr-grid">
+    <div class="qr-card" onclick="loadPreset('ndole')"><div class="qrc-emoji">🍲</div><div><div class="qrc-name">Ndolé crevettes</div><div class="qrc-cal">~380 kcal/portion</div></div></div>
+    <div class="qr-card" onclick="loadPreset('poulet')"><div class="qrc-emoji">🐔</div><div><div class="qrc-name">Poulet DG</div><div class="qrc-cal">~520 kcal/portion</div></div></div>
+    <div class="qr-card" onclick="loadPreset('eru')"><div class="qrc-emoji">🥬</div><div><div class="qrc-name">Eru & Waterleaf</div><div class="qrc-cal">~310 kcal/portion</div></div></div>
+    <div class="qr-card" onclick="loadPreset('bouillie')"><div class="qrc-emoji">🥣</div><div><div class="qrc-name">Bouillie de maïs</div><div class="qrc-cal">~320 kcal/portion</div></div></div>
+    <div class="qr-card" onclick="loadPreset('poisson')"><div class="qrc-emoji">🐟</div><div><div class="qrc-name">Poisson braisé</div><div class="qrc-cal">~290 kcal/portion</div></div></div>
+    <div class="qr-card" onclick="loadPreset('plantain')"><div class="qrc-emoji">🍌</div><div><div class="qrc-name">Plantains bouillis</div><div class="qrc-cal">~150 kcal/portion</div></div></div>
+  </div>
+</div>
+
+<script>
+const presets = {
+  ndole:{name:'Ndolé aux crevettes',ings:[{e:'🥬',n:'Feuilles de ndolé',q:500,u:'g'},{e:'🦐',n:'Crevettes fraîches',q:300,u:'g'},{e:'🥩',n:'Bœuf fumé',q:200,u:'g'},{e:'🥜',n:'Arachides grillées',q:150,u:'g'},{e:'🫙',n:'Huile de palme rouge',q:30,u:'ml'},{e:'🧅',n:'Oignon',q:1,u:'pce'},{e:'🧄',n:'Ail',q:3,u:'gousses'}]},
+  poulet:{name:'Poulet DG',ings:[{e:'🐔',n:'Poulet entier',q:1200,u:'g'},{e:'🍌',n:'Plantains mûrs',q:400,u:'g'},{e:'🥕',n:'Carottes',q:200,u:'g'},{e:'🫑',n:'Poivrons',q:150,u:'g'},{e:'🧅',n:'Oignon',q:2,u:'pce'},{e:'🧄',n:'Ail + gingembre',q:5,u:'gousses'},{e:'🫙',n:'Huile végétale',q:40,u:'ml'}]},
+  eru:{name:'Eru & Waterleaf',ings:[{e:'🥬',n:'Feuilles d\'eru hachées',q:400,u:'g'},{e:'🥬',n:'Waterleaf (Talinum)',q:300,u:'g'},{e:'🦐',n:'Crayfish (crevettes séchées)',q:50,u:'g'},{e:'🥩',n:'Bœuf fumé ou stockfish',q:250,u:'g'},{e:'🫙',n:'Huile de palme rouge',q:35,u:'ml'},{e:'🧅',n:'Oignon émincé',q:1,u:'pce'}]},
+  bouillie:{name:'Bouillie de maïs',ings:[{e:'🌽',n:'Farine de maïs',q:150,u:'g'},{e:'🥛',n:'Lait entier',q:200,u:'ml'},{e:'🥚',n:'Œuf',q:1,u:'pce'},{e:'🍯',n:'Sucre',q:20,u:'g'},{e:'🧂',n:'Sel',q:2,u:'g'}]},
+  poisson:{name:'Poisson braisé camerounais',ings:[{e:'🐟',n:'Tilapia entier',q:600,u:'g'},{e:'🧄',n:'Ail + gingembre pâte',q:20,u:'g'},{e:'🌶️',n:'Piment frais',q:2,u:'pce'},{e:'🍋',n:'Citron',q:1,u:'pce'},{e:'🌿',n:'Persil + coriandre',q:15,u:'g'},{e:'🧅',n:'Oignon',q:1,u:'pce'}]},
+  plantain:{name:'Plantains bouillis',ings:[{e:'🍌',n:'Bananes plantain vertes',q:600,u:'g'},{e:'🧂',n:'Sel',q:5,u:'g'}]},
+};
+
+// Nutrition DB (per 100g)
+const nutritionDB = {
+  'ndolé':{'kcal':42,'prot':5.8,'carb':4.2,'fat':0.8,'fiber':8.2,'fer':8.9,'ca':145,'vitA':620,'vitC':55},
+  'crevettes':{'kcal':95,'prot':20,'carb':0.9,'fat':1.5,'fiber':0,'fer':2.1,'ca':52},
+  'bœuf':{'kcal':215,'prot':26,'carb':0,'fat':12,'fiber':0,'fer':2.9,'ca':11},
+  'arachides':{'kcal':567,'prot':25.8,'carb':16,'fat':49.2,'fiber':8.5,'fer':1.9,'ca':54},
+  'huile de palme':{'kcal':884,'prot':0,'carb':0,'fat':100,'fiber':0,'fer':0,'ca':0},
+  'plantain':{'kcal':122,'prot':1.3,'carb':28.5,'fat':0.4,'fiber':2.3,'fer':0.6,'ca':3},
+  'poulet':{'kcal':239,'prot':27,'carb':0,'fat':14,'fiber':0,'fer':1.3,'ca':15},
+  'tilapia':{'kcal':96,'prot':20,'carb':0,'fat':2,'fiber':0,'fer':0.6,'ca':14},
+  'farine de maïs':{'kcal':362,'prot':8,'carb':76,'fat':4,'fiber':7,'fer':2.4,'ca':6},
+  'lait':{'kcal':61,'prot':3.2,'carb':4.8,'fat':3.3,'fiber':0,'fer':0.05,'ca':113},
+  'default':{'kcal':120,'prot':5,'carb':15,'fat':4,'fiber':2,'fer':1,'ca':40},
+};
+
+function getNutrition(ingName, grams) {
+  const name = ingName.toLowerCase();
+  let data = nutritionDB.default;
+  for(const [key, val] of Object.entries(nutritionDB)) {
+    if(name.includes(key)) { data = val; break; }
+  }
+  const factor = grams / 100;
+  return { kcal: Math.round(data.kcal * factor), prot: +(data.prot * factor).toFixed(1), carb: +(data.carb * factor).toFixed(1), fat: +(data.fat * factor).toFixed(1), fiber: +(data.fiber * factor).toFixed(1), fer: +(data.fer * factor).toFixed(1), ca: Math.round(data.ca * factor) };
+}
+
+let ingredients = [
+  {e:'🥬',n:'Feuilles de ndolé',q:500,u:'g'},
+  {e:'🦐',n:'Crevettes fraîches',q:300,u:'g'},
+];
+let portions = 4;
+let currentResults = null;
+let inputMode = 'ingredients';
+
+function renderIngredients(){
+  document.getElementById('ing-list').innerHTML = ingredients.map((ing,i)=>`
+    <div class="ing-row">
+      <span class="ir-emoji">${ing.e}</span>
+      <input class="ir-name" type="text" value="${ing.n}" onchange="ingredients[${i}].n=this.value" placeholder="Ingrédient..."/>
+      <input class="ir-qty" type="number" value="${ing.q}" onchange="ingredients[${i}].q=parseFloat(this.value)||0" min="0"/>
+      <span class="ir-unit">${ing.u}</span>
+      <button class="ir-del" onclick="removeIng(${i})">✕</button>
+    </div>`).join('');
+}
+
+function addIngredient(){
+  const emojis=['🥬','🥩','🐟','🍌','🥚','🌿','🧅','🧄','🌶️','🫘','🥛','🫙'];
+  ingredients.push({e:emojis[Math.floor(Math.random()*emojis.length)],n:'',q:100,u:'g'});
+  renderIngredients();
+  document.getElementById('ing-list').lastElementChild?.querySelector('.ir-name')?.focus();
+}
+
+function removeIng(i){ ingredients.splice(i,1); renderIngredients(); }
+
+function setMode(mode,btn){
+  inputMode=mode;
+  document.querySelectorAll('.imt').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('mode-ingredients').style.display=mode==='ingredients'?'block':'none';
+  document.getElementById('mode-text').style.display=mode==='text'?'block':'none';
+}
+
+function loadPreset(key){
+  const p=presets[key];
+  if(!p) return;
+  document.getElementById('recipe-name').value=p.name;
+  ingredients=[...p.ings];
+  renderIngredients();
+}
+
+function clearForm(){
+  document.getElementById('recipe-name').value='';
+  ingredients=[];
+  renderIngredients();
+  document.getElementById('result-panel').innerHTML=`<div class="rp-empty"><span class="rp-empty-icon">🧮</span><div style="font-family:'Fraunces',serif;font-size:1rem;font-weight:900;color:var(--text);margin-bottom:0.4rem">Résultats ici</div><div style="font-size:0.82rem">Entrez vos ingrédients et cliquez sur "Calculer".</div></div>`;
+}
+
+async function calculateNutrition(){
+  const btn=document.getElementById('calc-btn');
+  const name=document.getElementById('recipe-name').value||'Ma recette';
+  const nbPortions=parseInt(document.getElementById('portions').value)||4;
+
+  // Show loading
+  btn.disabled=true; btn.innerHTML='⏳ Calcul en cours...';
+  
+  // Calculate totals
+  let totals={kcal:0,prot:0,carb:0,fat:0,fiber:0,fer:0,ca:0};
+  const activeIngs = ingredients.filter(i=>i.n && i.q>0);
+  
+  if(activeIngs.length===0){
+    btn.disabled=false; btn.innerHTML='🤖 Calculer avec l\'IA NutriCam';
+    alert('Ajoutez au moins un ingrédient !'); return;
+  }
+  
+  activeIngs.forEach(ing => {
+    const grams = ing.u==='pce' ? (ing.q*100) : ing.u==='gousses' ? (ing.q*5) : ing.u==='ml' ? ing.q*0.92 : ing.q;
+    const n = getNutrition(ing.n, grams);
+    Object.keys(totals).forEach(k => totals[k] += n[k]);
+  });
+
+  // Per portion
+  const per = {};
+  Object.keys(totals).forEach(k => per[k] = Math.round(totals[k]/nbPortions*10)/10);
+
+  // AI comment generation (simulated - would use Claude API in production)
+  await new Promise(r=>setTimeout(r,800));
+  
+  const comments = [
+    `Ce plat est <strong>riche en protéines</strong> grâce aux crevettes et légumineuses. Excellent pour la récupération musculaire et la satiété prolongée.`,
+    `Avec <strong>${per.fer}mg de fer</strong> par portion, ce plat couvre ${Math.round(per.fer/8*100)}% de vos besoins journaliers. La vitamine C présente améliore l'absorption du fer végétal.`,
+    `<strong>Profil nutritionnel équilibré</strong> typique de la gastronomie camerounaise. Les fibres (${per.fiber}g) favorisent le transit et la santé intestinale.`,
+    `Ce plat apporte <strong>${per.ca}mg de calcium</strong> soit ${Math.round(per.ca/1000*100)}% des AJR. Associez avec un yaourt local pour booster l'apport calcique.`,
+  ];
+  const comment = comments[Math.floor(Math.random()*comments.length)];
+
+  currentResults = { name, per, totals, nbPortions };
+
+  // Render results
+  const maxMacro = Math.max(per.prot, per.carb, per.fat);
+  document.getElementById('result-panel').innerHTML = `
+    <div class="rp-header">
+      <div class="rph-name">${name}</div>
+      <div class="rph-sub">Pour 1 portion (${nbPortions} portions au total) · Valeurs calculées par IA NutriCam</div>
+    </div>
+    <div class="rp-body">
+      <div class="portion-selector">
+        <span class="ps-label">Portions affichées</span>
+        <button class="ps-btn" onclick="changePortion(-1)">−</button>
+        <div class="ps-count" id="portion-count">1</div>
+        <button class="ps-btn" onclick="changePortion(1)">+</button>
+      </div>
+
+      <div class="cal-display">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(26,122,62,0.1)" stroke-width="10"/>
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#22a854" stroke-width="10"
+            stroke-dasharray="${Math.min(per.kcal/2000*264,264)} 264" stroke-dashoffset="0"
+            stroke-linecap="round" transform="rotate(-90 50 50)" id="cal-circle"/>
+          <text x="50" y="46" text-anchor="middle" fill="#192b1c" font-size="14" font-weight="800" font-family="Fraunces,serif" id="cal-val">${per.kcal}</text>
+          <text x="50" y="60" text-anchor="middle" fill="#6b8c72" font-size="8" font-family="DM Sans,sans-serif">kcal/port.</text>
+        </svg>
+        <div>
+          <div style="font-family:'Fraunces',serif;font-size:1.8rem;font-weight:900;color:var(--dark)" id="main-cal">${per.kcal} kcal</div>
+          <div style="font-size:0.75rem;color:var(--muted)">par portion</div>
+          <div style="font-size:0.75rem;color:var(--muted);margin-top:0.2rem">${Math.round(per.kcal/2000*100)}% des AJR adulte</div>
+          <div style="font-size:0.78rem;font-weight:700;color:var(--green);margin-top:0.3rem">${totals.kcal} kcal total</div>
+        </div>
+      </div>
+
+      <div class="macro-bars">
+        <div class="mb-row"><div class="mb-label">Protéines</div><div class="mb-bar-bg"><div class="mb-fill" style="width:${(per.prot/maxMacro)*100}%;background:#4ade80" id="prot-bar"></div></div><div class="mb-val" style="color:#16a34a" id="prot-val">${per.prot}g</div></div>
+        <div class="mb-row"><div class="mb-label">Glucides</div><div class="mb-bar-bg"><div class="mb-fill" style="width:${(per.carb/maxMacro)*100}%;background:#fbbf24" id="carb-bar"></div></div><div class="mb-val" style="color:#d97706" id="carb-val">${per.carb}g</div></div>
+        <div class="mb-row"><div class="mb-label">Lipides</div><div class="mb-bar-bg"><div class="mb-fill" style="width:${(per.fat/maxMacro)*100}%;background:#f87171" id="fat-bar"></div></div><div class="mb-val" style="color:#dc2626" id="fat-val">${per.fat}g</div></div>
+        <div class="mb-row"><div class="mb-label">Fibres</div><div class="mb-bar-bg"><div class="mb-fill" style="width:${(per.fiber/maxMacro)*100}%;background:#a78bfa" id="fiber-bar"></div></div><div class="mb-val" style="color:#7c3aed" id="fiber-val">${per.fiber}g</div></div>
+      </div>
+
+      <div class="micro-table">
+        <div class="mt-row"><div class="mt-name">Sel estimé</div><div class="mt-val">~${(per.kcal/500*0.8).toFixed(1)}g</div><div class="mt-pct" style="background:rgba(239,68,68,0.08);color:#dc2626">${Math.round(per.kcal/500*0.8/6*100)}%</div></div>
+        <div class="mt-row"><div class="mt-name">Fer</div><div class="mt-val">${per.fer}mg</div><div class="mt-pct" style="background:rgba(34,197,94,0.08);color:#16a34a">${Math.round(per.fer/8*100)}%</div></div>
+        <div class="mt-row"><div class="mt-name">Calcium</div><div class="mt-val">${per.ca}mg</div><div class="mt-pct" style="background:rgba(96,165,250,0.1);color:#2563eb">${Math.round(per.ca/1000*100)}%</div></div>
+      </div>
+
+      <div class="ai-comment">
+        <div class="ac-header"><span class="ac-icon">🤖</span><span class="ac-label">Analyse IA NutriCam</span></div>
+        <div class="ac-text">${comment}</div>
+      </div>
+
+      <div class="result-actions">
+        <button class="ra-btn" onclick="addToJournal()">📓 Journal</button>
+        <button class="ra-btn" onclick="saveRecipe()">💾 Sauver</button>
+        <button class="ra-btn primary" onclick="shareResult()">↗️ Partager</button>
+      </div>
+    </div>`;
+
+  btn.disabled=false; btn.innerHTML='🤖 Recalculer';
+}
+
+function changePortion(delta){
+  const countEl=document.getElementById('portion-count');
+  if(!countEl||!currentResults) return;
+  let n=parseInt(countEl.textContent)+delta;
+  n=Math.max(1,Math.min(10,n));
+  countEl.textContent=n;
+  const per=currentResults.per;
+  const f=n;
+  document.getElementById('main-cal').textContent=Math.round(per.kcal*f)+' kcal';
+  document.getElementById('cal-val').textContent=Math.round(per.kcal*f);
+  ['prot','carb','fat','fiber'].forEach(k=>{
+    const el=document.getElementById(k+'-val');
+    if(el) el.textContent=Math.round(per[k]*f*10)/10+'g';
+  });
+}
+
+function addToJournal(){ alert('✅ Ajouté au journal alimentaire du jour !'); }
+function saveRecipe(){ alert('💾 Recette sauvegardée dans "Mes recettes" !'); }
+function shareResult(){ alert('↗️ Lien de partage copié !'); }
+
+renderIngredients();
+</script>
+</body>
+</html>

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam Kids – Nutrition Enfants</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f0faf4;--dark:#0d2b1a;--green:#1d8a4a;--gl:#28b562;--y:#ffc107;--orange:#ff8c42;
+  --pink:#ff6b9d;--blue:#4a9eff;--purple:#9b59b6;
+  --card:#fff;--border:#d8efe1;--text:#1a2b20;--muted:#6b9478;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* TOP BAR */
+.top{background:var(--dark);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Nunito',sans-serif;font-size:1.5rem;font-weight:900;color:#fff}
+.logo span{color:var(--y)}
+.logo em{font-style:normal;color:var(--gl);font-size:1.1rem;margin-left:4px}
+.kids-badge{background:linear-gradient(135deg,var(--y),var(--orange));color:#fff;font-size:0.75rem;font-weight:800;padding:0.3rem 0.9rem;border-radius:100px;text-transform:uppercase;letter-spacing:0.06em}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#0d2b1a 0%,#1d5c30 50%,#28b562 100%);padding:2.5rem 2rem 5rem;position:relative;overflow:hidden;text-align:center}
+.hero::before{content:'⭐🌟✨';position:absolute;top:1rem;left:2rem;font-size:2rem;opacity:0.3;letter-spacing:1rem}
+.hero::after{content:'🌱🍃🌿';position:absolute;bottom:1rem;right:2rem;font-size:2rem;opacity:0.3;letter-spacing:1rem}
+.hero h1{font-family:'Nunito',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:#fff;margin-bottom:0.6rem}
+.hero h1 span{color:var(--y)}
+.hero p{color:rgba(255,255,255,0.7);max-width:500px;margin:0 auto;line-height:1.7;font-size:0.92rem}
+
+/* AGE SELECTOR */
+.age-selector{background:#fff;margin:-2.5rem 2rem 0;border-radius:24px;padding:2rem;box-shadow:0 10px 60px rgba(0,0,0,0.12);position:relative;z-index:10}
+.as-title{font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:800;color:var(--dark);text-align:center;margin-bottom:1.2rem}
+.age-tabs{display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap}
+.age-tab{background:var(--bg);border:2px solid var(--border);border-radius:14px;padding:0.8rem 1.2rem;cursor:pointer;transition:all 0.25s;text-align:center;min-width:100px}
+.age-tab:hover{border-color:var(--gl)}
+.age-tab.active{background:var(--dark);border-color:var(--dark);color:#fff}
+.at-emoji{font-size:1.6rem;display:block;margin-bottom:0.3rem}
+.at-label{font-size:0.78rem;font-weight:700}
+.at-sub{font-size:0.65rem;color:inherit;opacity:0.7}
+
+/* MAIN CONTENT */
+.content{max-width:1100px;margin:0 auto;padding:2.5rem 2rem}
+
+/* CHILD PROFILE CARD */
+.child-profile{background:var(--card);border-radius:20px;padding:1.8rem;border:1px solid var(--border);margin-bottom:2rem}
+.cp-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem}
+.cp-title{font-family:'Nunito',sans-serif;font-size:1.3rem;font-weight:900;color:var(--dark)}
+.cp-subtitle{color:var(--muted);font-size:0.82rem;margin-top:0.2rem}
+.cp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:0.8rem}
+.cp-stat{background:var(--bg);border-radius:14px;padding:1rem;text-align:center}
+.cp-stat-icon{font-size:1.5rem;margin-bottom:0.3rem}
+.cp-stat-val{font-family:'Nunito',sans-serif;font-size:1.4rem;font-weight:900}
+.cp-stat-label{font-size:0.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em}
+
+/* CALORIE GAUGE */
+.cal-gauge{background:var(--card);border-radius:20px;padding:1.8rem;border:1px solid var(--border);margin-bottom:2rem}
+.cg-title{font-family:'Nunito',sans-serif;font-size:1.2rem;font-weight:900;color:var(--dark);margin-bottom:1.5rem}
+.gauge-container{display:flex;align-items:center;gap:2.5rem;flex-wrap:wrap;justify-content:center}
+.gauge-ring{position:relative;width:160px;height:160px;flex-shrink:0}
+.gauge-ring svg{transform:rotate(-90deg)}
+.gauge-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.gauge-val{font-family:'Nunito',sans-serif;font-size:1.8rem;font-weight:900;color:var(--dark)}
+.gauge-unit{font-size:0.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em}
+.gauge-details{flex:1;min-width:250px}
+.gd-row{display:flex;align-items:center;gap:0.8rem;margin-bottom:0.9rem}
+.gd-color{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+.gd-info{flex:1}
+.gd-name{font-size:0.85rem;font-weight:700;color:var(--text)}
+.gd-sub{font-size:0.72rem;color:var(--muted)}
+.gd-bar-bg{height:6px;background:var(--bg);border-radius:3px;overflow:hidden;margin-top:4px}
+.gd-bar{height:100%;border-radius:3px}
+.gd-val-right{font-weight:800;font-size:0.88rem;white-space:nowrap}
+
+/* GROWTH CHART */
+.growth-section{background:var(--card);border-radius:20px;padding:1.8rem;border:1px solid var(--border);margin-bottom:2rem}
+.gs-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem}
+.gs-title{font-family:'Nunito',sans-serif;font-size:1.2rem;font-weight:900;color:var(--dark)}
+.gs-badge{background:var(--bg);border:1px solid var(--border);border-radius:100px;padding:0.3rem 0.8rem;font-size:0.75rem;font-weight:700;color:var(--muted)}
+.growth-chart{position:relative;height:180px;margin-bottom:0.8rem}
+.gc-area{position:absolute;inset:0;display:flex;align-items:flex-end;gap:6px;padding:0 0.5rem}
+.gc-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.gc-bar-wrap{flex:1;width:100%;background:rgba(0,0,0,0.04);border-radius:6px;position:relative;overflow:hidden}
+.gc-bar{position:absolute;bottom:0;left:0;right:0;border-radius:6px;transition:height 1s ease}
+.gc-month{font-size:0.62rem;color:var(--muted);font-weight:600}
+.gc-kg{font-size:0.65rem;font-weight:700;color:var(--green)}
+.growth-ref{font-size:0.75rem;color:var(--muted);text-align:center}
+
+/* MEALS FOR AGE */
+.meals-section{background:var(--card);border-radius:20px;padding:1.8rem;border:1px solid var(--border);margin-bottom:2rem}
+.ms-title{font-family:'Nunito',sans-serif;font-size:1.2rem;font-weight:900;color:var(--dark);margin-bottom:0.4rem}
+.ms-sub{color:var(--muted);font-size:0.82rem;margin-bottom:1.5rem}
+.age-meal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem}
+.age-meal-card{border-radius:16px;overflow:hidden;border:1.5px solid var(--border);transition:all 0.2s}
+.age-meal-card:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,0.1)}
+.amc-top{padding:1.2rem;position:relative}
+.amc-emoji{font-size:2.5rem;margin-bottom:0.5rem;display:block}
+.amc-cal-pill{position:absolute;top:0.8rem;right:0.8rem;font-size:0.7rem;font-weight:800;padding:0.25rem 0.6rem;border-radius:100px}
+.amc-name{font-family:'Nunito',sans-serif;font-size:1rem;font-weight:800;color:var(--dark);margin-bottom:0.3rem}
+.amc-desc{font-size:0.77rem;color:var(--muted);line-height:1.5;margin-bottom:0.8rem}
+.amc-tags{display:flex;gap:0.4rem;flex-wrap:wrap}
+.amc-tag{font-size:0.65rem;font-weight:700;padding:0.18rem 0.5rem;border-radius:6px;background:var(--bg);color:var(--green)}
+.amc-bottom{padding:0.8rem 1.2rem;border-top:1px solid var(--border)}
+.amc-portions{font-size:0.75rem;color:var(--muted);display:flex;align-items:center;gap:0.4rem}
+
+/* TIPS & ALERTS */
+.tips-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem}
+.tip-card{border-radius:16px;padding:1.4rem;border:1.5px solid transparent}
+.tip-card.green{background:rgba(29,138,74,0.06);border-color:rgba(29,138,74,0.15)}
+.tip-card.yellow{background:rgba(255,193,7,0.07);border-color:rgba(255,193,7,0.2)}
+.tip-card.orange{background:rgba(255,140,66,0.07);border-color:rgba(255,140,66,0.2)}
+.tip-card.red{background:rgba(220,53,69,0.06);border-color:rgba(220,53,69,0.15)}
+.tc-icon{font-size:1.5rem;margin-bottom:0.5rem}
+.tc-title{font-family:'Nunito',sans-serif;font-weight:800;font-size:0.92rem;color:var(--dark);margin-bottom:0.4rem}
+.tc-text{font-size:0.78rem;color:var(--muted);line-height:1.6}
+
+/* ALLERGIES ALERT */
+.allergy-alert{background:rgba(220,53,69,0.06);border:1.5px solid rgba(220,53,69,0.2);border-radius:14px;padding:1.2rem;margin-bottom:2rem;display:flex;gap:1rem;align-items:flex-start}
+.aa-icon{font-size:1.5rem;flex-shrink:0}
+.aa-title{font-family:'Nunito',sans-serif;font-weight:800;color:#dc3545;font-size:0.9rem;margin-bottom:0.3rem}
+.aa-text{font-size:0.8rem;color:var(--text);line-height:1.5}
+
+/* VITAMINS TABLE */
+.vitamins-section{background:var(--card);border-radius:20px;padding:1.8rem;border:1px solid var(--border);margin-bottom:2rem}
+.vs-title{font-family:'Nunito',sans-serif;font-size:1.2rem;font-weight:900;color:var(--dark);margin-bottom:1.2rem}
+.vit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:0.8rem}
+.vit-card{background:var(--bg);border-radius:12px;padding:1rem}
+.vit-icon{font-size:1.3rem;margin-bottom:0.4rem}
+.vit-name{font-size:0.82rem;font-weight:700;color:var(--dark);margin-bottom:0.2rem}
+.vit-need{font-size:0.7rem;color:var(--muted);margin-bottom:0.5rem}
+.vit-bar-bg{height:5px;background:rgba(0,0,0,0.07);border-radius:3px;overflow:hidden}
+.vit-bar{height:100%;border-radius:3px;transition:width 1.2s ease}
+.vit-src{font-size:0.65rem;color:var(--green);margin-top:0.4rem;font-weight:600}
+
+/* PRINT PLAN BTN */
+.bottom-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;padding:1rem 0 3rem}
+.ba-btn{padding:0.9rem 2rem;border-radius:14px;font-weight:700;font-size:0.9rem;cursor:pointer;font-family:'Poppins',sans-serif;transition:all 0.2s;border:none}
+.ba-primary{background:var(--dark);color:#fff}
+.ba-primary:hover{background:var(--green)}
+.ba-outline{background:transparent;border:1.5px solid var(--border);color:var(--text)}
+.ba-outline:hover{border-color:var(--green);color:var(--green)}
+
+@media(max-width:700px){
+  .tips-grid{grid-template-columns:1fr}
+  .age-tabs{gap:0.4rem}
+  .age-tab{min-width:80px;padding:0.6rem 0.8rem}
+  .content,.age-selector{padding:1.5rem}
+}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="logo">Nutri<span>Cam</span><em>Kids</em></div>
+  <div class="kids-badge">👶 Module Enfants</div>
+</div>
+
+<div class="hero">
+  <h1>Nourrir les enfants<br/>avec <span>sagesse</span> camerounaise</h1>
+  <p>Portions adaptées, recettes traditionnelles équilibrées et suivi de croissance. Chaque âge a ses besoins nutritionnels spécifiques.</p>
+</div>
+
+<div class="age-selector">
+  <div class="as-title">Sélectionnez le groupe d'âge</div>
+  <div class="age-tabs" id="age-tabs">
+    <div class="age-tab active" onclick="setAge(0,this)"><span class="at-emoji">👶</span><div class="at-label">Nourrisson</div><div class="at-sub">0–12 mois</div></div>
+    <div class="age-tab" onclick="setAge(1,this)"><span class="at-emoji">🧒</span><div class="at-label">Tout-petit</div><div class="at-sub">1–3 ans</div></div>
+    <div class="age-tab" onclick="setAge(2,this)"><span class="at-emoji">👦</span><div class="at-label">Enfant</div><div class="at-sub">4–6 ans</div></div>
+    <div class="age-tab" onclick="setAge(3,this)"><span class="at-emoji">🧑</span><div class="at-label">Grand enfant</div><div class="at-sub">7–10 ans</div></div>
+    <div class="age-tab" onclick="setAge(4,this)"><span class="at-emoji">🧑‍🎓</span><div class="at-label">Préado</div><div class="at-sub">11–13 ans</div></div>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- PROFIL -->
+  <div class="child-profile" id="child-profile"></div>
+
+  <!-- ALERTE ALLERGIES -->
+  <div class="allergy-alert">
+    <div class="aa-icon">⚠️</div>
+    <div>
+      <div class="aa-title">Avertissement allergies enfant</div>
+      <div class="aa-text">Les arachides, fruits à coque, poisson et crustacés sont des allergènes majeurs chez l'enfant. Introduire un seul aliment nouveau par semaine avant 12 mois. Consulter un pédiatre en cas de réaction (urticaire, gonflement, difficultés respiratoires). Les nourrissons de moins de 6 mois doivent être exclusivement allaités ou nourris au lait maternisé.</div>
+    </div>
+  </div>
+
+  <!-- CALORIES -->
+  <div class="cal-gauge">
+    <div class="cg-title">🍽️ Besoins nutritionnels quotidiens</div>
+    <div class="gauge-container">
+      <div class="gauge-ring">
+        <svg width="160" height="160" viewBox="0 0 160 160">
+          <circle cx="80" cy="80" r="60" fill="none" stroke="#e8ede3" stroke-width="18"/>
+          <circle cx="80" cy="80" r="60" fill="none" id="gauge-prot" stroke="#4ade80" stroke-width="18" stroke-linecap="round"/>
+          <circle cx="80" cy="80" r="60" fill="none" id="gauge-carb" stroke="#fbbf24" stroke-width="18" stroke-linecap="round"/>
+          <circle cx="80" cy="80" r="60" fill="none" id="gauge-fat" stroke="#f87171" stroke-width="18" stroke-linecap="round"/>
+        </svg>
+        <div class="gauge-center">
+          <div class="gauge-val" id="gauge-cal">1200</div>
+          <div class="gauge-unit">kcal/jour</div>
+        </div>
+      </div>
+      <div class="gauge-details" id="gauge-details"></div>
+    </div>
+  </div>
+
+  <!-- CROISSANCE -->
+  <div class="growth-section">
+    <div class="gs-header">
+      <div class="gs-title">📈 Courbe de croissance (poids indicatif)</div>
+      <div class="gs-badge" id="growth-badge">OMS 2024</div>
+    </div>
+    <div class="growth-chart"><div class="gc-area" id="growth-chart"></div></div>
+    <div class="growth-ref" id="growth-ref"></div>
+  </div>
+
+  <!-- REPAS ADAPTÉS -->
+  <div class="meals-section">
+    <div class="ms-title" id="meals-title">Repas adaptés à cet âge</div>
+    <div class="ms-sub" id="meals-sub">Recettes camerounaises avec portions calibrées selon les recommandations OMS/FAO.</div>
+    <div class="age-meal-grid" id="meals-grid"></div>
+  </div>
+
+  <!-- VITAMINES -->
+  <div class="vitamins-section">
+    <div class="vs-title">💊 Micronutriments essentiels à surveiller</div>
+    <div class="vit-grid" id="vit-grid"></div>
+  </div>
+
+  <!-- CONSEILS -->
+  <div class="tips-grid" id="tips-grid"></div>
+
+  <div class="bottom-actions">
+    <button class="ba-btn ba-primary" onclick="window.print()">🖨️ Imprimer ce guide</button>
+    <button class="ba-btn ba-outline">📱 Synchroniser l'app</button>
+    <button class="ba-btn ba-outline">💬 Consulter un pédiatre</button>
+  </div>
+
+</div>
+
+<script>
+const ageGroups = [
+  {
+    label:'Nourrisson', range:'0–12 mois', emoji:'👶',
+    cal:700, prot:12, carb:90, fat:30,
+    desc:'Allaitement exclusif les 6 premiers mois. Introduction progressive des aliments après 6 mois.',
+    color:'#ff6b9d',
+    profile:[
+      {icon:'⚖️',label:'Poids moyen',val:'3–10 kg',color:'#4ade80'},
+      {icon:'📏',label:'Taille',val:'50–75 cm',color:'#60a5fa'},
+      {icon:'🍼',label:'Repas/jour',val:'6–8',color:'#fbbf24'},
+      {icon:'💧',label:'Eau/jour',val:'150ml/kg',color:'#a78bfa'},
+    ],
+    growth:{months:['Nais.','1m','2m','3m','4m','6m','9m','12m'],weights:[3.3,4.2,5.2,6.0,6.7,7.9,9.2,10.2]},
+    meals:[
+      {e:'🍼',name:'Lait maternel / Maternisé',desc:'Aliment principal 0-6 mois. Apporte tous les nutriments nécessaires.',kcal:67,tags:['0-6 mois','Exclusif'],color:'#fce7f3',calColor:'#db2777'},
+      {e:'🥣',name:'Bouillie de riz très lisse',desc:'Première bouillie à 6 mois, texture très fine, sans sel ni sucre.',kcal:80,tags:['6 mois+','Sans sel'],color:'#fef9c3',calColor:'#d97706'},
+      {e:'🥕',name:'Purée carotte-patate douce',desc:'Légumes cuits à la vapeur, mixés finement. Source de bêta-carotène.',kcal:60,tags:['6 mois+','Sans sel','Bio'],color:'#fef3c7',calColor:'#d97706'},
+      {e:'🍌',name:'Banane écrasée',desc:'Premier fruit idéal. Douce, digeste, riche en potassium.',kcal:55,tags:['6 mois+','Naturel'],color:'#fef9c3',calColor:'#d97706'},
+      {e:'🥑',name:'Purée d\'avocat',desc:'Première source de graisses saines. Texture crémeuse appréciée.',kcal:90,tags:['8 mois+','Oméga'],color:'#dcfce7',calColor:'#16a34a'},
+      {e:'🥚',name:'Jaune d\'œuf cuit dur',desc:'Introduction à 8 mois. Fer, protéines, vitamine B12.',kcal:55,tags:['8 mois+','Fer'],color:'#fef9c3',calColor:'#d97706'},
+    ],
+    vitamins:[
+      {i:'☀️',name:'Vitamine D',need:'400 UI/jour',pct:60,src:'Soleil + lait maternisé',color:'#fbbf24'},
+      {i:'🩸',name:'Fer',need:'11 mg/jour (6-12 mois)',pct:45,src:'Jaune d\'œuf, purée viande',color:'#f87171'},
+      {i:'🦷',name:'Calcium',need:'260 mg/jour',pct:80,src:'Lait maternel, fromage ramolli',color:'#60a5fa'},
+      {i:'🧠',name:'Oméga-3 (DHA)',need:'0.1g/jour',pct:70,src:'Lait maternel, purée poisson',color:'#a78bfa'},
+      {i:'💚',name:'Acide folique',need:'65 µg/jour',pct:65,src:'Légumes verts, légumineuses',color:'#4ade80'},
+      {i:'🫀',name:'Vitamine K',need:'2 µg/jour',pct:75,src:'Légumes verts, huile palme',color:'#34d399'},
+    ],
+    tips:[
+      {type:'green',icon:'✅',title:'Allaitement recommandé',text:'L\'OMS recommande l\'allaitement exclusif pendant les 6 premiers mois, puis en complément jusqu\'à 2 ans. Le lait maternel contient des anticorps protecteurs essentiels.'},
+      {type:'yellow',icon:'⚠️',title:'Ne jamais donner',text:'Miel avant 12 mois (risque botulisme), sel, sucre, lait de vache (avant 12 mois), aliments durs ou ronds pouvant provoquer l\'étouffement.'},
+      {type:'orange',icon:'🌞',title:'Vitamine D obligatoire',text:'Supplémenter en vitamine D dès la naissance (400 UI/jour), même avec exposition solaire. Essentielle pour le développement osseux.'},
+      {type:'red',icon:'🚨',title:'Signes de dénutrition',text:'Si l\'enfant ne grossit pas, est irritable, présente des œdèmes aux pieds/jambes ou des cheveux rouges/cassants → consulter immédiatement un agent de santé.'},
+    ]
+  },
+  {
+    label:'Tout-petit', range:'1–3 ans', emoji:'🧒',
+    cal:1100, prot:16, carb:130, fat:35,
+    desc:'Diversification complète. Alimentation familiale adaptée en texture et taille. 3 repas + 2 collations.',
+    color:'#ff8c42',
+    profile:[
+      {icon:'⚖️',label:'Poids moyen',val:'10–14 kg',color:'#4ade80'},
+      {icon:'📏',label:'Taille',val:'75–95 cm',color:'#60a5fa'},
+      {icon:'🍽️',label:'Repas/jour',val:'3 + 2 col.',color:'#fbbf24'},
+      {icon:'💧',label:'Eau/jour',val:'1.3 L',color:'#a78bfa'},
+    ],
+    growth:{months:['12m','15m','18m','21m','24m','30m','36m'],weights:[10.2,11.0,11.8,12.3,12.8,13.8,14.5]},
+    meals:[
+      {e:'🥣',name:'Bouillie de maïs enrichie',desc:'Bouillie de maïs avec lait en poudre ou lait maternel, riche en énergie.',kcal:220,tags:['Matin','Énergie'],color:'#fef9c3',calColor:'#d97706'},
+      {e:'🍲',name:'Ndolé mixé finement',desc:'Ndolé aux crevettes mixé en sauce onctueuse, sans piment. Fer + protéines.',kcal:220,tags:['Midi','Protéines','Adapté'],color:'#dcfce7',calColor:'#16a34a'},
+      {e:'🍌',name:'Plantain bouilli écrasé',desc:'Accompagnement doux, riche en potassium et glucides complexes.',kcal:150,tags:['Accomp.','Digeste'],color:'#fef9c3',calColor:'#d97706'},
+      {e:'🐟',name:'Poisson mixé sans arêtes',desc:'Poisson cuit vapeur puis mixé soigneusement. 1ère source oméga-3.',kcal:160,tags:['Oméga-3','Soir'],color:'#dbeafe',calColor:'#2563eb'},
+      {e:'🥛',name:'Lait + mangue fraîche',desc:'Collation calcium + vitamine C + bêta-carotène. Naturellement sucré.',kcal:140,tags:['Collation','Vitamines'],color:'#fce7f3',calColor:'#db2777'},
+      {e:'🥚',name:'Œuf brouillé aux légumes',desc:'Œuf + tomate + carotte râpée. Complète et simple à préparer.',kcal:180,tags:['Complet','Fer'],color:'#fef9c3',calColor:'#d97706'},
+    ],
+    vitamins:[
+      {i:'🩸',name:'Fer',need:'7 mg/jour',pct:55,src:'Ndolé, viande rouge, légumineuses',color:'#f87171'},
+      {i:'🦷',name:'Calcium',need:'700 mg/jour',pct:65,src:'Lait, yaourt, poisson',color:'#60a5fa'},
+      {i:'☀️',name:'Vitamine D',need:'600 UI/jour',pct:50,src:'Soleil, lait enrichi',color:'#fbbf24'},
+      {i:'💚',name:'Zinc',need:'3 mg/jour',pct:70,src:'Viande, légumineuses, noix',color:'#4ade80'},
+      {i:'🫀',name:'Vitamine A',need:'300 µg/jour',pct:85,src:'Huile de palme rouge, patate douce',color:'#f97316'},
+      {i:'🧠',name:'Iode',need:'90 µg/jour',pct:60,src:'Poisson de mer, sel iodé',color:'#a78bfa'},
+    ],
+    tips:[
+      {type:'green',icon:'🍽️',title:'Introduire les saveurs',text:'C\'est l\'âge d\'or pour introduire toutes les saveurs camerounaises (amertume ndolé, acidité mbanga). Les préférences gustatives se forment avant 3 ans.'},
+      {type:'yellow',icon:'✋',title:'Portions petites & fréquentes',text:'L\'estomac d\'un enfant de 2 ans = environ 1 tasse (250ml). Privilégier 5 petits repas à 2-3 gros repas. Ne jamais forcer.'},
+      {type:'orange',icon:'🌴',title:'Huile de palme rouge obligatoire',text:'Utiliser de l\'huile de palme rouge non raffinée (pas blanche). Riche en vitamine A et E, essentiels pour la vision et l\'immunité des enfants.'},
+      {type:'red',icon:'🚫',title:'Éviter absolument',text:'Sel en excès (reins immatures), sucres ajoutés, sodas, fritures en excès, compléments non prescrits. Trop de sel et sucre à cet âge augmente le risque cardiovasculaire adulte.'},
+    ]
+  },
+  {
+    label:'Enfant 4-6 ans', range:'4–6 ans', emoji:'👦',
+    cal:1400, prot:22, carb:175, fat:42,
+    desc:'Alimentation familiale normale avec portions réduites. Développement cognitif et moteur intense. Petit-déjeuner obligatoire.',
+    color:'#ffc107',
+    profile:[
+      {icon:'⚖️',label:'Poids moyen',val:'16–22 kg',color:'#4ade80'},
+      {icon:'📏',label:'Taille',val:'100–120 cm',color:'#60a5fa'},
+      {icon:'🍽️',label:'Repas/jour',val:'3 + 2 col.',color:'#fbbf24'},
+      {icon:'💧',label:'Eau/jour',val:'1.6 L',color:'#a78bfa'},
+    ],
+    growth:{months:['4ans','4.5','5ans','5.5','6ans'],weights:[16.4,17.8,19.0,20.2,21.5]},
+    meals:[
+      {e:'☕',name:'Bouillie de mil + lait',desc:'Petit-déjeuner énergétique. Fer + calcium + énergie pour l\'école.',kcal:280,tags:['École','Fer','Matin'],color:'#fef9c3',calColor:'#d97706'},
+      {e:'🍲',name:'Ndolé + riz blanc',desc:'Plat complet. Portion enfant = 60% portion adulte. Légèrement pimenté.',kcal:290,tags:['Midi','Complet','Protéines'],color:'#dcfce7',calColor:'#16a34a'},
+      {e:'🐔',name:'Poulet DG (portion enfant)',desc:'Portion réduite. Retirer les petits os. Plantains en petits morceaux.',kcal:320,tags:['Soir','Protéines','Complet'],color:'#fce7f3',calColor:'#db2777'},
+      {e:'🌽',name:'Maïs grillé + orange',desc:'Collation scolaire parfaite. Fibres + vitamine C.',kcal:140,tags:['Récré','Fibres'],color:'#fef9c3',calColor:'#d97706'},
+      {e:'🥜',name:'Arachides + banane',desc:'Collation protéinée et énergétique. 20g d\'arachides max.',kcal:180,tags:['Collation','Énergie'],color:'#fef9c3',calColor:'#d97706'},
+      {e:'🫘',name:'Haricots rouges + riz',desc:'Protéines végétales complètes. Excellente source de fer végétal.',kcal:270,tags:['Végétarien','Fer'],color:'#fee2e2',calColor:'#b91c1c'},
+    ],
+    vitamins:[
+      {i:'🦷',name:'Calcium',need:'1000 mg/jour',pct:60,src:'Lait, yaourt, poisson, ndolé',color:'#60a5fa'},
+      {i:'🧠',name:'Fer',need:'10 mg/jour',pct:65,src:'Viande rouge, légumineuses',color:'#f87171'},
+      {i:'💚',name:'Vitamine C',need:'45 mg/jour',pct:90,src:'Mangue, goyave, orange',color:'#4ade80'},
+      {i:'☀️',name:'Vitamine D',need:'600 UI/jour',pct:55,src:'Jeu dehors + lait enrichi',color:'#fbbf24'},
+      {i:'🫀',name:'Vitamine A',need:'400 µg/jour',pct:80,src:'Huile palme rouge, carottes',color:'#f97316'},
+      {i:'💊',name:'Zinc',need:'5 mg/jour',pct:70,src:'Viande, noix, légumineuses',color:'#a78bfa'},
+    ],
+    tips:[
+      {type:'green',icon:'🏃',title:'Petit-déjeuner = performances scolaires',text:'Les études au Cameroun montrent que les enfants qui prennent un petit-déjeuner complet ont 25% de meilleures performances scolaires. Bouillie de maïs + lait = idéal.'},
+      {type:'yellow',icon:'🧂',title:'Sel maximum',text:'Maximum 3g de sel/jour (1/2 cuillère à café). Éviter les bouillons industriels en excès. Utiliser le crayfish (crevettes séchées) comme substitut naturel.'},
+      {type:'orange',icon:'📚',title:'Box déjeuner école',text:'Préparer une boîte avec : fruit frais + quelques arachides + petit pain ou alloco. Éviter les chips et biscuits industriels pauvres en nutriments et riches en sel.'},
+      {type:'red',icon:'📱',title:'Écrans & alimentation',text:'Ne jamais manger devant un écran. Les enfants qui mangent devant la télé consomment 20% plus de calories sans s\'en rendre compte (alimentation distraite).'},
+    ]
+  },
+  {
+    label:'Grand enfant', range:'7–10 ans', emoji:'🧑',
+    cal:1700, prot:28, carb:212, fat:50,
+    desc:'Croissance régulière. Activité physique importante. Besoins en calcium et fer élevés. Autonomie alimentaire qui se développe.',
+    color:'#4a9eff',
+    profile:[
+      {icon:'⚖️',label:'Poids moyen',val:'22–32 kg',color:'#4ade80'},
+      {icon:'📏',label:'Taille',val:'120–138 cm',color:'#60a5fa'},
+      {icon:'🍽️',label:'Repas/jour',val:'3 + 2 col.',color:'#fbbf24'},
+      {icon:'💧',label:'Eau/jour',val:'1.8 L',color:'#a78bfa'},
+    ],
+    growth:{months:['7ans','7.5','8ans','8.5','9ans','9.5','10ans'],weights:[22.9,24.5,26.0,27.8,29.5,31.0,32.5]},
+    meals:[
+      {e:'🥣',name:'Bouillie de sorgho + arachides',desc:'Petit-déjeuner très nutritif. Protéines + fibres + fer.',kcal:320,tags:['Matin','Énergie','École'],color:'#fef9c3',calColor:'#d97706'},
+      {e:'🍲',name:'Eru & waterleaf + fufu',desc:'Riche en fer et calcium. Idéal pour la croissance osseuse.',kcal:380,tags:['Fer','Calcium','Croissance'],color:'#dcfce7',calColor:'#16a34a'},
+      {e:'🐟',name:'Poisson braisé + plantain',desc:'Oméga-3 pour le cerveau + énergie pour les activités.',kcal:380,tags:['Oméga-3','Cerveau'],color:'#dbeafe',calColor:'#2563eb'},
+      {e:'🍖',name:'Brochettes soya + légumes',desc:'Protéines maigres. Portion adaptée. Accompagner de légumes sautés.',kcal:290,tags:['Protéines','Sport'],color:'#fce7f3',calColor:'#db2777'},
+      {e:'🥭',name:'Mangue + lait fermenté',desc:'Vitamine A + probiotiques + calcium. Collation idéale après school.',kcal:155,tags:['Vitamines','Probio'],color:'#fef9c3',calColor:'#d97706'},
+      {e:'🧆',name:'Accra (haricots) + bissap',desc:'Protéines végétales + vitamine C. Street food sain après école.',kcal:285,tags:['Végétal','VitC'],color:'#fee2e2',calColor:'#b91c1c'},
+    ],
+    vitamins:[
+      {i:'🦴',name:'Calcium',need:'1300 mg/jour',pct:55,src:'Lait, poisson, légumineuses',color:'#60a5fa'},
+      {i:'🧠',name:'Fer',need:'8 mg/jour',pct:70,src:'Viande rouge, eru, haricots',color:'#f87171'},
+      {i:'💪',name:'Protéines',need:'28g/jour',pct:80,src:'Viande, poisson, œufs',color:'#4ade80'},
+      {i:'☀️',name:'Vitamine D',need:'600 UI/jour',pct:60,src:'Activités extérieures',color:'#fbbf24'},
+      {i:'🧪',name:'Magnésium',need:'130 mg/jour',pct:65,src:'Légumes verts, banane',color:'#34d399'},
+      {i:'💊',name:'Vitamine B12',need:'1.2 µg/jour',pct:75,src:'Viande, poisson, œufs',color:'#a78bfa'},
+    ],
+    tips:[
+      {type:'green',icon:'⚽',title:'Sport + nutrition = duo gagnant',text:'Les enfants actifs ont besoin de 15% de calories supplémentaires. Prévoir une collation 1h avant le sport (banane + arachides) et une récupération riche en protéines après.'},
+      {type:'yellow',icon:'🥛',title:'Calcium critique',text:'70% de la masse osseuse adulte se forme avant 18 ans. Les enfants de 7-10 ans ont besoin de 1300mg de calcium/jour. 2 portions de lait ou yaourt + ndolé couvrent les besoins.'},
+      {type:'orange',icon:'💻',title:'Alimentation intuitive',text:'Encourager l\'enfant à manger selon sa faim, pas selon l\'assiette vide. Les enfants ont naturellement de meilleurs signaux de satiété que les adultes.'},
+      {type:'red',icon:'🍭',title:'Sucres cachés',text:'Les boissons sucrées (sodas, jus industriels) sont la première cause de caries et d\'obésité infantile. Remplacer par bissap maison, eau ou lait fermenté.'},
+    ]
+  },
+  {
+    label:'Préadolescent', range:'11–13 ans', emoji:'🧑‍🎓',
+    cal:2000, prot:40, carb:250, fat:60,
+    desc:'Début pubertaire. Croissance accélérée. Besoins très élevés. Filles : attention au fer (début menstruations).',
+    color:'#9b59b6',
+    profile:[
+      {icon:'⚖️',label:'Poids moyen',val:'32–50 kg',color:'#4ade80'},
+      {icon:'📏',label:'Taille',val:'138–158 cm',color:'#60a5fa'},
+      {icon:'🍽️',label:'Repas/jour',val:'3 + 2 col.',color:'#fbbf24'},
+      {icon:'💧',label:'Eau/jour',val:'2.1 L',color:'#a78bfa'},
+    ],
+    growth:{months:['11ans','11.5','12ans','12.5','13ans'],weights:[36,40,44,47,51]},
+    meals:[
+      {e:'🥣',name:'Bouillie maïs enrichie fer',desc:'Bouillie de maïs avec lait + crayfish. Fer + calcium + protéines pour la croissance.',kcal:380,tags:['Matin','Fer','Croissance'],color:'#fef9c3',calColor:'#d97706'},
+      {e:'🍲',name:'Ndolé complet + riz + avocat',desc:'Plat complet. Ndolé (fer + protéines) + riz (énergie) + avocat (graisses saines).',kcal:520,tags:['Midi','Complet','Fer'],color:'#dcfce7',calColor:'#16a34a'},
+      {e:'🐔',name:'Poulet DG + légumes sautés',desc:'Protéines pour la croissance musculaire. Légumes pour les vitamines.',kcal:490,tags:['Soir','Protéines','Vitamines'],color:'#fce7f3',calColor:'#db2777'},
+      {e:'🥜',name:'Arachides + mangue',desc:'Collation post-école. Protéines + vitamine A + C.',kcal:220,tags:['Collation','Énergie'],color:'#fef9c3',calColor:'#d97706'},
+      {e:'🫘',name:'Haricots + semoule maïs',desc:'Déjeuner alternatif végétarien. Protéines complètes à petit prix.',kcal:390,tags:['Budget','Protéines'],color:'#fee2e2',calColor:'#b91c1c'},
+      {e:'🐟',name:'Poisson entier + macabo',desc:'Oméga-3 pour le développement cérébral en plein essor.',kcal:440,tags:['Cerveau','Oméga-3'],color:'#dbeafe',calColor:'#2563eb'},
+    ],
+    vitamins:[
+      {i:'🩸',name:'Fer (filles ++)',need:'8-15 mg/jour',pct:50,src:'Ndolé, viande rouge, légumineuses',color:'#f87171'},
+      {i:'🦴',name:'Calcium',need:'1300 mg/jour',pct:55,src:'Lait, yaourt, poisson, ndolé',color:'#60a5fa'},
+      {i:'☀️',name:'Vitamine D',need:'600 UI/jour',pct:60,src:'Soleil + lait enrichi',color:'#fbbf24'},
+      {i:'🧠',name:'Zinc',need:'8 mg/jour',pct:65,src:'Viande, noix, graines',color:'#4ade80'},
+      {i:'💚',name:'Acide folique',need:'300 µg/jour',pct:70,src:'Légumes verts feuilles, légumineuses',color:'#34d399'},
+      {i:'🫀',name:'Magnésium',need:'240 mg/jour',pct:60,src:'Légumes verts, banane, noix',color:'#a78bfa'},
+    ],
+    tips:[
+      {type:'green',icon:'🌹',title:'Fer pour les filles',text:'Avec les premières menstruations, les filles perdent du fer chaque mois. Consommer du ndolé, haricots et viande rouge 3x/semaine. Associer avec un aliment riche en vitamine C (orange, tomate) pour améliorer l\'absorption.'},
+      {type:'yellow',icon:'💪',title:'Protéines pour la croissance',text:'40g de protéines/jour minimum lors du pic de croissance pubertaire. Équivalent à : 1 poisson moyen + 1 œuf + une portion de légumineuses par jour.'},
+      {type:'orange',icon:'💤',title:'Sommeil et nutrition',text:'Les adolescents en croissance ont besoin de 9-10h de sommeil. Éviter la caféine après 16h. Un repas du soir riche en tryptophane (banane, lait) favorise l\'endormissement.'},
+      {type:'red',icon:'⚡',title:'Boissons énergétiques INTERDITES',text:'RedBull, Monster et autres energy drinks sont formellement déconseillés avant 18 ans. Excès de caféine + taurine perturbent le rythme cardiaque en développement.'},
+    ]
+  }
+];
+
+let currentAge = 0;
+
+function setAge(idx, btn){
+  document.querySelectorAll('.age-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  currentAge = idx;
+  renderAll();
+}
+
+function renderAll(){
+  const g = ageGroups[currentAge];
+  renderProfile(g);
+  renderCalGauge(g);
+  renderGrowth(g);
+  renderMeals(g);
+  renderVitamins(g);
+  renderTips(g);
+}
+
+function renderProfile(g){
+  document.getElementById('child-profile').innerHTML=`
+    <div class="cp-header">
+      <div><div class="cp-title">${g.emoji} ${g.label} · ${g.range}</div><div class="cp-subtitle">${g.desc}</div></div>
+      <div style="background:${g.color}22;border:1px solid ${g.color}44;border-radius:10px;padding:0.5rem 1rem;font-size:0.8rem;font-weight:700;color:${g.color}">
+        ${g.cal} kcal/jour
+      </div>
+    </div>
+    <div class="cp-grid">
+      ${g.profile.map(p=>`<div class="cp-stat"><div class="cp-stat-icon">${p.icon}</div><div class="cp-stat-val" style="color:${p.color}">${p.val}</div><div class="cp-stat-label">${p.label}</div></div>`).join('')}
+    </div>
+  `;
+}
+
+function renderCalGauge(g){
+  const circ = 2*Math.PI*60; // r=60
+  const pPct=g.prot*4/g.cal, cPct=g.carb*4/g.cal, fPct=g.fat*9/g.cal;
+  const pDash=pPct*circ, cDash=cPct*circ, fDash=fPct*circ;
+  document.getElementById('gauge-cal').textContent=g.cal;
+  document.getElementById('gauge-prot').setAttribute('stroke-dasharray',`${pDash} ${circ}`);
+  document.getElementById('gauge-prot').setAttribute('stroke-dashoffset','0');
+  document.getElementById('gauge-carb').setAttribute('stroke-dasharray',`${cDash} ${circ}`);
+  document.getElementById('gauge-carb').setAttribute('stroke-dashoffset',`-${pDash}`);
+  document.getElementById('gauge-fat').setAttribute('stroke-dasharray',`${fDash} ${circ}`);
+  document.getElementById('gauge-fat').setAttribute('stroke-dashoffset',`-${pDash+cDash}`);
+  const items = [
+    {color:'#4ade80',name:'Protéines',sub:`${g.prot}g / jour`,pct:Math.round(pPct*100),bar:'#4ade80'},
+    {color:'#fbbf24',name:'Glucides',sub:`${g.carb}g / jour`,pct:Math.round(cPct*100),bar:'#fbbf24'},
+    {color:'#f87171',name:'Lipides',sub:`${g.fat}g / jour`,pct:Math.round(fPct*100),bar:'#f87171'},
+  ];
+  document.getElementById('gauge-details').innerHTML=items.map(it=>`
+    <div class="gd-row">
+      <div class="gd-color" style="background:${it.color}"></div>
+      <div class="gd-info">
+        <div class="gd-name">${it.name} <span style="font-size:0.72rem;color:var(--muted);font-weight:400">${it.sub}</span></div>
+        <div class="gd-bar-bg"><div class="gd-bar" style="width:${it.pct}%;background:${it.bar}"></div></div>
+      </div>
+      <div class="gd-val-right" style="color:${it.color}">${it.pct}%</div>
+    </div>
+  `).join('');
+}
+
+function renderGrowth(g){
+  const maxW=Math.max(...g.growth.weights)*1.15;
+  const chart = document.getElementById('growth-chart');
+  chart.innerHTML = g.growth.months.map((m,i)=>{
+    const h = (g.growth.weights[i]/maxW)*100;
+    const isLast = i===g.growth.months.length-1;
+    return `<div class="gc-col">
+      <div class="gc-bar-wrap">
+        <div class="gc-bar" style="height:${h}%;background:${isLast?'linear-gradient(0deg,var(--green),var(--gl))':'rgba(29,138,74,0.35)'}"></div>
+      </div>
+      <div class="gc-kg" style="color:${isLast?'var(--green)':'var(--muted)'}">${g.growth.weights[i]}kg</div>
+      <div class="gc-month">${m}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('growth-ref').textContent=`Référence OMS · Valeurs médianes pour ${g.range} · Variations normales ±15%`;
+  document.getElementById('growth-badge').textContent=`Courbe OMS · ${g.range}`;
+}
+
+function renderMeals(g){
+  document.getElementById('meals-title').textContent=`Repas adaptés · ${g.label} (${g.range})`;
+  document.getElementById('meals-grid').innerHTML=g.meals.map(m=>`
+    <div class="age-meal-card" style="background:${m.color}30;border-color:${m.color}60">
+      <div class="amc-top" style="background:${m.color}">
+        <span class="amc-cal-pill" style="background:${m.calColor};color:#fff">🔥 ${m.kcal} kcal</span>
+        <span class="amc-emoji">${m.e}</span>
+        <div class="amc-name">${m.name}</div>
+        <div class="amc-desc">${m.desc}</div>
+        <div class="amc-tags">${m.tags.map(t=>`<span class="amc-tag">${t}</span>`).join('')}</div>
+      </div>
+      <div class="amc-bottom"><div class="amc-portions">📏 Portion enfant = 60–70% portion adulte</div></div>
+    </div>
+  `).join('');
+}
+
+function renderVitamins(g){
+  document.getElementById('vit-grid').innerHTML=g.vitamins.map(v=>`
+    <div class="vit-card">
+      <div class="vit-icon">${v.i}</div>
+      <div class="vit-name">${v.name}</div>
+      <div class="vit-need">${v.need}</div>
+      <div class="vit-bar-bg"><div class="vit-bar" style="width:${v.pct}%;background:${v.color}"></div></div>
+      <div class="vit-src">📍 ${v.src}</div>
+    </div>
+  `).join('');
+}
+
+function renderTips(g){
+  document.getElementById('tips-grid').innerHTML=g.tips.map(t=>`
+    <div class="tip-card ${t.type}">
+      <div class="tc-icon">${t.icon}</div>
+      <div class="tc-title">${t.title}</div>
+      <div class="tc-text">${t.text}</div>
+    </div>
+  `).join('');
+}
+
+renderAll();
+</script>
+</body>
+</html>

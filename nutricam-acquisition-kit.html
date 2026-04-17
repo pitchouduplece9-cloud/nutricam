@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Kit Acquisition 50 Premiers Utilisateurs</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f5fdf7;--dark:#061008;--green:#15803d;--gl:#22a854;--glight:#4ade80;
+  --y:#d97706;--red:#dc2626;--blue:#1d4ed8;--orange:#ea580c;
+  --card:#fff;--border:#bbf7d0;--text:#14532d;--muted:#6b8c72;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text)}
+.nav{background:var(--dark);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.nav-logo{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:#fff}
+.nav-logo span{color:#fbbf24}
+.nav-tabs{display:flex;gap:0.3rem}
+.nt{background:rgba(255,255,255,0.07);border:none;color:rgba(255,255,255,0.5);padding:0.4rem 0.9rem;border-radius:8px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.2s}
+.nt.active{background:var(--gl);color:#fff}
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--dark) 0%,#0a2d14 55%,#1a7a3e 100%);padding:3rem 2rem;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'🚀';position:absolute;right:2rem;top:50%;transform:translateY(-50%);font-size:12rem;opacity:0.04}
+.hero-badge{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);font-size:0.72rem;font-weight:700;padding:0.3rem 0.9rem;border-radius:100px;margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.08em}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(2rem,4vw,2.8rem);font-weight:900;color:#fff;margin-bottom:0.5rem;line-height:1.1}
+.hero h1 span{color:#fbbf24}
+.hero p{color:rgba(255,255,255,0.5);font-size:0.9rem;line-height:1.7;max-width:520px;margin:0 auto}
+/* MAIN */
+.main{max-width:1000px;margin:0 auto;padding:2.5rem}
+.view{display:none}.view.show{display:block;animation:fadeIn 0.3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+/* PROGRESS */
+.progress-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.5rem;margin-bottom:2rem}
+.pc-title{font-family:'Fraunces',serif;font-size:1rem;font-weight:900;color:var(--dark);margin-bottom:1rem}
+.user-counter{display:flex;align-items:center;gap:1.5rem;margin-bottom:1rem}
+.uc-num{font-family:'Fraunces',serif;font-size:3rem;font-weight:900;color:var(--green)}
+.uc-goal{font-size:0.8rem;color:var(--muted)}
+.progress-bar{height:10px;background:var(--bg);border-radius:5px;overflow:hidden;margin-bottom:0.5rem}
+.pb-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--gl),#fbbf24);border-radius:5px;transition:width 1s ease}
+.pb-label{font-size:0.72rem;color:var(--muted);display:flex;justify-content:space-between}
+/* CHANNEL CARDS */
+.channels-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin-bottom:2rem}
+.channel-card{background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;transition:all 0.25s}
+.channel-card:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,0.08)}
+.cc-top{padding:1.2rem 1.4rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0.8rem}
+.cc-icon{font-size:1.8rem;flex-shrink:0}
+.cc-name{font-family:'Fraunces',serif;font-size:1rem;font-weight:900;color:var(--dark)}
+.cc-users{font-size:0.72rem;color:var(--muted)}
+.cc-body{padding:1.2rem 1.4rem}
+.cc-step{display:flex;align-items:flex-start;gap:0.7rem;margin-bottom:0.7rem}
+.cs-num{width:22px;height:22px;border-radius:50%;background:var(--green);color:#fff;font-size:0.68rem;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.cs-text{font-size:0.82rem;color:var(--text);line-height:1.5}
+.cs-text strong{color:var(--dark)}
+.cc-target{background:rgba(21,128,61,0.06);border-radius:8px;padding:0.5rem 0.8rem;font-size:0.75rem;color:var(--green);font-weight:700;margin-top:0.5rem}
+/* MESSAGE TEMPLATES */
+.msg-section{margin-bottom:2rem}
+.ms-title{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:900;color:var(--dark);margin-bottom:0.3rem}
+.ms-sub{font-size:0.82rem;color:var(--muted);margin-bottom:1rem}
+.msg-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:1rem}
+.mc-header{padding:0.8rem 1.2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.mc-platform{font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.07em}
+.mc-copy{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:0.3rem 0.8rem;font-size:0.72rem;font-weight:700;color:var(--muted);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.2s}
+.mc-copy:hover{background:var(--green);color:#fff;border-color:var(--green)}
+.mc-body{padding:1.2rem;font-size:0.88rem;line-height:1.8;color:var(--text);white-space:pre-wrap;font-family:'Plus Jakarta Sans',sans-serif}
+/* WEEK PLAN */
+.week-plan{display:flex;flex-direction:column;gap:0.8rem}
+.wp-day{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.wpd-header{padding:0.8rem 1.2rem;display:flex;align-items:center;gap:0.8rem;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.01)}
+.wpd-day{font-family:'Fraunces',serif;font-size:0.95rem;font-weight:900;color:var(--dark);flex:1}
+.wpd-goal{font-size:0.72rem;font-weight:800;padding:0.18rem 0.6rem;border-radius:100px}
+.wpd-body{padding:1rem 1.2rem;display:flex;flex-direction:column;gap:0.5rem}
+.wpd-task{display:flex;align-items:flex-start;gap:0.7rem;cursor:pointer}
+.wt-check{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.65rem;color:var(--green);margin-top:1px;transition:all 0.15s}
+.wpd-task.done .wt-check{background:var(--green);border-color:var(--green);color:#fff}
+.wpd-task.done .wt-text{text-decoration:line-through;color:var(--muted)}
+.wt-text{font-size:0.82rem;color:var(--text);line-height:1.5}
+.wt-text strong{color:var(--dark)}
+/* KPI TARGETS */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem}
+.kpi-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.1rem;text-align:center}
+.kc-val{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:900}
+.kc-label{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-top:0.2rem}
+.kc-sub{font-size:0.7rem;color:var(--muted);margin-top:0.2rem}
+@media(max-width:768px){.channels-grid{grid-template-columns:1fr}.kpi-grid{grid-template-columns:1fr 1fr}.main{padding:1.5rem 1rem}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-logo">Nutri<span>Cam</span></div>
+  <div class="nav-tabs">
+    <button class="nt active" onclick="showView('canaux',this)">📣 Canaux</button>
+    <button class="nt" onclick="showView('messages',this)">💬 Messages</button>
+    <button class="nt" onclick="showView('planning',this)">📅 Planning</button>
+    <button class="nt" onclick="showView('kpis',this)">📊 KPIs</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">🚀 Stratégie Growth · Semaine 1</div>
+  <h1>Trouver vos <span>50 premiers</span><br/>utilisateurs NutriCam</h1>
+  <p>Guide concret pour Georges Duplece Pitchou — sans budget pub, sans agence. Juste du vrai relationnel camerounais.</p>
+</div>
+
+<div class="main">
+
+  <!-- ══ CANAUX ══ -->
+  <div class="view show" id="v-canaux">
+    <div class="progress-card">
+      <div class="pc-title">🎯 Objectif : 50 utilisateurs en 14 jours</div>
+      <div class="user-counter">
+        <div>
+          <div class="uc-num" id="user-count">0</div>
+          <div class="uc-goal">/ 50 utilisateurs</div>
+        </div>
+        <div style="flex:1">
+          <div class="progress-bar"><div class="pb-fill" id="user-bar" style="width:0%"></div></div>
+          <div class="pb-label"><span>Aujourd'hui</span><span id="user-pct">0%</span></div>
+        </div>
+        <div>
+          <button onclick="addUser()" style="background:var(--green);border:none;border-radius:10px;padding:0.6rem 1.2rem;color:#fff;font-size:0.85rem;font-weight:800;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif">+1 Inscrit !</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="channels-grid">
+
+      <div class="channel-card">
+        <div class="cc-top">
+          <div class="cc-icon">📱</div>
+          <div><div class="cc-name">WhatsApp Personnel</div><div class="cc-users">Potentiel : 15–20 inscrits</div></div>
+        </div>
+        <div class="cc-body">
+          <div class="cc-step"><div class="cs-num">1</div><div class="cs-text">Envoyez le message WhatsApp (voir onglet Messages) à <strong>tous vos contacts</strong> un par un — pas en groupe</div></div>
+          <div class="cc-step"><div class="cs-num">2</div><div class="cs-text">Ciblez d'abord vos amis camerounais, étudiants, mères de famille — les plus susceptibles d'être intéressés par la nutrition</div></div>
+          <div class="cc-step"><div class="cs-num">3</div><div class="cs-text">Envoyez le <strong>lien direct</strong> : nutricam.vercel.app avec le message</div></div>
+          <div class="cc-target">🎯 Objectif : 20 inscrits via WhatsApp</div>
+        </div>
+      </div>
+
+      <div class="channel-card">
+        <div class="cc-top">
+          <div class="cc-icon">👥</div>
+          <div><div class="cc-name">Groupes WhatsApp</div><div class="cc-users">Potentiel : 10–15 inscrits</div></div>
+        </div>
+        <div class="cc-body">
+          <div class="cc-step"><div class="cs-num">1</div><div class="cs-text">Identifiez vos groupes WhatsApp : famille Cameroun, amis diaspora, anciens étudiants, collègues</div></div>
+          <div class="cc-step"><div class="cs-num">2</div><div class="cs-text">Postez le <strong>message court</strong> (onglet Messages) dans chaque groupe — pas tous le même jour</div></div>
+          <div class="cc-step"><div class="cs-num">3</div><div class="cs-text">Répondez à chaque question personnellement — ça montre que vous êtes le fondateur derrière</div></div>
+          <div class="cc-target">🎯 Objectif : 10 inscrits via groupes</div>
+        </div>
+      </div>
+
+      <div class="channel-card">
+        <div class="cc-top">
+          <div class="cc-icon">📘</div>
+          <div><div class="cc-name">Facebook (Groupes Cameroun)</div><div class="cc-users">Potentiel : 8–12 inscrits</div></div>
+        </div>
+        <div class="cc-body">
+          <div class="cc-step"><div class="cs-num">1</div><div class="cs-text">Rejoignez ces groupes Facebook : <strong>"Camerounais de France"</strong>, <strong>"Cuisine Camerounaise"</strong>, <strong>"Diaspora Cameroun"</strong></div></div>
+          <div class="cc-step"><div class="cs-num">2</div><div class="cs-text">Publiez le <strong>post Facebook</strong> (onglet Messages) avec une capture de la landing page</div></div>
+          <div class="cc-step"><div class="cs-num">3</div><div class="cs-text">Répondez à chaque commentaire dans les 30 minutes — l'algorithme favorise les posts actifs</div></div>
+          <div class="cc-target">🎯 Objectif : 10 inscrits via Facebook</div>
+        </div>
+      </div>
+
+      <div class="channel-card">
+        <div class="cc-top">
+          <div class="cc-icon">💼</div>
+          <div><div class="cc-name">LinkedIn</div><div class="cc-users">Potentiel : 5–8 inscrits + médias</div></div>
+        </div>
+        <div class="cc-body">
+          <div class="cc-step"><div class="cs-num">1</div><div class="cs-text">Publiez le <strong>post fondateur LinkedIn</strong> (onglet Messages) — racontez votre histoire</div></div>
+          <div class="cc-step"><div class="cs-num">2</div><div class="cs-text">Taguez <strong>5 personnes</strong> influentes dans la tech africaine ou nutrition</div></div>
+          <div class="cc-step"><div class="cs-num">3</div><div class="cs-text">Envoyez en message privé aux <strong>journalistes</strong> tech africains (CIO Mag, Jeune Afrique Tech)</div></div>
+          <div class="cc-target">🎯 Objectif : 5 inscrits + 1 article potentiel</div>
+        </div>
+      </div>
+
+      <div class="channel-card">
+        <div class="cc-top">
+          <div class="cc-icon">🎓</div>
+          <div><div class="cc-name">Étudiants camerounais diaspora</div><div class="cc-users">Potentiel : 8–10 inscrits</div></div>
+        </div>
+        <div class="cc-body">
+          <div class="cc-step"><div class="cs-num">1</div><div class="cs-text">Contactez les <strong>associations étudiantes camerounaises</strong> de votre ville en Europe (UECA, etc.)</div></div>
+          <div class="cc-step"><div class="cs-num">2</div><div class="cs-text">Proposez une <strong>démo de 10 minutes</strong> lors de leur prochaine réunion</div></div>
+          <div class="cc-step"><div class="cs-num">3</div><div class="cs-text">Offrez <strong>3 mois Premium gratuits</strong> aux 20 premiers membres qui s'inscrivent</div></div>
+          <div class="cc-target">🎯 Objectif : 8 inscrits via associations</div>
+        </div>
+      </div>
+
+      <div class="channel-card">
+        <div class="cc-top">
+          <div class="cc-icon">🎙️</div>
+          <div><div class="cc-name">Podcasts & YouTube africains</div><div class="cc-users">Potentiel : 5–10 inscrits</div></div>
+        </div>
+        <div class="cc-body">
+          <div class="cc-step"><div class="cs-num">1</div><div class="cs-text">Cherchez <strong>"podcast camerounais"</strong>, <strong>"YouTube cuisine africaine"</strong> — 5 créateurs avec 1k+ abonnés</div></div>
+          <div class="cc-step"><div class="cs-num">2</div><div class="cs-text">Envoyez un <strong>email court</strong> proposant une collaboration ou mention de NutriCam</div></div>
+          <div class="cc-step"><div class="cs-num">3</div><div class="cs-text">Offrez un <strong>accès Premium 6 mois gratuit</strong> en échange d'une mention</div></div>
+          <div class="cc-target">🎯 Objectif : 5 inscrits via créateurs</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ MESSAGES ══ -->
+  <div class="view" id="v-messages">
+
+    <div class="msg-section">
+      <div class="ms-title">📱 Message WhatsApp — Personnel (copier-coller)</div>
+      <div class="ms-sub">Envoyez ce message à vos contacts un par un. Personnalisez le prénom.</div>
+      <div class="msg-card">
+        <div class="mc-header"><span class="mc-platform" style="color:#22c55e">📱 WhatsApp</span><button class="mc-copy" onclick="copyMsg(this)">📋 Copier</button></div>
+        <div class="mc-body">Salut [Prénom] ! 👋
+
+Je viens de lancer NutriCam, la première appli de nutrition pour nous les Camerounais ! 🌿
+
+Tu sais comme c'est compliqué de trouver les calories du ndolé ou du poulet DG dans MyFitnessPal ? 😅 Eh bien j'ai résolu ça !
+
+NutriCam c'est :
+🍲 200+ recettes camerounaises avec les vraies valeurs nutritionnelles
+🔥 Calcul de calories personnalisé
+🤖 Coach nutritionnel IA en français
+📷 Scanner de produits Azur, SCBC, SABC...
+
+C'est gratuit pour commencer 👇
+👉 nutricam.vercel.app
+
+J'aimerais trop avoir ton avis ! Tu peux tester et me dire ce que tu en penses ? 🙏
+
+— Georges (fondateur NutriCam)</div>
+      </div>
+    </div>
+
+    <div class="msg-section">
+      <div class="ms-title">👥 Message WhatsApp — Groupe (version courte)</div>
+      <div class="msg-card">
+        <div class="mc-header"><span class="mc-platform" style="color:#22c55e">📱 WhatsApp Groupe</span><button class="mc-copy" onclick="copyMsg(this)">📋 Copier</button></div>
+        <div class="mc-body">🌿 Bonne nouvelle pour nous les Camerounais !
+
+Je viens de lancer NutriCam — la 1ère appli nutrition 100% pour nous. Calories du ndolé, eru, poulet DG... tout y est ! 🍲
+
+Gratuit pour commencer : nutricam.vercel.app
+
+Vos retours m'aident beaucoup 🙏 — Georges, fondateur</div>
+      </div>
+    </div>
+
+    <div class="msg-section">
+      <div class="ms-title">📘 Post Facebook — Groupe "Camerounais de France/Belgique"</div>
+      <div class="msg-card">
+        <div class="mc-header"><span class="mc-platform" style="color:#1877f2">📘 Facebook</span><button class="mc-copy" onclick="copyMsg(this)">📋 Copier</button></div>
+        <div class="mc-body">🌿 J'ai créé quelque chose pour toute la communauté camerounaise !
+
+Avez-vous déjà cherché les calories du Ndolé sur MyFitnessPal ? Vous n'avez rien trouvé, n'est-ce pas ? 😅
+
+C'est exactement pourquoi j'ai créé NutriCam — la première plateforme nutritionnelle africaine avec 200+ recettes camerounaises (ndolé, poulet DG, eru, mbongo...) et leurs vraies valeurs nutritionnelles.
+
+✅ Calculateur de calories adapté à nos plats
+✅ Coach IA nutritionnel en français
+✅ Scanner de produits camerounais (Azur, SCBC, UCI...)
+✅ Plans repas personnalisés
+✅ Fonctionne hors-ligne
+✅ Gratuit pour commencer
+
+🔗 Testez ici : nutricam.vercel.app
+
+Je suis Georges Duplece Pitchou, fondateur basé en Europe, avec le cœur au Cameroun 🇨🇲
+
+Vos retours m'aident à améliorer le produit ! Partagez si ça peut aider quelqu'un 🙏
+
+#NutriCam #NutritionAfricaine #Cameroun #Diaspora #TechAfricaine</div>
+      </div>
+    </div>
+
+    <div class="msg-section">
+      <div class="ms-title">💼 Post LinkedIn — Histoire du fondateur</div>
+      <div class="msg-card">
+        <div class="mc-header"><span class="mc-platform" style="color:#0a66c2">💼 LinkedIn</span><button class="mc-copy" onclick="copyMsg(this)">📋 Copier</button></div>
+        <div class="mc-body">J'ai passé 3 ans à utiliser des apps nutrition sans jamais trouver le Ndolé, l'Eru ou le Poulet DG.
+
+Alors j'ai décidé de créer ce qui manquait.
+
+Aujourd'hui, je lance officiellement NutriCam 🌿
+
+NutriCam est la première plateforme nutritionnelle dédiée à la gastronomie africaine. Concrètement :
+→ 200+ recettes camerounaises avec valeurs nutritionnelles validées scientifiquement
+→ Un Coach IA nutritionnel spécialisé en cuisine africaine
+→ Un scanner de produits locaux (Azur, SCBC, UCI, SABC...)
+→ Des plans repas adaptés à nos profils et notre culture
+
+Le problème était simple : 350 millions d'Africains francophones mangent local mais aucune app ne les comprenait.
+
+La solution était locale aussi : utiliser nos propres ingrédients, nos propres recettes, nos propres marchés.
+
+Ce projet est né à Yaoundé, Cameroun 🇨🇲, développé depuis la diaspora.
+
+Si vous connaissez quelqu'un qui pourrait bénéficier de NutriCam — un médecin, un coach sportif, une maman, un étudiant camerounais — partagez ce post.
+
+🔗 nutricam.vercel.app (version bêta gratuite)
+
+Je suis Georges Duplece Pitchou — pitchouduplece9@gmail.com pour les collaborations.
+
+#Startup #AfricanTech #NutritionAfricaine #Cameroun #SantéAfrique #NutriCam</div>
+      </div>
+    </div>
+
+    <div class="msg-section">
+      <div class="ms-title">📧 Email — Journaliste / Média tech africain</div>
+      <div class="msg-card">
+        <div class="mc-header"><span class="mc-platform" style="color:#ea580c">📧 Email Média</span><button class="mc-copy" onclick="copyMsg(this)">📋 Copier</button></div>
+        <div class="mc-body">Objet : Startup camerounaise — 1ère app nutrition africaine [NutriCam]
+
+Bonjour [Nom du journaliste],
+
+Je me permets de vous contacter car votre travail sur la tech africaine m'a beaucoup inspiré.
+
+Je viens de lancer NutriCam, la première plateforme nutritionnelle conçue spécifiquement pour les Africains francophones. En quelques chiffres :
+• 200+ recettes camerounaises avec valeurs nutritionnelles validées par le CHU de Yaoundé
+• Coach IA en français spécialisé gastronomie africaine
+• Fonctionne hors-ligne pour les zones à faible connectivité
+• Paiements MTN Mobile Money et Orange Money
+
+Le problème que nous résolvons : 350 millions d'Africains francophones n'ont aucune app nutrition adaptée à leur alimentation. MyFitnessPal ne connaît ni le Ndolé ni l'Eru.
+
+Je serais ravi de vous partager plus de détails si ce sujet vous intéresse.
+
+Lien de démo : nutricam.vercel.app
+
+Cordialement,
+Georges Duplece Pitchou
+CEO & Fondateur, NutriCam
+📧 pitchouduplece9@gmail.com
+📱 +237 683 868 760 (WhatsApp)</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══ PLANNING ══ -->
+  <div class="view" id="v-planning">
+    <div class="ms-title" style="margin-bottom:0.3rem">📅 Plan d'action — 14 jours pour 50 utilisateurs</div>
+    <div class="ms-sub" style="margin-bottom:1.5rem">Tâches concrètes jour par jour. Cochez au fur et à mesure.</div>
+    <div class="week-plan" id="week-plan"></div>
+  </div>
+
+  <!-- ══ KPIs ══ -->
+  <div class="view" id="v-kpis">
+    <div class="ms-title" style="margin-bottom:0.3rem">📊 Métriques à suivre chaque jour</div>
+    <div class="ms-sub" style="margin-bottom:1.5rem">Actualisez ces chiffres tous les soirs. Ce qui se mesure s'améliore.</div>
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="kc-val" style="color:var(--green)" id="k1">0</div><div class="kc-label">Inscrits</div><div class="kc-sub">Objectif : 50</div><button onclick="increment('k1')" style="margin-top:0.5rem;background:var(--green);border:none;border-radius:6px;padding:0.3rem 0.7rem;color:#fff;font-size:0.72rem;font-weight:700;cursor:pointer">+1</button></div>
+      <div class="kpi-card"><div class="kc-val" style="color:#fbbf24" id="k2">0</div><div class="kc-label">Messages envoyés</div><div class="kc-sub">Objectif : 100</div><button onclick="increment('k2')" style="margin-top:0.5rem;background:var(--y);border:none;border-radius:6px;padding:0.3rem 0.7rem;color:#fff;font-size:0.72rem;font-weight:700;cursor:pointer">+1</button></div>
+      <div class="kpi-card"><div class="kc-val" style="color:var(--blue)" id="k3">0</div><div class="kc-label">Posts publiés</div><div class="kc-sub">Objectif : 14</div><button onclick="increment('k3')" style="margin-top:0.5rem;background:var(--blue);border:none;border-radius:6px;padding:0.3rem 0.7rem;color:#fff;font-size:0.72rem;font-weight:700;cursor:pointer">+1</button></div>
+      <div class="kpi-card"><div class="kc-val" style="color:var(--orange)" id="k4">0</div><div class="kc-label">Abonnés Premium</div><div class="kc-sub">Objectif : 5 payants</div><button onclick="increment('k4')" style="margin-top:0.5rem;background:var(--orange);border:none;border-radius:6px;padding:0.3rem 0.7rem;color:#fff;font-size:0.72rem;font-weight:700;cursor:pointer">+1</button></div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.4rem;margin-top:1rem">
+      <div style="font-family:'Fraunces',serif;font-size:0.95rem;font-weight:900;color:var(--dark);margin-bottom:1rem">💡 Règle d'or pour les non-techniques</div>
+      <div style="display:flex;flex-direction:column;gap:0.7rem">
+        <div style="display:flex;gap:0.7rem;align-items:flex-start;padding:0.7rem;background:var(--bg);border-radius:10px">
+          <span style="font-size:1.1rem;flex-shrink:0">📱</span>
+          <div style="font-size:0.82rem;color:var(--text);line-height:1.5"><strong>Chaque matin :</strong> Envoyez 5 messages WhatsApp personnels. En 14 jours = 70 messages = 20+ inscrits minimum.</div>
+        </div>
+        <div style="display:flex;gap:0.7rem;align-items:flex-start;padding:0.7rem;background:var(--bg);border-radius:10px">
+          <span style="font-size:1.1rem;flex-shrink:0">📘</span>
+          <div style="font-size:0.82rem;color:var(--text);line-height:1.5"><strong>Chaque soir :</strong> Un post Facebook ou LinkedIn. Répondez à TOUS les commentaires sous 30 minutes.</div>
+        </div>
+        <div style="display:flex;gap:0.7rem;align-items:flex-start;padding:0.7rem;background:var(--bg);border-radius:10px">
+          <span style="font-size:1.1rem;flex-shrink:0">🎯</span>
+          <div style="font-size:0.82rem;color:var(--text);line-height:1.5"><strong>Règle des 3 :</strong> Pour chaque inscrit, demandez-lui de recommander 3 autres personnes. 17 premiers inscrits → 50 automatiquement.</div>
+        </div>
+        <div style="display:flex;gap:0.7rem;align-items:flex-start;padding:0.7rem;background:rgba(21,128,61,0.06);border-radius:10px;border-left:3px solid var(--green)">
+          <span style="font-size:1.1rem;flex-shrink:0">💰</span>
+          <div style="font-size:0.82rem;color:var(--text);line-height:1.5"><strong>Premier paiement :</strong> Dès le 10ème inscrit, proposez le Premium à 2 500 FCFA. Pas besoin d'attendre 50 — commencez à monetiser immédiatement.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let userCount = 0;
+
+const weekPlan = [
+  { day:'Jour 1 — Lundi', goal:'+5 inscrits', color:'#15803d', tasks:[
+    'Envoyer le message WhatsApp à 10 contacts proches (famille, meilleurs amis)',
+    'Créer la page Facebook "NutriCam Officiel" + publier le 1er post',
+    'Créer le profil LinkedIn NutriCam + publier le post fondateur',
+    'Vérifier que le site nutricam.vercel.app est accessible depuis le Cameroun',
+  ]},
+  { day:'Jour 2 — Mardi', goal:'+5 inscrits', color:'#15803d', tasks:[
+    'Envoyer 10 nouveaux messages WhatsApp (collègues, anciens camarades)',
+    'Rejoindre 3 groupes Facebook "Camerounais de [votre ville]"',
+    'Publier dans le 1er groupe Facebook',
+    'Demander aux 5 premiers inscrits un feedback (3 minutes de leur temps)',
+  ]},
+  { day:'Jour 3-4', goal:'+8 inscrits', color:'#1d4ed8', tasks:[
+    'Messages WhatsApp : 10 contacts diaspora camerounaise',
+    'Publier dans les 2 autres groupes Facebook',
+    'Envoyer email à 3 journalistes tech africains (CIO Mag, Jeune Afrique)',
+    'Contacter l\'association étudiante camerounaise de votre ville',
+  ]},
+  { day:'Jour 5-7', goal:'+12 inscrits', color:'#1d4ed8', tasks:[
+    'Démo de 10 minutes à l\'association étudiante camerounaise',
+    'Offrir 3 mois Premium gratuits aux 10 premiers membres',
+    'Post Instagram avec capture de la landing page + hashtags',
+    'Envoyer 20 messages WhatsApp supplémentaires (2ème vague)',
+    'Relance des contacts qui ont vu le message mais pas répondu',
+  ]},
+  { day:'Jour 8-10', goal:'+10 inscrits', color:'#ea580c', tasks:[
+    '🎯 Vous avez ~30 inscrits — demandez à chacun d\'inviter 3 personnes',
+    'Créer un code parrainage : "GDP2025" = 1 mois Premium offert',
+    'Contacter 2 YouTubeurs cuisine africaine pour une mention',
+    'Premier post TikTok : "Comment j\'ai calculé les calories du Ndolé"',
+  ]},
+  { day:'Jour 11-14', goal:'+10 inscrits + 5 Premium', color:'#d97706', tasks:[
+    '🚀 Sprint final — relancez TOUT le monde',
+    'Proposez le Premium (2 500 FCFA) aux utilisateurs les plus actifs',
+    'Organisez un mini live Facebook/WhatsApp : "Je réponds à vos questions nutrition"',
+    '🎉 Célébrez les 50 inscrits ! Post de remerciement sur tous les réseaux',
+  ]},
+];
+
+function renderWeekPlan(){
+  document.getElementById('week-plan').innerHTML = weekPlan.map((d,di)=>`
+    <div class="wp-day">
+      <div class="wpd-header">
+        <div class="wpd-day">${d.day}</div>
+        <div class="wpd-goal" style="background:${d.color}18;color:${d.color}">${d.goal}</div>
+      </div>
+      <div class="wpd-body">
+        ${d.tasks.map((t,ti)=>`
+          <div class="wpd-task" id="task-${di}-${ti}" onclick="toggleTask(${di},${ti})">
+            <div class="wt-check"></div>
+            <div class="wt-text">${t}</div>
+          </div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+function toggleTask(di,ti){
+  document.getElementById(`task-${di}-${ti}`).classList.toggle('done');
+}
+
+function showView(id,btn){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('show'));
+  document.querySelectorAll('.nt').forEach(b=>b.classList.remove('active'));
+  document.getElementById('v-'+id).classList.add('show');
+  btn.classList.add('active');
+}
+
+function addUser(){
+  userCount=Math.min(50,userCount+1);
+  document.getElementById('user-count').textContent=userCount;
+  document.getElementById('user-bar').style.width=(userCount/50*100)+'%';
+  document.getElementById('user-pct').textContent=Math.round(userCount/50*100)+'%';
+}
+
+function increment(id){
+  const el=document.getElementById(id);
+  el.textContent=parseInt(el.textContent)+1;
+}
+
+function copyMsg(btn){
+  const body=btn.closest('.msg-card').querySelector('.mc-body').textContent;
+  navigator.clipboard?.writeText(body.trim()).then(()=>{
+    btn.textContent='✅ Copié !';
+    setTimeout(()=>btn.textContent='📋 Copier',2000);
+  });
+}
+
+renderWeekPlan();
+</script>
+</body>
+</html>

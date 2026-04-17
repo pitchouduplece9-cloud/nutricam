@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Programme de Fidélité</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#07090f;--surface:#0d1018;--card:#121620;--card2:#181c26;
+  --gold:#fbbf24;--gold2:#f59e0b;--silver:#94a3b8;--bronze:#cd7c3e;
+  --green:#22c55e;--gl:#16a34a;--blue:#3b82f6;--purple:#a855f7;--red:#ef4444;
+  --border:rgba(255,255,255,0.07);--text:#e2e8f0;--muted:#475569;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* NAV */
+.nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0.9rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.nav-logo{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:#fff}
+.nav-logo span{color:var(--gold)}
+.nav-pts{display:flex;align-items:center;gap:0.5rem;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.2);border-radius:100px;padding:0.35rem 1rem;font-size:0.82rem;font-weight:800;color:var(--gold)}
+
+/* HERO */
+.loy-hero{background:linear-gradient(135deg,#07090f 0%,#13100a 50%,#1a1500 100%);padding:3.5rem 2rem;text-align:center;position:relative;overflow:hidden}
+.lh-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(251,191,36,0.08),transparent 60%);pointer-events:none}
+.lh-badge{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.2);color:var(--gold);font-size:0.72rem;font-weight:800;padding:0.3rem 0.9rem;border-radius:100px;margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.08em}
+.lh-title{font-family:'Fraunces',serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:900;color:#fff;margin-bottom:0.5rem;line-height:1.1}
+.lh-title span{color:var(--gold)}
+.lh-sub{color:rgba(255,255,255,0.45);font-size:0.9rem;line-height:1.7;max-width:480px;margin:0 auto 2.5rem}
+
+/* LEVEL CARD */
+.level-card{background:linear-gradient(135deg,#1a1200,#2d2000);border:2px solid rgba(251,191,36,0.3);border-radius:24px;padding:2rem;max-width:600px;margin:0 auto 3rem;position:relative;overflow:hidden}
+.lc-glow{position:absolute;top:-30px;right:-30px;width:150px;height:150px;background:radial-gradient(circle,rgba(251,191,36,0.12),transparent);border-radius:50%;pointer-events:none}
+.lc-top{display:flex;align-items:center;gap:1.5rem;margin-bottom:1.5rem}
+.lc-avatar{width:72px;height:72px;border-radius:50%;border:3px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:1.8rem;font-weight:900;color:#000;background:linear-gradient(135deg,var(--gold),#f59e0b);position:relative;flex-shrink:0}
+.lc-crown{position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-size:1rem}
+.lc-name{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;color:#fff}
+.lc-level{display:inline-flex;align-items:center;gap:0.4rem;font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:var(--gold)}
+.lc-pts-display{font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--gold)}
+.lc-pts-label{font-size:0.7rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.07em}
+.lc-progress{margin-top:1rem}
+.lcp-labels{display:flex;justify-content:space-between;font-size:0.7rem;color:rgba(255,255,255,0.45);margin-bottom:0.4rem}
+.lcp-bar{height:8px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden}
+.lcp-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--gold2),var(--gold));transition:width 1.5s ease}
+
+/* LEVELS ROW */
+.levels-row{display:flex;gap:0.5rem;justify-content:center;margin-bottom:3rem;flex-wrap:wrap;padding:0 2rem}
+.level-pill{background:var(--card);border:1px solid var(--border);border-radius:100px;padding:0.5rem 1.2rem;display:flex;align-items:center;gap:0.5rem;font-size:0.78rem;font-weight:700;transition:all 0.2s;cursor:pointer}
+.level-pill:hover{transform:translateY(-2px)}
+.level-pill.current{border-width:2px}
+.lp-icon{font-size:1rem}
+.lp-name{color:var(--text)}
+.lp-pts{font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--muted)}
+
+/* MAIN */
+.loy-main{max-width:1100px;margin:0 auto;padding:0 2rem 4rem}
+
+/* POINTS ACTIONS */
+.actions-section{margin-bottom:2.5rem}
+.as-title{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:#fff;margin-bottom:0.3rem}
+.as-sub{font-size:0.82rem;color:var(--muted);margin-bottom:1.2rem}
+.actions-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem}
+.action-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem;cursor:pointer;transition:all 0.2s;position:relative}
+.action-card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,0.12)}
+.action-card.completed{opacity:0.5}
+.action-card.completed::after{content:'✓';position:absolute;top:0.7rem;right:0.7rem;width:20px;height:20px;border-radius:50%;background:var(--green);color:#fff;font-size:0.7rem;font-weight:900;display:flex;align-items:center;justify-content:center}
+.ac-icon{font-size:1.6rem;margin-bottom:0.5rem;display:block}
+.ac-name{font-size:0.82rem;font-weight:700;color:#fff;margin-bottom:0.2rem}
+.ac-desc{font-size:0.7rem;color:var(--muted);line-height:1.4;margin-bottom:0.6rem}
+.ac-pts{display:inline-flex;align-items:center;gap:0.3rem;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.2);color:var(--gold);font-size:0.72rem;font-weight:800;padding:0.18rem 0.6rem;border-radius:100px}
+.ac-freq{font-size:0.62rem;color:var(--muted);margin-top:0.3rem}
+
+/* BADGES */
+.badges-section{margin-bottom:2.5rem}
+.badges-mega-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:0.8rem}
+.badge-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem;text-align:center;transition:all 0.2s;position:relative}
+.badge-card:hover{transform:translateY(-2px)}
+.badge-card.locked{opacity:0.4;filter:grayscale(1)}
+.badge-card.earned{border-color:rgba(251,191,36,0.3)}
+.badge-glow{position:absolute;inset:0;border-radius:16px;pointer-events:none;opacity:0}
+.badge-card.earned .badge-glow{opacity:1;background:radial-gradient(ellipse at center,rgba(251,191,36,0.06),transparent)}
+.bc-icon{font-size:2.2rem;display:block;margin-bottom:0.5rem}
+.bc-name{font-size:0.75rem;font-weight:800;color:#fff;margin-bottom:0.15rem}
+.bc-desc{font-size:0.62rem;color:var(--muted);line-height:1.35}
+.bc-pts{font-size:0.62rem;color:var(--gold);font-weight:700;margin-top:0.3rem}
+.bc-earned{font-size:0.6rem;color:var(--green);font-weight:800;margin-top:0.2rem}
+
+/* REWARDS */
+.rewards-section{margin-bottom:2.5rem}
+.rewards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem}
+.reward-card{background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;transition:all 0.2s}
+.reward-card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,0.3)}
+.rc-visual{height:100px;display:flex;align-items:center;justify-content:center;font-size:3.5rem;position:relative}
+.rc-body{padding:1.1rem}
+.rcb-name{font-size:0.88rem;font-weight:800;color:#fff;margin-bottom:0.2rem}
+.rcb-desc{font-size:0.72rem;color:var(--muted);margin-bottom:0.8rem;line-height:1.4}
+.rcb-cost{display:flex;align-items:center;justify-content:space-between}
+.rcc-pts{font-family:'DM Mono',monospace;font-size:0.82rem;font-weight:800;color:var(--gold)}
+.rcc-btn{background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.25);color:var(--gold);padding:0.35rem 0.9rem;border-radius:8px;font-size:0.72rem;font-weight:800;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s}
+.rcc-btn:hover{background:var(--gold);color:#000}
+.rcc-btn.locked{opacity:0.4;cursor:not-allowed}
+
+/* LEADERBOARD */
+.lb-section{margin-bottom:2.5rem}
+.lb-table{background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden}
+.lb-header{padding:1rem 1.4rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.lb-title{font-family:'Fraunces',serif;font-size:0.95rem;font-weight:900;color:#fff}
+.lb-row{display:flex;align-items:center;gap:0.9rem;padding:0.85rem 1.4rem;border-bottom:1px solid var(--border);transition:background 0.15s}
+.lb-row:last-child{border-bottom:none}
+.lb-row:hover{background:rgba(255,255,255,0.02)}
+.lb-row.me{background:rgba(251,191,36,0.05);border-left:3px solid var(--gold)}
+.lbr-rank{font-family:'Fraunces',serif;font-size:1rem;font-weight:900;width:28px;text-align:center;flex-shrink:0}
+.lbr-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.82rem;font-weight:800;color:#fff;flex-shrink:0}
+.lbr-name{font-size:0.85rem;font-weight:700;color:#fff;flex:1}
+.lbr-level{font-size:0.68rem;color:var(--muted)}
+.lbr-pts{font-family:'DM Mono',monospace;font-size:0.82rem;font-weight:800;color:var(--gold)}
+.lbr-badge{font-size:0.9rem}
+
+/* TOAST */
+.pts-toast{position:fixed;top:1.5rem;right:1.5rem;background:linear-gradient(135deg,#1a1200,#2d2000);border:1px solid rgba(251,191,36,0.3);border-radius:14px;padding:0.9rem 1.3rem;display:flex;align-items:center;gap:0.8rem;box-shadow:0 12px 40px rgba(0,0,0,0.4);z-index:200;opacity:0;transition:opacity 0.3s;pointer-events:none}
+.pts-toast.show{opacity:1}
+.pt-icon{font-size:1.5rem}
+.pt-pts{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;color:var(--gold)}
+.pt-label{font-size:0.75rem;color:rgba(255,255,255,0.6)}
+
+@media(max-width:768px){.actions-grid{grid-template-columns:1fr 1fr}.levels-row{gap:0.3rem}.loy-main{padding:0 1rem 3rem}.lh-title{font-size:2rem}.level-card{margin:0 1rem 2rem}}
+</style>
+</head>
+<body>
+
+<div class="pts-toast" id="pts-toast">
+  <div class="pt-icon">⭐</div>
+  <div><div class="pt-pts" id="pts-earned">+50 pts</div><div class="pt-label">Points NutriCam gagnés !</div></div>
+</div>
+
+<nav class="nav">
+  <div class="nav-logo">Nutri<span>Cam</span> Rewards</div>
+  <div class="nav-pts">⭐ <span id="nav-pts">2 450</span> pts</div>
+</nav>
+
+<div class="loy-hero">
+  <div class="lh-glow"></div>
+  <div class="lh-badge">⭐ Programme de fidélité</div>
+  <h1 class="lh-title">Gagnez des points.<br/>Débloquez des <span>récompenses</span>.</h1>
+  <p class="lh-sub">Chaque action sur NutriCam vous rapporte des points. Échangez-les contre des mois Premium, réductions et cadeaux partenaires.</p>
+
+  <div class="level-card">
+    <div class="lc-glow"></div>
+    <div class="lc-top">
+      <div class="lc-avatar">GDP<div class="lc-crown">👑</div></div>
+      <div style="flex:1">
+        <div class="lc-name">Georges D. Pitchou</div>
+        <div class="lc-level">🥈 Niveau Or · Nutrinaute</div>
+      </div>
+      <div style="text-align:right">
+        <div class="lc-pts-display" id="total-pts">2 450</div>
+        <div class="lc-pts-label">points</div>
+      </div>
+    </div>
+    <div class="lc-progress">
+      <div class="lcp-labels"><span>Or (2 000 pts)</span><span id="next-label">Platine : 5 000 pts · encore 2 550 pts</span></div>
+      <div class="lcp-bar"><div class="lcp-fill" id="level-bar" style="width:45%"></div></div>
+    </div>
+  </div>
+
+  <div class="levels-row">
+    <div class="level-pill" style="border-color:rgba(205,124,62,0.3)"><span class="lp-icon">🥉</span><div><div class="lp-name" style="color:var(--bronze)">Bronze</div><div class="lp-pts">0 pts</div></div></div>
+    <div class="level-pill" style="border-color:rgba(148,163,184,0.3)"><span class="lp-icon">🥈</span><div><div class="lp-name" style="color:var(--silver)">Argent</div><div class="lp-pts">500 pts</div></div></div>
+    <div class="level-pill current" style="border-color:rgba(251,191,36,0.5);background:rgba(251,191,36,0.06)"><span class="lp-icon">🥇</span><div><div class="lp-name" style="color:var(--gold)">Or ← Vous</div><div class="lp-pts">2 000 pts</div></div></div>
+    <div class="level-pill" style="border-color:rgba(168,85,247,0.3)"><span class="lp-icon">💎</span><div><div class="lp-name" style="color:#c084fc">Platine</div><div class="lp-pts">5 000 pts</div></div></div>
+    <div class="level-pill" style="border-color:rgba(34,197,94,0.3)"><span class="lp-icon">🌟</span><div><div class="lp-name" style="color:var(--green)">Légendaire</div><div class="lp-pts">10 000 pts</div></div></div>
+  </div>
+</div>
+
+<div class="loy-main">
+
+  <!-- EARN POINTS -->
+  <div class="actions-section">
+    <div class="as-title">⚡ Gagnez des points</div>
+    <div class="as-sub">Effectuez ces actions pour accumuler des NutriPoints et progresser vers le niveau Légendaire.</div>
+    <div class="actions-grid" id="actions-grid"></div>
+  </div>
+
+  <!-- BADGES -->
+  <div class="badges-section">
+    <div class="as-title">🏅 Mes badges</div>
+    <div class="as-sub" style="margin-bottom:1.2rem">Débloquez des badges en atteignant des objectifs. Chaque badge rapporte des points bonus.</div>
+    <div class="badges-mega-grid" id="badges-mega"></div>
+  </div>
+
+  <!-- REWARDS -->
+  <div class="rewards-section">
+    <div class="as-title">🎁 Échange de points</div>
+    <div class="as-sub" style="margin-bottom:1.2rem">Utilisez vos NutriPoints pour obtenir des récompenses exclusives.</div>
+    <div class="rewards-grid" id="rewards-grid"></div>
+  </div>
+
+  <!-- LEADERBOARD -->
+  <div class="lb-section">
+    <div class="lb-table">
+      <div class="lb-header">
+        <div class="lb-title">🏆 Classement communauté</div>
+        <div style="font-size:0.72rem;color:var(--muted)">Mis à jour en temps réel</div>
+      </div>
+      <div id="leaderboard"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let totalPts = 2450;
+
+const actions = [
+  {i:'📓',n:'Enregistrer un repas',d:'Ajoutez un repas à votre journal quotidien.',pts:10,freq:'Jusqu\'à 4×/jour',done:true},
+  {i:'💧',n:'Objectif hydratation',d:'Atteignez votre objectif d\'eau quotidien (2.5L).',pts:20,freq:'1×/jour',done:true},
+  {i:'🍲',n:'Essayer une nouvelle recette',d:'Cuisinez et enregistrez une recette NutriCam.',pts:50,freq:'1×/recette',done:false},
+  {i:'⚖️',n:'Enregistrer votre poids',d:'Pesez-vous et notez votre poids hebdomadaire.',pts:30,freq:'1×/semaine',done:false},
+  {i:'🤖',n:'Utiliser le Coach IA',d:'Posez une question au Coach nutritionnel.',pts:15,freq:'3×/jour',done:true},
+  {i:'📷',n:'Scanner un produit',d:'Scannez le code-barres d\'un produit alimentaire.',pts:25,freq:'Illimité',done:false},
+  {i:'🔥',n:'Streak 7 jours',d:'Connectez-vous 7 jours de suite.',pts:100,freq:'Par tranche de 7j',done:false},
+  {i:'👥',n:'Parrainer un ami',d:'Invitez un ami qui s\'inscrit sur NutriCam.',pts:200,freq:'Illimité',done:false},
+  {i:'⭐',n:'Laisser un avis',d:'Notez NutriCam sur les stores (iOS/Android).',pts:150,freq:'1×/app',done:false},
+];
+
+const badges = [
+  {i:'🔥',n:'Semaine parfaite',d:'7 jours de suivi consécutifs',pts:100,earned:true},
+  {i:'⚖️',n:'Minus 1kg',d:'Perdre 1kg avec NutriCam',pts:150,earned:true},
+  {i:'⚖️',n:'Minus 3kg',d:'Perdre 3kg avec NutriCam',pts:300,earned:true},
+  {i:'💧',n:'Hydro Master',d:'2.5L/jour pendant 7 jours',pts:100,earned:true},
+  {i:'🍲',n:'Explorateur',d:'Essayer 20 recettes différentes',pts:200,earned:false},
+  {i:'🏆',n:'Top Communauté',d:'Être dans le Top 10 du classement',pts:500,earned:false},
+  {i:'💎',n:'Premium Loyal',d:'3 mois d\'abonnement Premium',pts:300,earned:false},
+  {i:'🌿',n:'Détox Queen',d:'30 boissons détox consécutives',pts:200,earned:false},
+  {i:'💪',n:'Protéines Pro',d:'120g de protéines/jour pendant 7j',pts:150,earned:false},
+  {i:'🎯',n:'Objectif atteint',d:'Atteindre votre poids cible',pts:1000,earned:false},
+  {i:'📚',n:'Nutritionniste',d:'Lire 10 articles du blog',pts:100,earned:false},
+  {i:'👥',n:'Parrain',d:'3 amis parrainés',pts:600,earned:false},
+];
+
+const rewards = [
+  {i:'🎁',bg:'linear-gradient(135deg,#1a1200,#2d2000)',n:'1 mois Premium offert',d:'Profitez d\'un mois complet Premium gratuitement.',cost:1000,canAfford:true},
+  {i:'🏷️',bg:'linear-gradient(135deg,#0a1f0f,#1a7a3e)',n:'Code −20% pour un ami',d:'Offrez 20% de réduction à un proche.',cost:500,canAfford:true},
+  {i:'📦',bg:'linear-gradient(135deg,#0c1a4a,#2563eb)',n:'Kit NutriCam physique',d:'T-shirt + tasse + stickers NutriCam. Livraison Yaoundé.',cost:2000,canAfford:false},
+  {i:'🍲',bg:'linear-gradient(135deg,#3d1a00,#7a3400)',n:'Livre de recettes PDF',d:'200+ recettes camerounaises avec photos HD.',cost:750,canAfford:true},
+  {i:'🤖',bg:'linear-gradient(135deg,#1a0533,#4c1d95)',n:'+100 questions Coach IA',d:'Bonus de 100 questions supplémentaires au Coach.',cost:300,canAfford:true},
+  {i:'🍽️',bg:'linear-gradient(135deg,#0a1a2a,#1e3a5f)',n:'Dîner restaurant partenaire',d:'Invitations pour 2 dans un restaurant NutriCam labellisé Yaoundé.',cost:5000,canAfford:false},
+];
+
+const leaders = [
+  {rank:'🥇',av:'DK',c:'#1a7a3e',name:'Dr. Diane Kengne',level:'🌟 Légendaire',pts:'12 450',badge:'👑',me:false},
+  {rank:'🥈',av:'NE',c:'#ea580c',name:'Nathalie Ewane',level:'💎 Platine',pts:'9 820',badge:'⭐',me:false},
+  {rank:'🥉',av:'PB',c:'#16a34a',name:'Paul Bello',level:'💎 Platine',pts:'7 340',badge:'🏆',me:false},
+  {rank:'4',av:'JM',c:'#2563eb',name:'Jean-Marie Nkoa',level:'🥇 Or',pts:'4 100',badge:'',me:false},
+  {rank:'5',av:'GDP',c:'#fbbf24',name:'Georges D. Pitchou',level:'🥇 Or',pts:'2 450',badge:'',me:true},
+  {rank:'6',av:'AF',c:'#f97316',name:'Aminatou Fall',level:'🥈 Argent',pts:'1 890',badge:'',me:false},
+  {rank:'7',av:'CL',c:'#7c3aed',name:'Cédric Longang',level:'🥈 Argent',pts:'1 230',badge:'',me:false},
+];
+
+function earnPts(pts, el) {
+  if(!el) return;
+  totalPts += pts;
+  document.getElementById('total-pts').textContent = totalPts.toLocaleString();
+  document.getElementById('nav-pts').textContent = totalPts.toLocaleString();
+  const pct = Math.min(((totalPts-2000)/(5000-2000))*100, 100);
+  document.getElementById('level-bar').style.width = pct + '%';
+
+  // Toast
+  document.getElementById('pts-earned').textContent = '+' + pts + ' pts';
+  const toast = document.getElementById('pts-toast');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+
+  // Mark action done
+  el.classList.add('completed');
+}
+
+document.getElementById('actions-grid').innerHTML = actions.map((a,i) => `
+  <div class="action-card ${a.done?'completed':''}" onclick="${a.done?'':'earnPts('+a.pts+',this)'}">
+    <span class="ac-icon">${a.i}</span>
+    <div class="ac-name">${a.n}</div>
+    <div class="ac-desc">${a.d}</div>
+    <div class="ac-pts">⭐ +${a.pts} pts</div>
+    <div class="ac-freq">${a.freq}</div>
+  </div>`).join('');
+
+document.getElementById('badges-mega').innerHTML = badges.map(b => `
+  <div class="badge-card ${b.earned?'earned':'locked'}">
+    <div class="badge-glow"></div>
+    <span class="bc-icon">${b.earned?b.i:'🔒'}</span>
+    <div class="bc-name">${b.n}</div>
+    <div class="bc-desc">${b.d}</div>
+    <div class="bc-pts">+${b.pts} pts</div>
+    ${b.earned?'<div class="bc-earned">✓ Débloqué</div>':''}
+  </div>`).join('');
+
+document.getElementById('rewards-grid').innerHTML = rewards.map(r => `
+  <div class="reward-card">
+    <div class="rc-visual" style="background:${r.bg}">${r.i}</div>
+    <div class="rc-body">
+      <div class="rcb-name">${r.n}</div>
+      <div class="rcb-desc">${r.d}</div>
+      <div class="rcb-cost">
+        <div class="rcc-pts">⭐ ${r.cost.toLocaleString()} pts</div>
+        <button class="rcc-btn ${r.canAfford?'':'locked'}" onclick="${r.canAfford?'alert(\'🎁 Récompense échangée ! Vérifiez vos emails.\')':'alert(\'Il vous manque des points. Continuez à accumuler !\')'}">${r.canAfford?'Échanger':'🔒 Insuffisant'}</button>
+      </div>
+    </div>
+  </div>`).join('');
+
+document.getElementById('leaderboard').innerHTML = leaders.map(l => `
+  <div class="lb-row ${l.me?'me':''}">
+    <div class="lbr-rank">${l.rank}</div>
+    <div class="lbr-av" style="background:${l.c}">${l.av}</div>
+    <div style="flex:1"><div class="lbr-name">${l.name} ${l.me?'<span style="font-size:0.62rem;color:var(--gold);background:rgba(251,191,36,0.1);padding:0.1rem 0.4rem;border-radius:3px">Vous</span>':''}</div><div class="lbr-level">${l.level}</div></div>
+    <div class="lbr-pts">${l.pts}</div>
+    <div class="lbr-badge">${l.badge}</div>
+  </div>`).join('');
+</script>
+</body>
+</html>

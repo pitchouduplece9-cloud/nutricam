@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Notifications</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#07100a;--surface:#0d1810;--card:#111e14;--card2:#162119;
+  --green:#22c55e;--gl:#16a34a;--y:#fbbf24;--red:#ef4444;--blue:#3b82f6;
+  --purple:#a855f7;--orange:#f97316;--teal:#14b8a6;
+  --border:rgba(255,255,255,0.06);--text:#ddeee2;--muted:#4d7259;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* LAYOUT */
+.app{display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{width:72px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;padding:1.2rem 0;gap:0.3rem;position:sticky;top:0;height:100vh}
+.sb-logo{font-family:'Syne',sans-serif;font-size:0.9rem;font-weight:800;color:#fff;writing-mode:initial;margin-bottom:1rem}
+.sb-logo span{color:var(--y)}
+.sb-icon-btn{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;cursor:pointer;transition:all 0.15s;position:relative;color:var(--muted)}
+.sb-icon-btn:hover{background:rgba(255,255,255,0.06);color:var(--text)}
+.sb-icon-btn.active{background:rgba(34,197,94,0.12);color:var(--green)}
+.sb-notif-count{position:absolute;top:4px;right:4px;width:16px;height:16px;border-radius:50%;background:var(--red);color:#fff;font-size:0.55rem;font-weight:800;display:flex;align-items:center;justify-content:center}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+
+/* TOPBAR */
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:1rem 1.8rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.tb-title{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:#fff}
+.tb-subtitle{font-size:0.72rem;color:var(--muted);margin-top:0.1rem}
+.tb-actions{display:flex;gap:0.6rem}
+.tb-btn{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:0.45rem 0.9rem;font-size:0.75rem;font-weight:700;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s}
+.tb-btn:hover{color:var(--text)}
+.tb-btn.primary{background:var(--gl);border-color:var(--gl);color:#fff}
+
+/* CONTENT LAYOUT */
+.content{flex:1;display:grid;grid-template-columns:320px 1fr;overflow:hidden}
+
+/* ── NOTIF LIST ── */
+.notif-list-panel{border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.nlp-header{padding:1rem 1.2rem;border-bottom:1px solid var(--border);flex-shrink:0}
+.filter-tabs{display:flex;gap:0.3rem}
+.ft{background:transparent;border:none;color:var(--muted);font-size:0.75rem;font-weight:700;padding:0.4rem 0.8rem;border-radius:8px;cursor:pointer;transition:all 0.15s;font-family:'DM Sans',sans-serif}
+.ft:hover{color:var(--text)}
+.ft.active{background:rgba(34,197,94,0.1);color:var(--green)}
+.ft-count{background:rgba(255,255,255,0.08);color:var(--muted);font-size:0.6rem;padding:0.1rem 0.4rem;border-radius:4px;margin-left:2px}
+.notif-scroll{flex:1;overflow-y:auto}
+.notif-scroll::-webkit-scrollbar{width:3px}
+.notif-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.07)}
+
+/* NOTIF ITEM */
+.notif-item{display:flex;gap:0.8rem;padding:1rem 1.2rem;border-bottom:1px solid var(--border);cursor:pointer;transition:all 0.15s;position:relative}
+.notif-item:hover{background:rgba(255,255,255,0.03)}
+.notif-item.active{background:rgba(34,197,94,0.06);border-left:3px solid var(--green)}
+.notif-item.unread::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:4px;height:4px;border-radius:50%;background:var(--green)}
+.notif-item.active.unread::before{display:none}
+.ni-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.ni-body{flex:1;min-width:0}
+.ni-title{font-size:0.82rem;font-weight:700;color:#fff;margin-bottom:0.15rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ni-msg{font-size:0.72rem;color:var(--muted);line-height:1.4;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.ni-time{font-size:0.62rem;color:var(--muted);white-space:nowrap;flex-shrink:0;margin-top:1px}
+
+/* ── NOTIF DETAIL ── */
+.notif-detail{overflow-y:auto;padding:2rem}
+.notif-detail::-webkit-scrollbar{width:4px}
+.notif-detail::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08)}
+.nd-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--muted);text-align:center;gap:1rem}
+.nd-empty-icon{font-size:4rem;opacity:0.3}
+.nd-empty-text{font-size:0.88rem}
+
+.nd-header{display:flex;align-items:flex-start;gap:1rem;margin-bottom:2rem}
+.nd-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0}
+.nd-title{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:#fff;margin-bottom:0.3rem}
+.nd-meta{font-size:0.75rem;color:var(--muted)}
+.nd-body-text{font-size:0.9rem;color:var(--text);line-height:1.8;margin-bottom:1.5rem;background:var(--card);border-radius:16px;padding:1.4rem;border:1px solid var(--border)}
+
+/* NOTIF CARDS */
+.nd-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.3rem;margin-bottom:1rem}
+.ndc-title{font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.8rem}
+.ndc-recipe{display:flex;align-items:center;gap:0.8rem;padding:0.8rem;background:var(--card2);border-radius:12px;margin-bottom:0.4rem;cursor:pointer;transition:all 0.2s;border:1px solid transparent}
+.ndc-recipe:hover{border-color:rgba(34,197,94,0.2)}
+.ndc-emoji{font-size:1.4rem;flex-shrink:0}
+.ndc-name{font-size:0.82rem;font-weight:700;color:#fff;flex:1}
+.ndc-cal{font-size:0.72rem;color:var(--y);font-weight:700}
+.nd-actions{display:flex;gap:0.7rem;margin-top:1.5rem}
+.nda-btn{flex:1;border-radius:12px;padding:0.8rem;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;border:none}
+.nda-primary{background:var(--gl);color:#fff}
+.nda-primary:hover{background:var(--green)}
+.nda-outline{background:transparent;border:1.5px solid var(--border);color:var(--muted)}
+.nda-outline:hover{color:#fff;border-color:rgba(255,255,255,0.2)}
+
+/* SETTINGS PANEL */
+.settings-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);z-index:100;align-items:flex-end;justify-content:center;padding:2rem}
+.settings-overlay.show{display:flex}
+.settings-sheet{background:var(--card);border-radius:24px 24px 16px 16px;padding:2rem;width:100%;max-width:480px;animation:slideUp 0.35s ease}
+@keyframes slideUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+.ss-title{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:#fff;margin-bottom:1.5rem;display:flex;justify-content:space-between;align-items:center}
+.ss-close{background:rgba(255,255,255,0.08);border:none;color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center}
+.setting-row{display:flex;align-items:center;gap:0.9rem;padding:0.8rem 0;border-bottom:1px solid var(--border)}
+.setting-row:last-child{border-bottom:none}
+.sr-icon{font-size:1.1rem;width:30px;text-align:center}
+.sr-info{flex:1}
+.sr-label{font-size:0.85rem;font-weight:600;color:#fff}
+.sr-sub{font-size:0.7rem;color:var(--muted)}
+.toggle{width:42px;height:24px;border-radius:12px;position:relative;cursor:pointer;transition:background 0.2s;flex-shrink:0}
+.toggle.on{background:var(--gl)}
+.toggle.off{background:rgba(255,255,255,0.1)}
+.toggle-thumb{position:absolute;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left 0.2s}
+.toggle.on .toggle-thumb{left:21px}
+.toggle.off .toggle-thumb{left:3px}
+
+/* LIVE NOTIFICATION TOAST */
+.toast-container{position:fixed;top:1rem;right:1rem;z-index:200;display:flex;flex-direction:column;gap:0.5rem;max-width:320px}
+.toast{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:0.9rem 1.1rem;display:flex;gap:0.8rem;align-items:flex-start;box-shadow:0 10px 40px rgba(0,0,0,0.4);animation:toastIn 0.4s ease;pointer-events:all;cursor:pointer}
+.toast:hover{border-color:rgba(255,255,255,0.12)}
+@keyframes toastIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes toastOut{to{opacity:0;transform:translateX(20px)}}
+.toast.leaving{animation:toastOut 0.3s ease forwards}
+.toast-icon{font-size:1.2rem;flex-shrink:0}
+.toast-title{font-size:0.82rem;font-weight:700;color:#fff;margin-bottom:0.15rem}
+.toast-msg{font-size:0.72rem;color:var(--muted);line-height:1.4}
+.toast-time{font-size:0.62rem;color:var(--muted);margin-top:0.2rem}
+.toast-close{background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.8rem;flex-shrink:0;padding:0;margin-top:1px}
+
+@media(max-width:768px){.content{grid-template-columns:1fr}.notif-detail{display:none}.app{flex-direction:column}.sidebar{flex-direction:row;width:100%;height:56px;padding:0 1rem}}
+</style>
+</head>
+<body>
+
+<div class="toast-container" id="toast-container"></div>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-logo">NC</div>
+    <div class="sb-icon-btn" title="Accueil">🏠</div>
+    <div class="sb-icon-btn" title="Recettes">🍲</div>
+    <div class="sb-icon-btn active" title="Notifications">
+      🔔
+      <div class="sb-notif-count" id="sb-count">5</div>
+    </div>
+    <div class="sb-icon-btn" title="Profil">👤</div>
+    <div style="flex:1"></div>
+    <div class="sb-icon-btn" title="Paramètres" onclick="openSettings()">⚙️</div>
+  </aside>
+
+  <div class="main">
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div>
+        <div class="tb-title">🔔 Centre de notifications</div>
+        <div class="tb-subtitle" id="unread-count">5 non lues · Dernière mise à jour il y a 2 min</div>
+      </div>
+      <div class="tb-actions">
+        <button class="tb-btn" onclick="markAllRead()">✓ Tout marquer lu</button>
+        <button class="tb-btn" onclick="openSettings()">⚙️ Paramètres</button>
+        <button class="tb-btn primary" onclick="showLiveToast()">🔔 Test notif</button>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- NOTIF LIST -->
+      <div class="notif-list-panel">
+        <div class="nlp-header">
+          <div class="filter-tabs">
+            <button class="ft active" onclick="filterNotifs('all',this)">Tout <span class="ft-count" id="fc-all">12</span></button>
+            <button class="ft" onclick="filterNotifs('unread',this)">Non lu <span class="ft-count" id="fc-unread">5</span></button>
+            <button class="ft" onclick="filterNotifs('rappels',this)">Rappels</button>
+            <button class="ft" onclick="filterNotifs('ia',this)">IA</button>
+          </div>
+        </div>
+        <div class="notif-scroll" id="notif-scroll"></div>
+      </div>
+
+      <!-- NOTIF DETAIL -->
+      <div class="notif-detail" id="notif-detail">
+        <div class="nd-empty">
+          <div class="nd-empty-icon">🔔</div>
+          <div class="nd-empty-text">Sélectionnez une notification<br/>pour voir les détails</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS SHEET -->
+<div class="settings-overlay" id="settings-overlay" onclick="if(event.target===this)closeSettings()">
+  <div class="settings-sheet">
+    <div class="ss-title">
+      ⚙️ Préférences notifications
+      <button class="ss-close" onclick="closeSettings()">✕</button>
+    </div>
+    <div class="setting-row"><div class="sr-icon">🍽️</div><div class="sr-info"><div class="sr-label">Rappels repas</div><div class="sr-sub">Petit-déjeuner, déjeuner, dîner</div></div><div class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="toggle-thumb"></div></div></div>
+    <div class="setting-row"><div class="sr-icon">💧</div><div class="sr-info"><div class="sr-label">Rappels hydratation</div><div class="sr-sub">Toutes les 2 heures</div></div><div class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="toggle-thumb"></div></div></div>
+    <div class="setting-row"><div class="sr-icon">🤖</div><div class="sr-info"><div class="sr-label">Suggestions IA</div><div class="sr-sub">Recettes personnalisées du soir</div></div><div class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="toggle-thumb"></div></div></div>
+    <div class="setting-row"><div class="sr-icon">🔥</div><div class="sr-info"><div class="sr-label">Alertes streak</div><div class="sr-sub">Ne perdez pas votre série</div></div><div class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="toggle-thumb"></div></div></div>
+    <div class="setting-row"><div class="sr-icon">⚖️</div><div class="sr-info"><div class="sr-label">Rappels pesée</div><div class="sr-sub">Hebdomadaire, le lundi</div></div><div class="toggle off" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="toggle-thumb"></div></div></div>
+    <div class="setting-row"><div class="sr-icon">💎</div><div class="sr-info"><div class="sr-label">Offres promotionnelles</div><div class="sr-sub">Réductions et nouveautés</div></div><div class="toggle off" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="toggle-thumb"></div></div></div>
+    <div class="setting-row"><div class="sr-icon">🌙</div><div class="sr-info"><div class="sr-label">Mode silencieux</div><div class="sr-sub">Aucune notif 22h–7h</div></div><div class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="toggle-thumb"></div></div></div>
+  </div>
+</div>
+
+<script>
+const notifications = [
+  { id:1, type:'rappel', icon:'🌅', iconBg:'rgba(251,191,36,0.15)', color:var_y='#fbbf24',
+    title:'Petit-déjeuner oublié ?', msg:'Il est 08h30, avez-vous pris votre petit-déjeuner ? Votre bouillie de maïs vous attend.', time:'08:32', unread:true,
+    detail:'Bonjour Marie ! Selon votre plan NutriCam, votre objectif est de prendre un petit-déjeuner entre 07h00 et 08h00 pour maintenir votre métabolisme actif tout au long de la journée.',
+    action:'Enregistrer mon repas', recipes:[{e:'🥣',n:'Bouillie de maïs enrichie',c:'320 kcal'},{e:'☕',n:'Café + pain beurre',c:'310 kcal'}]
+  },
+  { id:2, type:'ia', icon:'🤖', iconBg:'rgba(168,85,247,0.15)', color:'#a855f7',
+    title:'🌿 Détox recommandée ce soir', msg:'Votre Coach IA suggère une boisson détox bissap-gingembre après votre journée chargée.', time:'17:45', unread:true,
+    detail:'Votre Coach NutriCam a analysé vos habitudes de cette semaine. Vous avez consommé en moyenne 15% de calories de plus que votre objectif. Une boisson détox ce soir vous aiderait à drainer et préparer un meilleur lendemain.',
+    action:'Voir la recette détox', recipes:[{e:'🌺',n:'Bissap détox gingembre',c:'45 kcal'},{e:'🫚',n:'Eau citron matin',c:'0 kcal'}]
+  },
+  { id:3, type:'streak', icon:'🔥', iconBg:'rgba(249,115,22,0.15)', color:'#f97316',
+    title:'Série de 12 jours ! 🎉', msg:'Bravo Marie ! Vous avez atteint 12 jours consécutifs de suivi nutritionnel. Badge débloqué !', time:'Hier', unread:true,
+    detail:'Félicitations ! Maintenir 12 jours consécutifs de suivi nutritionnel est un accomplissement remarquable. Des études montrent que 21 jours consécutifs suffisent à créer une nouvelle habitude définitive.',
+    action:'Voir mes badges', recipes:null
+  },
+  { id:4, type:'objectif', icon:'⚖️', iconBg:'rgba(59,130,246,0.15)', color:'#3b82f6',
+    title:'Objectif poids proche !', msg:'Plus que 1.8kg pour atteindre votre objectif de 62kg. Vous y êtes presque !', time:'Hier', unread:true,
+    detail:'À votre rythme actuel de −0.5kg/semaine, vous atteindrez votre objectif de 62kg dans environ 3,5 semaines. Continuez comme ça et ne changez rien à votre alimentation actuelle.',
+    action:'Voir mon suivi poids', recipes:null
+  },
+  { id:5, type:'recette', icon:'🍲', iconBg:'rgba(34,197,94,0.15)', color:'#22c55e',
+    title:'Nouvelle recette : Bœuf Ngondo', msg:'Nouvelle recette ajoutée par notre diététicienne ! Bœuf au sauce ngondo du Littoral.', time:'il y a 2j', unread:true,
+    detail:'Notre diététicienne Dr. Diane Kengne vient d\'ajouter une nouvelle recette exclusive : le Bœuf Ngondo, un plat rare du Littoral Cameroun très riche en protéines et en fer.',
+    action:'Voir la recette', recipes:[{e:'🐄',n:'Bœuf sauce Ngondo',c:'410 kcal'},{e:'🌽',n:'Plantains bouillis (accomp.)',c:'150 kcal'}]
+  },
+  { id:6, type:'rappel', icon:'💧', iconBg:'rgba(96,165,250,0.15)', color:'#60a5fa',
+    title:'Boire de l\'eau !', msg:'Vous n\'avez bu que 1.2L aujourd\'hui. Il vous reste 1.3L à boire avant 22h.', time:'il y a 2j', unread:false,
+    detail:'La déshydratation peut être confondue avec la faim et entraîner des grignotages inutiles. Boire 2.5L par jour aide également à améliorer le transit et la clarté mentale.', action:'Enregistrer eau', recipes:null
+  },
+  { id:7, type:'ia', icon:'🤖', iconBg:'rgba(168,85,247,0.15)', color:'#a855f7',
+    title:'Plan repas généré pour demain', msg:'Votre plan de demain est prêt ! 4 repas, 1 850 kcal, centré sur le poisson du Littoral.', time:'il y a 3j', unread:false,
+    detail:'Votre plan du jour est optimisé pour atteindre votre objectif de perte de poids tout en vous apportant les protéines nécessaires à la préservation du muscle.', action:'Voir le plan', recipes:[{e:'🐟',n:'Poisson braisé mbanga',c:'290 kcal'},{e:'🥬',n:'Eru & Waterleaf',c:'310 kcal'}]
+  },
+  { id:8, type:'paiement', icon:'💎', iconBg:'rgba(251,191,36,0.15)', color:'#fbbf24',
+    title:'Abonnement Premium renouvelé', msg:'Votre abonnement Premium a été renouvelé avec succès via MTN Mobile Money. 2 500 FCFA débités.', time:'il y a 5j', unread:false,
+    detail:'Votre abonnement NutriCam Premium est actif jusqu\'au 14 Février 2025. Reçu disponible dans votre espace compte.', action:'Voir le reçu', recipes:null
+  },
+  { id:9, type:'recette', icon:'🌿', iconBg:'rgba(20,184,166,0.15)', color:'#14b8a6',
+    title:'Séance détox hebdomadaire', msg:'C\'est lundi ! L\'heure de votre détox hebdomadaire avec le Green Cam Boost.', time:'il y a 6j', unread:false,
+    detail:'La détox hebdomadaire du lundi permet de "remettre à zéro" l\'organisme après le weekend. Le Green Cam Boost (épinards + moringa + concombre) est particulièrement efficace pour drainer le foie.', action:'Voir la recette', recipes:[{e:'🥬',n:'Green Cam Boost',c:'35 kcal'},{e:'🫚',n:'Eau citron gingembre',c:'0 kcal'}]
+  },
+  { id:10, type:'rappel', icon:'🍽️', iconBg:'rgba(249,115,22,0.15)', color:'#f97316',
+    title:'Dîner : il est 19h30', msg:'N\'oubliez pas votre dîner ! Le poisson braisé de votre plan est recommandé ce soir.', time:'il y a 6j', unread:false,
+    detail:'Selon votre biorythme alimentaire, dîner entre 19h et 20h30 est optimal pour votre digestion nocturne.', action:'Voir le plan dîner', recipes:[{e:'🐟',n:'Poisson braisé + miondo',c:'420 kcal'}]
+  },
+  { id:11, type:'objectif', icon:'🏃', iconBg:'rgba(34,197,94,0.15)', color:'#22c55e',
+    title:'Bravo ! Objectif protéines atteint', msg:'Vous avez atteint 120g de protéines aujourd\'hui. Parfait pour la récupération !', time:'il y a 7j', unread:false,
+    detail:'Atteindre votre objectif protéique quotidien est crucial pour maintenir la masse musculaire en période de déficit calorique.', action:'Voir mes stats', recipes:null
+  },
+  { id:12, type:'ia', icon:'🤖', iconBg:'rgba(168,85,247,0.15)', color:'#a855f7',
+    title:'Analyse hebdomadaire IA', msg:'Bilan de la semaine : vous avez consommé en moyenne 1 720 kcal/jour. Objectif : 1 850. Très bien !', time:'il y a 8j', unread:false,
+    detail:'Analyse complète de votre semaine nutritionnelle. Vous avez bien géré votre apport calorique avec seulement 7% d\'écart par rapport à l\'objectif.', action:'Voir l\'analyse complète', recipes:null
+  },
+];
+
+let currentFilter = 'all';
+let activeId = null;
+
+function renderList(filter){
+  let list = notifications;
+  if(filter==='unread') list=notifications.filter(n=>n.unread);
+  else if(filter==='rappels') list=notifications.filter(n=>n.type==='rappel');
+  else if(filter==='ia') list=notifications.filter(n=>n.type==='ia');
+  
+  document.getElementById('notif-scroll').innerHTML = list.map(n=>`
+    <div class="notif-item ${n.unread?'unread':''} ${activeId===n.id?'active':''}" onclick="openNotif(${n.id})">
+      <div class="ni-icon" style="background:${n.iconBg}">${n.icon}</div>
+      <div class="ni-body">
+        <div class="ni-title">${n.title}</div>
+        <div class="ni-msg">${n.msg}</div>
+      </div>
+      <div class="ni-time">${n.time}</div>
+    </div>
+  `).join('');
+}
+
+function openNotif(id){
+  activeId = id;
+  const n = notifications.find(x=>x.id===id);
+  if(!n) return;
+  n.unread = false;
+  updateUnreadCount();
+  renderList(currentFilter);
+  
+  const det = document.getElementById('notif-detail');
+  det.innerHTML = `
+    <div class="nd-header">
+      <div class="nd-icon" style="background:${n.iconBg}">${n.icon}</div>
+      <div>
+        <div class="nd-title">${n.title}</div>
+        <div class="nd-meta">Reçu ${n.time} · Type : ${typeLabel(n.type)}</div>
+      </div>
+    </div>
+    <div class="nd-body-text">${n.detail}</div>
+    ${n.recipes ? `
+      <div class="nd-card">
+        <div class="ndc-title">🍽️ Recettes suggérées</div>
+        ${n.recipes.map(r=>`
+          <div class="ndc-recipe">
+            <div class="ndc-emoji">${r.e}</div>
+            <div class="ndc-name">${r.n}</div>
+            <div class="ndc-cal">🔥 ${r.c}</div>
+          </div>
+        `).join('')}
+      </div>` : ''}
+    <div class="nd-actions">
+      <button class="nda-btn nda-primary" onclick="toast('Action effectuée !')">✅ ${n.action}</button>
+      <button class="nda-btn nda-outline" onclick="deleteNotif(${n.id})">🗑 Supprimer</button>
+    </div>
+  `;
+}
+
+function typeLabel(t){ return {rappel:'Rappel',ia:'Suggestion IA',streak:'Streak',objectif:'Objectif',recette:'Nouvelle recette',paiement:'Paiement'}[t]||t; }
+
+function deleteNotif(id){
+  const idx = notifications.findIndex(n=>n.id===id);
+  if(idx>-1) notifications.splice(idx,1);
+  activeId=null;
+  renderList(currentFilter);
+  document.getElementById('notif-detail').innerHTML=`<div class="nd-empty"><div class="nd-empty-icon">🔔</div><div class="nd-empty-text">Notification supprimée</div></div>`;
+  updateUnreadCount();
+}
+
+function filterNotifs(filter, btn){
+  currentFilter=filter;
+  document.querySelectorAll('.ft').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderList(filter);
+}
+
+function markAllRead(){
+  notifications.forEach(n=>n.unread=false);
+  renderList(currentFilter);
+  updateUnreadCount();
+}
+
+function updateUnreadCount(){
+  const count = notifications.filter(n=>n.unread).length;
+  document.getElementById('sb-count').textContent=count;
+  document.getElementById('sb-count').style.display=count?'flex':'none';
+  document.getElementById('fc-unread').textContent=count;
+  document.getElementById('fc-all').textContent=notifications.length;
+  document.getElementById('unread-count').textContent=`${count} non lue${count>1?'s':''} · Dernière mise à jour à l'instant`;
+}
+
+function openSettings(){ document.getElementById('settings-overlay').classList.add('show'); }
+function closeSettings(){ document.getElementById('settings-overlay').classList.remove('show'); }
+
+// TOAST SYSTEM
+const liveToasts = [
+  {icon:'💧',title:'Rappel hydratation',msg:'Buvez un verre d\'eau maintenant — il est 15h00 !'},
+  {icon:'🍲',title:'Nouvelle recette disponible',msg:'Le Kpem aux épinards vient d\'être ajouté à votre plan.'},
+  {icon:'🔥',title:'Alerte streak !',msg:'Connectez-vous aujourd\'hui pour maintenir votre série de 13 jours.'},
+  {icon:'🤖',title:'Conseil IA',msg:'Réduisez les huiles de 20% ce soir pour rester dans vos objectifs.'},
+];
+let toastIdx=0;
+
+function showLiveToast(){
+  const t = liveToasts[toastIdx % liveToasts.length]; toastIdx++;
+  const id = 'toast-'+Date.now();
+  const el = document.createElement('div');
+  el.className='toast'; el.id=id;
+  el.innerHTML=`<div class="toast-icon">${t.icon}</div><div style="flex:1"><div class="toast-title">${t.title}</div><div class="toast-msg">${t.msg}</div><div class="toast-time">À l'instant</div></div><button class="toast-close" onclick="dismissToast('${id}')">✕</button>`;
+  el.onclick=(e)=>{ if(!e.target.classList.contains('toast-close')) dismissToast(id); };
+  document.getElementById('toast-container').appendChild(el);
+  setTimeout(()=>dismissToast(id), 5000);
+}
+
+function dismissToast(id){
+  const el=document.getElementById(id);
+  if(el){ el.classList.add('leaving'); setTimeout(()=>el.remove(),300); }
+}
+
+function toast(msg){ showLiveToast(); }
+
+// INIT
+renderList('all');
+updateUnreadCount();
+// Auto-show welcome toast after 1.5s
+setTimeout(showLiveToast, 1500);
+</script>
+</body>
+</html>

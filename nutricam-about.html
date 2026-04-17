@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – À propos & Notre histoire</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f6faf7;--dark:#070e08;--dark2:#0b1a0d;--green:#1a7a3e;--gl:#22a854;--glight:#4ade80;
+  --y:#f5b800;--red:#e63946;--border:#d8ece1;--text:#192b1c;--muted:#6b8c72;--card:#fff;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text)}
+
+/* NAV */
+.nav{background:var(--dark);padding:1.1rem 3rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.nav-logo{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;color:#fff}
+.nav-logo span{color:var(--y)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:rgba(255,255,255,0.55);text-decoration:none;font-size:0.85rem;font-weight:600;transition:color 0.2s}
+.nav-links a:hover,.nav-links a.active{color:#fff}
+.nav-cta{background:var(--gl);color:#fff !important;padding:0.5rem 1.2rem;border-radius:100px}
+
+/* HERO */
+.about-hero{background:var(--dark);padding:6rem 3rem 5rem;position:relative;overflow:hidden}
+.ah-pattern{position:absolute;inset:0;background-image:radial-gradient(circle at 25% 50%,rgba(26,122,62,0.12) 0%,transparent 50%),radial-gradient(circle at 75% 20%,rgba(245,184,0,0.08) 0%,transparent 40%);pointer-events:none}
+.ah-inner{max-width:700px;position:relative;z-index:1}
+.ah-tag{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.65);font-size:0.72rem;font-weight:700;padding:0.35rem 1rem;border-radius:100px;margin-bottom:1.2rem;text-transform:uppercase;letter-spacing:0.08em}
+.ah-title{font-family:'Fraunces',serif;font-size:clamp(2.2rem,4vw,3.8rem);color:#fff;font-weight:900;line-height:1.1;margin-bottom:1rem}
+.ah-title em{font-style:italic;color:var(--y)}
+.ah-sub{color:rgba(255,255,255,0.55);line-height:1.75;max-width:560px;font-size:0.95rem;margin-bottom:2.5rem}
+.ah-stats{display:flex;gap:3rem;flex-wrap:wrap}
+.ah-stat-val{font-family:'Fraunces',serif;font-size:2.2rem;font-weight:900;color:#fff}
+.ah-stat-label{font-size:0.75rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.07em;margin-top:0.2rem}
+
+/* STORY */
+.story-section{padding:6rem 3rem;max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.story-text h2{font-family:'Fraunces',serif;font-size:2.2rem;font-weight:900;color:var(--dark);margin-bottom:1.2rem;line-height:1.2}
+.story-text h2 span{color:var(--green)}
+.story-text p{color:var(--muted);line-height:1.8;margin-bottom:1.2rem;font-size:0.93rem}
+.story-text p strong{color:var(--text);font-weight:700}
+.story-visual{background:var(--dark);border-radius:24px;overflow:hidden;min-height:360px;display:flex;align-items:center;justify-content:center;position:relative}
+.sv-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0a2d14,#1a7a3e 60%,#22a854)}
+.sv-content{position:relative;z-index:1;text-align:center;padding:2.5rem}
+.sv-year{font-family:'Fraunces',serif;font-size:5rem;font-weight:900;color:rgba(255,255,255,0.08);line-height:1;margin-bottom:-1rem}
+.sv-quote{font-family:'Fraunces',serif;font-size:1.4rem;font-style:italic;color:#fff;line-height:1.4;margin-bottom:0.8rem}
+.sv-author{font-size:0.8rem;color:rgba(255,255,255,0.5)}
+
+/* MISSION */
+.mission-section{background:var(--dark);padding:5rem 3rem;position:relative;overflow:hidden}
+.ms-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(34,197,94,0.06),transparent 60%);pointer-events:none}
+.ms-inner{max-width:1000px;margin:0 auto}
+.ms-title{font-family:'Fraunces',serif;font-size:clamp(1.8rem,3vw,2.6rem);font-weight:900;color:#fff;text-align:center;margin-bottom:3rem}
+.ms-title span{color:var(--y)}
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.value-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:2rem;transition:all 0.25s}
+.value-card:hover{background:rgba(255,255,255,0.06);transform:translateY(-4px)}
+.vc-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.vc-title{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:0.5rem}
+.vc-text{font-size:0.83rem;color:rgba(255,255,255,0.45);line-height:1.65}
+
+/* TEAM */
+.team-section{padding:6rem 3rem;max-width:1100px;margin:0 auto}
+.section-header{text-align:center;margin-bottom:3.5rem}
+.sh-tag{font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--green);margin-bottom:0.7rem}
+.sh-title{font-family:'Fraunces',serif;font-size:2.2rem;font-weight:900;color:var(--dark);margin-bottom:0.7rem}
+.sh-sub{color:var(--muted);max-width:480px;margin:0 auto;line-height:1.7;font-size:0.92rem}
+.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-bottom:3rem}
+.team-card{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;transition:all 0.25s}
+.team-card:hover{transform:translateY(-5px);box-shadow:0 20px 60px rgba(0,0,0,0.1)}
+.tc-visual{height:200px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.tc-avatar{font-family:'Fraunces',serif;font-size:3rem;font-weight:900;color:#fff;z-index:1;position:relative}
+.tc-initials{font-family:'Fraunces',serif;font-size:2.5rem;font-weight:900;color:#fff;z-index:1;position:relative}
+.tc-body{padding:1.4rem}
+.tc-name{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:900;color:var(--dark);margin-bottom:0.15rem}
+.tc-role{font-size:0.75rem;font-weight:700;color:var(--green);margin-bottom:0.6rem;text-transform:uppercase;letter-spacing:0.06em}
+.tc-bio{font-size:0.8rem;color:var(--muted);line-height:1.6;margin-bottom:1rem}
+.tc-skills{display:flex;flex-wrap:wrap;gap:0.3rem;margin-bottom:1rem}
+.tc-skill{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:0.18rem 0.55rem;font-size:0.65rem;font-weight:700;color:var(--muted)}
+.tc-social{display:flex;gap:0.4rem}
+.tc-soc-btn{width:28px;height:28px;border-radius:7px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:0.75rem;transition:all 0.15s}
+.tc-soc-btn:hover{border-color:var(--gl);background:rgba(34,197,94,0.06)}
+
+/* ADVISORY */
+.advisory{background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:2.5rem;margin-bottom:3rem}
+.adv-title{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:var(--dark);margin-bottom:0.3rem}
+.adv-sub{color:var(--muted);font-size:0.82rem;margin-bottom:1.8rem}
+.advisors-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem}
+.advisor-pill{display:flex;align-items:center;gap:0.8rem;padding:0.9rem 1rem;background:var(--card);border:1px solid var(--border);border-radius:12px}
+.ap-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:900;font-size:0.85rem;color:#fff;flex-shrink:0}
+.ap-name{font-size:0.82rem;font-weight:700;color:var(--text)}
+.ap-role{font-size:0.68rem;color:var(--muted);line-height:1.3}
+
+/* TIMELINE */
+.timeline-section{padding:5rem 3rem;background:linear-gradient(180deg,var(--bg),var(--dark));position:relative}
+.tl-inner{max-width:800px;margin:0 auto}
+.tl-title{font-family:'Fraunces',serif;font-size:2rem;font-weight:900;text-align:center;margin-bottom:3rem;color:var(--dark)}
+.timeline{position:relative;padding-left:2rem}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--green),var(--y),rgba(255,255,255,0))}
+.tl-item{position:relative;margin-bottom:2.5rem;padding-left:2rem}
+.tl-dot{position:absolute;left:-2.5rem;top:2px;width:14px;height:14px;border-radius:50%;background:var(--green);border:3px solid #fff;box-shadow:0 0 0 3px rgba(26,122,62,0.2)}
+.tl-date{font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.3rem}
+.tl-title2{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:900;color:var(--dark);margin-bottom:0.4rem}
+.tl-desc{font-size:0.85rem;color:var(--muted);line-height:1.6}
+.tl-tag{display:inline-block;font-size:0.65rem;font-weight:700;padding:0.18rem 0.55rem;border-radius:100px;margin-top:0.4rem}
+
+/* JOIN SECTION */
+.join-section{padding:5rem 3rem;background:var(--dark);text-align:center;position:relative;overflow:hidden}
+.js-glow{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(26,122,62,0.12),transparent 60%);pointer-events:none}
+.js-inner{position:relative;z-index:1;max-width:600px;margin:0 auto}
+.js-title{font-family:'Fraunces',serif;font-size:2.5rem;font-weight:900;color:#fff;margin-bottom:0.8rem}
+.js-title span{color:var(--y)}
+.js-sub{color:rgba(255,255,255,0.5);line-height:1.7;margin-bottom:2.5rem}
+.js-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.js-primary{background:var(--y);color:#000;padding:1rem 2.5rem;border-radius:14px;font-weight:800;font-size:0.95rem;text-decoration:none;transition:all 0.2s;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif}
+.js-primary:hover{background:#e5a800;transform:translateY(-2px)}
+.js-secondary{background:rgba(255,255,255,0.08);color:#fff;padding:1rem 2.5rem;border-radius:14px;font-weight:700;font-size:0.95rem;text-decoration:none;border:1px solid rgba(255,255,255,0.15);transition:all 0.2s}
+.js-secondary:hover{background:rgba(255,255,255,0.15)}
+
+@media(max-width:900px){
+  .story-section{grid-template-columns:1fr}.team-grid{grid-template-columns:1fr 1fr}.values-grid{grid-template-columns:1fr}.about-hero,.team-section,.story-section,.timeline-section,.mission-section,.join-section{padding:3rem 1.5rem}.nav-links{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo">Nutri<span>Cam</span></div>
+  <ul class="nav-links">
+    <li><a href="#">Accueil</a></li>
+    <li><a href="#">Recettes</a></li>
+    <li><a href="#" class="active">À propos</a></li>
+    <li><a href="#">Blog</a></li>
+    <li><a href="#" class="nav-cta">Commencer</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="about-hero">
+  <div class="ah-pattern"></div>
+  <div class="ah-inner">
+    <div class="ah-tag">🌿 Notre histoire · Yaoundé, Cameroun</div>
+    <h1 class="ah-title">Nés au Cameroun.<br/>Construits pour <em>l'Afrique</em>.</h1>
+    <p class="ah-sub">NutriCam est né d'un constat simple : les applications de nutrition ignorent totalement notre gastronomie. Nous avons décidé de changer ça, depuis Yaoundé, pour tout le continent.</p>
+    <div class="ah-stats">
+      <div><div class="ah-stat-val">2025</div><div class="ah-stat-label">Fondée</div></div>
+      <div><div class="ah-stat-val">52+</div><div class="ah-stat-label">Recettes locales</div></div>
+      <div><div class="ah-stat-val">1 247</div><div class="ah-stat-label">Utilisateurs</div></div>
+      <div><div class="ah-stat-val">100%</div><div class="ah-stat-label">Made in Cameroun 🇨🇲</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="story-section">
+  <div class="story-text">
+    <h2>Pourquoi avons-nous créé <span>NutriCam</span> ?</h2>
+    <p>Tout a commencé en 2024, quand notre fondateur a cherché une application pour suivre sa nutrition. Toutes les applications disponibles — MyFitnessPal, Yazio, Noom — proposaient des milliers d'aliments américains et européens mais <strong>zéro plat camerounais</strong>. Pas de ndolé, pas d'eru, pas de miondo.</p>
+    <p>Il a voulu entrer les calories de son déjeuner (ndolé + riz) et n'a pas trouvé. Il a dû chercher des équivalents approximatifs. C'est inacceptable pour <strong>28 millions de Camerounais</strong>, et plus de 350 millions de personnes en Afrique francophone.</p>
+    <p>Avec une équipe de 4 passionnés — un développeur, une diététicienne, un chef cuisinier et un entrepreneur — nous avons décidé de <strong>construire ce qui manquait</strong> : la première plateforme nutritionnelle vraiment africaine.</p>
+    <p><strong>Un an plus tard</strong>, NutriCam propose 200+ recettes camerounaises documentées scientifiquement, un coach IA en français, et une application qui fonctionne hors-ligne pour les zones à faible connectivité.</p>
+  </div>
+  <div class="story-visual">
+    <div class="sv-bg"></div>
+    <div class="sv-content">
+      <div class="sv-year">2024</div>
+      <div class="sv-quote">"Pourquoi aucune app ne connaît le ndolé ?"</div>
+      <div class="sv-author">— La question qui a tout déclenché</div>
+      <div style="margin-top:1.5rem;font-size:3rem">🌿🍲🇨🇲</div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSION & VALUES -->
+<section class="mission-section">
+  <div class="ms-glow"></div>
+  <div class="ms-inner">
+    <div class="ms-title">Nos <span>valeurs fondamentales</span></div>
+    <div class="values-grid">
+      <div class="value-card">
+        <span class="vc-icon">🌍</span>
+        <div class="vc-title">Ancrage africain</div>
+        <div class="vc-text">Nous refusons d'imposer des standards nutritionnels occidentaux. Nos recommandations s'appuient sur la gastronomie locale, les ingrédients accessibles et les habitudes alimentaires camerounaises.</div>
+      </div>
+      <div class="value-card">
+        <span class="vc-icon">🔬</span>
+        <div class="vc-title">Rigueur scientifique</div>
+        <div class="vc-text">Chaque valeur nutritionnelle de notre base de données est validée par une diététicienne diplômée. Nous croisons les données de la FAO/OMS avec nos propres analyses pour la gastronomie locale.</div>
+      </div>
+      <div class="value-card">
+        <span class="vc-icon">📱</span>
+        <div class="vc-title">Conçu pour l'Afrique</div>
+        <div class="vc-text">Mode hors-ligne complet, paiement Mobile Money, interface légère, langues locales. NutriCam est pensé pour les contraintes réelles de connectivité et de pouvoir d'achat africaines.</div>
+      </div>
+      <div class="value-card">
+        <span class="vc-icon">💚</span>
+        <div class="vc-title">Accessibilité pour tous</div>
+        <div class="vc-text">Le plan gratuit est véritablement gratuit, sans limites cachées. Nous croyons que l'information nutritionnelle de base est un droit, pas un luxe réservé aux plus aisés.</div>
+      </div>
+      <div class="value-card">
+        <span class="vc-icon">🔒</span>
+        <div class="vc-title">Vos données vous appartiennent</div>
+        <div class="vc-text">Nous ne vendons jamais vos données. Pas de publicité ciblée, pas de courtiers en données. Vos informations de santé sont chiffrées et stockées en Afrique du Sud.</div>
+      </div>
+      <div class="value-card">
+        <span class="vc-icon">🌱</span>
+        <div class="vc-title">Impact local positif</div>
+        <div class="vc-text">5% de nos revenus sont reversés à des programmes de nutrition scolaire au Cameroun. Nous créons des emplois locaux et valorisons le savoir culinaire traditionnel camerounais.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="team-section">
+  <div class="section-header">
+    <div class="sh-tag">L'équipe</div>
+    <h2 class="sh-title">Les visages derrière NutriCam</h2>
+    <p class="sh-sub">Une équipe multidisciplinaire unie par la même conviction : la gastronomie camerounaise mérite mieux.</p>
+  </div>
+
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="tc-visual" style="background:linear-gradient(135deg,#0a2d14,#1a7a3e)">
+        <div class="tc-initials">GDP</div>
+      </div>
+      <div class="tc-body">
+        <div class="tc-name">Georges Duplece Pitchou</div>
+        <div class="tc-role">CEO & Co-fondateur</div>
+        <div class="tc-bio">Entrepreneur & développeur, fondateur de NutriCam depuis la diaspora. Passionné de nutrition africaine et de tech au service du continent.</div>
+        <div class="tc-skills"><span class="tc-skill">Stratégie</span><span class="tc-skill">Product</span><span class="tc-skill">Financement</span></div>
+        <div class="tc-social">
+          <div class="tc-soc-btn">🔗</div>
+          <div class="tc-soc-btn">🐦</div>
+          <div class="tc-soc-btn">📧</div>
+        </div>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="tc-visual" style="background:linear-gradient(135deg,#1e1b4b,#2563eb)">
+        <div class="tc-initials">AM</div>
+      </div>
+      <div class="tc-body">
+        <div class="tc-name">Alain Mvondo</div>
+        <div class="tc-role">CTO & Co-fondateur</div>
+        <div class="tc-bio">Ingénieur full-stack, 8 ans d'expérience en développement d'applications mobiles africaines. React Native expert.</div>
+        <div class="tc-skills"><span class="tc-skill">React</span><span class="tc-skill">Node.js</span><span class="tc-skill">AWS</span></div>
+        <div class="tc-social">
+          <div class="tc-soc-btn">🔗</div>
+          <div class="tc-soc-btn">🐙</div>
+          <div class="tc-soc-btn">📧</div>
+        </div>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="tc-visual" style="background:linear-gradient(135deg,#431407,#f97316)">
+        <div class="tc-initials">DK</div>
+      </div>
+      <div class="tc-body">
+        <div class="tc-name">Dr. Diane Kengne</div>
+        <div class="tc-role">Directrice Nutrition</div>
+        <div class="tc-bio">Diététicienne-nutritionniste, CHU Yaoundé. Docteur en sciences alimentaires. Validatrice de toutes les données NutriCam.</div>
+        <div class="tc-skills"><span class="tc-skill">Nutrition</span><span class="tc-skill">Recherche</span><span class="tc-skill">OMS</span></div>
+        <div class="tc-social">
+          <div class="tc-soc-btn">🔗</div>
+          <div class="tc-soc-btn">📄</div>
+          <div class="tc-soc-btn">📧</div>
+        </div>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="tc-visual" style="background:linear-gradient(135deg,#3d2b00,#f5b800)">
+        <div class="tc-initials">NE</div>
+      </div>
+      <div class="tc-body">
+        <div class="tc-name">Nathalie Ewane</div>
+        <div class="tc-role">Chef Culinaire & Contenu</div>
+        <div class="tc-bio">Chef professionnelle, spécialiste gastronomie camerounaise. 15 ans d'expérience dans les grandes cuisines de Douala et Paris.</div>
+        <div class="tc-skills"><span class="tc-skill">Recettes</span><span class="tc-skill">Contenu</span><span class="tc-skill">Formation</span></div>
+        <div class="tc-social">
+          <div class="tc-soc-btn">🔗</div>
+          <div class="tc-soc-btn">📷</div>
+          <div class="tc-soc-btn">📧</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADVISORY BOARD -->
+  <div class="advisory">
+    <div class="adv-title">🎓 Conseil scientifique & stratégique</div>
+    <div class="adv-sub">Des experts qui nous guident dans notre développement scientifique, médical et business.</div>
+    <div class="advisors-row">
+      <div class="advisor-pill"><div class="ap-av" style="background:linear-gradient(135deg,#0a2d14,#22a854)">AN</div><div><div class="ap-name">Pr. Albert Ngalame</div><div class="ap-role">Biochimiste · UY I Yaoundé</div></div></div>
+      <div class="advisor-pill"><div class="ap-av" style="background:linear-gradient(135deg,#1e1b4b,#2563eb)">EN</div><div><div class="ap-name">Dr. Emmanuel Nlend</div><div class="ap-role">Endocrinologue · CHUY</div></div></div>
+      <div class="advisor-pill"><div class="ap-av" style="background:linear-gradient(135deg,#431407,#f97316)">SB</div><div><div class="ap-name">Sophie Beti Assomo</div><div class="ap-role">Investisseur tech · Lagos</div></div></div>
+      <div class="advisor-pill"><div class="ap-av" style="background:linear-gradient(135deg,#14532d,#4ade80)">PF</div><div><div class="ap-name">Paul Fouda Mbarga</div><div class="ap-role">Ancien DG MINSANTE Cam.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="timeline-section">
+  <div class="tl-inner">
+    <div class="tl-title">Notre parcours</div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">Janvier 2024</div>
+        <div class="tl-title2">💡 L'idée naît</div>
+        <div class="tl-desc">Georges Duplece Pitchou cherche l'app de nutrition parfaite pour son régime sportif et découvre que aucune app ne connaît le ndolé, l'eru ou le poulet DG.</div>
+        <div class="tl-tag" style="background:rgba(26,122,62,0.1);color:var(--green)">Genèse</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--y);box-shadow:0 0 0 3px rgba(245,184,0,0.2)"></div>
+        <div class="tl-date">Avril 2024</div>
+        <div class="tl-title2">🤝 L'équipe se forme</div>
+        <div class="tl-desc">Recrutement d'Alain (CTO), Dr. Kengne (nutrition) et Chef Nathalie. Début des recherches nutritionnelles sur les plats camerounais.</div>
+        <div class="tl-tag" style="background:rgba(245,184,0,0.12);color:var(--y)">Fondation</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,0.2)"></div>
+        <div class="tl-date">Juillet 2024</div>
+        <div class="tl-title2">🔬 Validation scientifique</div>
+        <div class="tl-desc">Dr. Kengne et Pr. Ngalame finalisent les valeurs nutritionnelles de 50 recettes camerounaises en collaboration avec le CHU Yaoundé.</div>
+        <div class="tl-tag" style="background:rgba(59,130,246,0.1);color:#3b82f6">Science</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">Octobre 2024</div>
+        <div class="tl-title2">⚙️ Développement du MVP</div>
+        <div class="tl-desc">Construction du site web, du calculateur de calories et de la première version du chatbot nutritionnel IA en collaboration avec Anthropic.</div>
+        <div class="tl-tag" style="background:rgba(26,122,62,0.1);color:var(--green)">Tech</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--y);box-shadow:0 0 0 3px rgba(245,184,0,0.2)"></div>
+        <div class="tl-date">Janvier 2025</div>
+        <div class="tl-title2">🚀 Lancement public</div>
+        <div class="tl-desc">NutriCam ouvre ses portes au public. 1 247 utilisateurs inscrits en 2 semaines, 384 abonnés Premium. Levée de fonds seed en cours.</div>
+        <div class="tl-tag" style="background:rgba(245,184,0,0.12);color:var(--y)">Lancement</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:rgba(255,255,255,0.2);border:2px dashed rgba(255,255,255,0.3)"></div>
+        <div class="tl-date">Q2 2025 — Prochain</div>
+        <div class="tl-title2">📱 App mobile iOS + Android</div>
+        <div class="tl-desc">Lancement de l'application React Native avec scanner de produits, mode hors-ligne complet et synchronisation wearables.</div>
+        <div class="tl-tag" style="background:rgba(168,85,247,0.1);color:#a855f7">À venir</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JOIN -->
+<section class="join-section">
+  <div class="js-glow"></div>
+  <div class="js-inner">
+    <h2 class="js-title">Rejoignez la révolution<br/><span>nutritionnelle africaine</span></h2>
+    <p class="js-sub">Que vous soyez utilisateur, investisseur, partenaire ou développeur — il y a une place pour vous dans l'aventure NutriCam.</p>
+    <div class="js-btns">
+      <a href="#" class="js-primary">🚀 Commencer gratuitement</a>
+      <a href="#" class="js-secondary">🤝 Nous rejoindre</a>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

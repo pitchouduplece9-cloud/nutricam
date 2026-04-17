@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Guide Non-Technique : Lancer sans coder</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f0fdf4;--dark:#061008;--green:#15803d;--gl:#22a854;--y:#d97706;
+  --red:#dc2626;--blue:#1d4ed8;--purple:#7c3aed;--orange:#ea580c;
+  --card:#fff;--border:#bbf7d0;--text:#14532d;--muted:#6b8c72;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text)}
+.nav{background:var(--dark);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.nav-logo{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:#fff}
+.nav-logo span{color:#fbbf24}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--dark),#0a3d18 55%,var(--green));padding:4rem 2rem;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'🚀';position:absolute;right:3rem;top:50%;transform:translateY(-50%);font-size:15rem;opacity:0.04}
+.hero-badge{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);font-size:0.72rem;font-weight:700;padding:0.3rem 0.9rem;border-radius:100px;margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.08em}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(2.2rem,5vw,3.5rem);font-weight:900;color:#fff;line-height:1.05;margin-bottom:0.8rem}
+.hero h1 span{color:#fbbf24}
+.hero p{color:rgba(255,255,255,0.55);font-size:0.95rem;line-height:1.7;max-width:550px;margin:0 auto}
+
+/* DISCLAIMER */
+.honest-box{background:rgba(255,255,255,0.95);border-left:4px solid var(--orange);border-radius:0 14px 14px 0;padding:1.3rem 1.5rem;max-width:700px;margin:2rem auto;font-size:0.88rem;line-height:1.7;color:var(--text)}
+.honest-box strong{color:var(--dark)}
+
+/* MAIN */
+.main{max-width:800px;margin:0 auto;padding:2.5rem}
+
+/* PHASE */
+.phase{margin-bottom:3rem}
+.phase-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:2px solid var(--border)}
+.phase-num{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;flex-shrink:0}
+.phase-title{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;color:var(--dark)}
+.phase-time{font-size:0.78rem;font-weight:800;color:var(--muted)}
+.phase-cost{font-size:0.78rem;font-weight:800;padding:0.2rem 0.6rem;border-radius:6px;margin-left:auto}
+
+/* STEP */
+.step{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.5rem;margin-bottom:1rem;position:relative}
+.step-top{display:flex;align-items:flex-start;gap:1rem;margin-bottom:0.8rem}
+.step-icon{font-size:2rem;flex-shrink:0}
+.step-title{font-family:'Fraunces',serif;font-size:1rem;font-weight:900;color:var(--dark);margin-bottom:0.2rem}
+.step-sub{font-size:0.8rem;color:var(--muted)}
+.step-body{font-size:0.87rem;color:var(--text);line-height:1.75}
+.step-body strong{color:var(--dark);font-weight:800}
+.step-body a{color:var(--blue);text-decoration:none;font-weight:700}
+.step-body a:hover{text-decoration:underline}
+.step-tip{background:rgba(21,128,61,0.06);border:1px solid rgba(21,128,61,0.15);border-radius:10px;padding:0.8rem 1rem;margin-top:0.8rem;font-size:0.82rem;color:var(--text);display:flex;gap:0.5rem}
+.step-warn{background:rgba(234,88,12,0.06);border:1px solid rgba(234,88,12,0.15);border-radius:10px;padding:0.8rem 1rem;margin-top:0.8rem;font-size:0.82rem;color:var(--text);display:flex;gap:0.5rem}
+.step-done{position:absolute;top:1rem;right:1rem;width:28px;height:28px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:0.8rem;transition:all 0.2s;color:var(--green);background:var(--bg)}
+.step.completed{border-color:rgba(21,128,61,0.3);background:rgba(21,128,61,0.02)}
+.step.completed .step-done{background:var(--green);border-color:var(--green);color:#fff}
+
+/* URL BOX */
+.url-box{background:rgba(21,128,61,0.06);border:1.5px solid rgba(21,128,61,0.2);border-radius:10px;padding:0.7rem 1rem;font-size:0.88rem;font-weight:700;color:var(--green);margin:0.5rem 0;display:flex;align-items:center;justify-content:space-between}
+.ub-copy{background:var(--green);border:none;border-radius:7px;padding:0.3rem 0.8rem;color:#fff;font-size:0.72rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
+
+/* CHECKLIST FINALE */
+.final-checklist{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2rem}
+.fc-title{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:var(--dark);margin-bottom:1.2rem}
+.fci{display:flex;align-items:flex-start;gap:0.8rem;padding:0.7rem;border-radius:10px;cursor:pointer;transition:all 0.15s;margin-bottom:0.4rem;border:1px solid transparent}
+.fci:hover{background:rgba(0,0,0,0.02)}
+.fci.done{background:rgba(21,128,61,0.04);border-color:rgba(21,128,61,0.15)}
+.fci-check{width:22px;height:22px;border-radius:6px;border:2px solid var(--muted);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.75rem;color:var(--green);transition:all 0.15s;margin-top:1px}
+.fci.done .fci-check{background:var(--green);border-color:var(--green);color:#fff}
+.fci-text{font-size:0.85rem;color:var(--text);line-height:1.5}
+.fci-text strong{color:var(--dark)}
+.fci.done .fci-text{text-decoration:line-through;color:var(--muted)}
+
+/* CONTACTS */
+.contacts-card{background:linear-gradient(135deg,var(--dark),#0a2d14);border-radius:20px;padding:2rem;text-align:center;margin-top:2rem;color:#fff}
+.cc-title{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;margin-bottom:0.3rem}
+.cc-sub{color:rgba(255,255,255,0.45);font-size:0.85rem;margin-bottom:1.2rem}
+.cc-links{display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap}
+.cc-link{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.8);padding:0.6rem 1.2rem;border-radius:10px;font-size:0.82rem;font-weight:700;text-decoration:none;cursor:pointer;border:none;font-family:'DM Sans',sans-serif}
+
+@media(max-width:600px){.main,.hero{padding:1.5rem 1rem}.phase-header{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-logo">Nutri<span>Cam</span> <span style="color:rgba(255,255,255,0.3);font-size:0.8rem;font-family:'DM Sans',sans-serif;font-weight:400">· Guide Non-Technique</span></div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">👤 Spécial non-technique · Zéro jargon</div>
+  <h1>Lancer NutriCam<br/>sans <span>savoir coder</span></h1>
+  <p>Georges, ce guide est fait pour vous. Chaque étape expliquée simplement, avec exactement quoi cliquer, où aller, et ce que ça coûte.</p>
+</div>
+
+<div class="main">
+
+  <div class="honest-box">
+    <strong>⚠️ Soyons honnêtes avec vous :</strong><br/>
+    Certaines parties de NutriCam (les paiements réels, la base de données) nécessitent un minimum de technique. <strong>Deux options s'offrent à vous :</strong><br/><br/>
+    <strong>Option A :</strong> Faites les étapes ci-dessous vous-même en suivant ce guide (80% faisable sans coder)<br/>
+    <strong>Option B :</strong> Trouvez un étudiant en informatique au Cameroun ou en Europe pour les 20% restants — 2 à 3 heures de travail, ~15 000 FCFA<br/><br/>
+    <strong>Commencez par ce qui est gratuit et faisable maintenant !</strong>
+  </div>
+
+  <!-- ── PHASE 1 : SITE EN LIGNE ── -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-num" style="background:rgba(21,128,61,0.12);color:var(--green)">1</div>
+      <div>
+        <div class="phase-title">Mettre le site en ligne</div>
+        <div class="phase-time">⏱ 30 minutes · Faisable seul</div>
+      </div>
+      <div class="phase-cost" style="background:rgba(21,128,61,0.1);color:var(--green)">Gratuit</div>
+    </div>
+
+    <div class="step" id="s1">
+      <div class="step-done" onclick="toggleStep('s1')"></div>
+      <div class="step-top">
+        <div class="step-icon">1️⃣</div>
+        <div><div class="step-title">Créer un compte GitHub</div><div class="step-sub">Le "disque dur en ligne" de votre code</div></div>
+      </div>
+      <div class="step-body">
+        Allez sur <a href="https://github.com" target="_blank">github.com</a><br/>
+        Cliquez <strong>"Sign up"</strong> → Entrez votre email <strong>pitchouduplece9@gmail.com</strong><br/>
+        Choisissez un pseudo (ex: <strong>georgesduplece</strong>) → Plan <strong>Free</strong><br/>
+        <div class="step-tip">💡 GitHub, c'est comme Dropbox mais pour du code. Vercel va piocher vos fichiers là-dedans pour les mettre en ligne.</div>
+      </div>
+    </div>
+
+    <div class="step" id="s2">
+      <div class="step-done" onclick="toggleStep('s2')"></div>
+      <div class="step-top">
+        <div class="step-icon">2️⃣</div>
+        <div><div class="step-title">Uploader vos fichiers sur GitHub</div><div class="step-sub">Glisser-déposer, pas de code requis</div></div>
+      </div>
+      <div class="step-body">
+        Une fois connecté sur GitHub :<br/>
+        → Cliquez <strong>"New repository"</strong> → Nommez-le <strong>"nutricam"</strong> → Cochez <strong>"Public"</strong> → <strong>"Create repository"</strong><br/><br/>
+        → Cliquez <strong>"uploading an existing file"</strong><br/>
+        → <strong>Glissez-déposez</strong> tous vos fichiers <strong>nutricam-*.html</strong> (les 35 fichiers) dans la zone<br/>
+        → Cliquez <strong>"Commit changes"</strong><br/>
+        <div class="step-tip">💡 Pas besoin de terminal ni de Git ! L'interface GitHub accepte le glisser-déposer directement depuis votre bureau.</div>
+      </div>
+    </div>
+
+    <div class="step" id="s3">
+      <div class="step-done" onclick="toggleStep('s3')"></div>
+      <div class="step-top">
+        <div class="step-icon">3️⃣</div>
+        <div><div class="step-title">Déployer sur Vercel</div><div class="step-sub">Votre site en ligne en 2 clics</div></div>
+      </div>
+      <div class="step-body">
+        Allez sur <a href="https://vercel.com" target="_blank">vercel.com</a><br/>
+        → <strong>"Continue with GitHub"</strong> → Autorisez l'accès<br/>
+        → <strong>"Add New Project"</strong> → Sélectionnez votre repo <strong>"nutricam"</strong><br/>
+        → Framework : sélectionnez <strong>"Other"</strong> → <strong>"Deploy"</strong><br/><br/>
+        Attendez 60 secondes... ✅<br/><br/>
+        <strong>Votre site est maintenant en ligne à :</strong>
+        <div class="url-box">nutricam.vercel.app <button class="ub-copy" onclick="navigator.clipboard?.writeText('https://nutricam.vercel.app');this.textContent='✅';setTimeout(()=>this.textContent='Copier',2000)">Copier</button></div>
+        <div class="step-tip">🎉 Ce lien est permanent et gratuit. Partagez-le maintenant sur WhatsApp !</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PHASE 2 : PAIEMENTS ── -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-num" style="background:rgba(210,119,6,0.12);color:var(--y)">2</div>
+      <div>
+        <div class="phase-title">Recevoir vos premiers paiements</div>
+        <div class="phase-time">⏱ 1–2 jours · Partiellement faisable seul</div>
+      </div>
+      <div class="phase-cost" style="background:rgba(210,119,6,0.1);color:var(--y)">Gratuit + 2-3% commission</div>
+    </div>
+
+    <div class="step" id="s4">
+      <div class="step-done" onclick="toggleStep('s4')"></div>
+      <div class="step-top">
+        <div class="step-icon">💳</div>
+        <div><div class="step-title">Solution rapide : Stripe Payment Links</div><div class="step-sub">Fonctionne en 15 minutes · Cartes bancaires</div></div>
+      </div>
+      <div class="step-body">
+        Pour la diaspora camerounaise en Europe, la solution la plus rapide :<br/><br/>
+        → Allez sur <a href="https://stripe.com" target="_blank">stripe.com</a> → <strong>"Start now"</strong><br/>
+        → Connectez-vous avec <strong>pitchouduplece9@gmail.com</strong><br/>
+        → <strong>Catalogue → Ajouter un produit :</strong><br/>
+        &nbsp;&nbsp;&nbsp;Nom : <strong>NutriCam Premium</strong><br/>
+        &nbsp;&nbsp;&nbsp;Prix : <strong>3,80€/mois</strong> (~2500 FCFA)<br/>
+        → Cliquez <strong>"Créer un lien de paiement"</strong><br/>
+        → Copiez le lien (ex: buy.stripe.com/abc123)<br/><br/>
+        <strong>Collez ce lien dans vos messages WhatsApp.</strong> Quand quelqu'un paie, l'argent arrive sur votre compte Stripe et vous pouvez faire un virement bancaire.
+        <div class="step-tip">💡 Stripe prend 1.4% + 0.25€ par transaction. Sur 3.80€, vous recevez ~3.50€ net.</div>
+      </div>
+    </div>
+
+    <div class="step" id="s5">
+      <div class="step-done" onclick="toggleStep('s5')"></div>
+      <div class="step-top">
+        <div class="step-icon">📱</div>
+        <div><div class="step-title">Solution MTN/Orange : CinetPay</div><div class="step-sub">Pour les utilisateurs au Cameroun · 2-5 jours de validation</div></div>
+      </div>
+      <div class="step-body">
+        → Allez sur <a href="https://cinetpay.com" target="_blank">cinetpay.com</a> → <strong>"Créer un compte marchand"</strong><br/>
+        → Remplissez avec : email <strong>pitchouduplece9@gmail.com</strong><br/>
+        → Uploadez votre pièce d'identité (CNI ou passeport)<br/>
+        → Attendez la validation : 2 à 5 jours ouvrés<br/><br/>
+        Une fois validé, vous aurez des clés API → donnez-les à un développeur pour les intégrer.
+        <div class="step-warn">⏱ <strong>Conseil pratique :</strong> Créez le compte CinetPay AUJOURD'HUI (ça prend 10 minutes). Pendant les 5 jours de validation, utilisez Stripe pour ne pas perdre vos premiers abonnés.</div>
+      </div>
+    </div>
+
+    <div class="step" id="s6">
+      <div class="step-done" onclick="toggleStep('s6')"></div>
+      <div class="step-top">
+        <div class="step-icon">🏦</div>
+        <div><div class="step-title">Solution no-code alternative : Wave, PayDunya, Kkiapay</div><div class="step-sub">Encore plus simple que CinetPay</div></div>
+      </div>
+      <div class="step-body">
+        Si CinetPay est trop complexe, ces alternatives sont plus simples :<br/><br/>
+        • <a href="https://paydunya.com" target="_blank"><strong>PayDunya</strong></a> — accepte MTN, Orange, Wave. Interface simple.<br/>
+        • <a href="https://kkiapay.me" target="_blank"><strong>Kkiapay</strong></a> — solution béninoise très répandue en Afrique francophone.<br/>
+        • <strong>Wave</strong> — si vous avez un compte Wave, les gens peuvent vous envoyer directement de l'argent.<br/><br/>
+        <strong>La solution la plus simple de toutes :</strong> Donnez votre numéro MTN Business <strong>+237 683 868 760</strong> et demandez aux abonnés de vous envoyer 2 500 FCFA directement, puis activez-les manuellement dans un fichier Excel.
+        <div class="step-tip">💡 Au début avec 50 utilisateurs, la gestion manuelle est parfaitement viable. Automatisez quand vous atteignez 200+ abonnés.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PHASE 3 : BASE DE DONNÉES ── -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-num" style="background:rgba(29,78,216,0.12);color:var(--blue)">3</div>
+      <div>
+        <div class="phase-title">Base de données (nécessite aide technique)</div>
+        <div class="phase-time">⏱ 2 heures avec un développeur</div>
+      </div>
+      <div class="phase-cost" style="background:rgba(29,78,216,0.1);color:var(--blue)">Gratuit + 15K FCFA développeur</div>
+    </div>
+
+    <div class="step" id="s7">
+      <div class="step-done" onclick="toggleStep('s7')"></div>
+      <div class="step-top">
+        <div class="step-icon">🗄️</div>
+        <div><div class="step-title">Créer un compte Supabase (vous pouvez le faire seul)</div><div class="step-sub">La base de données gratuite</div></div>
+      </div>
+      <div class="step-body">
+        → Allez sur <a href="https://supabase.com" target="_blank">supabase.com</a> → <strong>"Start your project"</strong><br/>
+        → <strong>"Continue with GitHub"</strong><br/>
+        → <strong>"New Project"</strong> → Nom : <strong>nutricam</strong> → Region : <strong>EU West 1</strong><br/>
+        → Cliquez <strong>"Create new project"</strong><br/><br/>
+        <strong>Notez bien :</strong> Dans Settings → API, copiez et sauvegardez :<br/>
+        • <strong>Project URL</strong> (ex: https://abc.supabase.co)<br/>
+        • <strong>anon key</strong> (longue clé qui commence par "eyJ...")<br/>
+        <div class="step-tip">💡 Ces deux informations seront données à votre développeur pour connecter NutriCam à la base de données.</div>
+      </div>
+    </div>
+
+    <div class="step" id="s8">
+      <div class="step-done" onclick="toggleStep('s8')"></div>
+      <div class="step-top">
+        <div class="step-icon">👨‍💻</div>
+        <div><div class="step-title">Trouver un développeur pour 2-3 heures de travail</div><div class="step-sub">Pour connecter les paiements et la base de données</div></div>
+      </div>
+      <div class="step-body">
+        <strong>Où trouver un développeur camerounais abordable :</strong><br/><br/>
+        • <strong>Groupes Facebook :</strong> "Développeurs Cameroun", "Tech Cameroun", "Freelance IT Cameroun"<br/>
+        • <strong>WhatsApp :</strong> Postez dans les groupes d'étudiants en informatique (IUT Douala, ENSP Yaoundé)<br/>
+        • <strong>LinkedIn :</strong> Cherchez "développeur React Cameroun" ou "freelance Node.js Cameroun"<br/><br/>
+        <strong>Ce que vous lui demandez (3 tâches maximum) :</strong><br/>
+        1. Connecter Supabase aux pages NutriCam (stocker les inscriptions)<br/>
+        2. Intégrer le lien de paiement CinetPay sur la page Premium<br/>
+        3. Déployer le backend server.js sur Railway.app (gratuit)<br/>
+        <div class="step-tip">💡 Ces 3 tâches représentent environ 3 heures de travail. Budget : 15 000 à 25 000 FCFA selon l'expérience du développeur.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PHASE 4 : APP MOBILE ── -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-num" style="background:rgba(124,58,237,0.12);color:var(--purple)">4</div>
+      <div>
+        <div class="phase-title">App mobile sur les stores</div>
+        <div class="phase-time">⏱ 1 semaine (dont 48h validation Apple)</div>
+      </div>
+      <div class="phase-cost" style="background:rgba(124,58,237,0.1);color:var(--purple)">25$ Android · 99$/an iOS</div>
+    </div>
+
+    <div class="step" id="s9">
+      <div class="step-done" onclick="toggleStep('s9')"></div>
+      <div class="step-top">
+        <div class="step-icon">🤖</div>
+        <div><div class="step-title">Commencer par Android (moins cher, plus rapide)</div><div class="step-sub">Google Play Store · 25$ une seule fois</div></div>
+      </div>
+      <div class="step-body">
+        → <a href="https://play.google.com/console/signup" target="_blank">play.google.com/console/signup</a><br/>
+        → Connectez-vous avec <strong>pitchouduplece9@gmail.com</strong><br/>
+        → Payez 25$ (carte bancaire) → Accès immédiat<br/><br/>
+        <strong>Pour le build de l'app :</strong> Donnez le dossier <strong>nutricam-mobile-app.zip</strong> à votre développeur avec les instructions du guide de déploiement.<br/>
+        Il vous remettra un fichier <strong>.aab</strong> à uploader sur Google Play Console.
+        <div class="step-warn">⏱ Google valide les apps en <strong>2 à 7 jours</strong> pour la première soumission. Soyez patient !</div>
+      </div>
+    </div>
+
+    <div class="step" id="s10">
+      <div class="step-done" onclick="toggleStep('s10')"></div>
+      <div class="step-top">
+        <div class="step-icon">🍎</div>
+        <div><div class="step-title">App Store iOS (optionnel dans un premier temps)</div><div class="step-sub">Apple Developer · 99$/an</div></div>
+      </div>
+      <div class="step-body">
+        → <a href="https://developer.apple.com/programs/enroll/" target="_blank">developer.apple.com/programs/enroll</a><br/>
+        → Connectez-vous avec un Apple ID → 99$/an → Validation 24-48h par Apple<br/><br/>
+        <strong>Conseil :</strong> Lancez d'abord sur Android où se trouve 80% des utilisateurs africains. iOS peut attendre 2-3 mois.
+        <div class="step-tip">💡 En Afrique, Android représente 85%+ du marché des smartphones. Priorité absolue à Google Play.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECKLIST FINALE -->
+  <div class="final-checklist">
+    <div class="fc-title">✅ Checklist de lancement NutriCam</div>
+    <div class="fci" onclick="this.classList.toggle('done')"><div class="fci-check"></div><div class="fci-text"><strong>Site web en ligne</strong> sur nutricam.vercel.app (gratuit, 30 min)</div></div>
+    <div class="fci" onclick="this.classList.toggle('done')"><div class="fci-check"></div><div class="fci-text"><strong>Stripe configuré</strong> — lien de paiement prêt à partager (15 min)</div></div>
+    <div class="fci" onclick="this.classList.toggle('done')"><div class="fci-check"></div><div class="fci-text"><strong>Compte CinetPay créé</strong> — en attente validation (10 min maintenant)</div></div>
+    <div class="fci" onclick="this.classList.toggle('done')"><div class="fci-check"></div><div class="fci-text"><strong>Compte Supabase créé</strong> — clés API sauvegardées (10 min)</div></div>
+    <div class="fci" onclick="this.classList.toggle('done')"><div class="fci-check"></div><div class="fci-text"><strong>50 messages WhatsApp envoyés</strong> — 1er canal d'acquisition</div></div>
+    <div class="fci" onclick="this.classList.toggle('done')"><div class="fci-check"></div><div class="fci-text"><strong>Post LinkedIn fondateur</strong> publié avec lien NutriCam</div></div>
+    <div class="fci" onclick="this.classList.toggle('done')"><div class="fci-check"></div><div class="fci-text"><strong>3 groupes Facebook Cameroun</strong> — post publié</div></div>
+    <div class="fci" onclick="this.classList.toggle('done')"><div class="fci-check"></div><div class="fci-text"><strong>Compte Google Play ($25)</strong> — créé, prêt pour l'app</div></div>
+    <div class="fci" onclick="this.classList.toggle('done')"><div class="fci-check"></div><div class="fci-text"><strong>Développeur contacté</strong> pour l'intégration backend</div></div>
+    <div class="fci" onclick="this.classList.toggle('done')"><div class="fci-check"></div><div class="fci-text"><strong>Dossier investisseurs envoyé</strong> à Orange Corners Cameroun</div></div>
+    <div class="fci" onclick="this.classList.toggle('done')"><div class="fci-check"></div><div class="fci-text">🎉 <strong>NutriCam est officiellement lancé !</strong> Félicitations Georges !</div></div>
+  </div>
+
+  <!-- CONTACTS -->
+  <div class="contacts-card">
+    <div class="cc-title">🌿 NutriCam — Georges Duplece Pitchou</div>
+    <div class="cc-sub">CEO & Fondateur · Yaoundé, Cameroun 🇨🇲</div>
+    <div class="cc-links">
+      <a class="cc-link" href="mailto:pitchouduplece9@gmail.com">📧 pitchouduplece9@gmail.com</a>
+      <a class="cc-link" href="https://wa.me/237683868760" target="_blank">📱 +237 683 868 760</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggleStep(id){
+  const el=document.getElementById(id);
+  el.classList.toggle('completed');
+  const btn=el.querySelector('.step-done');
+  btn.textContent=el.classList.contains('completed')?'✓':'';
+}
+</script>
+</body>
+</html>

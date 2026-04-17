@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Guide de Déploiement</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#0d1117;--surface:#161b22;--card:#1c2128;--card2:#21262d;
+  --green:#238636;--gl:#2ea043;--glight:#3fb950;--y:#d29922;--red:#da3633;
+  --blue:#388bfd;--purple:#a855f7;--teal:#22d3ee;--orange:#f0883e;
+  --border:rgba(48,54,61,1);--text:#c9d1d9;--muted:#8b949e;
+  --code-bg:#0d1117;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.docs-sidebar{width:260px;min-width:260px;background:var(--surface);border-right:1px solid var(--border);height:100vh;position:sticky;top:0;overflow-y:auto;display:flex;flex-direction:column}
+.docs-sidebar::-webkit-scrollbar{width:4px}
+.docs-sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08)}
+.ds-header{padding:1.2rem 1.4rem;border-bottom:1px solid var(--border)}
+.ds-logo{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:#fff}
+.ds-logo span{color:var(--y)}
+.ds-version{display:inline-block;background:rgba(35,134,54,0.15);border:1px solid rgba(35,134,54,0.3);color:var(--gl);font-size:0.65rem;font-weight:700;padding:0.15rem 0.5rem;border-radius:4px;margin-top:0.3rem;font-family:'DM Mono',monospace}
+.ds-nav{padding:1rem 0.8rem;flex:1}
+.ds-section{font-size:0.62rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);padding:0.6rem 0.6rem 0.3rem}
+.ds-item{display:flex;align-items:center;gap:0.5rem;padding:0.5rem 0.7rem;border-radius:6px;cursor:pointer;transition:all 0.15s;color:var(--muted);font-size:0.82rem;font-weight:500;text-decoration:none;margin-bottom:1px}
+.ds-item:hover{background:rgba(255,255,255,0.04);color:var(--text)}
+.ds-item.active{background:rgba(56,139,253,0.1);color:var(--blue)}
+.ds-dot{width:6px;height:6px;border-radius:50%;background:var(--muted);flex-shrink:0;transition:background 0.15s}
+.ds-item.active .ds-dot{background:var(--blue)}
+.ds-item.done .ds-dot{background:var(--gl)}
+.ds-badge{margin-left:auto;font-size:0.6rem;font-weight:700;padding:0.1rem 0.4rem;border-radius:4px;font-family:'DM Mono',monospace}
+
+/* MAIN */
+.docs-main{flex:1;overflow-y:auto;max-height:100vh}
+.docs-main::-webkit-scrollbar{width:4px}
+.docs-main::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08)}
+
+/* TOP BAR */
+.docs-topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0.8rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40}
+.dt-breadcrumb{font-size:0.78rem;color:var(--muted);display:flex;align-items:center;gap:0.5rem}
+.dt-breadcrumb span{color:var(--text)}
+.dt-actions{display:flex;gap:0.5rem}
+.dt-btn{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:0.4rem 0.9rem;font-size:0.75rem;font-weight:600;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s}
+.dt-btn:hover{color:var(--text)}
+
+/* CONTENT */
+.docs-content{padding:2rem 2.5rem;max-width:860px}
+.doc-view{display:none}.doc-view.show{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.doc-view.show{animation:fadeUp 0.25s ease}
+
+/* TYPOGRAPHY */
+.doc-tag{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--blue);margin-bottom:0.7rem}
+.doc-h1{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:#fff;margin-bottom:0.6rem;line-height:1.2}
+.doc-lead{color:var(--muted);font-size:0.95rem;line-height:1.7;margin-bottom:2rem;max-width:620px}
+.doc-h2{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;color:#fff;margin:2rem 0 0.8rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+.doc-h2:first-of-type{border-top:none;padding-top:0}
+.doc-h3{font-size:0.95rem;font-weight:700;color:var(--text);margin:1.4rem 0 0.5rem}
+.doc-p{font-size:0.9rem;color:var(--muted);line-height:1.8;margin-bottom:0.8rem}
+.doc-p strong{color:var(--text);font-weight:700}
+.doc-ul,.doc-ol{font-size:0.87rem;color:var(--muted);line-height:1.8;padding-left:1.4rem;margin-bottom:0.8rem}
+.doc-ul li,.doc-ol li{margin-bottom:0.3rem}
+.doc-ul li strong,.doc-ol li strong{color:var(--text)}
+
+/* CODE BLOCKS */
+.code-block{background:var(--code-bg);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:1rem 0}
+.cb-header{background:var(--card);padding:0.6rem 1rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.cb-lang{font-size:0.7rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;font-family:'DM Mono',monospace}
+.cb-copy{background:none;border:none;color:var(--muted);font-size:0.72rem;font-weight:600;cursor:pointer;padding:0.2rem 0.5rem;border-radius:4px;transition:all 0.15s;font-family:'DM Sans',sans-serif}
+.cb-copy:hover{background:rgba(255,255,255,0.06);color:var(--text)}
+.cb-body{padding:1.2rem;overflow-x:auto}
+.cb-body pre{font-family:'DM Mono',monospace;font-size:0.8rem;line-height:1.8;color:var(--text)}
+.c-comment{color:#6e7681}.c-key{color:#ff7b72}.c-str{color:#a5d6ff}.c-val{color:#79c0ff}
+.c-cmd{color:#3fb950}.c-flag{color:#d2a8ff}.c-arg{color:#ffa657}
+.c-success{color:#3fb950}.c-warn{color:#d29922}.c-error{color:#da3633}
+
+/* ALERT BOXES */
+.alert{border-radius:8px;padding:1rem 1.2rem;margin:1.2rem 0;font-size:0.85rem;line-height:1.6;display:flex;gap:0.8rem}
+.alert-icon{flex-shrink:0;font-size:1.1rem}
+.al-info{background:rgba(56,139,253,0.1);border:1px solid rgba(56,139,253,0.2);color:#79c0ff}
+.al-success{background:rgba(35,134,54,0.1);border:1px solid rgba(35,134,54,0.2);color:#3fb950}
+.al-warn{background:rgba(210,153,34,0.1);border:1px solid rgba(210,153,34,0.2);color:#d29922}
+.al-danger{background:rgba(218,54,51,0.1);border:1px solid rgba(218,54,51,0.2);color:#ff7b72}
+
+/* TABLES */
+.doc-table{width:100%;border-collapse:collapse;margin:1.2rem 0;font-size:0.83rem;border-radius:8px;overflow:hidden;border:1px solid var(--border)}
+.doc-table th{background:var(--card);padding:0.65rem 1rem;text-align:left;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted)}
+.doc-table td{padding:0.65rem 1rem;border-top:1px solid var(--border);vertical-align:top;color:var(--muted)}
+.doc-table td:first-child{color:var(--text);font-family:'DM Mono',monospace;font-size:0.78rem}
+.doc-table tr:hover td{background:rgba(255,255,255,0.02)}
+
+/* STATUS BADGES */
+.status{display:inline-flex;align-items:center;gap:0.3rem;font-size:0.7rem;font-weight:700;padding:0.15rem 0.55rem;border-radius:100px;font-family:'DM Mono',monospace}
+.st-done{background:rgba(35,134,54,0.15);color:var(--gl)}
+.st-todo{background:rgba(56,139,253,0.12);color:var(--blue)}
+.st-warn{background:rgba(210,153,34,0.12);color:var(--y)}
+
+/* CHECKLIST */
+.checklist{display:flex;flex-direction:column;gap:0.5rem;margin:1rem 0}
+.check-item{display:flex;align-items:flex-start;gap:0.7rem;padding:0.7rem 1rem;background:var(--card);border-radius:8px;border:1px solid var(--border);cursor:pointer;transition:all 0.15s}
+.check-item:hover{border-color:rgba(255,255,255,0.12)}
+.check-item.checked{border-color:rgba(35,134,54,0.3);background:rgba(35,134,54,0.04)}
+.ci-box{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--muted);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:var(--gl);transition:all 0.15s;margin-top:1px}
+.check-item.checked .ci-box{background:var(--green);border-color:var(--green);color:#fff}
+.ci-text{font-size:0.83rem;color:var(--muted);line-height:1.5}
+.ci-text strong{color:var(--text)}
+
+/* ENV CARDS */
+.env-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.2rem 0}
+.env-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.2rem}
+.ec-title{font-size:0.78rem;font-weight:700;color:var(--text);margin-bottom:0.8rem;display:flex;align-items:center;gap:0.5rem}
+.ec-item{display:flex;align-items:center;gap:0.6rem;padding:0.4rem 0;border-bottom:1px solid var(--border)}
+.ec-item:last-child{border-bottom:none}
+.ec-key{font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--y);flex:1}
+.ec-val{font-size:0.72rem;color:var(--muted);font-family:'DM Mono',monospace}
+
+/* PROGRESS BAR */
+.deploy-progress{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.4rem;margin:1.5rem 0}
+.dp-title{font-size:0.78rem;font-weight:700;color:var(--text);margin-bottom:1rem}
+.dp-steps{display:flex;gap:0;flex-wrap:wrap}
+.dp-step{flex:1;text-align:center;padding:0.5rem;position:relative;min-width:80px}
+.dp-step::after{content:'›';position:absolute;right:-5px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:0.9rem}
+.dp-step:last-child::after{display:none}
+.dp-circle{width:36px;height:36px;border-radius:50%;margin:0 auto 0.4rem;display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:800}
+.dp-done .dp-circle{background:var(--green);color:#fff}
+.dp-active .dp-circle{background:var(--blue);color:#fff;animation:glow 1.5s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(56,139,253,0.4)}50%{box-shadow:0 0 0 8px rgba(56,139,253,0)}}
+.dp-todo .dp-circle{background:var(--card2);color:var(--muted);border:1px solid var(--border)}
+.dp-label{font-size:0.62rem;color:var(--muted)}
+
+@media(max-width:900px){.docs-sidebar{display:none}.docs-content{padding:1.5rem}}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="docs-sidebar">
+  <div class="ds-header">
+    <div class="ds-logo">Nutri<span>Cam</span> Docs</div>
+    <div class="ds-version">v1.0.0-beta</div>
+  </div>
+  <nav class="ds-nav">
+    <div class="ds-section">Démarrage</div>
+    <div class="ds-item active" onclick="showDoc('overview',this)"><div class="ds-dot"></div>Vue d'ensemble</div>
+    <div class="ds-item" onclick="showDoc('prereqs',this)"><div class="ds-dot"></div>Prérequis</div>
+    <div class="ds-item" onclick="showDoc('install',this)"><div class="ds-dot"></div>Installation locale</div>
+    <div class="ds-section">Configuration</div>
+    <div class="ds-item" onclick="showDoc('env',this)"><div class="ds-dot"></div>Variables d'environnement</div>
+    <div class="ds-item" onclick="showDoc('db',this)"><div class="ds-dot"></div>Base de données</div>
+    <div class="ds-item" onclick="showDoc('api-config',this)"><div class="ds-dot"></div>Configuration API</div>
+    <div class="ds-section">Déploiement</div>
+    <div class="ds-item" onclick="showDoc('deploy-web',this)"><div class="ds-dot"></div>Site Web (Vercel/AWS)</div>
+    <div class="ds-item" onclick="showDoc('deploy-mobile',this)"><div class="ds-dot"></div>App Mobile (Stores)</div>
+    <div class="ds-item" onclick="showDoc('docker',this)"><div class="ds-dot"></div>Docker & Kubernetes</div>
+    <div class="ds-item" onclick="showDoc('ci-cd',this)"><div class="ds-dot"></div>CI/CD GitHub Actions</div>
+    <div class="ds-section">Services tiers</div>
+    <div class="ds-item" onclick="showDoc('payments',this)"><div class="ds-dot"></div>Paiements Mobile Money</div>
+    <div class="ds-item" onclick="showDoc('ai-setup',this)"><div class="ds-dot"></div>Configuration IA (Claude)</div>
+    <div class="ds-item" onclick="showDoc('notifications',this)"><div class="ds-dot"></div>Notifications (Firebase)</div>
+    <div class="ds-section">Maintenance</div>
+    <div class="ds-item" onclick="showDoc('monitoring',this)"><div class="ds-dot"></div>Monitoring & Logs</div>
+    <div class="ds-item" onclick="showDoc('backup',this)"><div class="ds-dot"></div>Backup & Recovery</div>
+    <div class="ds-item" onclick="showDoc('checklist',this)"><div class="ds-dot"></div>✅ Checklist lancement</div>
+  </nav>
+</aside>
+
+<!-- MAIN DOCS -->
+<div class="docs-main">
+  <div class="docs-topbar">
+    <div class="dt-breadcrumb">NutriCam Docs › <span id="tb-crumb">Vue d'ensemble</span></div>
+    <div class="dt-actions">
+      <button class="dt-btn">🔍 Rechercher</button>
+      <button class="dt-btn">📄 Version PDF</button>
+      <button class="dt-btn" style="background:var(--green);color:#fff;border-color:var(--green)">🚀 Déployer</button>
+    </div>
+  </div>
+
+  <div class="docs-content">
+
+    <!-- ═══ OVERVIEW ═══ -->
+    <div class="doc-view show" id="dv-overview">
+      <div class="doc-tag">Documentation · NutriCam v1.0</div>
+      <h1 class="doc-h1">Guide de déploiement NutriCam</h1>
+      <p class="doc-lead">Ce guide couvre l'installation, la configuration et le déploiement complet de la plateforme NutriCam — du développement local à la production en Afrique.</p>
+
+      <div class="deploy-progress">
+        <div class="dp-title">🚀 Progression du déploiement</div>
+        <div class="dp-steps">
+          <div class="dp-step dp-done"><div class="dp-circle">✓</div><div class="dp-label">Code</div></div>
+          <div class="dp-step dp-done"><div class="dp-circle">✓</div><div class="dp-label">Config</div></div>
+          <div class="dp-step dp-active"><div class="dp-circle">▶</div><div class="dp-label">Build</div></div>
+          <div class="dp-step dp-todo"><div class="dp-circle">4</div><div class="dp-label">Test</div></div>
+          <div class="dp-step dp-todo"><div class="dp-circle">5</div><div class="dp-label">Deploy</div></div>
+          <div class="dp-step dp-todo"><div class="dp-circle">6</div><div class="dp-label">Monitor</div></div>
+        </div>
+      </div>
+
+      <div class="doc-h2">Architecture globale</div>
+      <div class="code-block">
+        <div class="cb-header"><div class="cb-lang">Architecture</div><button class="cb-copy" onclick="copyCode(this)">📋 Copier</button></div>
+        <div class="cb-body"><pre><span class="c-comment">┌─────────────────────────────────────────────────────────┐
+│                    NUTRICAM INFRASTRUCTURE               │
+├──────────────────────────────┬──────────────────────────┤
+│         FRONTEND             │         BACKEND           │
+│  ┌─────────────┐             │  ┌──────────────────┐    │
+│  │ Next.js 14  │ ←─ HTTPS ──►│  │  Node.js + Hono  │    │
+│  │ (Vercel)    │             │  │  (AWS Lambda)    │    │
+│  └─────────────┘             │  └────────┬─────────┘    │
+│  ┌─────────────┐             │           │              │
+│  │React Native │             │  ┌────────▼─────────┐    │
+│  │ iOS+Android │             │  │  PostgreSQL 15   │    │
+│  └─────────────┘             │  │  (RDS af-south1) │    │
+├──────────────────────────────┤  └────────┬─────────┘    │
+│           CDN                │           │              │
+│  Cloudflare (Lagos/Nairobi)  │  ┌────────▼─────────┐    │
+│  + Image Optimization        │  │  Redis Cache     │    │
+│  + DDoS Protection           │  │  (ElastiCache)   │    │
+└──────────────────────────────┴──└──────────────────┘────┘</span></pre>
+        </div>
+      </div>
+
+      <div class="doc-h2">Stack technologique</div>
+      <table class="doc-table">
+        <thead><tr><th>Composant</th><th>Technologie</th><th>Version</th><th>Statut</th></tr></thead>
+        <tbody>
+          <tr><td>Frontend Web</td><td>Next.js + TypeScript</td><td>14.x</td><td><span class="status st-done">✓ Stable</span></td></tr>
+          <tr><td>App Mobile</td><td>React Native + Expo</td><td>0.73</td><td><span class="status st-todo">→ Q2 2025</span></td></tr>
+          <tr><td>API Backend</td><td>Node.js + Hono.js</td><td>18 LTS</td><td><span class="status st-done">✓ Stable</span></td></tr>
+          <tr><td>Base données</td><td>PostgreSQL + Prisma ORM</td><td>15.x</td><td><span class="status st-done">✓ Stable</span></td></tr>
+          <tr><td>Cache</td><td>Redis</td><td>7.x</td><td><span class="status st-done">✓ Stable</span></td></tr>
+          <tr><td>Auth</td><td>JWT + bcrypt + 2FA</td><td>—</td><td><span class="status st-done">✓ Stable</span></td></tr>
+          <tr><td>IA Chatbot</td><td>Claude API (Anthropic)</td><td>claude-sonnet-4</td><td><span class="status st-done">✓ Intégré</span></td></tr>
+          <tr><td>Paiements</td><td>CinetPay + Stripe</td><td>—</td><td><span class="status st-warn">⚠ Config requise</span></td></tr>
+          <tr><td>Notif. Push</td><td>Firebase FCM</td><td>—</td><td><span class="status st-todo">→ App mobile</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ═══ INSTALL ═══ -->
+    <div class="doc-view" id="dv-install">
+      <div class="doc-tag">Installation</div>
+      <h1 class="doc-h1">Installation locale</h1>
+      <p class="doc-lead">Mettez en place l'environnement de développement NutriCam en 10 minutes.</p>
+
+      <div class="doc-h2">1. Cloner le dépôt</div>
+      <div class="code-block">
+        <div class="cb-header"><div class="cb-lang">bash</div><button class="cb-copy" onclick="copyCode(this)">📋</button></div>
+        <div class="cb-body"><pre><span class="c-comment"># Cloner le repo NutriCam</span>
+<span class="c-cmd">git clone</span> <span class="c-arg">https://github.com/nutricam/nutricam-app.git</span>
+<span class="c-cmd">cd</span> nutricam-app
+
+<span class="c-comment"># Installer les dépendances</span>
+<span class="c-cmd">npm install</span>
+
+<span class="c-comment"># Ou avec Yarn</span>
+<span class="c-cmd">yarn install</span></pre>
+        </div>
+      </div>
+
+      <div class="doc-h2">2. Variables d'environnement</div>
+      <div class="code-block">
+        <div class="cb-header"><div class="cb-lang">.env.local</div><button class="cb-copy" onclick="copyCode(this)">📋</button></div>
+        <div class="cb-body"><pre><span class="c-comment"># ── BASE DE DONNÉES ──</span>
+<span class="c-key">DATABASE_URL</span>=<span class="c-str">"postgresql://nutricam:password@localhost:5432/nutricam_dev"</span>
+<span class="c-key">REDIS_URL</span>=<span class="c-str">"redis://localhost:6379"</span>
+
+<span class="c-comment"># ── AUTHENTIFICATION ──</span>
+<span class="c-key">JWT_SECRET</span>=<span class="c-str">"your-super-secret-jwt-key-min-32-chars"</span>
+<span class="c-key">JWT_EXPIRES_IN</span>=<span class="c-str">"7d"</span>
+<span class="c-key">NEXTAUTH_URL</span>=<span class="c-str">"http://localhost:3000"</span>
+<span class="c-key">NEXTAUTH_SECRET</span>=<span class="c-str">"your-nextauth-secret"</span>
+
+<span class="c-comment"># ── IA (ANTHROPIC CLAUDE) ──</span>
+<span class="c-key">ANTHROPIC_API_KEY</span>=<span class="c-str">"sk-ant-api03-..."</span>
+<span class="c-key">AI_MODEL</span>=<span class="c-str">"claude-sonnet-4-5"</span>
+
+<span class="c-comment"># ── PAIEMENTS ──</span>
+<span class="c-key">CINETPAY_API_KEY</span>=<span class="c-str">"your-cinetpay-key"</span>
+<span class="c-key">CINETPAY_SITE_ID</span>=<span class="c-str">"your-site-id"</span>
+<span class="c-key">STRIPE_SECRET_KEY</span>=<span class="c-str">"sk_test_..."</span>
+<span class="c-key">STRIPE_WEBHOOK_SECRET</span>=<span class="c-str">"whsec_..."</span>
+
+<span class="c-comment"># ── STOCKAGE FICHIERS ──</span>
+<span class="c-key">AWS_ACCESS_KEY_ID</span>=<span class="c-str">"AKIA..."</span>
+<span class="c-key">AWS_SECRET_ACCESS_KEY</span>=<span class="c-str">"..."</span>
+<span class="c-key">AWS_S3_BUCKET</span>=<span class="c-str">"nutricam-assets"</span>
+<span class="c-key">AWS_REGION</span>=<span class="c-str">"af-south-1"</span>
+
+<span class="c-comment"># ── EMAIL ──</span>
+<span class="c-key">SMTP_HOST</span>=<span class="c-str">"smtp.gmail.com"</span>
+<span class="c-key">SMTP_PORT</span>=<span class="c-str">"587"</span>
+<span class="c-key">SMTP_USER</span>=<span class="c-str">"pitchouduplece9@gmail.com"</span>
+<span class="c-key">SMTP_PASS</span>=<span class="c-str">"your-app-password"</span>
+
+<span class="c-comment"># ── NOTIFICATIONS (FIREBASE) ──</span>
+<span class="c-key">FIREBASE_PROJECT_ID</span>=<span class="c-str">"nutricam-app"</span>
+<span class="c-key">FIREBASE_PRIVATE_KEY</span>=<span class="c-str">"-----BEGIN PRIVATE KEY-----\n..."</span></pre>
+        </div>
+      </div>
+
+      <div class="doc-h2">3. Base de données</div>
+      <div class="code-block">
+        <div class="cb-header"><div class="cb-lang">bash</div><button class="cb-copy" onclick="copyCode(this)">📋</button></div>
+        <div class="cb-body"><pre><span class="c-comment"># Générer le client Prisma</span>
+<span class="c-cmd">npx prisma generate</span>
+
+<span class="c-comment"># Appliquer les migrations</span>
+<span class="c-cmd">npx prisma migrate dev</span> <span class="c-flag">--name</span> init
+
+<span class="c-comment"># Seed : injecter les 52 recettes camerounaises</span>
+<span class="c-cmd">npx prisma db seed</span>
+
+<span class="c-comment"># Vérifier avec Prisma Studio</span>
+<span class="c-cmd">npx prisma studio</span>
+<span class="c-comment"># → Ouvre http://localhost:5555</span></pre>
+        </div>
+      </div>
+
+      <div class="doc-h2">4. Démarrer le serveur de développement</div>
+      <div class="code-block">
+        <div class="cb-header"><div class="cb-lang">bash</div><button class="cb-copy" onclick="copyCode(this)">📋</button></div>
+        <div class="cb-body"><pre><span class="c-comment"># Démarrer le frontend (port 3000)</span>
+<span class="c-cmd">npm run dev</span>
+
+<span class="c-comment"># Dans un autre terminal : API backend (port 8080)</span>
+<span class="c-cmd">npm run api:dev</span>
+
+<span class="c-comment"># Vérification : tous les services démarrés</span>
+<span class="c-success">✓ Next.js prêt sur http://localhost:3000</span>
+<span class="c-success">✓ API NutriCam sur http://localhost:8080</span>
+<span class="c-success">✓ PostgreSQL connecté (nutricam_dev)</span>
+<span class="c-success">✓ Redis connecté (localhost:6379)</span>
+<span class="c-warn">⚠ Paiements en mode sandbox (CinetPay test)</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ DEPLOY WEB ═══ -->
+    <div class="doc-view" id="dv-deploy-web">
+      <div class="doc-tag">Déploiement</div>
+      <h1 class="doc-h1">Déploiement Web (Production)</h1>
+      <p class="doc-lead">Déployer NutriCam sur Vercel (frontend) et AWS Lambda (backend) pour une infrastructure optimisée Afrique.</p>
+
+      <div class="alert al-info"><div class="alert-icon">ℹ️</div><div>Recommandation : utilisez la région <strong>af-south-1</strong> (Cape Town) pour AWS et activez le CDN Cloudflare avec nœuds Lagos + Nairobi pour minimiser la latence en Afrique subsaharienne (&lt;80ms).</div></div>
+
+      <div class="doc-h2">Déploiement Frontend — Vercel</div>
+      <div class="code-block">
+        <div class="cb-header"><div class="cb-lang">bash</div><button class="cb-copy" onclick="copyCode(this)">📋</button></div>
+        <div class="cb-body"><pre><span class="c-comment"># Installer Vercel CLI</span>
+<span class="c-cmd">npm install</span> <span class="c-flag">-g</span> vercel
+
+<span class="c-comment"># Se connecter et déployer</span>
+<span class="c-cmd">vercel login</span>
+<span class="c-cmd">vercel</span> <span class="c-flag">--prod</span>
+
+<span class="c-comment"># Configurer le domaine personnalisé</span>
+<span class="c-cmd">vercel domains</span> add nutricam.cm
+<span class="c-cmd">vercel domains</span> add www.nutricam.cm
+
+<span class="c-comment"># Variables d'environnement production</span>
+<span class="c-cmd">vercel env add</span> DATABASE_URL production
+<span class="c-cmd">vercel env add</span> ANTHROPIC_API_KEY production
+<span class="c-cmd">vercel env add</span> NEXTAUTH_SECRET production
+
+<span class="c-success">✓ Déploiement réussi → https://nutricam.cm</span>
+<span class="c-success">✓ SSL automatique activé (Let's Encrypt)</span></pre>
+        </div>
+      </div>
+
+      <div class="doc-h2">Déploiement Backend — Docker + AWS ECS</div>
+      <div class="code-block">
+        <div class="cb-header"><div class="cb-lang">bash</div><button class="cb-copy" onclick="copyCode(this)">📋</button></div>
+        <div class="cb-body"><pre><span class="c-comment"># Build image Docker</span>
+<span class="c-cmd">docker build</span> <span class="c-flag">-t</span> nutricam-api <span class="c-flag">-f</span> Dockerfile.prod .
+
+<span class="c-comment"># Tag pour AWS ECR (Elastic Container Registry)</span>
+<span class="c-cmd">docker tag</span> nutricam-api \
+  123456789.dkr.ecr.af-south-1.amazonaws.com/nutricam-api:latest
+
+<span class="c-comment"># Push vers ECR</span>
+<span class="c-cmd">aws ecr get-login-password</span> <span class="c-flag">--region</span> af-south-1 | \
+  docker login <span class="c-flag">--username</span> AWS <span class="c-flag">--password-stdin</span> \
+  123456789.dkr.ecr.af-south-1.amazonaws.com
+
+<span class="c-cmd">docker push</span> 123456789.dkr.ecr.af-south-1.amazonaws.com/nutricam-api:latest
+
+<span class="c-comment"># Déployer sur ECS</span>
+<span class="c-cmd">aws ecs update-service</span> \
+  <span class="c-flag">--cluster</span> nutricam-prod \
+  <span class="c-flag">--service</span> nutricam-api \
+  <span class="c-flag">--force-new-deployment</span>
+
+<span class="c-success">✓ Service mis à jour → api.nutricam.cm</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ PAYMENTS ═══ -->
+    <div class="doc-view" id="dv-payments">
+      <div class="doc-tag">Services tiers</div>
+      <h1 class="doc-h1">Configuration des paiements</h1>
+      <p class="doc-lead">NutriCam supporte MTN Mobile Money, Orange Money (via CinetPay) et les cartes bancaires (Stripe).</p>
+
+      <div class="doc-h2">CinetPay (Mobile Money Afrique)</div>
+      <div class="alert al-success"><div class="alert-icon">✅</div><div>CinetPay agrège MTN MoMo et Orange Money dans une seule API. Idéal pour le Cameroun, Côte d'Ivoire, Sénégal.</div></div>
+      <div class="code-block">
+        <div class="cb-header"><div class="cb-lang">javascript</div><button class="cb-copy" onclick="copyCode(this)">📋</button></div>
+        <div class="cb-body"><pre><span class="c-comment">// lib/payments/cinetpay.js</span>
+<span class="c-key">const</span> CinetPay = <span class="c-key">require</span>(<span class="c-str">'cinetpay-sdk'</span>);
+
+<span class="c-key">const</span> client = <span class="c-key">new</span> CinetPay({
+  apiKey: process.env.<span class="c-val">CINETPAY_API_KEY</span>,
+  siteId: process.env.<span class="c-val">CINETPAY_SITE_ID</span>,
+  currency: <span class="c-str">'XAF'</span>,           <span class="c-comment">// FCFA</span>
+  channels: <span class="c-str">'MOBILE_MONEY'</span>,
+});
+
+<span class="c-comment">// Initier un paiement MTN/Orange</span>
+<span class="c-key">async function</span> initiatePayment(userId, plan) {
+  <span class="c-key">const</span> transaction = <span class="c-key">await</span> client.initPayment({
+    amount: plan === <span class="c-str">'premium'</span> ? <span class="c-val">2500</span> : <span class="c-val">5000</span>,
+    transaction_id: <span class="c-str">`TXN-${Date.now()}`</span>,
+    customer_phone_number: user.phone,
+    customer_name: user.name,
+    description: <span class="c-str">`NutriCam ${plan} - Abonnement mensuel`</span>,
+    notify_url: <span class="c-str">'https://api.nutricam.cm/webhooks/payment'</span>,
+    return_url: <span class="c-str">'https://nutricam.cm/dashboard'</span>,
+  });
+  <span class="c-key">return</span> transaction.payment_url;
+}</pre>
+        </div>
+      </div>
+
+      <div class="doc-h2">Webhook de confirmation</div>
+      <div class="code-block">
+        <div class="cb-header"><div class="cb-lang">javascript</div><button class="cb-copy" onclick="copyCode(this)">📋</button></div>
+        <div class="cb-body"><pre><span class="c-comment">// routes/webhooks.js</span>
+app.post(<span class="c-str">'/webhooks/payment'</span>, <span class="c-key">async</span> (req, res) => {
+  <span class="c-key">const</span> { cpm_trans_id, cpm_site_id, cpm_amount, cpm_payment_date,
+          cpm_payment_status } = req.body;
+
+  <span class="c-comment">// Vérifier la signature CinetPay</span>
+  <span class="c-key">const</span> valid = verifyCinetPaySignature(req.body);
+  <span class="c-key">if</span> (!valid) <span class="c-key">return</span> res.status(<span class="c-val">401</span>).json({ error: <span class="c-str">'Invalid signature'</span> });
+
+  <span class="c-key">if</span> (cpm_payment_status === <span class="c-str">'ACCEPTED'</span>) {
+    <span class="c-comment">// Activer l'abonnement</span>
+    <span class="c-key">await</span> db.subscription.create({
+      userId, plan: <span class="c-str">'premium'</span>,
+      startDate: <span class="c-key">new</span> Date(),
+      endDate: addMonths(<span class="c-key">new</span> Date(), <span class="c-val">1</span>),
+    });
+    <span class="c-comment">// Envoyer email de confirmation</span>
+    <span class="c-key">await</span> sendConfirmationEmail(user.email, cpm_amount);
+  }
+  res.json({ status: <span class="c-str">'received'</span> });
+});</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ AI SETUP ═══ -->
+    <div class="doc-view" id="dv-ai-setup">
+      <div class="doc-tag">Intelligence Artificielle</div>
+      <h1 class="doc-h1">Configuration IA (Claude API)</h1>
+      <p class="doc-lead">NutriCam utilise Claude d'Anthropic pour le chatbot nutritionnel, la génération de plans repas et les recommandations personnalisées.</p>
+
+      <div class="code-block">
+        <div class="cb-header"><div class="cb-lang">javascript</div><button class="cb-copy" onclick="copyCode(this)">📋</button></div>
+        <div class="cb-body"><pre><span class="c-comment">// lib/ai/nutritionCoach.js</span>
+<span class="c-key">const</span> Anthropic = <span class="c-key">require</span>(<span class="c-str">'@anthropic-ai/sdk'</span>);
+
+<span class="c-key">const</span> client = <span class="c-key">new</span> Anthropic({
+  apiKey: process.env.<span class="c-val">ANTHROPIC_API_KEY</span>,
+});
+
+<span class="c-key">const</span> SYSTEM_PROMPT = <span class="c-str">`
+Tu es le Coach NutriCam, un expert en nutrition africaine
+spécialisé dans la gastronomie camerounaise. Tu connais
+parfaitement les 200+ recettes de notre base de données
+avec leurs valeurs nutritionnelles exactes.
+
+Règles importantes :
+- Toujours citer des plats camerounais en priorité
+- Adapter les conseils au profil de l'utilisateur
+- Ne jamais recommander de produits importés si une
+  alternative locale équivalente existe
+- Mentionner les valeurs caloriques précises (kcal)
+- Répondre en français naturel et bienveillant
+`</span>;
+
+<span class="c-key">async function</span> askCoach(userMessage, userProfile) {
+  <span class="c-key">const</span> response = <span class="c-key">await</span> client.messages.create({
+    model: <span class="c-str">'claude-sonnet-4-5'</span>,
+    max_tokens: <span class="c-val">1024</span>,
+    system: SYSTEM_PROMPT,
+    messages: [
+      {
+        role: <span class="c-str">'user'</span>,
+        content: <span class="c-str">`
+Profil utilisateur : ${JSON.stringify(userProfile)}
+Question : ${userMessage}
+        `</span>
+      }
+    ]
+  });
+  <span class="c-key">return</span> response.content[<span class="c-val">0</span>].text;
+}</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ CHECKLIST ═══ -->
+    <div class="doc-view" id="dv-checklist">
+      <div class="doc-tag">Lancement</div>
+      <h1 class="doc-h1">✅ Checklist de lancement</h1>
+      <p class="doc-lead">Cochez chaque étape avant le lancement en production de NutriCam.</p>
+
+      <div class="doc-h2">🔒 Sécurité</div>
+      <div class="checklist" id="cl-security">
+        <div class="check-item" onclick="toggleCheck(this)"><div class="ci-box"></div><div class="ci-text"><strong>Variables d'environnement</strong> — Toutes les clés secrètes hors du code source (jamais commit)</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="ci-box"></div><div class="ci-text"><strong>HTTPS forcé</strong> — Redirection HTTP→HTTPS sur tous les domaines</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="ci-box"></div><div class="ci-text"><strong>JWT expires</strong> — Access token 15min + Refresh token 7 jours</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="ci-box"></div><div class="ci-text"><strong>Rate limiting</strong> — 100 req/min/IP sur l'API, 10 req/min sur l'auth</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="ci-box"></div><div class="ci-text"><strong>CORS configuré</strong> — Origines autorisées uniquement (nutricam.cm)</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="ci-box"></div><div class="ci-text"><strong>Chiffrement données santé</strong> — AES-256 pour poids, pathologies, objectifs</div></div>
+      </div>
+
+      <div class="doc-h2">🧪 Tests</div>
+      <div class="checklist">
+        <div class="check-item" onclick="toggleCheck(this)"><div class="ci-box"></div><div class="ci-text"><strong>Tests unitaires passants</strong> — npm test → 0 failing (coverage &gt;70%)</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="ci-box"></div><div class="ci-text"><strong>Tests E2E Cypress</strong> — Inscription, connexion, calcul calories, paiement</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="ci-box"></div><div class="ci-text"><strong>Test paiement sandbox</strong> — MTN MoMo test OK + Stripe test mode OK</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="ci-box"></div><div class="ci-text"><strong>Test mobile hors-ligne</strong> — App fonctionnelle sans connexion (SQLite)</div></div>
+      </div>
+
+      <div class="doc-h2">🚀 Infrastructure</div>
+      <div class="checklist">
+        <div class="check-item" onclick="toggleCheck(this)"><div class="ci-box"></div><div class="ci-text"><strong>Domaine nutricam.cm</strong> — DNS configuré, SSL actif</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="ci-box"></div><div class="ci-text"><strong>CDN Cloudflare</strong> — Activé avec nœuds Afrique (Lagos, Nairobi)</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="ci-box"></div><div class="ci-text"><strong>Base de données RDS</strong> — PostgreSQL af-south-1 avec backup automatique</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="ci-box"></div><div class="ci-text"><strong>Monitoring Sentry</strong> — Alertes erreurs en temps réel configurées</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="ci-box"></div><div class="ci-text"><strong>Backup quotidien S3</strong> — Rétention 30 jours, test de restauration OK</div></div>
+      </div>
+
+      <div class="doc-h2">📱 App Mobile (avant soumission stores)</div>
+      <div class="checklist">
+        <div class="check-item" onclick="toggleCheck(this)"><div class="ci-box"></div><div class="ci-text"><strong>Build iOS</strong> — Archive Xcode signée, TestFlight passé</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="ci-box"></div><div class="ci-text"><strong>Build Android</strong> — APK/AAB signé, Play Store Internal Testing OK</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="ci-box"></div><div class="ci-text"><strong>Screenshots stores</strong> — 6 captures iPhone + 3 captures Android préparées</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="ci-box"></div><div class="ci-text"><strong>Politique de confidentialité</strong> — URL valide fournie à Apple et Google</div></div>
+      </div>
+
+      <div class="alert al-success"><div class="alert-icon">🎉</div><div><strong>Prêt pour le lancement !</strong> Une fois toutes les cases cochées, NutriCam est prêt pour la mise en production. Bon courage et bonne chance pour ce beau projet africain !</div></div>
+    </div>
+
+    <!-- Other views -->
+    <div class="doc-view" id="dv-prereqs"><div class="doc-tag">Prérequis</div><h1 class="doc-h1">Prérequis</h1><p class="doc-lead">Node.js 18+, PostgreSQL 15+, Redis 7+, Docker Desktop, compte AWS.</p></div>
+    <div class="doc-view" id="dv-env"><div class="doc-tag">Configuration</div><h1 class="doc-h1">Variables d'environnement</h1><p class="doc-lead">Voir la section Installation pour le fichier .env complet.</p></div>
+    <div class="doc-view" id="dv-db"><div class="doc-tag">Base de données</div><h1 class="doc-h1">Base de données</h1><p class="doc-lead">PostgreSQL + Prisma ORM. 52 recettes pré-seedées.</p></div>
+    <div class="doc-view" id="dv-api-config"><div class="doc-tag">API</div><h1 class="doc-h1">Configuration API</h1><p class="doc-lead">Hono.js sur Node.js 18. GraphQL + REST hybride.</p></div>
+    <div class="doc-view" id="dv-deploy-mobile"><div class="doc-tag">Mobile</div><h1 class="doc-h1">Déploiement App Mobile</h1><p class="doc-lead">Expo + EAS Build pour iOS et Android simultanément.</p></div>
+    <div class="doc-view" id="dv-docker"><div class="doc-tag">Docker</div><h1 class="doc-h1">Docker & Kubernetes</h1><p class="doc-lead">docker-compose.yml fourni pour l'environnement de dev.</p></div>
+    <div class="doc-view" id="dv-ci-cd"><div class="doc-tag">CI/CD</div><h1 class="doc-h1">CI/CD GitHub Actions</h1><p class="doc-lead">Pipeline automatique : test → build → deploy sur chaque push main.</p></div>
+    <div class="doc-view" id="dv-notifications"><div class="doc-tag">Notifications</div><h1 class="doc-h1">Firebase Notifications</h1><p class="doc-lead">FCM pour notifications push iOS et Android.</p></div>
+    <div class="doc-view" id="dv-monitoring"><div class="doc-tag">Monitoring</div><h1 class="doc-h1">Monitoring & Logs</h1><p class="doc-lead">Sentry (erreurs) + Datadog (performance) + CloudWatch (AWS).</p></div>
+    <div class="doc-view" id="dv-backup"><div class="doc-tag">Backup</div><h1 class="doc-h1">Backup & Recovery</h1><p class="doc-lead">RDS snapshots quotidiens + S3 + test de restauration mensuel.</p></div>
+
+  </div>
+</div>
+
+<script>
+const navMap = {
+  overview:'Vue d\'ensemble', prereqs:'Prérequis', install:'Installation',
+  env:'Variables d\'env', db:'Base de données', 'api-config':'Config API',
+  'deploy-web':'Déploiement Web', 'deploy-mobile':'App Mobile',
+  docker:'Docker', 'ci-cd':'CI/CD', payments:'Paiements',
+  'ai-setup':'Config IA', notifications:'Notifications',
+  monitoring:'Monitoring', backup:'Backup', checklist:'Checklist'
+};
+
+function showDoc(id, el){
+  document.querySelectorAll('.doc-view').forEach(d=>d.classList.remove('show'));
+  document.querySelectorAll('.ds-item').forEach(i=>i.classList.remove('active'));
+  const view = document.getElementById('dv-'+id);
+  if(view){ view.classList.add('show'); }
+  if(el) el.classList.add('active');
+  document.getElementById('tb-crumb').textContent = navMap[id]||id;
+  document.querySelector('.docs-main').scrollTo({top:0,behavior:'smooth'});
+}
+
+function toggleCheck(el){
+  el.classList.toggle('checked');
+}
+
+function copyCode(btn){
+  const pre = btn.closest('.code-block').querySelector('pre');
+  const text = pre.textContent;
+  navigator.clipboard?.writeText(text).then(()=>{
+    btn.textContent='✅ Copié !';
+    setTimeout(()=>btn.textContent='📋 Copier',2000);
+  });
+}
+</script>
+</body>
+</html>

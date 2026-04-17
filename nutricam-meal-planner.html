@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Plan Repas Hebdomadaire</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#faf7f2;--dark:#0f1a0c;--card:#fff;--green:#1d7a45;--gl:#2ea55c;--y:#f0b429;--red:#d94f3d;
+  --border:#e8ede3;--text:#1a2b1d;--muted:#7a9480;--cream:#f5f0e8;--soft:#edf5ef;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* ── TOP NAV ── */
+.topnav{background:var(--dark);padding:1rem 2.5rem;display:flex;align-items:center;justify-content:space-between}
+.tn-logo{font-family:'Fraunces',serif;font-size:1.4rem;color:#fff;font-weight:900;letter-spacing:-0.5px}
+.tn-logo span{color:var(--y)}
+.tn-tag{background:rgba(240,180,41,0.15);border:1px solid rgba(240,180,41,0.3);color:var(--y);font-size:0.72rem;font-weight:700;padding:0.3rem 0.9rem;border-radius:100px;text-transform:uppercase;letter-spacing:0.08em}
+
+/* ── HERO BANNER ── */
+.hero{background:linear-gradient(135deg,var(--dark) 0%,#0e3320 60%,#1d7a45 100%);padding:3rem 2.5rem 4rem;position:relative;overflow:hidden}
+.hero::after{content:'🌿';position:absolute;right:-1rem;top:50%;transform:translateY(-50%);font-size:12rem;opacity:0.06;pointer-events:none}
+.hero-inner{max-width:700px}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);font-size:0.75rem;font-weight:600;padding:0.35rem 0.9rem;border-radius:100px;margin-bottom:1rem;letter-spacing:0.06em}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(2rem,4vw,3rem);color:#fff;font-weight:900;line-height:1.1;margin-bottom:0.8rem}
+.hero h1 span{color:var(--y)}
+.hero p{color:rgba(255,255,255,0.6);line-height:1.7;max-width:520px;font-size:0.95rem}
+
+/* ── STEPPER ── */
+.stepper{background:var(--card);border-bottom:1px solid var(--border);padding:0 2.5rem;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:40;overflow-x:auto}
+.step-item{display:flex;align-items:center;gap:0.6rem;padding:1rem 1.5rem 1rem 0;cursor:pointer;white-space:nowrap;position:relative;opacity:0.45;transition:opacity 0.2s}
+.step-item.active{opacity:1}
+.step-item.done{opacity:0.7}
+.step-item::after{content:'›';color:var(--muted);margin-left:1.5rem;font-size:1.1rem}
+.step-item:last-child::after{display:none}
+.step-num{width:28px;height:28px;border-radius:50%;background:var(--border);color:var(--muted);font-size:0.75rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s}
+.step-item.active .step-num{background:var(--green);color:#fff}
+.step-item.done .step-num{background:var(--y);color:#000}
+.step-label{font-size:0.82rem;font-weight:600;color:var(--text)}
+
+/* ── MAIN ── */
+.main{max-width:1100px;margin:0 auto;padding:2.5rem}
+
+/* ── SCREENS ── */
+.screen{display:none;animation:fadeIn 0.35s ease}
+.screen.show{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── FORM CARDS ── */
+.form-section{margin-bottom:2rem}
+.form-section-title{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:700;color:var(--dark);margin-bottom:0.3rem}
+.form-section-sub{color:var(--muted);font-size:0.85rem;margin-bottom:1.5rem}
+
+.profile-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:1rem;margin-bottom:2rem}
+.profile-btn{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:1.4rem 1rem;text-align:center;cursor:pointer;transition:all 0.2s;position:relative}
+.profile-btn:hover{border-color:var(--gl);transform:translateY(-2px)}
+.profile-btn.selected{border-color:var(--green);background:var(--soft)}
+.profile-btn.selected::after{content:'✓';position:absolute;top:0.5rem;right:0.7rem;color:var(--green);font-weight:900;font-size:0.8rem}
+.pb-emoji{font-size:2.2rem;margin-bottom:0.5rem;display:block}
+.pb-name{font-size:0.85rem;font-weight:700;color:var(--text)}
+.pb-desc{font-size:0.7rem;color:var(--muted);margin-top:0.2rem;line-height:1.4}
+
+.input-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.input-row.three{grid-template-columns:1fr 1fr 1fr}
+.field{display:flex;flex-direction:column;gap:0.4rem}
+.field label{font-size:0.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em}
+.field input,.field select{border:1.5px solid var(--border);border-radius:10px;padding:0.7rem 0.9rem;font-size:0.9rem;font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:var(--text);outline:none;transition:border 0.2s;appearance:none}
+.field input:focus,.field select:focus{border-color:var(--green)}
+
+.goal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.8rem;margin-bottom:2rem}
+.goal-btn{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:1.2rem;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:0.9rem}
+.goal-btn:hover{border-color:var(--gl)}
+.goal-btn.selected{border-color:var(--green);background:var(--soft)}
+.goal-icon{font-size:1.6rem;flex-shrink:0}
+.goal-text{font-size:0.85rem;font-weight:600;color:var(--text)}
+.goal-sub{font-size:0.72rem;color:var(--muted)}
+
+.allergy-grid{display:flex;flex-wrap:wrap;gap:0.6rem;margin-bottom:2rem}
+.allergy-pill{background:var(--card);border:1.5px solid var(--border);border-radius:100px;padding:0.45rem 1rem;font-size:0.8rem;font-weight:600;color:var(--text);cursor:pointer;transition:all 0.2s}
+.allergy-pill:hover{border-color:var(--red)}
+.allergy-pill.selected{background:rgba(217,79,61,0.08);border-color:var(--red);color:var(--red)}
+
+/* ── NAV BTNS ── */
+.nav-btns{display:flex;gap:1rem;margin-top:2.5rem;justify-content:flex-end}
+.btn-back{background:transparent;border:1.5px solid var(--border);color:var(--muted);padding:0.8rem 2rem;border-radius:12px;font-size:0.9rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.2s}
+.btn-back:hover{border-color:var(--text);color:var(--text)}
+.btn-next{background:var(--dark);color:#fff;padding:0.8rem 2.5rem;border-radius:12px;font-size:0.9rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;border:none;transition:all 0.2s;display:flex;align-items:center;gap:0.5rem}
+.btn-next:hover{background:var(--green)}
+.btn-generate{background:linear-gradient(135deg,var(--green),var(--gl));color:#fff;padding:1rem 2.5rem;border-radius:14px;font-size:1rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;border:none;transition:all 0.2s;display:flex;align-items:center;gap:0.6rem;box-shadow:0 8px 30px rgba(29,122,69,0.3)}
+.btn-generate:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(29,122,69,0.4)}
+
+/* ── SUMMARY CARD ── */
+.summary-card{background:var(--soft);border:1px solid rgba(29,122,69,0.15);border-radius:16px;padding:1.5rem;margin-bottom:2rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem}
+.sc-item{text-align:center}
+.sc-val{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:900;color:var(--green)}
+.sc-label{font-size:0.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-top:0.2rem}
+
+/* ── LOADING ── */
+.loading-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:50vh;gap:1.5rem;animation:fadeIn 0.3s ease}
+.loading-spinner{width:64px;height:64px;border-radius:50%;border:4px solid var(--border);border-top-color:var(--green);animation:spin 0.9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-steps{display:flex;flex-direction:column;gap:0.5rem;max-width:320px;width:100%}
+.ls-item{display:flex;align-items:center;gap:0.8rem;font-size:0.85rem;color:var(--muted);transition:color 0.3s}
+.ls-item.active{color:var(--green);font-weight:600}
+.ls-item.done{color:var(--y)}
+.ls-dot{width:8px;height:8px;border-radius:50%;background:var(--border);flex-shrink:0;transition:background 0.3s}
+.ls-item.active .ls-dot{background:var(--green);animation:pulse 1s ease-in-out infinite}
+.ls-item.done .ls-dot{background:var(--y)}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.4)}}
+.loading-title{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:900;color:var(--dark)}
+.loading-sub{color:var(--muted);font-size:0.88rem;text-align:center}
+
+/* ── PLAN RESULT ── */
+.plan-header{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:2rem}
+.plan-title-block h2{font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--dark)}
+.plan-title-block p{color:var(--muted);margin-top:0.3rem}
+.plan-actions{display:flex;gap:0.8rem;flex-wrap:wrap}
+.pa-btn{display:flex;align-items:center;gap:0.5rem;padding:0.65rem 1.2rem;border-radius:10px;font-size:0.82rem;font-weight:700;cursor:pointer;transition:all 0.2s;font-family:'Plus Jakarta Sans',sans-serif}
+.pa-btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text)}
+.pa-btn-outline:hover{border-color:var(--green);color:var(--green)}
+.pa-btn-filled{background:var(--dark);border:none;color:#fff}
+.pa-btn-filled:hover{background:var(--green)}
+
+.week-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem}
+.ws-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem;text-align:center}
+.ws-val{font-family:'Fraunces',serif;font-size:1.8rem;font-weight:900;color:var(--green)}
+.ws-label{font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-top:0.2rem}
+
+.days-tabs{display:flex;gap:0.4rem;margin-bottom:1.5rem;overflow-x:auto;padding-bottom:0.3rem}
+.day-tab{padding:0.55rem 1.2rem;border-radius:100px;border:1.5px solid var(--border);background:var(--card);font-size:0.8rem;font-weight:700;color:var(--muted);cursor:pointer;transition:all 0.2s;white-space:nowrap;flex-shrink:0}
+.day-tab:hover{border-color:var(--gl);color:var(--green)}
+.day-tab.active{background:var(--dark);border-color:var(--dark);color:#fff}
+
+.day-plan{display:none;animation:fadeIn 0.25s ease}
+.day-plan.show{display:block}
+
+.meal-slots{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.meal-slot{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:all 0.2s}
+.meal-slot:hover{box-shadow:0 4px 20px rgba(0,0,0,0.08);transform:translateY(-2px)}
+.ms-header{padding:0.9rem 1.2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.ms-time{display:flex;align-items:center;gap:0.5rem;font-size:0.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em}
+.ms-cals{background:var(--soft);color:var(--green);font-size:0.72rem;font-weight:800;padding:0.2rem 0.6rem;border-radius:100px}
+.ms-body{padding:1.2rem}
+.ms-emoji{font-size:2rem;margin-bottom:0.5rem;display:block}
+.ms-name{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:700;color:var(--dark);margin-bottom:0.3rem}
+.ms-desc{font-size:0.78rem;color:var(--muted);line-height:1.5;margin-bottom:0.8rem}
+.ms-macros{display:flex;gap:0.5rem;flex-wrap:wrap}
+.ms-macro{font-size:0.68rem;font-weight:700;padding:0.18rem 0.5rem;border-radius:6px}
+.ms-p{background:rgba(74,222,128,0.1);color:#16a34a}
+.ms-c{background:rgba(251,191,36,0.1);color:#b45309}
+.ms-f{background:rgba(248,113,113,0.1);color:#dc2626}
+.ms-swap{background:none;border:1px dashed var(--border);color:var(--muted);border-radius:8px;padding:0.4rem 0.8rem;font-size:0.72rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:0.3rem;margin-top:0.8rem;transition:all 0.2s;font-family:'Plus Jakarta Sans',sans-serif;width:100%}
+.ms-swap:hover{border-color:var(--green);color:var(--green)}
+
+.day-total{background:linear-gradient(135deg,var(--dark),#0e3320);border-radius:14px;padding:1.2rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.dt-label{color:rgba(255,255,255,0.6);font-size:0.8rem;font-weight:600}
+.dt-val{font-family:'Fraunces',serif;font-size:1.8rem;font-weight:900;color:#fff}
+.dt-target{font-size:0.75rem;color:rgba(255,255,255,0.4)}
+.dt-macros{display:flex;gap:1.5rem}
+.dt-m{text-align:center}
+.dt-m-val{font-size:1rem;font-weight:800;color:#fff}
+.dt-m-label{font-size:0.65rem;color:rgba(255,255,255,0.4);text-transform:uppercase}
+
+.shopping-section{margin-top:2.5rem}
+.shopping-section h3{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:900;color:var(--dark);margin-bottom:0.3rem}
+.shopping-section p{color:var(--muted);font-size:0.85rem;margin-bottom:1.5rem}
+.shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem}
+.shop-cat{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem}
+.shop-cat-title{display:flex;align-items:center;gap:0.5rem;font-weight:800;font-size:0.9rem;color:var(--dark);margin-bottom:0.8rem}
+.shop-items{display:flex;flex-direction:column;gap:0.4rem}
+.shop-item{display:flex;align-items:center;gap:0.6rem;font-size:0.8rem;color:var(--text)}
+.shop-item input[type=checkbox]{accent-color:var(--green);width:14px;height:14px;cursor:pointer;flex-shrink:0}
+.shop-item label{cursor:pointer;flex:1}
+.shop-item.checked label{text-decoration:line-through;color:var(--muted)}
+
+.info-tip{background:var(--soft);border-left:3px solid var(--green);border-radius:0 10px 10px 0;padding:0.9rem 1.2rem;font-size:0.82rem;color:var(--text);line-height:1.6;margin:1.5rem 0}
+.info-tip strong{color:var(--green)}
+
+@media(max-width:700px){
+  .meal-slots{grid-template-columns:1fr}
+  .week-stats{grid-template-columns:1fr 1fr}
+  .input-row{grid-template-columns:1fr}
+  .input-row.three{grid-template-columns:1fr}
+  .main{padding:1.5rem}
+  .hero{padding:2rem 1.5rem 3rem}
+  .topnav{padding:1rem 1.5rem}
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="tn-logo">Nutri<span>Cam</span></div>
+  <div class="tn-tag">✨ Premium</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">🤖 Planificateur IA · Recettes camerounaises</div>
+    <h1>Votre plan repas<br/><span>7 jours</span> personnalisé</h1>
+    <p>L'IA NutriCam génère un plan hebdomadaire équilibré, 100% à base de plats camerounais, adapté à votre profil, vos objectifs et vos contraintes alimentaires.</p>
+  </div>
+</div>
+
+<!-- STEPPER -->
+<div class="stepper" id="stepper">
+  <div class="step-item active" data-step="1"><div class="step-num">1</div><span class="step-label">Profil</span></div>
+  <div class="step-item" data-step="2"><div class="step-num">2</div><span class="step-label">Objectifs</span></div>
+  <div class="step-item" data-step="3"><div class="step-num">3</div><span class="step-label">Contraintes</span></div>
+  <div class="step-item" data-step="4"><div class="step-num">4</div><span class="step-label">Résumé</span></div>
+  <div class="step-item" data-step="5"><div class="step-num">🍽</div><span class="step-label">Mon Plan</span></div>
+</div>
+
+<div class="main">
+
+  <!-- SCREEN 1 : PROFIL -->
+  <div class="screen show" id="s1">
+    <div class="form-section">
+      <div class="form-section-title">Qui êtes-vous ?</div>
+      <div class="form-section-sub">Sélectionnez votre profil pour adapter les recommandations nutritionnelles.</div>
+      <div class="profile-grid">
+        <div class="profile-btn" onclick="selectProfile(this,'adulte')"><span class="pb-emoji">🧑</span><div class="pb-name">Adulte actif</div><div class="pb-desc">25–50 ans, vie quotidienne</div></div>
+        <div class="profile-btn" onclick="selectProfile(this,'sportif')"><span class="pb-emoji">🏋️</span><div class="pb-name">Sportif</div><div class="pb-desc">Sport régulier, performance</div></div>
+        <div class="profile-btn" onclick="selectProfile(this,'enfant')"><span class="pb-emoji">👧</span><div class="pb-name">Enfant</div><div class="pb-desc">4–12 ans, croissance</div></div>
+        <div class="profile-btn" onclick="selectProfile(this,'ado')"><span class="pb-emoji">🧑‍🎓</span><div class="pb-name">Adolescent</div><div class="pb-desc">13–18 ans</div></div>
+        <div class="profile-btn" onclick="selectProfile(this,'enceinte')"><span class="pb-emoji">🤰</span><div class="pb-name">Enceinte</div><div class="pb-desc">Grossesse / allaitement</div></div>
+        <div class="profile-btn" onclick="selectProfile(this,'senior')"><span class="pb-emoji">👴</span><div class="pb-name">Senior</div><div class="pb-desc">60+ ans</div></div>
+        <div class="profile-btn" onclick="selectProfile(this,'diabete')"><span class="pb-emoji">🩺</span><div class="pb-name">Diabétique</div><div class="pb-desc">Type 2, IG contrôlé</div></div>
+        <div class="profile-btn" onclick="selectProfile(this,'etudiant')"><span class="pb-emoji">📚</span><div class="pb-name">Étudiant</div><div class="pb-desc">Budget serré</div></div>
+      </div>
+    </div>
+    <div class="form-section">
+      <div class="form-section-title">Informations personnelles</div>
+      <div class="form-section-sub">Pour calculer vos besoins caloriques précis.</div>
+      <div class="input-row three">
+        <div class="field"><label>Âge</label><input type="number" id="age" placeholder="30" min="4" max="90"/></div>
+        <div class="field"><label>Sexe</label><select id="sex"><option value="m">Homme</option><option value="f">Femme</option></select></div>
+        <div class="field"><label>Activité</label><select id="act"><option value="1.2">Sédentaire</option><option value="1.375">Léger</option><option value="1.55" selected>Modéré</option><option value="1.725">Actif</option><option value="1.9">Très actif</option></select></div>
+      </div>
+      <div class="input-row">
+        <div class="field"><label>Poids (kg)</label><input type="number" id="weight" placeholder="70"/></div>
+        <div class="field"><label>Taille (cm)</label><input type="number" id="height" placeholder="170"/></div>
+      </div>
+    </div>
+    <div class="nav-btns"><button class="btn-next" onclick="goStep(2)">Suivant → Objectifs</button></div>
+  </div>
+
+  <!-- SCREEN 2 : OBJECTIFS -->
+  <div class="screen" id="s2">
+    <div class="form-section">
+      <div class="form-section-title">Votre objectif principal</div>
+      <div class="form-section-sub">Le plan sera adapté à votre objectif en termes de calories et macronutriments.</div>
+      <div class="goal-grid">
+        <div class="goal-btn" onclick="selectGoal(this,'perte')"><div class="goal-icon">📉</div><div><div class="goal-text">Perdre du poids</div><div class="goal-sub">–500 kcal/jour</div></div></div>
+        <div class="goal-btn" onclick="selectGoal(this,'maintien')"><div class="goal-icon">⚖️</div><div><div class="goal-text">Maintenir mon poids</div><div class="goal-sub">Équilibre calorique</div></div></div>
+        <div class="goal-btn" onclick="selectGoal(this,'masse')"><div class="goal-icon">💪</div><div><div class="goal-text">Prise de masse</div><div class="goal-sub">+300 kcal/jour</div></div></div>
+        <div class="goal-btn" onclick="selectGoal(this,'sante')"><div class="goal-icon">💚</div><div><div class="goal-text">Santé générale</div><div class="goal-sub">Équilibre nutritionnel</div></div></div>
+        <div class="goal-btn" onclick="selectGoal(this,'energie')"><div class="goal-icon">⚡</div><div><div class="goal-text">Booster l'énergie</div><div class="goal-sub">Glucides & vitamines</div></div></div>
+        <div class="goal-btn" onclick="selectGoal(this,'diabete')"><div class="goal-icon">🩸</div><div><div class="goal-text">Contrôle glycémie</div><div class="goal-sub">Index glycémique bas</div></div></div>
+      </div>
+    </div>
+    <div class="form-section">
+      <div class="form-section-title">Combien de repas par jour ?</div>
+      <div class="goal-grid" style="grid-template-columns:repeat(3,1fr)">
+        <div class="goal-btn" onclick="selectMeals(this,3)"><div class="goal-icon">🍽️</div><div><div class="goal-text">3 repas</div><div class="goal-sub">Classique</div></div></div>
+        <div class="goal-btn" onclick="selectMeals(this,4)"><div class="goal-icon">🥗</div><div><div class="goal-text">4 repas</div><div class="goal-sub">+ Collation</div></div></div>
+        <div class="goal-btn" onclick="selectMeals(this,5)"><div class="goal-icon">🥩</div><div><div class="goal-text">5 repas</div><div class="goal-sub">Sportif intensif</div></div></div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn-back" onclick="goStep(1)">← Retour</button>
+      <button class="btn-next" onclick="goStep(3)">Suivant → Contraintes</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 3 : CONTRAINTES -->
+  <div class="screen" id="s3">
+    <div class="form-section">
+      <div class="form-section-title">Allergies & intolérances</div>
+      <div class="form-section-sub">Cochez les aliments à exclure de votre plan. (Optionnel)</div>
+      <div class="allergy-grid">
+        <div class="allergy-pill" onclick="toggleAllergy(this,'arachides')">🥜 Arachides</div>
+        <div class="allergy-pill" onclick="toggleAllergy(this,'gluten')">🌾 Gluten</div>
+        <div class="allergy-pill" onclick="toggleAllergy(this,'lactose')">🥛 Lactose</div>
+        <div class="allergy-pill" onclick="toggleAllergy(this,'crustaces')">🦐 Crustacés</div>
+        <div class="allergy-pill" onclick="toggleAllergy(this,'poisson')">🐟 Poisson</div>
+        <div class="allergy-pill" onclick="toggleAllergy(this,'porc')">🐷 Porc</div>
+        <div class="allergy-pill" onclick="toggleAllergy(this,'boeuf')">🐄 Bœuf</div>
+        <div class="allergy-pill" onclick="toggleAllergy(this,'huile-palme')">🌴 Huile de palme</div>
+        <div class="allergy-pill" onclick="toggleAllergy(this,'piment')">🌶️ Piment fort</div>
+      </div>
+    </div>
+    <div class="form-section">
+      <div class="form-section-title">Préférences alimentaires</div>
+      <div class="allergy-grid">
+        <div class="allergy-pill" style="border-color:var(--gl)" onclick="togglePref(this,'vegetarien')">🥦 Végétarien</div>
+        <div class="allergy-pill" style="border-color:var(--gl)" onclick="togglePref(this,'halal')">☪️ Halal</div>
+        <div class="allergy-pill" style="border-color:var(--gl)" onclick="togglePref(this,'budget')">💰 Petit budget</div>
+        <div class="allergy-pill" style="border-color:var(--gl)" onclick="togglePref(this,'rapide')">⚡ Recettes rapides (&lt;30 min)</div>
+        <div class="allergy-pill" style="border-color:var(--gl)" onclick="togglePref(this,'local')">🌿 100% local</div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn-back" onclick="goStep(2)">← Retour</button>
+      <button class="btn-next" onclick="goStep(4)">Suivant → Résumé</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 4 : RÉSUMÉ -->
+  <div class="screen" id="s4">
+    <div class="form-section-title" style="margin-bottom:0.4rem">Votre résumé nutritionnel</div>
+    <div class="form-section-sub" style="margin-bottom:1.5rem">Vérifiez votre profil avant de générer le plan.</div>
+    <div class="summary-card" id="summary-card"></div>
+    <div class="info-tip" id="summary-tip">💡 Vos objectifs seront intégrés dans chaque repas pour un équilibre parfait tout au long de la semaine.</div>
+    <div class="nav-btns">
+      <button class="btn-back" onclick="goStep(3)">← Modifier</button>
+      <button class="btn-generate" onclick="generatePlan()">🍽️ Générer mon plan 7 jours</button>
+    </div>
+  </div>
+
+  <!-- SCREEN LOADING -->
+  <div class="screen" id="s-load">
+    <div class="loading-screen">
+      <div class="loading-spinner"></div>
+      <div class="loading-title">Création de votre plan...</div>
+      <div class="loading-sub">L'IA NutriCam analyse vos besoins<br/>et sélectionne les meilleures recettes camerounaises</div>
+      <div class="loading-steps" id="load-steps">
+        <div class="ls-item active" id="ls1"><div class="ls-dot"></div>Calcul de vos besoins caloriques</div>
+        <div class="ls-item" id="ls2"><div class="ls-dot"></div>Sélection des recettes camerounaises adaptées</div>
+        <div class="ls-item" id="ls3"><div class="ls-dot"></div>Équilibrage des macronutriments</div>
+        <div class="ls-item" id="ls4"><div class="ls-dot"></div>Création de la liste de courses</div>
+        <div class="ls-item" id="ls5"><div class="ls-dot"></div>Finalisation du plan 7 jours</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 5 : PLAN RÉSULTAT -->
+  <div class="screen" id="s5">
+    <div class="plan-header">
+      <div class="plan-title-block">
+        <h2 id="plan-title">Votre Plan Semaine</h2>
+        <p id="plan-sub">Personnalisé · 7 jours · Recettes camerounaises</p>
+      </div>
+      <div class="plan-actions">
+        <button class="pa-btn pa-btn-outline" onclick="window.print()">🖨️ Imprimer</button>
+        <button class="pa-btn pa-btn-outline" onclick="goStep(1)">🔄 Nouveau plan</button>
+        <button class="pa-btn pa-btn-filled">📱 Synchroniser App</button>
+      </div>
+    </div>
+
+    <div class="week-stats" id="week-stats"></div>
+
+    <div class="days-tabs" id="days-tabs"></div>
+    <div id="days-content"></div>
+
+    <div class="shopping-section">
+      <h3>🛒 Liste de courses complète</h3>
+      <p>Tout ce qu'il faut acheter au marché pour votre semaine. Cochez au fur et à mesure.</p>
+      <div class="shop-grid" id="shop-grid"></div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+// ── STATE ──
+const state = {
+  profile:'adulte', age:30, sex:'m', weight:70, height:170, act:1.55,
+  goal:'maintien', meals:3, allergies:[], prefs:[], tdee:0, targets:{cal:0,prot:0,carb:0,fat:0}
+};
+
+// ── RECIPES DB ──
+const recipeDB = {
+  matin:[
+    {e:'☕',n:'Bouillie de maïs au lait',d:'Fortifiante et douce, idéale au réveil.',kcal:320,p:10,c:55,f:6},
+    {e:'🥚',n:'Omelette aux légumes frais',d:'Œufs + tomate, oignon, persil. Rapide.',kcal:280,p:18,c:10,f:20},
+    {e:'🍞',n:'Pain beurre + café robusta',d:'Classique camerounais.',kcal:310,p:8,c:38,f:14},
+    {e:'🥣',n:'Bouillie de sorgho sucré',d:'Riche en minéraux, probiotiques.',kcal:200,p:6,c:38,f:3},
+    {e:'🍌',n:'Plantains bouillis + yaourt',d:'Énergie durable + probiotiques.',kcal:260,p:7,c:52,f:2},
+    {e:'🧇',n:'Accra (beignets haricots)',d:'Protéines végétales, croustillant.',kcal:240,p:8,c:32,f:10},
+  ],
+  collation:[
+    {e:'🥜',n:'Arachides grillées',d:'30g · Bonne source de graisses saines.',kcal:180,p:7,c:6,f:15},
+    {e:'🍊',n:'Fruits tropicaux frais',d:'Mangue, ananas, papaye.',kcal:110,p:2,c:26,f:0},
+    {e:'🧃',n:'Jus bissap gingembre',d:'Vitamine C, antioxydants.',kcal:45,p:0,c:11,f:0},
+    {e:'🌽',n:'Maïs grillé au piment',d:'Énergie + fibres.',kcal:130,p:5,c:26,f:2},
+  ],
+  midi:[
+    {e:'🍲',n:'Ndolé aux crevettes',d:'Plat national. Protéines + fibres.',kcal:380,p:28,c:18,f:22},
+    {e:'🐔',n:'Poulet DG + plantains',d:'Protéines + énergie. Incontournable.',kcal:520,p:42,c:38,f:21},
+    {e:'🥬',n:'Eru & Waterleaf + fufu',d:'Riche en fer et calcium.',kcal:350,p:26,c:32,f:12},
+    {e:'🐟',n:'Poisson braisé + miondo',d:'Oméga-3 + glucides lents.',kcal:420,p:34,c:40,f:10},
+    {e:'🫘',n:'Haricots rouges + riz',d:'Protéines végétales complètes.',kcal:390,p:18,c:65,f:5},
+    {e:'🐄',n:'Bœuf sauce arachide',d:'Protéines + lipides sains.',kcal:460,p:38,c:15,f:28},
+    {e:'🥣',n:'Soupe mbanga + riz',d:'Huile de palme rouge + poisson.',kcal:380,p:22,c:42,f:14},
+    {e:'🐑',n:'Mbongo tchobi + riz blanc',d:'Sauce noire ancestrale.',kcal:410,p:35,c:32,f:16},
+  ],
+  soir:[
+    {e:'🐟',n:'Sardines sauce tomate',d:'Léger, riche en oméga-3.',kcal:230,p:28,c:8,f:10},
+    {e:'🥗',n:'Salade légumes + protéines',d:'Digeste, pauvre en calories.',kcal:180,p:14,c:16,f:6},
+    {e:'🦐',n:'Crevettes sautées pimentées',d:'Protéines maigres. Express.',kcal:190,p:30,c:5,f:6},
+    {e:'🥬',n:'Légumes sautés + œufs',d:'Léger et nutritif.',kcal:200,p:12,c:18,f:8},
+    {e:'🍜',n:'Bouillon de poule fermière',d:'Collagène + légumes.',kcal:180,p:22,c:8,f:6},
+    {e:'🫛',n:'Gombo sauce tomate + riz',d:'Fibres solubles, anti-cholestérol.',kcal:260,p:6,c:52,f:4},
+    {e:'🍲',n:'Kpem (feuilles manioc) + viande',d:'Riche en protéines végétales.',kcal:290,p:20,c:24,f:12},
+  ]
+};
+
+const DAYS = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
+const profileLabels = {adulte:'Adulte actif',sportif:'Sportif',enfant:'Enfant',ado:'Adolescent',enceinte:'Femme enceinte',senior:'Senior',diabete:'Diabétique',etudiant:'Étudiant'};
+const goalLabels = {perte:'Perte de poids',maintien:'Maintien',masse:'Prise de masse',sante:'Santé générale',energie:'Boost énergie',diabete:'Contrôle glycémie'};
+let generatedPlan = null;
+let currentDay = 0;
+
+// ── STEP NAVIGATION ──
+function goStep(n){
+  if(n===4) buildSummary();
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('show'));
+  document.getElementById(n<=4?'s'+n:'s'+n).classList.add('show');
+  document.querySelectorAll('.step-item').forEach(si=>{
+    const sn=parseInt(si.dataset.step);
+    si.classList.remove('active','done');
+    if(sn===n)si.classList.add('active');
+    else if(sn<n)si.classList.add('done');
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── SELECTORS ──
+function selectProfile(el,v){document.querySelectorAll('.profile-btn').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');state.profile=v;}
+function selectGoal(el,v){document.querySelectorAll('.goal-btn').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');state.goal=v;}
+function selectMeals(el,v){document.querySelectorAll('.goal-btn').forEach(b=>{if(b.querySelector('.goal-sub')?.textContent.includes('repas')||b.querySelector('.goal-sub')?.textContent.includes('Collation')||b.querySelector('.goal-sub')?.textContent.includes('intensif'))b.classList.remove('selected')});el.classList.add('selected');state.meals=v;}
+function toggleAllergy(el,v){el.classList.toggle('selected');const i=state.allergies.indexOf(v);if(i>-1)state.allergies.splice(i,1);else state.allergies.push(v);}
+function togglePref(el,v){el.classList.toggle('selected');const i=state.prefs.indexOf(v);if(i>-1)state.prefs.splice(i,1);else state.prefs.push(v);}
+
+// ── CALC ──
+function calcTDEE(){
+  const age=parseInt(document.getElementById('age').value)||30;
+  const sex=document.getElementById('sex').value;
+  const w=parseFloat(document.getElementById('weight').value)||70;
+  const h=parseFloat(document.getElementById('height').value)||170;
+  const act=parseFloat(document.getElementById('act').value)||1.55;
+  state.age=age;state.sex=sex;state.weight=w;state.height=h;state.act=act;
+  let bmr = sex==='m' ? 10*w+6.25*h-5*age+5 : 10*w+6.25*h-5*age-161;
+  // Ajustements profil
+  if(state.profile==='enfant') bmr*=0.7;
+  else if(state.profile==='enceinte') bmr+=300;
+  else if(state.profile==='sportif') bmr*=1.1;
+  let tdee=bmr*act;
+  if(state.goal==='perte') tdee-=500;
+  else if(state.goal==='masse') tdee+=300;
+  tdee=Math.round(tdee);
+  state.tdee=tdee;
+  state.targets={
+    cal:tdee,
+    prot:Math.round(w*(state.profile==='sportif'?2:1.6)),
+    carb:Math.round((tdee*0.45)/4),
+    fat:Math.round((tdee*0.28)/9)
+  };
+}
+
+// ── SUMMARY ──
+function buildSummary(){
+  calcTDEE();
+  const t=state.targets;
+  document.getElementById('summary-card').innerHTML=`
+    <div class="sc-item"><div class="sc-val">${profileLabels[state.profile]||state.profile}</div><div class="sc-label">Profil</div></div>
+    <div class="sc-item"><div class="sc-val">${t.cal}</div><div class="sc-label">kcal/jour</div></div>
+    <div class="sc-item"><div class="sc-val">${t.prot}g</div><div class="sc-label">Protéines</div></div>
+    <div class="sc-item"><div class="sc-val">${t.carb}g</div><div class="sc-label">Glucides</div></div>
+    <div class="sc-item"><div class="sc-val">${t.fat}g</div><div class="sc-label">Lipides</div></div>
+    <div class="sc-item"><div class="sc-val">${goalLabels[state.goal]||state.goal}</div><div class="sc-label">Objectif</div></div>
+    <div class="sc-item"><div class="sc-val">${state.meals}</div><div class="sc-label">Repas/jour</div></div>
+  `;
+  const tips={
+    perte:'💡 Plan hypocalorique : −500 kcal/jour pour perdre environ 0,5 kg/semaine tout en mangeant camerounais.',
+    maintien:'💡 Plan d\'équilibre : calories adaptées pour maintenir votre poids avec des plats variés et nutritifs.',
+    masse:'💡 Plan hypercalorique : +300 kcal/jour pour favoriser la prise de masse musculaire.',
+    sante:'💡 Plan santé : focus sur la diversité nutritionnelle et les micronutriments des recettes traditionnelles.',
+    energie:'💡 Plan énergie : priorité aux glucides complexes et vitamines du groupe B des céréales camerounaises.',
+    diabete:'💡 Plan IG bas : sélection de plats à index glycémique contrôlé, riches en fibres.'
+  };
+  document.getElementById('summary-tip').innerHTML=tips[state.goal]||tips.sante;
+}
+
+// ── GENERATE PLAN ──
+function generatePlan(){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('show'));
+  document.getElementById('s-load').classList.add('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+  const steps=['ls1','ls2','ls3','ls4','ls5'];
+  let i=0;
+  const iv=setInterval(()=>{
+    if(i>0)document.getElementById(steps[i-1]).classList.replace('active','done');
+    if(i<steps.length){document.getElementById(steps[i]).classList.add('active');i++;}
+    else{clearInterval(iv);setTimeout(()=>{buildPlan();showPlan();},400);}
+  },700);
+}
+
+function rnd(arr){return arr[Math.floor(Math.random()*arr.length)]}
+function unique(arr,n){
+  const res=[],used=new Set();
+  while(res.length<n){const x=rnd(arr);if(!used.has(x.n)){res.push(x);used.add(x.n);}};
+  return res;
+}
+
+function buildPlan(){
+  generatedPlan = DAYS.map(day=>{
+    const m={};
+    m.matin=rnd(recipeDB.matin);
+    m.midi=rnd(recipeDB.midi);
+    m.soir=rnd(recipeDB.soir);
+    if(state.meals>=4) m.collation=rnd(recipeDB.collation);
+    if(state.meals>=5) m.collation2=rnd(recipeDB.collation);
+    m.total=Object.values(m).reduce((s,r)=>s+(r.kcal||0),0);
+    m.prot=Object.values(m).reduce((s,r)=>s+(r.p||0),0);
+    m.carb=Object.values(m).reduce((s,r)=>s+(r.c||0),0);
+    m.fat=Object.values(m).reduce((s,r)=>s+(r.f||0),0);
+    m.day=day;
+    return m;
+  });
+}
+
+function showPlan(){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('show'));
+  document.getElementById('s5').classList.add('show');
+  document.querySelectorAll('.step-item').forEach(si=>{si.classList.remove('active','done');if(si.dataset.step==='5')si.classList.add('active');else si.classList.add('done');});
+
+  // Title
+  document.getElementById('plan-title').textContent=`Plan ${profileLabels[state.profile]} · ${state.targets.cal} kcal/jour`;
+  document.getElementById('plan-sub').textContent=`${goalLabels[state.goal]} · ${state.meals} repas/jour · 7 jours · Recettes camerounaises`;
+
+  // Week stats
+  const avgCal=Math.round(generatedPlan.reduce((s,d)=>s+d.total,0)/7);
+  const avgProt=Math.round(generatedPlan.reduce((s,d)=>s+d.prot,0)/7);
+  document.getElementById('week-stats').innerHTML=`
+    <div class="ws-card"><div class="ws-val">${avgCal}</div><div class="ws-label">kcal moy/jour</div></div>
+    <div class="ws-card"><div class="ws-val">${avgProt}g</div><div class="ws-label">Protéines moy.</div></div>
+    <div class="ws-card"><div class="ws-val">7</div><div class="ws-label">Jours planifiés</div></div>
+    <div class="ws-card"><div class="ws-val">${state.meals*7}</div><div class="ws-label">Repas au total</div></div>
+  `;
+
+  // Day tabs
+  document.getElementById('days-tabs').innerHTML=DAYS.map((d,i)=>`<div class="day-tab${i===0?' active':''}" onclick="showDay(${i},this)">${d}</div>`).join('');
+
+  // Days content
+  document.getElementById('days-content').innerHTML=generatedPlan.map((plan,i)=>buildDayHTML(plan,i)).join('');
+  document.querySelector('.day-plan').classList.add('show');
+
+  // Shopping list
+  buildShopping();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+const slotLabels={matin:{label:'🌅 Petit-déjeuner',time:'07:00'},midi:{label:'☀️ Déjeuner',time:'12:30'},soir:{label:'🌙 Dîner',time:'19:30'},collation:{label:'🍎 Collation',time:'15:00'},collation2:{label:'🥤 Pré-entraînement',time:'17:00'}};
+
+function buildDayHTML(plan,i){
+  const slots=Object.entries(plan).filter(([k])=>slotLabels[k]);
+  return `<div class="day-plan${i===0?' show':''}" id="day-${i}">
+    <div class="meal-slots">
+      ${slots.map(([k,r])=>`
+        <div class="meal-slot">
+          <div class="ms-header">
+            <div class="ms-time">${slotLabels[k].label} · ${slotLabels[k].time}</div>
+            <div class="ms-cals">🔥 ${r.kcal} kcal</div>
+          </div>
+          <div class="ms-body">
+            <span class="ms-emoji">${r.e}</span>
+            <div class="ms-name">${r.n}</div>
+            <div class="ms-desc">${r.d}</div>
+            <div class="ms-macros">
+              <span class="ms-macro ms-p">P: ${r.p}g</span>
+              <span class="ms-macro ms-c">G: ${r.c}g</span>
+              <span class="ms-macro ms-f">L: ${r.f}g</span>
+            </div>
+            <button class="ms-swap" onclick="swapMeal(${i},'${k}')">🔄 Remplacer ce repas</button>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="day-total">
+      <div><div class="dt-label">Total du jour</div><div class="dt-val">${plan.total} kcal</div><div class="dt-target">Objectif : ${state.targets.cal} kcal</div></div>
+      <div class="dt-macros">
+        <div class="dt-m"><div class="dt-m-val">${plan.prot}g</div><div class="dt-m-label">Protéines</div></div>
+        <div class="dt-m"><div class="dt-m-val">${plan.carb}g</div><div class="dt-m-label">Glucides</div></div>
+        <div class="dt-m"><div class="dt-m-val">${plan.fat}g</div><div class="dt-m-label">Lipides</div></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function showDay(i,btn){
+  document.querySelectorAll('.day-plan').forEach(d=>d.classList.remove('show'));
+  document.getElementById('day-'+i).classList.add('show');
+  document.querySelectorAll('.day-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  currentDay=i;
+}
+
+function swapMeal(dayIdx,slot){
+  const pool=recipeDB[slot==='collation'||slot==='collation2'?'collation':slot]||recipeDB.midi;
+  const old=generatedPlan[dayIdx][slot];
+  let newMeal=rnd(pool);
+  let tries=0;
+  while(newMeal.n===old.n&&tries<10){newMeal=rnd(pool);tries++;}
+  generatedPlan[dayIdx][slot]=newMeal;
+  // Recalc totals
+  const keys=Object.keys(slotLabels);
+  generatedPlan[dayIdx].total=keys.reduce((s,k)=>s+(generatedPlan[dayIdx][k]?.kcal||0),0);
+  generatedPlan[dayIdx].prot=keys.reduce((s,k)=>s+(generatedPlan[dayIdx][k]?.p||0),0);
+  generatedPlan[dayIdx].carb=keys.reduce((s,k)=>s+(generatedPlan[dayIdx][k]?.c||0),0);
+  generatedPlan[dayIdx].fat=keys.reduce((s,k)=>s+(generatedPlan[dayIdx][k]?.f||0),0);
+  // Re-render day
+  const container=document.getElementById('day-'+dayIdx);
+  const wasShown=container.classList.contains('show');
+  const plan=generatedPlan[dayIdx];
+  container.outerHTML=buildDayHTML(plan,dayIdx);
+  if(wasShown)document.getElementById('day-'+dayIdx).classList.add('show');
+}
+
+// ── SHOPPING LIST ──
+const shopCategories = {
+  '🥩 Viandes & Poissons':['Poulet (1 poulet entier)','Bœuf à braiser (500g)','Poisson fumé (300g)','Crevettes fraîches (400g)','Sardines fraîches (400g)'],
+  '🥬 Légumes & Feuilles':['Feuilles de ndolé (500g)','Waterleaf frais (300g)','Tomates (6 pièces)','Oignons (4 pièces)','Poivrons (3 pièces)','Gombo (300g)','Épinards frais (200g)'],
+  '🌾 Céréales & Tubercules':['Riz long (1 kg)','Farine de maïs (500g)','Plantains mûrs (6)','Macabo / Taro (1 kg)','Miondo (paquet)'],
+  '🥜 Légumineuses & Épices':['Arachides (500g)','Haricots rouges (400g)','Ail (2 têtes)','Gingembre frais (200g)','Piment frais (5)','Cube Maggi (boîte)'],
+  '🫙 Produits laitiers & Divers':['Œufs (12)','Lait (1L)','Huile de palme (500ml)','Huile de tournesol (500ml)','Sel de mer (boîte)'],
+};
+
+function buildShopping(){
+  document.getElementById('shop-grid').innerHTML=Object.entries(shopCategories).map(([cat,items])=>`
+    <div class="shop-cat">
+      <div class="shop-cat-title">${cat}</div>
+      <div class="shop-items">${items.map((item,idx)=>`
+        <div class="shop-item" id="si-${cat.slice(0,3)}-${idx}">
+          <input type="checkbox" id="cb-${cat.slice(0,3)}-${idx}" onchange="toggleCheck(this,'si-${cat.slice(0,3)}-${idx}')"/>
+          <label for="cb-${cat.slice(0,3)}-${idx}">${item}</label>
+        </div>
+      `).join('')}</div>
+    </div>
+  `).join('');
+}
+function toggleCheck(cb,rowId){document.getElementById(rowId).classList.toggle('checked',cb.checked);}
+</script>
+</body>
+</html>

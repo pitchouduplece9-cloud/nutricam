@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Quiz Nutrition Africaine</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,800&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f0fdf4;--dark:#052e16;--green:#16a34a;--gl:#22c55e;--glight:#4ade80;
+  --y:#f59e0b;--red:#ef4444;--blue:#3b82f6;--purple:#8b5cf6;--orange:#f97316;
+  --card:#fff;--border:#bbf7d0;--text:#14532d;--muted:#6b8c72;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+
+/* NAV */
+.nav{background:var(--dark);padding:0.9rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:#fff}
+.nav-logo span{color:var(--y)}
+.score-display{display:flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:100px;padding:0.35rem 1rem;font-size:0.82rem;font-weight:800;color:#fff}
+
+/* HERO */
+.quiz-hero{background:linear-gradient(135deg,var(--dark) 0%,#065f46 50%,#059669 100%);padding:3rem 2rem;text-align:center;position:relative;overflow:hidden;flex-shrink:0}
+.qh-bg{position:absolute;inset:0;background-image:radial-gradient(circle at 20% 50%,rgba(74,222,128,0.08),transparent 40%),radial-gradient(circle at 80% 30%,rgba(245,158,11,0.06),transparent 40%);pointer-events:none}
+.qh-badge{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);font-size:0.72rem;font-weight:800;padding:0.3rem 0.9rem;border-radius:100px;margin-bottom:0.9rem;text-transform:uppercase;letter-spacing:0.08em}
+.qh-title{font-family:'Fraunces',serif;font-size:clamp(2rem,5vw,3rem);font-weight:900;color:#fff;margin-bottom:0.5rem;line-height:1.1}
+.qh-title span{color:var(--y);font-style:italic}
+.qh-sub{color:rgba(255,255,255,0.55);font-size:0.9rem;line-height:1.65;max-width:520px;margin:0 auto}
+
+/* PROGRESS BAR */
+.quiz-progress{background:rgba(255,255,255,0.1);height:6px;position:relative}
+.qp-fill{height:100%;background:linear-gradient(90deg,var(--gl),var(--y));transition:width 0.4s ease}
+.qp-label{position:absolute;right:0.8rem;top:-1.3rem;font-size:0.68rem;font-weight:800;color:rgba(255,255,255,0.6);font-family:'Nunito',sans-serif}
+
+/* MAIN */
+.quiz-main{max-width:720px;margin:0 auto;padding:2.5rem 2rem;flex:1;width:100%}
+
+/* SCREENS */
+.screen{display:none;animation:fadeIn 0.3s ease}
+.screen.show{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* CATEGORY SELECT */
+.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem}
+.cat-card{background:var(--card);border:2px solid var(--border);border-radius:20px;padding:1.8rem 1.5rem;text-align:center;cursor:pointer;transition:all 0.25s}
+.cat-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,0.1)}
+.cat-card.selected{border-color:var(--green);background:rgba(22,163,74,0.04)}
+.cc-emoji{font-size:3rem;display:block;margin-bottom:0.7rem}
+.cc-title{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:900;color:var(--dark);margin-bottom:0.3rem}
+.cc-desc{font-size:0.78rem;color:var(--muted);line-height:1.4}
+.cc-count{font-size:0.7rem;font-weight:800;color:var(--green);margin-top:0.4rem}
+
+/* QUESTION CARD */
+.question-card{background:var(--card);border-radius:24px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,0.08);margin-bottom:1.5rem}
+.qc-header{padding:1.4rem 1.8rem;border-bottom:1px solid var(--border)}
+.qc-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.6rem}
+.qc-category{font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.09em;color:var(--green)}
+.qc-diff{font-size:0.68rem;font-weight:800;padding:0.15rem 0.55rem;border-radius:4px}
+.qc-timer{font-family:'Nunito',sans-serif;font-size:1.4rem;font-weight:900;color:var(--dark);width:42px;height:42px;border-radius:50%;border:3px solid var(--green);display:flex;align-items:center;justify-content:center;transition:border-color 0.3s}
+.qc-timer.warning{border-color:var(--y);color:var(--y)}
+.qc-timer.danger{border-color:var(--red);color:var(--red);animation:shake 0.3s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+.qc-question{font-family:'Fraunces',serif;font-size:1.35rem;font-weight:900;color:var(--dark);line-height:1.3}
+.qc-body{padding:1.4rem 1.8rem}
+.qc-image{font-size:5rem;text-align:center;padding:1rem 0;display:block}
+
+/* OPTIONS */
+.options-grid{display:flex;flex-direction:column;gap:0.7rem}
+.option-btn{background:var(--bg);border:2px solid var(--border);border-radius:14px;padding:1rem 1.3rem;text-align:left;cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.92rem;font-weight:700;color:var(--dark);transition:all 0.2s;display:flex;align-items:center;gap:0.8rem;width:100%}
+.option-btn:hover:not(:disabled){border-color:var(--green);background:rgba(22,163,74,0.04);transform:translateX(4px)}
+.option-btn:disabled{cursor:not-allowed}
+.option-btn.correct{border-color:var(--green);background:rgba(22,163,74,0.1);color:var(--dark)}
+.option-btn.wrong{border-color:var(--red);background:rgba(239,68,68,0.08);color:var(--dark)}
+.option-btn.reveal{border-color:var(--green);background:rgba(22,163,74,0.06)}
+.ob-letter{width:32px;height:32px;border-radius:10px;background:var(--card);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.82rem;font-weight:900;flex-shrink:0;transition:all 0.2s}
+.option-btn.correct .ob-letter{background:var(--green);border-color:var(--green);color:#fff}
+.option-btn.wrong .ob-letter{background:var(--red);border-color:var(--red);color:#fff}
+.option-btn.reveal .ob-letter{background:var(--green);border-color:var(--green);color:#fff}
+.ob-text{flex:1}
+
+/* EXPLANATION */
+.explanation-box{background:linear-gradient(135deg,rgba(22,163,74,0.06),rgba(22,163,74,0.02));border:1px solid rgba(22,163,74,0.2);border-radius:14px;padding:1.1rem 1.3rem;margin-top:1rem;display:none;animation:fadeIn 0.3s ease}
+.explanation-box.show{display:block}
+.eb-header{display:flex;align-items:center;gap:0.5rem;margin-bottom:0.4rem;font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.07em;color:var(--green)}
+.eb-text{font-size:0.85rem;color:var(--text);line-height:1.65}
+.eb-fact{font-size:0.8rem;font-weight:800;color:var(--dark);margin-top:0.4rem}
+
+/* FEEDBACK */
+.feedback-overlay{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:5rem;z-index:100;pointer-events:none;animation:burst 0.6s ease forwards;opacity:0}
+@keyframes burst{0%{opacity:0;transform:translate(-50%,-50%) scale(0.5)}40%{opacity:1;transform:translate(-50%,-50%) scale(1.3)}70%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.1)}}
+
+/* SCORE CARD */
+.score-card{background:var(--card);border-radius:24px;padding:2.5rem;text-align:center;box-shadow:0 8px 30px rgba(0,0,0,0.08);margin-bottom:1.5rem}
+.sc-emoji{font-size:5rem;display:block;margin-bottom:1rem}
+.sc-title{font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--dark);margin-bottom:0.4rem}
+.sc-subtitle{font-size:0.9rem;color:var(--muted);margin-bottom:1.5rem;line-height:1.6}
+.sc-score-big{font-family:'Fraunces',serif;font-size:4rem;font-weight:900;color:var(--green)}
+.sc-score-label{font-size:0.8rem;color:var(--muted);margin-top:0.2rem}
+.sc-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-top:1.5rem}
+.scs-item{background:var(--bg);border-radius:12px;padding:0.9rem;text-align:center}
+.scs-val{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:900;color:var(--dark)}
+.scs-label{font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-top:0.2rem}
+
+/* BUTTONS */
+.btn-primary{background:linear-gradient(135deg,var(--green),var(--gl));color:#fff;border:none;border-radius:14px;padding:0.95rem 2.5rem;font-size:0.95rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.2s;width:100%;display:flex;align-items:center;justify-content:center;gap:0.5rem;box-shadow:0 4px 20px rgba(22,163,74,0.25)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(22,163,74,0.35)}
+.btn-secondary{background:var(--bg);border:2px solid var(--border);color:var(--dark);border-radius:14px;padding:0.9rem 2rem;font-size:0.9rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.2s;width:100%;margin-top:0.7rem}
+.btn-secondary:hover{border-color:var(--green);background:rgba(22,163,74,0.04)}
+
+/* STREAK/COMBO */
+.combo-display{text-align:center;margin-bottom:1rem;min-height:32px}
+.combo-badge{display:inline-flex;align-items:center;gap:0.4rem;background:linear-gradient(135deg,var(--y),#f59e0b);color:#000;font-size:0.82rem;font-weight:900;padding:0.3rem 1rem;border-radius:100px;animation:comboIn 0.4s ease}
+@keyframes comboIn{from{opacity:0;transform:scale(0.7)}to{opacity:1;transform:scale(1)}}
+
+@media(max-width:600px){.cat-grid{grid-template-columns:1fr}.quiz-main{padding:1.5rem 1rem}.sc-stats{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="feedback-overlay" id="feedback-overlay"></div>
+
+<nav class="nav">
+  <div class="nav-logo">Nutri<span>Cam</span> Quiz</div>
+  <div class="score-display">⭐ Score : <span id="nav-score">0</span></div>
+</nav>
+
+<div class="quiz-hero">
+  <div class="qh-bg"></div>
+  <div class="qh-badge">🧠 Quiz interactif · IA Nutrition</div>
+  <h1 class="qh-title">Testez vos<br/>connaissances <span>africaines</span></h1>
+  <p class="qh-sub">40 questions sur la nutrition camerounaise, les recettes traditionnelles et les bienfaits des aliments locaux. Gagnez des NutriPoints !</p>
+</div>
+<div class="quiz-progress" id="quiz-progress-bar">
+  <div class="qp-fill" id="progress-fill" style="width:0%"></div>
+  <div class="qp-label" id="progress-label">0 / 10</div>
+</div>
+
+<div class="quiz-main">
+
+  <!-- SELECT CATEGORY -->
+  <div class="screen show" id="screen-start">
+    <div style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:900;color:var(--dark);text-align:center;margin-bottom:0.4rem">Choisissez une catégorie</div>
+    <div style="text-align:center;color:var(--muted);font-size:0.88rem;margin-bottom:2rem">10 questions · Chronomètre · Réponses expliquées</div>
+    <div class="cat-grid">
+      <div class="cat-card" onclick="startQuiz('nutrition',this)">
+        <span class="cc-emoji">🥗</span>
+        <div class="cc-title">Nutrition générale</div>
+        <div class="cc-desc">Calories, macros, vitamines et minéraux dans les aliments camerounais.</div>
+        <div class="cc-count">10 questions · Niveau moyen</div>
+      </div>
+      <div class="cat-card" onclick="startQuiz('recettes',this)">
+        <span class="cc-emoji">🍲</span>
+        <div class="cc-title">Recettes & Plats</div>
+        <div class="cc-desc">Ingrédients traditionnels, techniques culinaires et origines régionales.</div>
+        <div class="cc-count">10 questions · Niveau facile</div>
+      </div>
+      <div class="cat-card" onclick="startQuiz('sante',this)">
+        <span class="cc-emoji">💊</span>
+        <div class="cc-title">Santé & Prévention</div>
+        <div class="cc-desc">Diabète, hypertension, grossesse et alimentation thérapeutique locale.</div>
+        <div class="cc-count">10 questions · Niveau difficile</div>
+      </div>
+      <div class="cat-card" onclick="startQuiz('culture',this)">
+        <span class="cc-emoji">🌍</span>
+        <div class="cc-title">Culture alimentaire</div>
+        <div class="cc-desc">Histoire, régions du Cameroun et pratiques culinaires traditionnelles.</div>
+        <div class="cc-count">10 questions · Niveau facile</div>
+      </div>
+    </div>
+    <button class="btn-primary" onclick="startQuiz('mixed',null)" style="max-width:400px;margin:0 auto">🎲 Mode aléatoire — Toutes catégories</button>
+  </div>
+
+  <!-- QUESTION -->
+  <div class="screen" id="screen-question">
+    <div class="combo-display" id="combo-display"></div>
+    <div class="question-card">
+      <div class="qc-header">
+        <div class="qc-meta">
+          <div class="qc-category" id="q-category">Nutrition</div>
+          <div style="display:flex;align-items:center;gap:0.7rem">
+            <div class="qc-diff" id="q-diff" style="background:rgba(245,158,11,0.12);color:#d97706">Moyen</div>
+            <div class="qc-timer" id="q-timer">15</div>
+          </div>
+        </div>
+        <div class="qc-question" id="q-text">Question...</div>
+      </div>
+      <div class="qc-body">
+        <span class="qc-image" id="q-image"></span>
+        <div class="options-grid" id="options-grid"></div>
+        <div class="explanation-box" id="explanation-box">
+          <div class="eb-header">📚 Explication</div>
+          <div class="eb-text" id="explanation-text"></div>
+          <div class="eb-fact" id="explanation-fact"></div>
+        </div>
+      </div>
+    </div>
+    <button class="btn-primary" id="next-btn" onclick="nextQuestion()" style="display:none">Suivant →</button>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="screen" id="screen-results">
+    <div class="score-card" id="score-card"></div>
+    <button class="btn-primary" onclick="showScreen('screen-start')">🔄 Rejouer</button>
+    <button class="btn-secondary" onclick="alert('🎁 +50 NutriPoints ajoutés à votre compte !')">⭐ Réclamer mes NutriPoints</button>
+  </div>
+
+</div>
+
+<script>
+const allQuestions = {
+  nutrition:[
+    {q:'Combien de calories contient une portion de Ndolé aux crevettes (380g) ?',img:'🍲',cat:'Nutrition',diff:'Moyen',opts:['280 kcal','380 kcal','520 kcal','180 kcal'],correct:1,expl:'Le Ndolé aux crevettes apporte environ 380 kcal par portion, dont 28g de protéines, 18g de glucides et 22g de lipides.',fact:'💡 Le Ndolé est l\'un des plats les plus complets nutritionnellement du Cameroun.'},
+    {q:'Quelle vitamine est particulièrement abondante dans l\'huile de palme rouge non raffinée ?',img:'🫙',cat:'Nutrition',diff:'Moyen',opts:['Vitamine C','Vitamine D','Vitamine A (bêta-carotène)','Vitamine K'],correct:2,expl:'L\'huile de palme rouge doit sa couleur au bêta-carotène, précurseur de la vitamine A. Elle contient aussi de la vitamine E.',fact:'💡 L\'huile de palme blanche (raffinée) perd pratiquement toute sa vitamine A lors du traitement industriel.'},
+    {q:'Pour 100g, quelle quantité de fer contiennent les feuilles de Ndolé (Vernonia amygdalina) ?',img:'🥬',cat:'Nutrition',diff:'Difficile',opts:['2.1mg','4.5mg','8.9mg','12.3mg'],correct:2,expl:'Les feuilles de ndolé contiennent 8.9mg de fer pour 100g, soit 3 fois plus que les épinards européens.',fact:'💡 Le jus de tomate ou citron servi avec le ndolé augmente l\'absorption du fer végétal grâce à la vitamine C.'},
+    {q:'Quel aliment camerounais est le plus riche en calcium pour 100g ?',img:'🐟',cat:'Nutrition',diff:'Moyen',opts:['Sardines SCBC (en conserve)','Ndolé frais','Lait en poudre Nido','Eru cuit'],correct:2,expl:'Le lait en poudre Nido contient environ 1200mg de calcium pour 100g, bien plus que les autres options.',fact:'💡 Les sardines en conserve restent cependant la meilleure source de calcium avec les arêtes comestibles.'},
+    {q:'Quel est l\'Indice Glycémique (IG) du riz blanc cuit à la vapeur ?',img:'🍚',cat:'Nutrition',diff:'Difficile',opts:['IG 35','IG 52','IG 72','IG 90'],correct:2,expl:'Le riz blanc a un IG d\'environ 72, classé élevé. Le riz complet a un IG plus bas (~55) car il conserve ses fibres.',fact:'💡 Refroidir le riz cuit puis le réchauffer réduit son IG d\'environ 10-15% grâce à la formation d\'amidon résistant.'},
+    {q:'Combien de grammes de protéines contient le crayfish (crevettes séchées) pour 100g ?',img:'🦐',cat:'Nutrition',diff:'Expert',opts:['28g','45g','62g','78g'],correct:2,expl:'Le crayfish contient environ 62g de protéines pour 100g, ce qui en fait l\'une des sources protéiques les plus concentrées au monde.',fact:'💡 C\'est pourquoi le crayfish est un condiment nutritionnel exceptionnel : même en petite quantité, il enrichit significativement un plat en protéines.'},
+    {q:'Quelle propriété médicale du bissap (hibiscus) est scientifiquement prouvée ?',img:'🌺',cat:'Nutrition',diff:'Moyen',opts:['Antidiabétique','Hypotensive (baisse la pression artérielle)','Anticancéreuse','Antiparasitaire'],correct:1,expl:'Plusieurs études cliniques ont démontré que le thé de bissap consommé régulièrement réduit significativement la pression artérielle systolique.',fact:'💡 Le bissap contient des anthocyanes et de la vitamine C en quantités élevées. Une étude (Herrera-Arellano, 2004) a montré une réduction de 11% de la PA.'},
+    {q:'Combien de calories supplémentaires par jour une femme enceinte au 2ème trimestre doit-elle consommer ?',img:'🤰',cat:'Nutrition',diff:'Moyen',opts:['+100 kcal','+300 kcal','+500 kcal','+200 kcal'],correct:1,expl:'L\'OMS recommande +300 kcal/jour au 2ème et 3ème trimestre de grossesse, et seulement +100 kcal au 1er trimestre.',fact:'💡 La qualité prime sur la quantité : ces 300 kcal doivent venir d\'aliments riches en fer, acide folique et calcium.'},
+    {q:'Quel plat camerounais a l\'indice glycémique le plus bas parmi ces choix ?',img:'🥬',cat:'Nutrition',diff:'Difficile',opts:['Riz blanc vapeur','Plantain frit (alloco)','Eru & Waterleaf','Bouillie de maïs sucrée'],correct:2,expl:'L\'Eru & Waterleaf a un IG très bas (~10-15) car c\'est essentiellement des légumes feuilles riches en fibres et pauvres en glucides.',fact:'💡 Les légumes feuilles africains sont particulièrement adaptés aux régimes diabétiques grâce à leur faible teneur en glucides.'},
+    {q:'Quelle est la teneur en vitamine C du moringa pour 100g de feuilles fraîches ?',img:'🌿',cat:'Nutrition',diff:'Expert',opts:['25mg','51mg','165mg','220mg'],correct:2,expl:'Le moringa contient environ 165mg de vitamine C pour 100g, soit 7 fois plus que l\'orange (23mg/100g).',fact:'💡 Le moringa est souvent qualifié de "superaliment africain" : il est aussi riche en calcium (4× le lait), fer et protéines.'},
+  ],
+  recettes:[
+    {q:'Quelle est la feuille principale du plat national camerounais "Ndolé" ?',img:'🍲',cat:'Recettes',diff:'Facile',opts:['Feuilles de manioc','Vernonia amygdalina (feuilles amères)','Waterleaf (Talinum)','Épinards africains'],correct:1,expl:'Le Ndolé tire son nom et sa saveur amère caractéristique des feuilles de Vernonia amygdalina, une plante médicinale africaine.',fact:'💡 Le trempage prolongé des feuilles réduit l\'amertume mais conserve les nutriments. Ne pas trop faire tremper !'},
+    {q:'Dans quelle région du Cameroun le Ndolé est-il originaire ?',img:'📍',cat:'Recettes',diff:'Facile',opts:['Adamaoua','Centre','Littoral (Douala)','Nord-Ouest'],correct:2,expl:'Le Ndolé est originaire du Littoral camerounais, notamment de la région de Douala. C\'est aujourd\'hui le plat national du Cameroun.',fact:'💡 Chaque région camerounaise a sa variante : à Douala avec crevettes, à Bafoussam avec bœuf, au Centre avec poisson fumé.'},
+    {q:'Quels sont les 2 légumes feuilles essentiels du plat "Eru" ?',img:'🥬',cat:'Recettes',diff:'Moyen',opts:['Ndolé + épinards','Eru (Gnetum africanum) + Waterleaf (Talinum triangulare)','Manioc + patate douce','Moringa + amarante'],correct:1,expl:'L\'Eru combine impérativement les feuilles de Gnetum africanum (eru) avec le Talinum triangulare (waterleaf). Les deux se complètent nutritionnellement.',fact:'💡 L\'eru est originaire du Sud-Ouest et Nord-Ouest du Cameroun. On le retrouve aussi au Nigeria sous le nom "ofe owerre".'},
+    {q:'Qu\'est-ce que le "miondo" ?',img:'🌽',cat:'Recettes',diff:'Facile',opts:['Un poisson fumé du Littoral','Des bâtonnets de manioc fermenté enroulés de feuilles','Une boisson à base de maïs','Un fromage local du Cameroun'],correct:1,expl:'Le miondo (ou bâton de manioc) est du manioc fermenté, broyé et cuit dans des feuilles de marantacée. Origines dans le Centre et Littoral.',fact:'💡 Le processus de fermentation du manioc réduit naturellement les cyanures contenus dans le manioc brut.'},
+    {q:'Le "Poulet DG" tire son nom de quoi ?',img:'🐔',cat:'Recettes',diff:'Moyen',opts:['D\'un chef cuisinier nommé DG','De la sauce utilisée ("Douce et Généreuse")','Du niveau de vie associé (plat de Directeur Général)','De l\'acronyme Douala-Garoua'],correct:2,expl:'Le Poulet DG ("Directeur Général") est ainsi nommé car il était associé à l\'aisance sociale : un plat que seuls les cadres supérieurs pouvaient se payer régulièrement.',fact:'💡 Avec les plantains mûrs, les légumes colorés et le poulet doré, c\'est l\'un des plats les plus festifs du Cameroun.'},
+    {q:'Quel est le plat traditionnel du peuple Bamiléké à l\'Ouest Cameroun ?',img:'🥘',cat:'Recettes',diff:'Moyen',opts:['Mbongo Tchobi','Nkui (soupe épaisse aux feuilles)','Kpem aux épinards','Hako (plat de mil']},
+    {q:'Quelle épice donne au "Mbongo Tchobi" sa couleur noire caractéristique ?',img:'⚫',cat:'Recettes',diff:'Difficile',opts:['Charbon de bois alimentaire','Les écorces de "mbongo" (Echinops giganteus)','Graines de jujubier noir','Poivre grains écrasés'],correct:1,expl:'Le Mbongo Tchobi tire sa couleur noire des graines et écorces d\'Echinops giganteus, épice rare du Littoral aux propriétés anti-inflammatoires.',fact:'💡 Le mbongo est quasi introuvable hors d\'Afrique centrale et confère au plat des arômes uniques, légèrement fumés.'},
+    {q:'Combien de temps faut-il faire tremper les feuilles de Ndolé pour réduire l\'amertume ?',img:'⏱️',cat:'Recettes',diff:'Moyen',opts:['5 minutes','20-30 minutes','2-3 heures','Toute une nuit'],correct:1,expl:'20 à 30 minutes de trempage dans l\'eau chaude sont suffisantes pour réduire l\'amertume tout en conservant les nutriments essentiels.',fact:'💡 Un excès de trempage (>1h) détruit une grande partie des vitamines hydrosolubles (C, B9) du ndolé.'},
+    {q:'Qu\'est-ce que le "Kpem" ?',img:'🟤',cat:'Recettes',diff:'Difficile',opts:['Un fromage de vache peule','Une pâte fermentée de graines de courge','Un poisson séché de Kribi','Une boisson de mil fermenté'],correct:1,expl:'Le Kpem est une pâte fermentée préparée à partir de graines de courge, utilisée comme condiment ou base de sauce dans de nombreuses régions du Cameroun.',fact:'💡 Riche en zinc, magnésium et oméga-6, le kpem est un condiment santé sous-utilisé hors du Cameroun.'},
+    {q:'Quel fruit tropical camerounais est utilisé dans la sauce du Poulet DG ?',img:'🍌',cat:'Recettes',diff:'Facile',opts:['Mangue verte','Banane plantain mûre','Noix de coco','Papaye verte'],correct:1,expl:'La banane plantain bien mûre (jaune-noire) est indispensable dans le Poulet DG. Sa douceur et son fondant équilibrent le poulet grillé épicé.',fact:'💡 La plantain mûre a un IG plus élevé que la verte (~68 vs ~45). Pour un Poulet DG plus sain, mixer mûre et semi-mûre.'},
+  ],
+  sante:[
+    {q:'Quel signe alimentaire peut indiquer une carence en fer chez un enfant camerounais ?',img:'👶',cat:'Santé',diff:'Moyen',opts:['Préférence pour les aliments sucrés','Envie de manger de la terre ou du sable (pica)','Refus de boire de l\'eau','Préférence pour les aliments épicés'],correct:1,expl:'Le pica (ingestion de substances non-alimentaires comme la terre, l\'argile, le sable) est un signe classique d\'anémie ferriprive, particulièrement chez les enfants.',fact:'💡 Augmenter le ndolé, l\'eru et les haricots dans l\'alimentation de l\'enfant peut corriger naturellement l\'anémie légère à modérée.'},
+    {q:'Pour contrôler la glycémie, quelle forme de plantain est préférable pour un diabétique ?',img:'🍌',cat:'Santé',diff:'Moyen',opts:['Plantain frit mûr (alloco)','Plantain bouilli vert','Plantain au four mûr','Jus de plantain sucré'],correct:1,expl:'Le plantain bouilli vert a un IG d\'environ 45, contre 68 pour la version mûre et 75+ pour la version frite. La cuisson à l\'eau sans ajout de graisse est recommandée.',fact:'💡 Consommer le plantain avec une source de protéines (poisson, légumineuses) réduit encore l\'impact glycémique du repas.'},
+    {q:'Quel est l\'effet du cube Maggi consommé quotidiennement sur la santé cardiovasculaire ?',img:'🧂',cat:'Santé',diff:'Difficile',opts:['Aucun effet documenté','Augmentation du risque d\'hypertension due au sodium','Réduction de la pression artérielle','Amélioration de la circulation'],correct:1,expl:'Un seul cube Maggi contient 2.3g de sel, soit 38% de la limite quotidienne OMS (6g). La consommation régulière contribue à l\'hypertension.',fact:'💡 Alternative saine : le crayfish (crevettes séchées) apporte le même umami avec 10× moins de sodium et des protéines en bonus.'},
+    {q:'Quels aliments sont déconseillés pendant la grossesse au Cameroun pour leur teneur en mercure ?',img:'🤰',cat:'Santé',diff:'Difficile',opts:['Sardines en conserve (SCBC)','Tilapia et carpes d\'eau douce','Grands poissons prédateurs (thon, requin, espadon)','Crevettes et gambas'],correct:2,expl:'Les grands poissons prédateurs (thon, espadon, marlin) accumulent le mercure dans leur chair. Les femmes enceintes doivent les éviter.',fact:'💡 Le tilapia, la sardine locale et les crevettes restent de bonnes sources d\'omega-3 sûres pendant la grossesse.'},
+    {q:'La prévalence du diabète de type 2 au Cameroun a augmenté de combien en 10 ans (2013-2023) ?',img:'📊',cat:'Santé',diff:'Expert',opts:['+12%','+27%','+47%','+68%'],correct:2,expl:'Le diabète de type 2 a augmenté d\'environ +47% au Cameroun en 10 ans, selon le MINSANTE, corrélé à l\'urbanisation et aux changements alimentaires.',fact:'💡 L\'adoption d\'aliments ultra-transformés importés au détriment des aliments locaux à faible IG est un facteur majeur.'},
+    {q:'Quel légume feuille local est recommandé pour les femmes enceintes pour l\'acide folique ?',img:'🥬',cat:'Santé',diff:'Moyen',opts:['Feuilles de manioc','Feuilles de ndolé (Vernonia amygdalina)','Chou blanc importé','Laitue',],correct:1,expl:'Les feuilles de ndolé contiennent 82µg d\'acide folique pour 100g. Le ndolé est donc une excellente source locale de B9 pour la prévention des malformations du tube neural.',fact:'💡 Le besoin en acide folique double pendant la grossesse (de 400 à 600µg/j). Consommer du ndolé 3× par semaine aide à atteindre cet objectif.'},
+    {q:'Quelle pathologie est la plus répandue chez les femmes camerounaises en âge de procréer selon le MINSANTE 2023 ?',img:'🩺',cat:'Santé',diff:'Expert',opts:['Diabète de type 2','Carence en vitamine D','Anémie ferriprive (38% des femmes)','Obésité'],correct:2,expl:'L\'anémie ferriprive touche 38% des femmes en âge de procréer au Cameroun selon le MINSANTE 2023, souvent liée à une alimentation insuffisante en fer.',fact:'💡 La solution locale existe : ndolé + eru + haricots rouges + crevettes constituent un régime anti-anémie naturel et culturellement accepté.'},
+    {q:'Quelle propriété scientifique du moringa est la mieux documentée ?',img:'🌿',cat:'Santé',diff:'Difficile',opts:['Effet anticancéreux direct','Régulation de la glycémie (hypoglycémiant)','Traitement de l\'hypertension','Effet antifongique'],correct:1,expl:'L\'effet hypoglycémiant du moringa est le plus documenté : plusieurs études (dont Al-Malki, 2016) montrent une réduction significative de la glycémie à jeun.',fact:'💡 L\'isothiocyanate de moringa inhibe la gluconéogenèse hépatique, réduisant la production de glucose par le foie.'},
+    {q:'Combien de milligrammes de sel l\'OMS recommande-t-elle de ne pas dépasser par jour ?',img:'🧂',cat:'Santé',diff:'Facile',opts:['2g/jour','6g/jour','10g/jour','4g/jour'],correct:1,expl:'L\'OMS recommande de ne pas dépasser 5g de sel (2g de sodium) par jour pour prévenir l\'hypertension et les maladies cardiovasculaires.',fact:'💡 La consommation moyenne au Cameroun est estimée à 8-10g/jour, bien au-delà de la recommandation OMS.'},
+    {q:'Quel type de cuisson préserve le mieux les vitamines du ndolé ?',img:'🍳',cat:'Santé',diff:'Moyen',opts:['Friture à haute température','Cuisson vapeur courte (10-15 min)','Trempage très long (>2h) puis ébullition','Consommation crue'],correct:1,expl:'La cuisson vapeur courte préserve au mieux les vitamines hydrosolubles (C, B9, B1). La friture et les ébullitions longues détruisent ces vitamines.',fact:'💡 La perte en vitamine C du ndolé lors d\'une cuisson normale est de 60-70%. Accompagner d\'une tomate fraîche compense cette perte.'},
+  ],
+  culture:[
+    {q:'Combien de régions administratives le Cameroun possède-t-il ?',img:'🗺️',cat:'Culture',diff:'Facile',opts:['8 régions','10 régions','12 régions','6 régions'],correct:1,expl:'Le Cameroun est divisé en 10 régions : Adamaoua, Centre, Est, Extrême-Nord, Littoral, Nord, Nord-Ouest, Ouest, Sud et Sud-Ouest.',fact:'💡 Chaque région a ses spécialités culinaires distinctes, ce qui fait de la gastronomie camerounaise l\'une des plus diversifiées d\'Afrique.'},
+    {q:'Comment le Cameroun est-il souvent surnommé en raison de sa diversité ?',img:'🌍',cat:'Culture',diff:'Facile',opts:['Le cœur de l\'Afrique','L\'Afrique en miniature','La perle de l\'Afrique centrale','Le grenier de l\'Afrique'],correct:1,expl:'Le Cameroun est surnommé "l\'Afrique en miniature" car il concentre presque tous les types de paysages et de cultures du continent africain.',fact:'💡 Cette diversité culturelle se reflète directement dans la cuisine : 280+ ethnies = autant de traditions culinaires différentes.'},
+    {q:'Quel peuple du Cameroun est traditionnellement associé à l\'élevage bovin et au fromager Peul (wagashi) ?',img:'🐄',cat:'Culture',diff:'Moyen',opts:['Les Bamiléké','Les Peuls (Fula)','Les Beti','Les Bakweri'],correct:1,expl:'Les Peuls (Fula/Fulbe) sont les grands éleveurs nomades du Cameroun, notamment à l\'Adamaoua. Ils produisent le fromager traditionnel "wagashi".',fact:'💡 Le wagashi est un fromage frais non affiné, très populaire dans l\'Adamaoua, qui ressemble au fromage frais ou au tofu.'},
+    {q:'Le "kossam" est une boisson traditionnelle de quel peuple du Grand Nord ?',img:'🥛',cat:'Culture',diff:'Moyen',opts:['Les Bassa','Les Peuls du Nord','Les Sawa','Les Bamiléké'],correct:1,expl:'Le kossam est un lait fermenté traditionnel des Peuls du Grand Nord (Adamaoua, Nord, Extrême-Nord). Proche du yaourt, il est vendu dans des calebasses.',fact:'💡 Nutritionnellement excellent : probiotiques naturels + protéines + calcium. Un trésor nutritionnel sous-documenté.'},
+    {q:'Quel poisson est emblématique de la gastronomie de Kribi sur la côte atlantique ?',img:'🐠',cat:'Culture',diff:'Moyen',opts:['Tilapia d\'eau douce','Barracuda et capitaine braisés','Carpe commune','Silure (poisson-chat)'],correct:1,expl:'Kribi (Sud) est réputée pour ses poissons de mer frais, notamment le barracuda et le capitaine (Trachinotus teraia) grillés sur la plage.',fact:'💡 Le poisson braisé de Kribi servi avec du plantain est considéré par beaucoup comme le meilleur repas littoral du Cameroun.'},
+    {q:'Qu\'est-ce que le "djondjon" (tremotière noire) ?',img:'⚫',cat:'Culture',diff:'Expert',opts:['Un champignon séché noir utilisé en cuisine haïtienne d\'origine africaine','Une épice venue du Maroc','Un poisson du lac Tchad','Un fruit exotique de l\'Est Cameroun'],correct:0,expl:'Le djondjon est effectivement un champignon séché (Psathyrella candolleana) originaire d\'Haïti mais d\'usage historique lié à la diaspora africaine.',fact:'💡 Au Cameroun, des champignons séchés similaires sont utilisés dans les cuisines de l\'Est et du Centre pour colorer les sauces.'},
+    {q:'Dans quelle ville camerounaise trouve-t-on la plus grande concentration de restaurants de spécialités bamilékés ?',img:'🍽️',cat:'Culture',diff:'Moyen',opts:['Kribi','Douala (Quartier Bepanda/Makepe)','Garoua','Bertoua'],correct:1,expl:'Douala, notamment les quartiers de Bepanda et Makepe, concentre d\'innombrables restaurants bamilékés servant taro, njapche, kpem et poulet DG.',fact:'💡 Les Bamiléké sont souvent qualifiés de "Juifs de l\'Afrique" pour leur sens du commerce : ils ont implanté leurs restaurants dans toutes les grandes villes.'},
+    {q:'Quel est le marché alimentaire le plus célèbre et le plus grand de Yaoundé ?',img:'🛒',cat:'Culture',diff:'Facile',opts:['Marché Mokolo','Marché Mboppi (Douala)','Marché Mvog-Mbi','Supermarché Dovv'],correct:0,expl:'Le Marché Mokolo à Yaoundé est le plus grand marché traditionnel de la capitale. On y trouve tous les ingrédients frais pour la cuisine camerounaise.',fact:'💡 NutriCam s\'est partiellement inspiré des catalogues de produits de Mokolo pour construire sa base de données d\'ingrédients locaux.'},
+    {q:'Le "Nkui" est une soupe traditionnelle de quelle région du Cameroun ?',img:'🥣',cat:'Culture',diff:'Difficile',opts:['Adamaoua (Peul)','Littoral (Bassa)','Ouest (Bamiléké)','Extrême-Nord (Arabe Choa)'],correct:2,expl:'Le Nkui est une soupe épaisse et visqueuse typiquement bamiléké (Ouest), à base de feuilles de Triumfetta cordifolia et diverses viandes.',fact:'💡 La viscosité naturelle du nkui vient des feuilles de Triumfetta, riches en mucilages. Réputé pour ses vertus revigorantes traditionnelles.'},
+    {q:'Quel est le nom du pain local non levé très populaire dans le Grand Nord camerounais ?',img:'🫓',cat:'Culture',diff:'Expert',opts:['Mandazi','Boule de mil (fonio) ou touo','Pain baguette de Maroua','Chapati (adopté depuis l\'Inde)'],correct:1,expl:'La "boule" (ou touo/tuo) est une pâte ferme à base de mil ou de sorgho, aliment de base des populations du Grand Nord, accompagnant les sauces riches.',fact:'💡 La boule de mil a un index glycémique modéré (~55) et est riche en fer, zinc et fibres. Nutritionnellement supérieure au pain blanc.'},
+  ],
+};
+
+let currentQuestions = [];
+let currentIdx = 0;
+let score = 0;
+let streak = 0;
+let timeLeft = 15;
+let timerInterval = null;
+let answered = false;
+let correctCount = 0;
+let wrongCount = 0;
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('show'));
+  document.getElementById(id).classList.add('show');
+}
+
+function startQuiz(cat, el) {
+  let pool = cat==='mixed' ? Object.values(allQuestions).flat() : (allQuestions[cat]||allQuestions.nutrition);
+  // Shuffle and take 10
+  currentQuestions = [...pool].sort(()=>Math.random()-0.5).slice(0, 10);
+  currentIdx = 0; score = 0; streak = 0; correctCount = 0; wrongCount = 0;
+  document.getElementById('nav-score').textContent = 0;
+  showScreen('screen-question');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = currentQuestions[currentIdx];
+  if(!q) { showResults(); return; }
+  answered = false;
+  const pct = (currentIdx/currentQuestions.length)*100;
+  document.getElementById('progress-fill').style.width = pct+'%';
+  document.getElementById('progress-label').textContent = `${currentIdx} / ${currentQuestions.length}`;
+  document.getElementById('q-category').textContent = q.cat;
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('q-image').textContent = q.img;
+  const diffs = {Facile:{bg:'rgba(34,197,94,0.12)',c:'#16a34a'},Moyen:{bg:'rgba(245,158,11,0.12)',c:'#d97706'},Difficile:{bg:'rgba(239,68,68,0.1)',c:'#dc2626'},Expert:{bg:'rgba(168,85,247,0.1)',c:'#7c3aed'}};
+  const d = diffs[q.diff]||diffs.Moyen;
+  document.getElementById('q-diff').textContent = q.diff;
+  document.getElementById('q-diff').style.background = d.bg;
+  document.getElementById('q-diff').style.color = d.c;
+  document.getElementById('explanation-box').classList.remove('show');
+  document.getElementById('next-btn').style.display = 'none';
+  document.getElementById('combo-display').innerHTML = streak>=3 ? `<div class="combo-badge">🔥 Combo ×${streak} ! +${streak*5} pts bonus</div>` : '';
+
+  const letters = ['A','B','C','D'];
+  document.getElementById('options-grid').innerHTML = (q.opts||[]).map((opt,i)=>`
+    <button class="option-btn" onclick="selectAnswer(${i})" id="opt-${i}">
+      <span class="ob-letter">${letters[i]}</span>
+      <span class="ob-text">${opt}</span>
+    </button>`).join('');
+
+  startTimer();
+}
+
+function startTimer() {
+  clearInterval(timerInterval);
+  timeLeft = 15;
+  const timer = document.getElementById('q-timer');
+  timer.textContent = timeLeft;
+  timer.className = 'qc-timer';
+  timerInterval = setInterval(()=>{
+    timeLeft--;
+    timer.textContent = timeLeft;
+    if(timeLeft<=5) timer.className = 'qc-timer danger';
+    else if(timeLeft<=8) timer.className = 'qc-timer warning';
+    if(timeLeft<=0){ clearInterval(timerInterval); autoReveal(); }
+  }, 1000);
+}
+
+function autoReveal(){
+  if(answered) return;
+  answered = true; streak = 0; wrongCount++;
+  revealAnswer(-1);
+}
+
+function selectAnswer(idx) {
+  if(answered) return;
+  answered = true;
+  clearInterval(timerInterval);
+  const q = currentQuestions[currentIdx];
+  const correct = idx === q.correct;
+  if(correct){ score += 10 + Math.floor(timeLeft*2) + streak*5; streak++; correctCount++; showFeedback('✅'); }
+  else { streak = 0; wrongCount++; showFeedback('❌'); }
+  document.getElementById('nav-score').textContent = score;
+  revealAnswer(idx);
+}
+
+function revealAnswer(selected) {
+  const q = currentQuestions[currentIdx];
+  document.querySelectorAll('.option-btn').forEach((btn,i)=>{
+    btn.disabled = true;
+    if(i===q.correct) btn.classList.add('reveal');
+    else if(i===selected && selected!==q.correct) btn.classList.add('wrong');
+  });
+  const expBox = document.getElementById('explanation-box');
+  document.getElementById('explanation-text').textContent = q.expl||'';
+  document.getElementById('explanation-fact').textContent = q.fact||'';
+  expBox.classList.add('show');
+  document.getElementById('next-btn').style.display = 'flex';
+}
+
+function showFeedback(emoji) {
+  const el = document.getElementById('feedback-overlay');
+  el.textContent = emoji;
+  el.style.animation = 'none';
+  el.offsetHeight;
+  el.style.animation = 'burst 0.6s ease forwards';
+}
+
+function nextQuestion() {
+  currentIdx++;
+  document.getElementById('next-btn').style.display = 'none';
+  renderQuestion();
+}
+
+function showResults() {
+  clearInterval(timerInterval);
+  const pct = Math.round(correctCount/currentQuestions.length*100);
+  const emojis = pct>=90?'🏆':pct>=70?'🎉':pct>=50?'👍':'📚';
+  const titles = pct>=90?'Parfait ! Vous êtes un expert !':pct>=70?'Très bien !':pct>=50?'Pas mal !':'À retravailler...';
+  const subtitles = pct>=90?'Score exceptionnel ! Vos connaissances en nutrition africaine sont impressionnantes.':pct>=70?'Bonne maîtrise ! Continuez à explorer les recettes NutriCam pour progresser.':pct>=50?'Vous êtes sur la bonne voie. Lisez notre blog nutrition pour approfondir.':'Ne vous découragez pas ! La nutrition africaine est riche et complexe.';
+  document.getElementById('score-card').innerHTML=`
+    <span class="sc-emoji">${emojis}</span>
+    <div class="sc-title">${titles}</div>
+    <div class="sc-subtitle">${subtitles}</div>
+    <div class="sc-score-big">${score}</div>
+    <div class="sc-score-label">NutriPoints gagnés</div>
+    <div class="sc-stats">
+      <div class="scs-item"><div class="scs-val" style="color:var(--green)">${correctCount}</div><div class="scs-label">Bonnes réponses</div></div>
+      <div class="scs-item"><div class="scs-val">${currentQuestions.length}</div><div class="scs-label">Questions</div></div>
+      <div class="scs-item"><div class="scs-val" style="color:var(--y)">${pct}%</div><div class="scs-label">Score</div></div>
+    </div>`;
+  document.getElementById('progress-fill').style.width='100%';
+  document.getElementById('progress-label').textContent=`${currentQuestions.length} / ${currentQuestions.length}`;
+  showScreen('screen-results');
+}
+</script>
+</body>
+</html>

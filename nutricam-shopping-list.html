@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Liste de Courses</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f6faf7;--dark:#07120a;--green:#16a34a;--gl:#22a854;--y:#f5b800;
+  --red:#ef4444;--blue:#2563eb;--orange:#f97316;
+  --card:#fff;--border:#d4eddc;--text:#14532d;--muted:#6b8c72;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+.nav{background:var(--dark);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:#fff}
+.nav-logo span{color:var(--y)}
+.nav-actions{display:flex;gap:0.6rem}
+.nb{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);padding:0.42rem 0.9rem;border-radius:8px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s}
+.nb.primary{background:var(--gl);border-color:var(--gl);color:#fff}
+
+/* HERO */
+.list-hero{background:linear-gradient(135deg,var(--dark),#0a2d14 55%,var(--green));padding:2.5rem 2.5rem 3rem;position:relative;overflow:hidden}
+.lh-bg{position:absolute;right:2rem;bottom:-1rem;font-size:10rem;opacity:0.04;pointer-events:none}
+.lh-badge{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.65);font-size:0.72rem;font-weight:700;padding:0.3rem 0.9rem;border-radius:100px;margin-bottom:0.9rem;text-transform:uppercase;letter-spacing:0.08em}
+.lh-title{font-family:'Fraunces',serif;font-size:clamp(1.9rem,4vw,2.8rem);font-weight:900;color:#fff;margin-bottom:0.5rem}
+.lh-title span{color:var(--y)}
+.lh-sub{color:rgba(255,255,255,0.5);font-size:0.9rem;line-height:1.7;max-width:500px}
+
+/* MAIN */
+.list-main{max-width:1100px;margin:0 auto;padding:2.5rem;display:grid;grid-template-columns:1fr 340px;gap:2rem;align-items:start}
+
+/* LEFT — LISTS */
+.lists-panel{}
+.lp-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem}
+.lph-title{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:var(--dark)}
+.lph-actions{display:flex;gap:0.5rem}
+.lpa-btn{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:0.45rem 0.9rem;font-size:0.75rem;font-weight:700;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s}
+.lpa-btn:hover{color:var(--text)}.lpa-btn.primary{background:var(--gl);border-color:var(--gl);color:#fff}
+
+/* GENERATE PANEL */
+.generate-panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.4rem;margin-bottom:1.5rem}
+.gp-title{font-family:'Fraunces',serif;font-size:0.95rem;font-weight:900;color:var(--dark);margin-bottom:1rem}
+.recipe-checklist{display:flex;flex-direction:column;gap:0.4rem;margin-bottom:1rem}
+.rc-item{display:flex;align-items:center;gap:0.7rem;padding:0.6rem 0.8rem;border:1.5px solid var(--border);border-radius:11px;cursor:pointer;transition:all 0.15s}
+.rc-item:hover{border-color:rgba(22,163,74,0.3)}
+.rc-item.checked{border-color:var(--green);background:rgba(22,163,74,0.04)}
+.rc-check{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--muted);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:var(--green);transition:all 0.15s}
+.rc-item.checked .rc-check{background:var(--green);border-color:var(--green);color:#fff}
+.rc-emoji{font-size:1.1rem;flex-shrink:0}
+.rc-name{font-size:0.83rem;font-weight:700;color:var(--text);flex:1}
+.rc-portions{font-size:0.72rem;color:var(--muted)}
+.persons-row{display:flex;align-items:center;gap:0.7rem;margin-bottom:1rem;padding:0.7rem 0.9rem;background:var(--bg);border-radius:10px}
+.pr-label{font-size:0.78rem;font-weight:700;color:var(--muted);flex:1}
+.pr-btn{width:28px;height:28px;border-radius:7px;border:1.5px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;color:var(--text);transition:all 0.15s}
+.pr-btn:hover{background:var(--green);color:#fff;border-color:var(--green)}
+.pr-val{font-family:'DM Mono',monospace;font-size:1rem;font-weight:800;color:var(--dark);width:24px;text-align:center}
+.gen-btn{width:100%;background:linear-gradient(135deg,var(--green),var(--gl));border:none;border-radius:12px;padding:0.85rem;font-size:0.9rem;font-weight:800;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:0.5rem;box-shadow:0 4px 20px rgba(22,163,74,0.2)}
+.gen-btn:hover{transform:translateY(-1px);box-shadow:0 8px 30px rgba(22,163,74,0.3)}
+
+/* SHOPPING LIST */
+.shopping-list-card{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+.slc-header{background:linear-gradient(135deg,var(--dark),#0e3320);padding:1.2rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+.slch-title{font-family:'Fraunces',serif;font-size:1rem;font-weight:900;color:#fff}
+.slch-count{background:rgba(255,255,255,0.1);border-radius:100px;padding:0.2rem 0.7rem;font-size:0.72rem;font-weight:700;color:rgba(255,255,255,0.7);font-family:'DM Mono',monospace}
+.sl-categories{padding:0.5rem 0}
+.sl-cat{border-bottom:1px solid var(--border)}
+.sl-cat:last-child{border-bottom:none}
+.sl-cat-header{display:flex;align-items:center;justify-content:space-between;padding:0.8rem 1.4rem;cursor:pointer;transition:background 0.15s}
+.sl-cat-header:hover{background:rgba(0,0,0,0.01)}
+.slch-left{display:flex;align-items:center;gap:0.6rem}
+.slch-icon{font-size:1rem}
+.slch-name{font-size:0.82rem;font-weight:800;color:var(--dark);text-transform:uppercase;letter-spacing:0.05em}
+.slch-progress{font-size:0.68rem;color:var(--muted);font-family:'DM Mono',monospace}
+.sl-items{padding:0 0.8rem 0.5rem}
+.sl-item{display:flex;align-items:center;gap:0.8rem;padding:0.55rem 0.6rem;border-radius:10px;cursor:pointer;transition:all 0.15s}
+.sl-item:hover{background:rgba(0,0,0,0.02)}
+.sl-item.bought{opacity:0.45}
+.si-check{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.7rem;transition:all 0.2s}
+.sl-item.bought .si-check{background:var(--green);border-color:var(--green);color:#fff}
+.si-name{font-size:0.84rem;font-weight:600;color:var(--text);flex:1}
+.sl-item.bought .si-name{text-decoration:line-through;color:var(--muted)}
+.si-qty{font-size:0.78rem;font-weight:800;color:var(--muted);font-family:'DM Mono',monospace;white-space:nowrap}
+.si-recipe{font-size:0.62rem;color:rgba(0,0,0,0.3)}
+.sl-footer{padding:1rem 1.4rem;border-top:1px solid var(--border);display:flex;align-items:center;gap:0.6rem}
+.slf-progress{flex:1;height:5px;background:var(--bg);border-radius:3px;overflow:hidden}
+.slfp-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--y));border-radius:3px;transition:width 0.4s ease}
+.slf-text{font-size:0.72rem;color:var(--muted);font-family:'DM Mono',monospace;white-space:nowrap}
+.sl-empty{padding:3rem;text-align:center;color:var(--muted)}
+.sl-empty-icon{font-size:3rem;display:block;margin-bottom:0.8rem;opacity:0.4}
+
+/* RIGHT — BUDGET */
+.budget-panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.4rem;position:sticky;top:1.5rem}
+.bp-title{font-family:'Fraunces',serif;font-size:0.95rem;font-weight:900;color:var(--dark);margin-bottom:1rem}
+.budget-display{background:linear-gradient(135deg,var(--dark),#0e3320);border-radius:14px;padding:1.2rem;text-align:center;margin-bottom:1.2rem}
+.bd-amount{font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--y)}
+.bd-label{font-size:0.68rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.07em;margin-top:0.2rem}
+.market-tips{display:flex;flex-direction:column;gap:0.6rem;margin-bottom:1.2rem}
+.mt-item{display:flex;align-items:flex-start;gap:0.6rem;padding:0.7rem 0.8rem;background:var(--bg);border-radius:10px;border-left:3px solid var(--green)}
+.mt-icon{font-size:1rem;flex-shrink:0}
+.mt-text{font-size:0.78rem;color:var(--text);line-height:1.5}
+.mt-text strong{color:var(--dark)}
+.markets-section{margin-top:1rem}
+.ms-title{font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-bottom:0.7rem}
+.market-card{padding:0.65rem;background:var(--bg);border-radius:10px;margin-bottom:0.4rem;display:flex;align-items:center;gap:0.6rem}
+.mc-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0}
+.mc-name{font-size:0.8rem;font-weight:700;color:var(--text);flex:1}
+.mc-note{font-size:0.68rem;color:var(--muted)}
+.share-list-btn{width:100%;background:var(--dark);color:#fff;border:none;border-radius:11px;padding:0.75rem;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;margin-top:1rem;display:flex;align-items:center;justify-content:center;gap:0.4rem}
+.share-list-btn:hover{background:var(--green)}
+
+@media(max-width:900px){.list-main{grid-template-columns:1fr;padding:1.5rem 1rem}.budget-panel{position:static}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-logo">Nutri<span>Cam</span> <span style="color:rgba(255,255,255,0.35);font-family:'DM Sans',sans-serif;font-weight:400;font-size:0.85rem">· Courses</span></div>
+  <div class="nav-actions">
+    <button class="nb" onclick="clearAll()">🗑 Vider</button>
+    <button class="nb" onclick="printList()">🖨️ Imprimer</button>
+    <button class="nb primary" onclick="shareList()">↗️ Partager</button>
+  </div>
+</nav>
+<div class="list-hero">
+  <div class="lh-bg">🛒</div>
+  <div class="lh-badge">🛒 Liste de courses intelligente</div>
+  <h1 class="lh-title">Votre liste de courses<br/><span>camerounaise</span> en 1 clic</h1>
+  <p class="lh-sub">Sélectionnez vos recettes de la semaine, ajustez les portions. NutriCam génère automatiquement votre liste groupée par marché.</p>
+</div>
+<div class="list-main">
+  <div class="lists-panel">
+    <div class="lp-header">
+      <div class="lph-title">🗓️ Mes recettes cette semaine</div>
+      <div class="lph-actions">
+        <div class="lpa-btn" onclick="selectAll()">✓ Tout sélectionner</div>
+        <div class="lpa-btn primary" onclick="generateList()">🛒 Générer la liste</div>
+      </div>
+    </div>
+    <div class="generate-panel">
+      <div class="gp-title">📋 Choisissez vos recettes</div>
+      <div class="persons-row">
+        <div class="pr-label">👥 Nombre de personnes</div>
+        <button class="pr-btn" onclick="changePers(-1)">−</button>
+        <div class="pr-val" id="pers-count">4</div>
+        <button class="pr-btn" onclick="changePers(1)">+</button>
+        <div style="font-size:0.72rem;color:var(--muted)">personnes</div>
+      </div>
+      <div class="recipe-checklist" id="recipe-checklist"></div>
+      <button class="gen-btn" onclick="generateList()">🛒 Générer ma liste de courses</button>
+    </div>
+    <div class="shopping-list-card" id="shopping-list-card">
+      <div style="display:none" id="slc-content"></div>
+      <div class="sl-empty" id="sl-empty"><span class="sl-empty-icon">🛒</span><div style="font-family:'Fraunces',serif;font-size:1rem;font-weight:900;color:var(--dark);margin-bottom:0.3rem">Votre liste apparaîtra ici</div><div style="font-size:0.82rem">Sélectionnez des recettes et cliquez sur "Générer"</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="budget-panel">
+      <div class="bp-title">💰 Budget estimé</div>
+      <div class="budget-display">
+        <div class="bd-amount" id="budget-amount">0 FCFA</div>
+        <div class="bd-label">Estimation marché Yaoundé</div>
+      </div>
+      <div class="market-tips">
+        <div class="mt-item"><div class="mt-icon">💡</div><div class="mt-text"><strong>Marchés matinaux :</strong> Achetez avant 9h au marché Mokolo pour les meilleurs prix sur les légumes.</div></div>
+        <div class="mt-item"><div class="mt-icon">🐟</div><div class="mt-text"><strong>Poisson frais :</strong> Marché de la Briqueterie (Yaoundé) ou Marché des Fleurs (Douala) pour le poisson du lac.</div></div>
+        <div class="mt-item"><div class="mt-icon">🥬</div><div class="mt-text"><strong>Ndolé frais :</strong> Disponible au marché Mvog-Mbi, bien moins cher qu'en supermarché.</div></div>
+      </div>
+      <div class="markets-section">
+        <div class="ms-title">🏪 Marchés recommandés</div>
+        <div class="market-card"><div class="mc-dot"></div><div class="mc-name">Marché Mokolo</div><div class="mc-note">Yaoundé · Général</div></div>
+        <div class="market-card"><div class="mc-dot"></div><div class="mc-name">Marché Mvog-Mbi</div><div class="mc-note">Yaoundé · Légumes</div></div>
+        <div class="market-card"><div class="mc-dot"></div><div class="mc-name">Marché Mboppi</div><div class="mc-note">Douala · Poisson</div></div>
+        <div class="market-card"><div class="mc-dot"></div><div class="mc-name">Supermarché Dovv</div><div class="mc-note">Produits emballés</div></div>
+      </div>
+      <button class="share-list-btn" onclick="shareList()">📱 Envoyer sur WhatsApp</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let persons = 4;
+const recipes = [
+  {id:'ndole',emoji:'🍲',name:'Ndolé aux crevettes',portions:'2 repas',checked:true,budget:3500,
+   ings:[{cat:'Légumes & Feuilles',i:'🥬',n:'Feuilles de ndolé',qty:'500g',p:600},{cat:'Légumes & Feuilles',i:'🧅',n:'Oignons',qty:'2 pce',p:100},{cat:'Viandes & Poissons',i:'🦐',n:'Crevettes fraîches',qty:'300g',p:1800},{cat:'Viandes & Poissons',i:'🥩',n:'Bœuf fumé',qty:'200g',p:1200},{cat:'Épicerie sèche',i:'🥜',n:'Arachides grillées',qty:'150g',p:400},{cat:'Huiles & Condiments',i:'🫙',n:'Huile de palme rouge',qty:'3 c. à soupe',p:100}]},
+  {id:'poulet',emoji:'🐔',name:'Poulet DG',portions:'2 repas',checked:true,budget:4500,
+   ings:[{cat:'Viandes & Poissons',i:'🐔',n:'Poulet entier',qty:'1.2 kg',p:2800},{cat:'Fruits & Tubercules',i:'🍌',n:'Plantains mûrs',qty:'4 pce',p:400},{cat:'Légumes & Feuilles',i:'🫑',n:'Poivrons colorés',qty:'3 pce',p:300},{cat:'Légumes & Feuilles',i:'🥕',n:'Carottes',qty:'3 pce',p:150},{cat:'Huiles & Condiments',i:'🧄',n:'Ail + gingembre',qty:'1 tête + 50g',p:200}]},
+  {id:'eru',emoji:'🥬',name:'Eru & Waterleaf',portions:'2 repas',checked:false,budget:2800,
+   ings:[{cat:'Légumes & Feuilles',i:'🥬',n:'Feuilles d\'eru',qty:'400g',p:500},{cat:'Légumes & Feuilles',i:'🌿',n:'Waterleaf (Talinum)',qty:'300g',p:300},{cat:'Épicerie sèche',i:'🦐',n:'Crayfish (crevettes séchées)',qty:'50g',p:400},{cat:'Viandes & Poissons',i:'🥩',n:'Bœuf fumé ou stockfish',qty:'250g',p:1200},{cat:'Huiles & Condiments',i:'🫙',n:'Huile de palme rouge',qty:'4 c. à soupe',p:150}]},
+  {id:'poisson',emoji:'🐟',name:'Poisson braisé',portions:'2 repas',checked:false,budget:3000,
+   ings:[{cat:'Viandes & Poissons',i:'🐟',n:'Tilapia entier',qty:'600g (2 pce)',p:1500},{cat:'Légumes & Feuilles',i:'🌶️',n:'Piment frais',qty:'2 pce',p:50},{cat:'Huiles & Condiments',i:'🧄',n:'Ail + gingembre',qty:'1 tête + 30g',p:150},{cat:'Fruits & Tubercules',i:'🍋',n:'Citrons',qty:'3 pce',p:100},{cat:'Légumes & Feuilles',i:'🌿',n:'Persil + coriandre',qty:'1 bouquet',p:100}]},
+  {id:'bouillie',emoji:'🥣',name:'Bouillie de maïs (7j)',portions:'Petit-déj.',checked:true,budget:1200,
+   ings:[{cat:'Épicerie sèche',i:'🌽',n:'Farine de maïs',qty:'1 kg',p:500},{cat:'Produits laitiers',i:'🥛',n:'Lait concentré sucré',qty:'1 boîte',p:350},{cat:'Produits laitiers',i:'🥚',n:'Œufs',qty:'6 pce',p:300},{cat:'Épicerie sèche',i:'🍯',n:'Sucre',qty:'200g',p:100}]},
+  {id:'plantain',emoji:'🍌',name:'Plantains bouillis (accomp.)',portions:'Accomp.',checked:false,budget:600,
+   ings:[{cat:'Fruits & Tubercules',i:'🍌',n:'Bananes plantain vertes',qty:'2 régimes',p:500},{cat:'Huiles & Condiments',i:'🧂',n:'Sel de cuisine',qty:'1 pincée',p:50}]},
+];
+
+let shoppingItems = {};
+
+function renderChecklist(){
+  document.getElementById('recipe-checklist').innerHTML = recipes.map((r,i)=>`
+    <div class="rc-item ${r.checked?'checked':''}" id="rc-${r.id}" onclick="toggleRecipe('${r.id}')">
+      <div class="rc-check">${r.checked?'✓':''}</div>
+      <span class="rc-emoji">${r.emoji}</span>
+      <div class="rc-name">${r.name}</div>
+      <div class="rc-portions">${r.portions}</div>
+    </div>`).join('');
+}
+
+function toggleRecipe(id){
+  const r = recipes.find(x=>x.id===id);
+  if(r){ r.checked=!r.checked; renderChecklist(); }
+}
+
+function selectAll(){
+  recipes.forEach(r=>r.checked=true);
+  renderChecklist();
+}
+
+function changePers(d){
+  persons=Math.max(1,Math.min(12,persons+d));
+  document.getElementById('pers-count').textContent=persons;
+}
+
+function generateList(){
+  const selected = recipes.filter(r=>r.checked);
+  if(!selected.length){ alert('Sélectionnez au moins une recette !'); return; }
+
+  // Aggregate ingredients
+  const catMap = {};
+  selected.forEach(r=>{
+    r.ings.forEach(ing=>{
+      const key = ing.n;
+      if(!catMap[ing.cat]) catMap[ing.cat]=[];
+      const existing = catMap[ing.cat].find(x=>x.n===key);
+      if(existing){ existing.recipes.push(r.name); }
+      else catMap[ing.cat].push({...ing, recipes:[r.name], bought:false, id:Math.random().toString(36).substr(2,6)});
+    });
+  });
+
+  shoppingItems = catMap;
+  renderShoppingList();
+
+  // Budget
+  const totalBudget = selected.reduce((s,r)=>s+Math.round(r.budget*(persons/4)),0);
+  document.getElementById('budget-amount').textContent = totalBudget.toLocaleString()+' FCFA';
+}
+
+function renderShoppingList(){
+  const cats = Object.keys(shoppingItems);
+  const total = cats.reduce((s,c)=>s+shoppingItems[c].length,0);
+  const bought = cats.reduce((s,c)=>s+shoppingItems[c].filter(i=>i.bought).length,0);
+  const pct = total ? Math.round(bought/total*100) : 0;
+
+  const catIcons = {'Légumes & Feuilles':'🥬','Viandes & Poissons':'🥩','Fruits & Tubercules':'🍌','Épicerie sèche':'🌾','Huiles & Condiments':'🫙','Produits laitiers':'🥛','Autres':'📦'};
+
+  document.getElementById('sl-empty').style.display='none';
+  document.getElementById('slc-content').style.display='none';
+  document.getElementById('shopping-list-card').innerHTML=`
+    <div class="slc-header">
+      <div class="slch-title">🛒 Ma liste de courses</div>
+      <div class="slch-count">${bought}/${total} articles</div>
+    </div>
+    <div class="sl-categories">
+      ${cats.map(cat=>{
+        const items = shoppingItems[cat];
+        const boughtCount = items.filter(i=>i.bought).length;
+        return `<div class="sl-cat">
+          <div class="sl-cat-header" onclick="toggleCat(this)">
+            <div class="slch-left">
+              <span class="slch-icon">${catIcons[cat]||'📦'}</span>
+              <span class="slch-name">${cat}</span>
+            </div>
+            <span class="slch-progress">${boughtCount}/${items.length} ✓</span>
+          </div>
+          <div class="sl-items">
+            ${items.map(item=>`
+              <div class="sl-item ${item.bought?'bought':''}" onclick="toggleItem('${cat}','${item.id}')">
+                <div class="si-check">${item.bought?'✓':''}</div>
+                <div style="flex:1"><div class="si-name">${item.i} ${item.n}</div><div class="si-recipe">${item.recipes.join(', ')}</div></div>
+                <div class="si-qty">${item.qty}</div>
+              </div>`).join('')}
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="sl-footer">
+      <div class="slf-progress"><div class="slfp-fill" style="width:${pct}%"></div></div>
+      <div class="slf-text">${pct}% fait · ${bought}/${total}</div>
+    </div>`;
+}
+
+function toggleItem(cat, id){
+  if(!shoppingItems[cat]) return;
+  const item = shoppingItems[cat].find(i=>i.id===id);
+  if(item){ item.bought=!item.bought; renderShoppingList(); }
+}
+
+function toggleCat(header){
+  const items = header.nextElementSibling;
+  items.style.display = items.style.display==='none' ? 'block' : 'none';
+}
+
+function clearAll(){ shoppingItems={}; recipes.forEach(r=>r.checked=false); renderChecklist(); document.getElementById('shopping-list-card').innerHTML=`<div class="sl-empty" id="sl-empty"><span class="sl-empty-icon">🛒</span><div style="font-family:'Fraunces',serif;font-size:1rem;font-weight:900;color:var(--text);margin-bottom:0.3rem">Votre liste apparaîtra ici</div><div style="font-size:0.82rem">Sélectionnez des recettes et cliquez sur "Générer"</div></div>`; document.getElementById('budget-amount').textContent='0 FCFA'; }
+
+function shareList(){ alert('📱 Liste partagée via WhatsApp !'); }
+function printList(){ window.print(); }
+
+renderChecklist();
+</script>
+</body>
+</html>
