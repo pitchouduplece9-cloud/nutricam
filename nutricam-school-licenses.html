@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Licences Écoles & Institutions</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,900&family=Outfit:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f8fff9;--dark:#041008;--green:#0d7a3e;--gl:#15a355;--glight:#4ade80;
+  --y:#d97706;--blue:#1d4ed8;--purple:#6d28d9;--red:#dc2626;--teal:#0d9488;
+  --card:#fff;--border:#c6f0d4;--text:#0f2d1a;--muted:#5a7a63;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text)}
+
+/* NAV */
+.nav{background:var(--dark);padding:1rem 2.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.nav-logo{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;color:#fff}
+.nav-logo span{color:#fbbf24}
+.nav-badge{background:rgba(13,122,62,0.3);border:1px solid rgba(13,122,62,0.4);color:#4ade80;font-size:0.68rem;font-weight:700;padding:0.2rem 0.7rem;border-radius:4px;text-transform:uppercase;letter-spacing:0.07em}
+.nav-cta{background:var(--gl);color:#fff;border:none;border-radius:9px;padding:0.55rem 1.2rem;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.2s}
+.nav-cta:hover{background:var(--green)}
+
+/* HERO */
+.school-hero{background:linear-gradient(135deg,var(--dark) 0%,#082415 55%,#0d5c2a 100%);padding:5rem 2.5rem;text-align:center;position:relative;overflow:hidden}
+.sh-bg{position:absolute;inset:0;background-image:radial-gradient(circle at 20% 30%,rgba(21,163,85,0.08),transparent 40%),radial-gradient(circle at 80% 70%,rgba(217,119,6,0.06),transparent 40%);pointer-events:none}
+.sh-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);font-size:0.72rem;font-weight:700;padding:0.35rem 1rem;border-radius:100px;margin-bottom:1.2rem;text-transform:uppercase;letter-spacing:0.1em;animation:fadeDown 0.6s ease}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.sh-title{font-family:'Fraunces',serif;font-size:clamp(2.2rem,5vw,3.8rem);font-weight:900;color:#fff;line-height:1.05;margin-bottom:0.8rem;animation:fadeUp 0.7s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.sh-title span{color:#fbbf24;font-style:italic}
+.sh-sub{color:rgba(255,255,255,0.5);font-size:0.95rem;line-height:1.7;max-width:580px;margin:0 auto 2.5rem;animation:fadeUp 0.7s 0.1s ease both}
+.sh-stats{display:flex;gap:2.5rem;justify-content:center;flex-wrap:wrap;animation:fadeUp 0.7s 0.2s ease both}
+.shs-val{font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:#fff}
+.shs-label{font-size:0.7rem;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.08em;margin-top:0.2rem}
+
+/* MAIN */
+.main{max-width:1100px;margin:0 auto;padding:3rem 2rem}
+
+/* INSTITUTIONS */
+.inst-section{margin-bottom:4rem}
+.is-title{font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--dark);margin-bottom:0.4rem;text-align:center}
+.is-sub{color:var(--muted);text-align:center;font-size:0.9rem;margin-bottom:2.5rem}
+.inst-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.2rem}
+.inst-card{background:var(--card);border:1.5px solid var(--border);border-radius:22px;overflow:hidden;transition:all 0.25s;cursor:pointer}
+.inst-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,0.08);border-color:rgba(13,122,62,0.3)}
+.ic-top{padding:1.5rem;border-bottom:1px solid var(--border)}
+.ic-icon{font-size:2.5rem;margin-bottom:0.8rem;display:block}
+.ic-type{font-size:0.65rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:0.3rem}
+.ic-title{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:900;color:var(--dark);margin-bottom:0.4rem}
+.ic-desc{font-size:0.8rem;color:var(--muted);line-height:1.55}
+.ic-bottom{padding:1.1rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+.ic-price{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:var(--green)}
+.ic-price-label{font-size:0.65rem;color:var(--muted)}
+.ic-btn{background:var(--green);color:#fff;border:none;border-radius:9px;padding:0.5rem 1rem;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.2s}
+.ic-btn:hover{background:var(--gl)}
+
+/* PRICING TABLE */
+.pricing-section{margin-bottom:4rem}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.pricing-card{background:var(--card);border:1.5px solid var(--border);border-radius:24px;overflow:hidden;position:relative;transition:all 0.25s}
+.pricing-card:hover{transform:translateY(-4px)}
+.pricing-card.featured{border-color:var(--green);box-shadow:0 0 0 4px rgba(13,122,62,0.06)}
+.pc-top{padding:2rem;border-bottom:1px solid var(--border)}
+.pc-popular{position:absolute;top:1rem;right:1rem;background:var(--green);color:#fff;font-size:0.62rem;font-weight:800;padding:0.2rem 0.65rem;border-radius:100px;text-transform:uppercase;letter-spacing:0.07em}
+.pc-icon{font-size:2rem;margin-bottom:0.8rem;display:block}
+.pc-name{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:var(--dark);margin-bottom:0.3rem}
+.pc-desc{font-size:0.78rem;color:var(--muted);margin-bottom:1.2rem;line-height:1.5}
+.pc-price{display:flex;align-items:flex-end;gap:0.3rem;margin-bottom:0.2rem}
+.pcp-val{font-family:'Fraunces',serif;font-size:2.2rem;font-weight:900;color:var(--dark)}
+.pcp-unit{font-size:0.8rem;color:var(--muted);padding-bottom:0.3rem}
+.pc-billing{font-size:0.72rem;color:var(--muted)}
+.pc-body{padding:1.5rem}
+.pc-features{display:flex;flex-direction:column;gap:0.6rem;margin-bottom:1.5rem}
+.pcf-item{display:flex;align-items:flex-start;gap:0.6rem;font-size:0.82rem;color:var(--text)}
+.pcf-check{color:var(--green);font-weight:900;flex-shrink:0;margin-top:1px}
+.pcf-cross{color:var(--red);font-weight:900;flex-shrink:0;margin-top:1px}
+.pc-cta{width:100%;border:none;border-radius:12px;padding:0.9rem;font-size:0.88rem;font-weight:800;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.2s}
+.pc-cta-primary{background:var(--green);color:#fff;box-shadow:0 4px 16px rgba(13,122,62,0.2)}
+.pc-cta-primary:hover{background:var(--gl);transform:translateY(-1px)}
+.pc-cta-secondary{background:rgba(13,122,62,0.06);color:var(--green);border:1.5px solid rgba(13,122,62,0.2)}
+.pc-cta-secondary:hover{background:rgba(13,122,62,0.1)}
+
+/* FEATURES */
+.features-section{margin-bottom:4rem}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.feat-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.4rem;transition:all 0.2s}
+.feat-card:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,0.06)}
+.fc-icon{font-size:2rem;margin-bottom:0.7rem;display:block}
+.fc-title{font-size:0.9rem;font-weight:800;color:var(--dark);margin-bottom:0.3rem}
+.fc-desc{font-size:0.78rem;color:var(--muted);line-height:1.55}
+
+/* TESTIMONIALS */
+.testi-section{margin-bottom:4rem}
+.testi-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem}
+.testi-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.4rem}
+.tc-quote{font-size:0.85rem;color:var(--text);line-height:1.7;margin-bottom:1rem;font-style:italic}
+.tc-author{display:flex;align-items:center;gap:0.7rem}
+.tc-av{width:38px;height:38px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:800;color:#fff;flex-shrink:0}
+.tc-name{font-size:0.82rem;font-weight:700;color:var(--dark)}
+.tc-role{font-size:0.7rem;color:var(--muted)}
+.tc-stars{color:#fbbf24;font-size:0.8rem;margin-bottom:0.6rem}
+
+/* CONTACT FORM */
+.contact-section{background:var(--dark);border-radius:28px;padding:3rem;margin-bottom:2rem}
+.cs-title{font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:#fff;margin-bottom:0.4rem;text-align:center}
+.cs-sub{color:rgba(255,255,255,0.4);text-align:center;margin-bottom:2.5rem;font-size:0.9rem}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+.cf-group{margin-bottom:1rem}
+.cf-label{display:block;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:rgba(255,255,255,0.4);margin-bottom:0.4rem}
+.cf-input{width:100%;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:0.8rem 1rem;font-size:0.88rem;font-family:'Outfit',sans-serif;color:#fff;outline:none;transition:all 0.2s}
+.cf-input:focus{border-color:rgba(21,163,85,0.5);background:rgba(21,163,85,0.05)}
+.cf-input::placeholder{color:rgba(255,255,255,0.25)}
+textarea.cf-input{resize:vertical;min-height:100px;line-height:1.6}
+.cf-select{appearance:none;cursor:pointer}
+.cf-submit{width:100%;background:linear-gradient(135deg,var(--green),var(--gl));border:none;border-radius:14px;padding:1rem;font-size:0.95rem;font-weight:800;color:#fff;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.25s;box-shadow:0 6px 24px rgba(13,122,62,0.3);margin-top:0.5rem}
+.cf-submit:hover{transform:translateY(-2px);box-shadow:0 10px 35px rgba(13,122,62,0.4)}
+
+/* GUARANTEES */
+.guarantees{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;margin-top:2rem}
+.guar-item{display:flex;align-items:center;gap:0.5rem;font-size:0.78rem;color:rgba(255,255,255,0.4)}
+.guar-icon{font-size:1rem}
+
+@media(max-width:900px){.pricing-grid{grid-template-columns:1fr}.contact-grid{grid-template-columns:1fr}.feat-grid{grid-template-columns:1fr 1fr}.testi-grid{grid-template-columns:1fr}}
+@media(max-width:600px){.main{padding:2rem 1rem}.school-hero{padding:3rem 1.5rem}.feat-grid{grid-template-columns:1fr}.inst-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div style="display:flex;align-items:center;gap:0.8rem">
+    <div class="nav-logo">Nutri<span>Cam</span></div>
+    <div class="nav-badge">🏫 Licences Institutions</div>
+  </div>
+  <button class="nav-cta" onclick="document.querySelector('.contact-section').scrollIntoView({behavior:'smooth'})">📞 Demander un devis</button>
+</nav>
+
+<div class="school-hero">
+  <div class="sh-bg"></div>
+  <div class="sh-badge">🎓 Solution B2B · Établissements & Institutions</div>
+  <h1 class="sh-title">NutriCam pour<br/>vos <span>élèves & patients</span></h1>
+  <p class="sh-sub">Offrez à vos étudiants, patients et employés la première plateforme nutritionnelle africaine. Licences groupées à partir de 75 000 FCFA/mois.</p>
+  <div class="sh-stats">
+    <div><div class="shs-val">200+</div><div class="shs-label">Recettes locales</div></div>
+    <div><div class="shs-val">5 types</div><div class="shs-label">D'établissements</div></div>
+    <div><div class="shs-val">-40%</div><div class="shs-label">Vs licences individuelles</div></div>
+    <div><div class="shs-val">24h</div><div class="shs-label">Déploiement</div></div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- INSTITUTIONS -->
+  <div class="inst-section">
+    <div class="is-title">Pour qui ?</div>
+    <div class="is-sub">NutriCam s'adapte à chaque type d'établissement avec des contenus spécifiques.</div>
+    <div class="inst-grid">
+      <div class="inst-card">
+        <div class="ic-top">
+          <span class="ic-icon">🏫</span>
+          <div class="ic-type">Éducation</div>
+          <div class="ic-title">Lycées & Universités</div>
+          <div class="ic-desc">Module nutrition adapté aux étudiants : alimentation saine sur petit budget, préparation aux examens, énergie et concentration.</div>
+        </div>
+        <div class="ic-bottom">
+          <div><div class="ic-price">75 000 FCFA</div><div class="ic-price-label">/mois · jusqu'à 100 élèves</div></div>
+          <button class="ic-btn" onclick="document.querySelector('.contact-section').scrollIntoView({behavior:'smooth'})">Devis</button>
+        </div>
+      </div>
+      <div class="inst-card">
+        <div class="ic-top">
+          <span class="ic-icon">🏥</span>
+          <div class="ic-type">Santé</div>
+          <div class="ic-title">Hôpitaux & Cliniques</div>
+          <div class="ic-desc">Suivi nutritionnel patients : diabète, HTA, grossesse, post-opératoire. Validé par le CHU de Yaoundé. Intégration dossier patient.</div>
+        </div>
+        <div class="ic-bottom">
+          <div><div class="ic-price">150 000 FCFA</div><div class="ic-price-label">/mois · personnel illimité</div></div>
+          <button class="ic-btn" onclick="document.querySelector('.contact-section').scrollIntoView({behavior:'smooth'})">Devis</button>
+        </div>
+      </div>
+      <div class="inst-card">
+        <div class="ic-top">
+          <span class="ic-icon">🏢</span>
+          <div class="ic-type">Entreprise</div>
+          <div class="ic-title">Entreprises & ONG</div>
+          <div class="ic-desc">Programme bien-être employés : menus cantine sains, suivi santé équipe, réduction absentéisme, productivité améliorée.</div>
+        </div>
+        <div class="ic-bottom">
+          <div><div class="ic-price">100 000 FCFA</div><div class="ic-price-label">/mois · 50 employés</div></div>
+          <button class="ic-btn" onclick="document.querySelector('.contact-section').scrollIntoView({behavior:'smooth'})">Devis</button>
+        </div>
+      </div>
+      <div class="inst-card">
+        <div class="ic-top">
+          <span class="ic-icon">💊</span>
+          <div class="ic-type">Formation</div>
+          <div class="ic-title">Écoles de Santé & IFSI</div>
+          <div class="ic-desc">Outil pédagogique pour infirmiers, sages-femmes, aides-soignants. Cas cliniques nutrition, calcul rations, bilans alimentaires.</div>
+        </div>
+        <div class="ic-bottom">
+          <div><div class="ic-price">90 000 FCFA</div><div class="ic-price-label">/mois · 50 étudiants</div></div>
+          <button class="ic-btn" onclick="document.querySelector('.contact-section').scrollIntoView({behavior:'smooth'})">Devis</button>
+        </div>
+      </div>
+      <div class="inst-card">
+        <div class="ic-top">
+          <span class="ic-icon">🍽️</span>
+          <div class="ic-type">Restauration</div>
+          <div class="ic-title">Restaurants & Cantines</div>
+          <div class="ic-desc">Affichage nutritionnel menus, calcul automatique macros, recommandations santé clients, badge "NutriCam Certifié".</div>
+        </div>
+        <div class="ic-bottom">
+          <div><div class="ic-price">50 000 FCFA</div><div class="ic-price-label">/mois · par établissement</div></div>
+          <button class="ic-btn" onclick="document.querySelector('.contact-section').scrollIntoView({behavior:'smooth'})">Devis</button>
+        </div>
+      </div>
+      <div class="inst-card">
+        <div class="ic-top">
+          <span class="ic-icon">🌍</span>
+          <div class="ic-type">Gouvernement</div>
+          <div class="ic-title">Ministères & Programmes santé</div>
+          <div class="ic-desc">Déploiement national, données agrégées santé publique, campagnes nutrition ciblées, rapports gouvernementaux.</div>
+        </div>
+        <div class="ic-bottom">
+          <div><div class="ic-price">Sur devis</div><div class="ic-price-label">Tarification spéciale</div></div>
+          <button class="ic-btn" onclick="document.querySelector('.contact-section').scrollIntoView({behavior:'smooth'})">Contact</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRICING -->
+  <div class="pricing-section">
+    <div class="is-title">Plans tarifaires</div>
+    <div class="is-sub" style="margin-bottom:2.5rem">Choisissez le plan adapté à la taille de votre établissement</div>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="pc-top">
+          <span class="pc-icon">🌱</span>
+          <div class="pc-name">Starter</div>
+          <div class="pc-desc">Idéal pour les petits établissements et les pilotes</div>
+          <div class="pc-price"><div class="pcp-val">75 000</div><div class="pcp-unit">FCFA/mois</div></div>
+          <div class="pc-billing">Jusqu'à 50 utilisateurs · ~1 500 FCFA/personne</div>
+        </div>
+        <div class="pc-body">
+          <div class="pc-features">
+            <div class="pcf-item"><span class="pcf-check">✓</span>50 comptes utilisateurs</div>
+            <div class="pcf-item"><span class="pcf-check">✓</span>Toutes les recettes camerounaises</div>
+            <div class="pcf-item"><span class="pcf-check">✓</span>Dashboard administrateur</div>
+            <div class="pcf-item"><span class="pcf-check">✓</span>Rapports mensuels</div>
+            <div class="pcf-item"><span class="pcf-check">✓</span>Support email 48h</div>
+            <div class="pcf-item"><span class="pcf-cross">✗</span>Coach IA illimité</div>
+            <div class="pcf-item"><span class="pcf-cross">✗</span>Module médical avancé</div>
+          </div>
+          <button class="pc-cta pc-cta-secondary" onclick="document.querySelector('.contact-section').scrollIntoView({behavior:'smooth'})">Demander un devis</button>
+        </div>
+      </div>
+
+      <div class="pricing-card featured">
+        <div class="pc-popular">⭐ Populaire</div>
+        <div class="pc-top">
+          <span class="pc-icon">🏫</span>
+          <div class="pc-name">Institution</div>
+          <div class="pc-desc">Le choix des lycées, universités et cliniques camerounaises</div>
+          <div class="pc-price"><div class="pcp-val">150 000</div><div class="pcp-unit">FCFA/mois</div></div>
+          <div class="pc-billing">Jusqu'à 200 utilisateurs · ~750 FCFA/personne</div>
+        </div>
+        <div class="pc-body">
+          <div class="pc-features">
+            <div class="pcf-item"><span class="pcf-check">✓</span>200 comptes utilisateurs</div>
+            <div class="pcf-item"><span class="pcf-check">✓</span>Toutes les recettes + module médical</div>
+            <div class="pcf-item"><span class="pcf-check">✓</span>Coach IA illimité</div>
+            <div class="pcf-item"><span class="pcf-check">✓</span>Dashboard admin avancé + analytics</div>
+            <div class="pcf-item"><span class="pcf-check">✓</span>Rapports hebdomadaires</div>
+            <div class="pcf-item"><span class="pcf-check">✓</span>Personnalisation logo établissement</div>
+            <div class="pcf-item"><span class="pcf-check">✓</span>Support prioritaire 24h WhatsApp</div>
+          </div>
+          <button class="pc-cta pc-cta-primary" onclick="document.querySelector('.contact-section').scrollIntoView({behavior:'smooth'})">Commencer maintenant</button>
+        </div>
+      </div>
+
+      <div class="pricing-card">
+        <div class="pc-top">
+          <span class="pc-icon">🏥</span>
+          <div class="pc-name">Enterprise</div>
+          <div class="pc-desc">Pour les grands groupes hospitaliers et les ministères</div>
+          <div class="pc-price"><div class="pcp-val">Sur devis</div></div>
+          <div class="pc-billing">Utilisateurs illimités · Tarif dégressif</div>
+        </div>
+        <div class="pc-body">
+          <div class="pc-features">
+            <div class="pcf-item"><span class="pcf-check">✓</span>Utilisateurs illimités</div>
+            <div class="pcf-item"><span class="pcf-check">✓</span>Déploiement dédié sur vos serveurs</div>
+            <div class="pcf-item"><span class="pcf-check">✓</span>API complète + intégration SI</div>
+            <div class="pcf-item"><span class="pcf-check">✓</span>Formation équipes sur site</div>
+            <div class="pcf-item"><span class="pcf-check">✓</span>SLA 99.9% garanti</div>
+            <div class="pcf-item"><span class="pcf-check">✓</span>Données hébergées au Cameroun</div>
+            <div class="pcf-item"><span class="pcf-check">✓</span>Account manager dédié</div>
+          </div>
+          <button class="pc-cta pc-cta-secondary" onclick="document.querySelector('.contact-section').scrollIntoView({behavior:'smooth'})">Nous contacter</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="features-section">
+    <div class="is-title">Fonctionnalités exclusives institutions</div>
+    <div class="is-sub" style="margin-bottom:2rem">Ce que vous obtenez en plus du plan Premium individuel</div>
+    <div class="feat-grid">
+      <div class="feat-card"><span class="fc-icon">📊</span><div class="fc-title">Dashboard administrateur</div><div class="fc-desc">Suivez en temps réel l'engagement, les habitudes nutritionnelles et les progrès de tous vos utilisateurs.</div></div>
+      <div class="feat-card"><span class="fc-icon">🎨</span><div class="fc-title">White-label personnalisé</div><div class="fc-desc">Votre logo, vos couleurs. NutriCam devient "l'appli nutrition" de votre établissement.</div></div>
+      <div class="feat-card"><span class="fc-icon">📋</span><div class="fc-title">Rapports automatiques</div><div class="fc-desc">Rapports PDF hebdomadaires et mensuels envoyés automatiquement : engagement, santé, tendances.</div></div>
+      <div class="feat-card"><span class="fc-icon">🔗</span><div class="fc-title">API & Intégrations</div><div class="fc-desc">Connectez NutriCam à votre système d'information, dossier patient ou plateforme e-learning existant.</div></div>
+      <div class="feat-card"><span class="fc-icon">🎓</span><div class="fc-title">Formation incluse</div><div class="fc-desc">Session d'onboarding virtuelle pour votre équipe. Guide d'utilisation en français adapté à vos besoins.</div></div>
+      <div class="feat-card"><span class="fc-icon">📱</span><div class="fc-title">App mobile dédiée</div><div class="fc-desc">Vos utilisateurs accèdent depuis l'app NutriCam iOS/Android avec leur compte institutionnel SSO.</div></div>
+    </div>
+  </div>
+
+  <!-- TESTIMONIALS -->
+  <div class="testi-section">
+    <div class="is-title">Ce qu'ils disent</div>
+    <div class="is-sub" style="margin-bottom:2rem">Établissements pilotes — Phase bêta 2024</div>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="tc-stars">★★★★★</div>
+        <div class="tc-quote">"NutriCam a transformé notre approche de l'éducation nutritionnelle. Nos étudiants infirmiers comprennent enfin les besoins réels des patients camerounais."</div>
+        <div class="tc-author"><div class="tc-av">DK</div><div><div class="tc-name">Dr. Diane Kengne</div><div class="tc-role">Directrice pédagogique, IFSI Yaoundé</div></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="tc-stars">★★★★★</div>
+        <div class="tc-quote">"Nos patients diabétiques ont réduit leur glycémie de 18% en moyenne en 3 mois grâce aux recommandations NutriCam adaptées aux aliments locaux."</div>
+        <div class="tc-author"><div class="tc-av">NE</div><div><div class="tc-name">Dr. Emmanuel Nlend</div><div class="tc-role">Chef service endocrinologie, CHU Yaoundé</div></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="tc-stars">★★★★★</div>
+        <div class="tc-quote">"Notre cantine a obtenu le label 'NutriCam Certifié'. La fréquentation a augmenté de 35% depuis que nous affichons les valeurs nutritionnelles."</div>
+        <div class="tc-author"><div class="tc-av">AF</div><div><div class="tc-name">Aminatou Fall</div><div class="tc-role">Gestionnaire, Restaurant Universitaire Douala</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT FORM -->
+  <div class="contact-section">
+    <div class="cs-title">Demander un devis gratuit</div>
+    <div class="cs-sub">Réponse sous 24h · Sans engagement · Déploiement en 24h</div>
+    <div class="contact-grid">
+      <div>
+        <div class="cf-group"><label class="cf-label">Nom de l'établissement *</label><input class="cf-input" type="text" placeholder="Ex: Lycée Général Leclerc Yaoundé"/></div>
+        <div class="cf-group"><label class="cf-label">Type d'établissement *</label>
+          <select class="cf-input cf-select">
+            <option value="">Sélectionnez...</option>
+            <option>Lycée / Collège</option>
+            <option>Université / Grande école</option>
+            <option>Hôpital / Clinique</option>
+            <option>École de santé / IFSI</option>
+            <option>Entreprise / ONG</option>
+            <option>Restaurant / Cantine</option>
+            <option>Ministère / Gouvernement</option>
+          </select>
+        </div>
+        <div class="cf-group"><label class="cf-label">Nombre d'utilisateurs estimé *</label>
+          <select class="cf-input cf-select">
+            <option>Moins de 50</option>
+            <option>50 – 100</option>
+            <option>100 – 200</option>
+            <option>200 – 500</option>
+            <option>Plus de 500</option>
+          </select>
+        </div>
+        <div class="cf-group"><label class="cf-label">Ville / Région</label><input class="cf-input" type="text" placeholder="Ex: Yaoundé, Centre"/></div>
+      </div>
+      <div>
+        <div class="cf-group"><label class="cf-label">Votre nom et prénom *</label><input class="cf-input" type="text" placeholder="Dr. Marie Kamga"/></div>
+        <div class="cf-group"><label class="cf-label">Email professionnel *</label><input class="cf-input" type="email" placeholder="direction@etablissement.cm"/></div>
+        <div class="cf-group"><label class="cf-label">Téléphone WhatsApp *</label><input class="cf-input" type="tel" placeholder="+237 6XX XXX XXX"/></div>
+        <div class="cf-group"><label class="cf-label">Vos besoins spécifiques</label><textarea class="cf-input" placeholder="Décrivez votre projet nutritionnel, vos objectifs, contraintes particulières..."></textarea></div>
+      </div>
+    </div>
+    <button class="cf-submit" onclick="submitForm()">🚀 Envoyer ma demande de devis</button>
+    <div class="guarantees">
+      <div class="guar-item"><span class="guar-icon">🔒</span>Données sécurisées</div>
+      <div class="guar-item"><span class="guar-icon">⚡</span>Réponse sous 24h</div>
+      <div class="guar-item"><span class="guar-icon">🎁</span>30 jours d'essai gratuit</div>
+      <div class="guar-item"><span class="guar-icon">❌</span>Sans engagement</div>
+    </div>
+    <div style="text-align:center;margin-top:1.5rem">
+      <div style="color:rgba(255,255,255,0.3);font-size:0.78rem;margin-bottom:0.5rem">Ou contactez directement Georges Duplece Pitchou, CEO NutriCam :</div>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+        <a href="mailto:pitchouduplece9@gmail.com" style="color:#4ade80;font-size:0.82rem;font-weight:700;text-decoration:none">📧 pitchouduplece9@gmail.com</a>
+        <a href="https://wa.me/237683868760" style="color:#4ade80;font-size:0.82rem;font-weight:700;text-decoration:none">📱 +237 683 868 760</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function submitForm(){
+  alert('✅ Votre demande a été envoyée !\n\nGeorges Duplece Pitchou vous contactera sous 24h.\n📧 pitchouduplece9@gmail.com\n📱 +237 683 868 760');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Guide Domaine & Hébergement Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#0d1117;--surface:#161b22;--card:#1c2128;--green:#3fb950;--gl:#238636;--y:#d29922;--red:#f85149;--blue:#58a6ff;--purple:#bc8cff;--orange:#f0883e;--border:rgba(48,54,61,1);--text:#c9d1d9;--muted:#8b949e}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text)}
+.nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0.9rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.nav-logo{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:#fff}
+.nav-logo span{color:var(--y)}
+.hero{background:linear-gradient(135deg,var(--bg),#0d2b14 55%,#1a4a28);padding:4rem 2rem;text-align:center}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,5vw,3rem);font-weight:800;color:#fff;margin-bottom:0.6rem}
+.hero h1 span{color:var(--y)}
+.hero p{color:var(--muted);max-width:550px;margin:0 auto;line-height:1.7;font-size:0.9rem}
+.main{max-width:900px;margin:0 auto;padding:2.5rem}
+
+/* OPTIONS CARDS */
+.options-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:3rem}
+.opt-card{background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;position:relative;transition:all 0.2s}
+.opt-card:hover{transform:translateY(-2px)}
+.opt-card.recommended{border-color:var(--green)}
+.opt-badge{position:absolute;top:0.8rem;right:0.8rem;font-size:0.62rem;font-weight:800;padding:0.15rem 0.55rem;border-radius:4px}
+.ob-green{background:rgba(63,185,80,0.15);color:var(--green)}
+.ob-yellow{background:rgba(210,153,34,0.15);color:var(--y)}
+.ob-blue{background:rgba(88,166,255,0.15);color:var(--blue)}
+.oc-top{padding:1.3rem;border-bottom:1px solid var(--border)}
+.oc-icon{font-size:2rem;margin-bottom:0.6rem;display:block}
+.oc-name{font-size:0.9rem;font-weight:800;color:#fff;margin-bottom:0.2rem}
+.oc-desc{font-size:0.75rem;color:var(--muted);line-height:1.5}
+.oc-price{font-family:'DM Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--green);margin-top:0.6rem}
+.oc-body{padding:1.1rem 1.3rem}
+.oc-pros{display:flex;flex-direction:column;gap:0.4rem}
+.pro-item{font-size:0.75rem;color:var(--text);display:flex;gap:0.4rem}
+.pro-icon{color:var(--green);flex-shrink:0}
+.con-icon{color:var(--red);flex-shrink:0}
+
+/* STEPS */
+.step-section{margin-bottom:3rem}
+.ss-title{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:0.3rem}
+.ss-sub{color:var(--muted);font-size:0.82rem;margin-bottom:1.5rem}
+.step-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:0.8rem}
+.sc-head{display:flex;align-items:center;gap:0.8rem;padding:1rem 1.2rem;border-bottom:1px solid var(--border);cursor:pointer;background:rgba(255,255,255,0.01)}
+.sc-head:hover{background:rgba(255,255,255,0.02)}
+.sc-num{width:28px;height:28px;border-radius:50%;font-size:0.75rem;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sc-title{font-size:0.88rem;font-weight:700;color:#fff;flex:1}
+.sc-time{font-size:0.7rem;color:var(--muted)}
+.sc-body{padding:1.2rem;display:none}
+.step-card.open .sc-body{display:block}
+.step-card.open .sc-head{background:rgba(63,185,80,0.04)}
+p.note{font-size:0.83rem;color:var(--text);line-height:1.7;margin-bottom:0.8rem}
+p.note strong{color:#fff}
+p.note a{color:var(--blue);text-decoration:none}
+.url-preview{background:rgba(63,185,80,0.06);border:1px solid rgba(63,185,80,0.2);border-radius:10px;padding:0.9rem 1.2rem;margin:0.8rem 0;display:flex;align-items:center;justify-content:space-between}
+.up-url{font-family:'DM Mono',monospace;font-size:0.88rem;color:var(--green);font-weight:700}
+.up-copy{background:rgba(63,185,80,0.1);border:1px solid rgba(63,185,80,0.2);border-radius:7px;padding:0.25rem 0.7rem;font-size:0.72rem;font-weight:700;color:var(--green);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s}
+.up-copy:hover{background:rgba(63,185,80,0.2)}
+.alert{border-radius:8px;padding:0.85rem 1.1rem;margin:0.8rem 0;font-size:0.82rem;line-height:1.6;display:flex;gap:0.7rem}
+.al-green{background:rgba(63,185,80,0.08);border:1px solid rgba(63,185,80,0.2);color:var(--green)}
+.al-blue{background:rgba(88,166,255,0.08);border:1px solid rgba(88,166,255,0.2);color:var(--blue)}
+.al-warn{background:rgba(210,153,34,0.08);border:1px solid rgba(210,153,34,0.2);color:var(--y)}
+.code-block{background:var(--bg);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:0.8rem 0}
+.cb-header{background:rgba(255,255,255,0.03);padding:0.5rem 1rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.cb-lang{font-size:0.65rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;font-family:'DM Mono',monospace}
+.copy-btn{background:none;border:none;color:var(--muted);font-size:0.72rem;font-weight:600;cursor:pointer;padding:0.18rem 0.5rem;border-radius:4px;font-family:'DM Sans',sans-serif;transition:all 0.15s}
+.copy-btn:hover{background:rgba(255,255,255,0.06);color:#fff}
+pre{padding:1rem;font-family:'DM Mono',monospace;font-size:0.79rem;line-height:1.85;overflow-x:auto;color:var(--text)}
+.c-comment{color:#6e7681}.c-val{color:var(--blue)}.c-str{color:#a5d6ff}.c-cmd{color:var(--green)}
+
+/* COMPARE TABLE */
+.compare-table{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:2rem}
+.ct-header{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:rgba(255,255,255,0.03);border-bottom:1px solid var(--border)}
+.ct-header div,.ct-row div{padding:0.75rem 1rem;font-size:0.78rem;border-right:1px solid var(--border)}
+.ct-header div:last-child,.ct-row div:last-child{border-right:none}
+.ct-header div{font-weight:800;color:var(--muted);text-transform:uppercase;font-size:0.65rem;letter-spacing:0.06em}
+.ct-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;border-bottom:1px solid var(--border);transition:background 0.15s}
+.ct-row:last-child{border-bottom:none}
+.ct-row:hover{background:rgba(255,255,255,0.01)}
+.ct-row.recommended{background:rgba(63,185,80,0.03);border-left:3px solid var(--green)}
+.ct-row div:first-child{font-weight:700;color:#fff}
+
+/* FINAL CTA */
+.final-cta{background:linear-gradient(135deg,rgba(63,185,80,0.08),rgba(63,185,80,0.03));border:1px solid rgba(63,185,80,0.2);border-radius:20px;padding:2.5rem;text-align:center;margin-top:2rem}
+.fc-title{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:#fff;margin-bottom:0.4rem}
+.fc-sub{color:var(--muted);font-size:0.85rem;margin-bottom:1.5rem}
+.fc-btn{display:inline-flex;align-items:center;gap:0.5rem;background:linear-gradient(135deg,var(--gl),var(--green));color:#fff;padding:0.9rem 2.5rem;border-radius:12px;font-size:0.9rem;font-weight:800;text-decoration:none;transition:all 0.2s;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
+.fc-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(63,185,80,0.25)}
+.fc-contact{margin-top:1.2rem;font-size:0.78rem;color:var(--muted)}
+.fc-contact a{color:var(--blue);text-decoration:none;font-weight:700}
+
+@media(max-width:768px){.options-grid{grid-template-columns:1fr}.ct-header,.ct-row{grid-template-columns:1.5fr 1fr 1fr}.main{padding:1.5rem 1rem}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-logo">Nutri<span>Cam</span> <span style="color:var(--muted);font-size:0.8rem;font-family:'DM Sans',sans-serif;font-weight:400">· Domaine & Hébergement</span></div>
+</nav>
+
+<div class="hero">
+  <h1>Acheter votre domaine<br/><span>nutricam.cm</span></h1>
+  <p>Guide complet pour passer de nutricam-ashen.vercel.app à votre propre domaine professionnel. Comparatif des meilleures options pour le Cameroun.</p>
+</div>
+
+<div class="main">
+
+  <!-- OPTIONS -->
+  <div class="ss-title" style="margin-bottom:0.3rem">📋 Choisir votre domaine</div>
+  <div class="ss-sub" style="margin-bottom:1.5rem">3 options selon votre budget et vos objectifs</div>
+
+  <div class="options-grid">
+    <div class="opt-card recommended">
+      <div class="opt-badge ob-green">⭐ Recommandé</div>
+      <div class="oc-top">
+        <span class="oc-icon">🇨🇲</span>
+        <div class="oc-name">nutricam.cm</div>
+        <div class="oc-desc">Extension officielle du Cameroun. Montre votre ancrage local. Idéal pour NutriCam.</div>
+        <div class="oc-price">~20 000 FCFA/an</div>
+      </div>
+      <div class="oc-body">
+        <div class="oc-pros">
+          <div class="pro-item"><span class="pro-icon">✓</span>Extension camerounaise officielle</div>
+          <div class="pro-item"><span class="pro-icon">✓</span>Crédibilité locale maximale</div>
+          <div class="pro-item"><span class="pro-icon">✓</span>SEO local meilleur</div>
+          <div class="pro-item"><span class="pro-icon">✓</span>Disponible probablement</div>
+          <div class="pro-item"><span class="con-icon">✗</span>Renouvellement annuel</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="opt-card">
+      <div class="opt-badge ob-blue">Alternatif</div>
+      <div class="oc-top">
+        <span class="oc-icon">🌍</span>
+        <div class="oc-name">nutricam.com</div>
+        <div class="oc-desc">Extension internationale. Reconnue partout dans le monde, idéale pour la diaspora.</div>
+        <div class="oc-price">~12$/an (~7 000 FCFA)</div>
+      </div>
+      <div class="oc-body">
+        <div class="oc-pros">
+          <div class="pro-item"><span class="pro-icon">✓</span>Reconnue mondialement</div>
+          <div class="pro-item"><span class="pro-icon">✓</span>Moins chère</div>
+          <div class="pro-item"><span class="pro-icon">✓</span>Parfaite pour diaspora</div>
+          <div class="pro-item"><span class="con-icon">✗</span>Peut-être déjà prise</div>
+          <div class="pro-item"><span class="con-icon">✗</span>Moins locale</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="opt-card">
+      <div class="opt-badge ob-yellow">Budget</div>
+      <div class="oc-top">
+        <span class="oc-icon">🔗</span>
+        <div class="oc-name">nutricam.africa</div>
+        <div class="oc-desc">Nouvelle extension africaine. Montre votre positionnement panafricain.</div>
+        <div class="oc-price">~15$/an (~9 000 FCFA)</div>
+      </div>
+      <div class="oc-body">
+        <div class="oc-pros">
+          <div class="pro-item"><span class="pro-icon">✓</span>Positionnement panafricain</div>
+          <div class="pro-item"><span class="pro-icon">✓</span>Toujours disponible</div>
+          <div class="pro-item"><span class="pro-icon">✓</span>Mémorable</div>
+          <div class="pro-item"><span class="con-icon">✗</span>Moins connue du public</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP BY STEP -->
+  <div class="step-section">
+    <div class="ss-title">🛒 Acheter nutricam.cm — Étape par étape</div>
+    <div class="ss-sub">Registrar officiel camerounais · 20 000 FCFA/an · Paiement Mobile Money accepté</div>
+
+    <div class="step-card open" onclick="toggleStep(this)">
+      <div class="sc-head">
+        <div class="sc-num" style="background:rgba(63,185,80,0.12);color:var(--green)">1</div>
+        <div class="sc-title">Aller sur le registrar camerounais</div>
+        <div class="sc-time">⏱ 2 min</div>
+      </div>
+      <div class="sc-body">
+        <p class="note">Le registrar officiel pour les domaines .cm est géré par l'<strong>ANTIC</strong> (Agence Nationale des TIC du Cameroun). Deux options :</p>
+        <div class="alert al-green"><div>🌐 <strong>Option 1 (recommandé) :</strong> <a href="https://www.camnet.cm" target="_blank">camnet.cm</a> — opérateur officiel domaines .cm</div></div>
+        <div class="alert al-blue"><div>🌐 <strong>Option 2 :</strong> <a href="https://www.afriregister.cm" target="_blank">afriregister.cm</a> — revendeur agrée, interface plus simple</div></div>
+        <p class="note">Pour <strong>afriregister.cm</strong> (plus simple) : allez sur le site et cherchez "nutricam.cm" dans la barre de recherche.</p>
+      </div>
+    </div>
+
+    <div class="step-card" onclick="toggleStep(this)">
+      <div class="sc-head">
+        <div class="sc-num" style="background:rgba(63,185,80,0.12);color:var(--green)">2</div>
+        <div class="sc-title">Vérifier la disponibilité de nutricam.cm</div>
+        <div class="sc-time">⏱ 1 min</div>
+      </div>
+      <div class="sc-body">
+        <p class="note">Dans la barre de recherche du registrar, tapez :</p>
+        <div class="url-preview"><span class="up-url">nutricam.cm</span><button class="up-copy" onclick="navigator.clipboard?.writeText('nutricam.cm');this.textContent='✅';setTimeout(()=>this.textContent='Copier',2000)">Copier</button></div>
+        <p class="note">Si <strong>nutricam.cm</strong> n'est pas disponible, essayez :</p>
+        <div style="display:flex;flex-direction:column;gap:0.4rem;margin-top:0.5rem">
+          <div class="url-preview" style="padding:0.6rem 1rem"><span class="up-url">app.nutricam.cm</span></div>
+          <div class="url-preview" style="padding:0.6rem 1rem"><span class="up-url">www.nutricam.cm</span></div>
+          <div class="url-preview" style="padding:0.6rem 1rem"><span class="up-url">nutricam-app.cm</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card" onclick="toggleStep(this)">
+      <div class="sc-head">
+        <div class="sc-num" style="background:rgba(63,185,80,0.12);color:var(--green)">3</div>
+        <div class="sc-title">Remplir le formulaire d'achat</div>
+        <div class="sc-time">⏱ 5 min</div>
+      </div>
+      <div class="sc-body">
+        <p class="note">Remplissez avec vos informations NutriCam :</p>
+        <div class="code-block"><div class="cb-header"><span class="cb-lang">Informations à remplir</span></div>
+        <pre><span class="c-comment">Nom du domaine :</span>  <span class="c-str">nutricam.cm</span>
+<span class="c-comment">Durée :</span>           <span class="c-str">1 an (renouvelable)</span>
+<span class="c-comment">Nom :</span>             <span class="c-str">Georges Duplece Pitchou</span>
+<span class="c-comment">Organisation :</span>    <span class="c-str">NutriCam</span>
+<span class="c-comment">Email :</span>           <span class="c-str">pitchouduplece9@gmail.com</span>
+<span class="c-comment">Téléphone :</span>       <span class="c-str">+237683868760</span>
+<span class="c-comment">Adresse :</span>         <span class="c-str">Yaoundé, Cameroun</span></pre></div>
+      </div>
+    </div>
+
+    <div class="step-card" onclick="toggleStep(this)">
+      <div class="sc-head">
+        <div class="sc-num" style="background:rgba(63,185,80,0.12);color:var(--green)">4</div>
+        <div class="sc-title">Payer (~20 000 FCFA)</div>
+        <div class="sc-time">⏱ 5 min</div>
+      </div>
+      <div class="sc-body">
+        <p class="note">La plupart des registrars camerounais acceptent :</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin-bottom:0.8rem">
+          <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:0.8rem;text-align:center;font-size:0.82rem;color:#fff"><span style="font-size:1.3rem;display:block;margin-bottom:0.3rem">📱</span>MTN Mobile Money</div>
+          <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:0.8rem;text-align:center;font-size:0.82rem;color:#fff"><span style="font-size:1.3rem;display:block;margin-bottom:0.3rem">🟠</span>Orange Money</div>
+          <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:0.8rem;text-align:center;font-size:0.82rem;color:#fff"><span style="font-size:1.3rem;display:block;margin-bottom:0.3rem">💳</span>Carte bancaire</div>
+          <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:0.8rem;text-align:center;font-size:0.82rem;color:#fff"><span style="font-size:1.3rem;display:block;margin-bottom:0.3rem">🏦</span>Virement bancaire</div>
+        </div>
+        <div class="alert al-warn"><div>⏱ Après paiement, le domaine est actif en <strong>2 à 48 heures</strong>.</div></div>
+      </div>
+    </div>
+
+    <div class="step-card" onclick="toggleStep(this)">
+      <div class="sc-head">
+        <div class="sc-num" style="background:rgba(63,185,80,0.12);color:var(--green)">5</div>
+        <div class="sc-title">Connecter nutricam.cm à Vercel</div>
+        <div class="sc-time">⏱ 15 min</div>
+      </div>
+      <div class="sc-body">
+        <p class="note">Une fois le domaine acheté, configurez les DNS pour pointer vers Vercel :</p>
+        <div class="code-block"><div class="cb-header"><span class="cb-lang">Enregistrements DNS à ajouter chez votre registrar</span><button class="copy-btn" onclick="copyCode(this)">📋</button></div>
+        <pre><span class="c-comment">Type    Nom    Valeur                      TTL</span>
+<span class="c-val">A</span>       <span class="c-str">@</span>      <span class="c-str">76.76.19.61</span>                 3600
+<span class="c-val">CNAME</span>   <span class="c-str">www</span>    <span class="c-str">cname.vercel-dns.com</span>        3600</pre></div>
+
+        <p class="note">Sur Vercel :</p>
+        <div style="display:flex;flex-direction:column;gap:0.4rem;font-size:0.82rem;color:var(--text)">
+          <div>1. Allez sur <strong style="color:#fff">vercel.com</strong> → votre projet <strong style="color:#fff">nutricam</strong></div>
+          <div>2. Cliquez <strong style="color:#fff">"Settings"</strong> → <strong style="color:#fff">"Domains"</strong></div>
+          <div>3. Tapez <strong style="color:#fff">nutricam.cm</strong> → cliquez <strong style="color:#fff">"Add"</strong></div>
+          <div>4. Vercel vous donne les DNS → entrez-les chez votre registrar</div>
+          <div>5. Attendez 2-48h → votre site est sur <strong style="color:var(--green)">nutricam.cm</strong> ! 🎉</div>
+        </div>
+
+        <div class="alert al-green" style="margin-top:1rem"><div>✅ Vercel active le <strong>HTTPS automatiquement</strong> (cadenas vert) — aucune configuration supplémentaire !</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPARE HÉBERGEMENTS -->
+  <div class="ss-title" style="margin-bottom:0.3rem">☁️ Comparer les hébergements</div>
+  <div class="ss-sub" style="margin-bottom:1.2rem">Si vous voulez passer à un hébergement plus puissant que Vercel gratuit</div>
+
+  <div class="compare-table">
+    <div class="ct-header">
+      <div>Hébergeur</div><div>Prix/mois</div><div>Pour NutriCam</div><div>Verdict</div>
+    </div>
+    <div class="ct-row recommended">
+      <div>⬛ Vercel Hobby (actuel)</div>
+      <div style="color:var(--green);font-weight:700">Gratuit</div>
+      <div style="color:var(--green)">✅ Parfait maintenant</div>
+      <div style="color:var(--green);font-weight:700">Restez-y</div>
+    </div>
+    <div class="ct-row">
+      <div>⬛ Vercel Pro</div>
+      <div style="color:var(--y)">20$/mois</div>
+      <div>✅ +Analytics, +Bandwidth</div>
+      <div>À 500 users</div>
+    </div>
+    <div class="ct-row">
+      <div>🟠 Railway.app</div>
+      <div style="color:var(--green)">5$/mois</div>
+      <div>✅ Backend Node.js</div>
+      <div>Pour backend</div>
+    </div>
+    <div class="ct-row">
+      <div>🌊 DigitalOcean</div>
+      <div style="color:var(--y)">6$/mois</div>
+      <div>✅ Serveur dédié</div>
+      <div>À 2000+ users</div>
+    </div>
+    <div class="ct-row">
+      <div>🟡 AWS Africa</div>
+      <div style="color:var(--red)">50-200$/mois</div>
+      <div>⚠️ Trop cher pour débuter</div>
+      <div>Plus tard</div>
+    </div>
+  </div>
+
+  <div class="alert al-green"><div>💡 <strong>Conseil :</strong> Restez sur Vercel gratuit + achetez uniquement le domaine nutricam.cm. C'est tout ce dont vous avez besoin pour les 1 000 premiers utilisateurs.</div></div>
+
+  <!-- FINAL CTA -->
+  <div class="final-cta">
+    <div class="fc-title">🎯 Votre prochaine action</div>
+    <div class="fc-sub">Achetez nutricam.cm aujourd'hui — 20 000 FCFA/an, paiement MTN Mobile Money accepté</div>
+    <button class="fc-btn" onclick="window.open('https://www.afriregister.cm','_blank')">🛒 Acheter sur afriregister.cm</button>
+    <div class="fc-contact">Besoin d'aide ? <a href="https://wa.me/237683868760">WhatsApp Georges : +237 683 868 760</a></div>
+  </div>
+
+</div>
+
+<script>
+function toggleStep(el){el.classList.toggle('open')}
+function copyCode(btn){
+  const pre=btn.closest('.code-block').querySelector('pre');
+  navigator.clipboard?.writeText(pre.textContent).then(()=>{
+    btn.textContent='✅';setTimeout(()=>btn.textContent='📋',2000);
+  });
+}
+</script>
+</body>
+</html>
