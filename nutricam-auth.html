@@ -4,100 +4,68 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>NutriCam – Connexion / Inscription</title>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<!-- SUPABASE SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
-  --bg:#07100a;--surface:#0c1a10;--card:#111f15;--card2:#16241a;
-  --green:#22c55e;--gl:#16a34a;--y:#fbbf24;--red:#ef4444;--blue:#3b82f6;
+  --bg:#07100a;--surface:#0c1a10;--card:#111f15;
+  --green:#22c55e;--gl:#16a34a;--y:#fbbf24;--red:#ef4444;
   --border:rgba(255,255,255,0.08);--text:#ddeee2;--muted:#4d7259;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
-
-/* BG EFFECT */
-.bg-effect{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.bg-effect{position:fixed;inset:0;pointer-events:none;z-index:0}
 .bg-orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:0.12}
 .bg-orb-1{width:600px;height:600px;background:var(--gl);top:-200px;left:-200px;animation:float1 8s ease-in-out infinite}
 .bg-orb-2{width:400px;height:400px;background:var(--y);bottom:-100px;right:-100px;animation:float2 10s ease-in-out infinite}
 @keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,30px)}}
 @keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,-20px)}}
-
-/* LAYOUT */
+.nav{background:var(--surface);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:10}
+.nav-logo{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:#fff}
+.nav-logo span{color:var(--y)}
+.nav-back{font-size:0.8rem;color:var(--muted);text-decoration:none;font-weight:700}
+.nav-back:hover{color:#fff}
 .auth-layout{flex:1;display:flex;align-items:center;justify-content:center;padding:2rem;position:relative;z-index:1}
-
-/* CARD */
-.auth-card{background:rgba(17,31,21,0.9);border:1px solid var(--border);border-radius:28px;padding:2.5rem;width:100%;max-width:440px;backdrop-filter:blur(20px);animation:slideUp 0.5s ease}
+.auth-card{background:rgba(17,31,21,0.95);border:1px solid var(--border);border-radius:28px;padding:2.5rem;width:100%;max-width:440px;backdrop-filter:blur(20px);animation:slideUp 0.5s ease}
 @keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-
-/* LOGO */
 .auth-logo{text-align:center;margin-bottom:2rem}
 .al-icon{font-size:2.5rem;display:block;margin-bottom:0.5rem}
 .al-name{font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:#fff}
 .al-name span{color:var(--y)}
 .al-tagline{font-size:0.78rem;color:var(--muted);margin-top:0.2rem}
-
-/* TABS */
 .auth-tabs{display:flex;background:rgba(255,255,255,0.04);border-radius:14px;padding:4px;margin-bottom:2rem;border:1px solid var(--border)}
 .at-btn{flex:1;padding:0.65rem;border-radius:10px;border:none;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.2s;color:var(--muted);background:transparent}
 .at-btn.active{background:var(--gl);color:#fff;box-shadow:0 4px 12px rgba(22,163,74,0.3)}
-
-/* VIEWS */
 .auth-view{display:none;animation:fadeIn 0.3s ease}
 .auth-view.show{display:block}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-
-/* FORM */
 .form-group{margin-bottom:1rem}
 .fg-label{display:block;font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-bottom:0.4rem}
 .fg-input{width:100%;background:rgba(255,255,255,0.05);border:1.5px solid var(--border);border-radius:13px;padding:0.85rem 1rem;font-size:0.9rem;font-family:'Plus Jakarta Sans',sans-serif;color:#fff;outline:none;transition:all 0.2s}
 .fg-input:focus{border-color:rgba(34,197,94,0.5);background:rgba(34,197,94,0.04)}
 .fg-input::placeholder{color:var(--muted)}
 .fg-row{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem}
-
-/* SOCIAL */
-.social-btns{display:flex;flex-direction:column;gap:0.6rem;margin-bottom:1.2rem}
-.social-btn{width:100%;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:13px;padding:0.8rem;font-size:0.85rem;font-weight:700;color:#fff;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:0.6rem}
-.social-btn:hover{background:rgba(255,255,255,0.09);border-color:rgba(255,255,255,0.15)}
-
-/* DIVIDER */
-.divider{display:flex;align-items:center;gap:0.8rem;margin-bottom:1.2rem}
-.div-line{flex:1;height:1px;background:var(--border)}
-.div-text{font-size:0.72rem;color:var(--muted);font-weight:700}
-
-/* PLAN SELECTOR */
 .plan-selector{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-bottom:1.2rem}
 .plan-opt{background:rgba(255,255,255,0.04);border:1.5px solid var(--border);border-radius:13px;padding:0.9rem;cursor:pointer;transition:all 0.2s;text-align:center}
-.plan-opt:hover{border-color:rgba(34,197,94,0.3)}
 .plan-opt.selected{border-color:var(--green);background:rgba(34,197,94,0.06)}
 .po-name{font-size:0.82rem;font-weight:800;color:#fff;margin-bottom:0.2rem}
 .po-price{font-size:0.72rem;color:var(--green);font-weight:700}
 .po-badge{font-size:0.6rem;background:rgba(251,191,36,0.15);color:var(--y);padding:0.1rem 0.4rem;border-radius:4px;font-weight:800;margin-top:0.3rem;display:inline-block}
-
-/* SUBMIT BTN */
 .submit-btn{width:100%;background:linear-gradient(135deg,var(--gl),var(--green));border:none;border-radius:14px;padding:1rem;font-size:0.95rem;font-weight:800;color:#fff;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.25s;display:flex;align-items:center;justify-content:center;gap:0.5rem;box-shadow:0 6px 24px rgba(22,163,74,0.25);margin-top:0.5rem}
 .submit-btn:hover{transform:translateY(-2px);box-shadow:0 10px 35px rgba(22,163,74,0.35)}
 .submit-btn:disabled{opacity:0.6;cursor:not-allowed;transform:none}
-
-/* FORGOT */
-.forgot-link{text-align:right;margin-top:-0.5rem;margin-bottom:1rem}
-.fl-a{font-size:0.75rem;color:var(--green);text-decoration:none;font-weight:700;cursor:pointer}
-
-/* ERROR / SUCCESS */
-.msg-box{border-radius:10px;padding:0.8rem 1rem;font-size:0.82rem;margin-bottom:1rem;display:none;animation:fadeIn 0.3s ease}
-.msg-box.show{display:flex;align-items:center;gap:0.5rem}
+.msg-box{border-radius:10px;padding:0.8rem 1rem;font-size:0.82rem;margin-bottom:1rem;display:none;align-items:center;gap:0.5rem}
+.msg-box.show{display:flex}
 .msg-error{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);color:var(--red)}
 .msg-success{background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);color:var(--green)}
-
-/* TERMS */
 .terms-text{font-size:0.72rem;color:var(--muted);text-align:center;margin-top:1rem;line-height:1.5}
-.terms-text a{color:var(--green);text-decoration:none;font-weight:700}
-
-/* DASHBOARD (après connexion) */
+.terms-text a{color:var(--green);text-decoration:none;cursor:pointer}
 .dashboard{display:none;padding:2rem;max-width:700px;margin:0 auto;width:100%;position:relative;z-index:1}
-.db-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem}
+.db-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
 .db-welcome{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:900;color:#fff}
-.db-plan{background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.2);color:var(--y);font-size:0.72rem;font-weight:800;padding:0.25rem 0.8rem;border-radius:100px}
-.db-logout{background:rgba(255,255,255,0.06);border:1px solid var(--border);color:var(--muted);padding:0.45rem 1rem;border-radius:9px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.2s}
+.db-plan{background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.2);color:var(--y);font-size:0.72rem;font-weight:800;padding:0.25rem 0.8rem;border-radius:100px;margin-top:0.3rem;display:inline-block}
+.db-logout{background:rgba(255,255,255,0.06);border:1px solid var(--border);color:var(--muted);padding:0.45rem 1rem;border-radius:9px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif}
 .db-logout:hover{color:#fff}
 .db-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
 .db-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.3rem}
@@ -109,19 +77,10 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .dba-btn:hover{border-color:rgba(34,197,94,0.3);transform:translateY(-2px)}
 .dba-icon{font-size:1.5rem;display:block;margin-bottom:0.4rem}
 .dba-label{font-size:0.75rem;font-weight:700;color:#fff}
-
-/* NAV */
-.top-nav{background:var(--surface);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:10}
-.tn-logo{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:#fff}
-.tn-logo span{color:var(--y)}
-.tn-back{font-size:0.8rem;color:var(--muted);text-decoration:none;font-weight:700;display:flex;align-items:center;gap:0.3rem}
-.tn-back:hover{color:#fff}
-
-/* STRENGTH */
-.pw-strength{height:4px;background:var(--border);border-radius:2px;margin-top:0.4rem;overflow:hidden}
-.pws-fill{height:100%;border-radius:2px;transition:all 0.3s;width:0%}
-
-@media(max-width:480px){.auth-card{padding:1.8rem;border-radius:20px}.fg-row{grid-template-columns:1fr}.db-grid{grid-template-columns:1fr}.db-actions{grid-template-columns:1fr 1fr}}
+.live-badge{background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);color:var(--green);font-size:0.65rem;font-weight:800;padding:0.2rem 0.6rem;border-radius:4px;text-transform:uppercase;letter-spacing:0.06em;display:inline-flex;align-items:center;gap:0.3rem;margin-bottom:1rem}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+@media(max-width:480px){.fg-row{grid-template-columns:1fr}.db-grid{grid-template-columns:1fr}.db-actions{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -131,42 +90,32 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   <div class="bg-orb bg-orb-2"></div>
 </div>
 
-<nav class="top-nav">
-  <div class="tn-logo">Nutri<span>Cam</span></div>
-  <a href="nutricam-hub.html" class="tn-back">← Retour au Hub</a>
+<nav class="nav">
+  <div class="nav-logo">Nutri<span>Cam</span></div>
+  <a href="nutricam-hub.html" class="nav-back">← Retour au Hub</a>
 </nav>
 
-<!-- AUTH LAYOUT -->
+<!-- AUTH -->
 <div class="auth-layout" id="auth-layout">
   <div class="auth-card">
-
     <div class="auth-logo">
       <span class="al-icon">🌿</span>
       <div class="al-name">Nutri<span>Cam</span></div>
       <div class="al-tagline">Mange bien. Vis fort. 🇨🇲</div>
     </div>
 
-    <!-- TABS -->
+    <div class="live-badge"><div class="live-dot"></div>Base de données réelle · Supabase</div>
+
     <div class="auth-tabs">
       <button class="at-btn active" onclick="switchTab('login',this)">🔓 Connexion</button>
       <button class="at-btn" onclick="switchTab('register',this)">✨ Inscription</button>
     </div>
 
-    <!-- MESSAGE BOX -->
     <div class="msg-box msg-error" id="msg-error"><span>⚠️</span><span id="msg-error-text"></span></div>
     <div class="msg-box msg-success" id="msg-success"><span>✅</span><span id="msg-success-text"></span></div>
 
-    <!-- ── LOGIN ── -->
+    <!-- LOGIN -->
     <div class="auth-view show" id="v-login">
-      <div class="social-btns">
-        <button class="social-btn" onclick="socialLogin('google')">
-          <span>🔴</span> Continuer avec Google
-        </button>
-        <button class="social-btn" onclick="socialLogin('facebook')">
-          <span>🔵</span> Continuer avec Facebook
-        </button>
-      </div>
-      <div class="divider"><div class="div-line"></div><div class="div-text">ou par email</div><div class="div-line"></div></div>
       <div class="form-group">
         <label class="fg-label">Email</label>
         <input class="fg-input" type="email" id="login-email" placeholder="votre@email.com"/>
@@ -175,19 +124,12 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
         <label class="fg-label">Mot de passe</label>
         <input class="fg-input" type="password" id="login-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/>
       </div>
-      <div class="forgot-link"><span class="fl-a" onclick="showForgot()">Mot de passe oublié ?</span></div>
       <button class="submit-btn" id="login-btn" onclick="doLogin()">🔓 Se connecter</button>
-      <div class="terms-text">Pas encore de compte ? <a onclick="switchTabDirect('register')">Inscrivez-vous gratuitement →</a></div>
+      <div class="terms-text">Pas de compte ? <a onclick="switchTabDirect('register')">Inscrivez-vous gratuitement →</a></div>
     </div>
 
-    <!-- ── REGISTER ── -->
+    <!-- REGISTER -->
     <div class="auth-view" id="v-register">
-      <div class="social-btns">
-        <button class="social-btn" onclick="socialLogin('google')">
-          <span>🔴</span> S'inscrire avec Google
-        </button>
-      </div>
-      <div class="divider"><div class="div-line"></div><div class="div-text">ou avec email</div><div class="div-line"></div></div>
       <div class="fg-row">
         <div class="form-group">
           <label class="fg-label">Prénom</label>
@@ -203,18 +145,17 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
         <input class="fg-input" type="email" id="reg-email" placeholder="votre@email.com"/>
       </div>
       <div class="form-group">
-        <label class="fg-label">Téléphone (WhatsApp)</label>
+        <label class="fg-label">Téléphone WhatsApp</label>
         <input class="fg-input" type="tel" id="reg-tel" placeholder="+237 6XX XXX XXX"/>
       </div>
       <div class="form-group">
         <label class="fg-label">Mot de passe</label>
-        <input class="fg-input" type="password" id="reg-password" placeholder="Min. 8 caractères" oninput="checkStrength(this.value)"/>
-        <div class="pw-strength"><div class="pws-fill" id="pw-fill"></div></div>
+        <input class="fg-input" type="password" id="reg-password" placeholder="Min. 6 caractères"/>
       </div>
       <div class="form-group">
-        <label class="fg-label">Choisir votre plan</label>
+        <label class="fg-label">Votre plan</label>
         <div class="plan-selector">
-          <div class="plan-opt selected" id="plan-free" onclick="selectPlan('free')">
+          <div class="plan-opt selected" id="plan-gratuit" onclick="selectPlan('gratuit')">
             <div class="po-name">🆓 Gratuit</div>
             <div class="po-price">0 FCFA</div>
           </div>
@@ -226,28 +167,12 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
         </div>
       </div>
       <button class="submit-btn" id="register-btn" onclick="doRegister()">🌿 Créer mon compte</button>
-      <div class="terms-text">En vous inscrivant, vous acceptez nos <a href="nutricam-legal.html">CGU</a> et notre <a href="nutricam-legal.html">politique de confidentialité</a>.</div>
+      <div class="terms-text">En vous inscrivant, vous acceptez nos <a href="nutricam-legal.html">CGU</a></div>
     </div>
-
-    <!-- ── FORGOT ── -->
-    <div class="auth-view" id="v-forgot">
-      <div style="text-align:center;margin-bottom:1.5rem">
-        <span style="font-size:2.5rem">🔑</span>
-        <div style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:#fff;margin-top:0.5rem">Réinitialiser le mot de passe</div>
-        <div style="font-size:0.8rem;color:var(--muted);margin-top:0.3rem">Un lien vous sera envoyé par email</div>
-      </div>
-      <div class="form-group">
-        <label class="fg-label">Votre email</label>
-        <input class="fg-input" type="email" id="forgot-email" placeholder="votre@email.com"/>
-      </div>
-      <button class="submit-btn" onclick="doForgot()">📧 Envoyer le lien</button>
-      <div class="terms-text"><a onclick="switchTabDirect('login')">← Retour à la connexion</a></div>
-    </div>
-
   </div>
 </div>
 
-<!-- DASHBOARD (après connexion) -->
+<!-- DASHBOARD -->
 <div class="dashboard" id="dashboard">
   <div class="db-header">
     <div>
@@ -257,35 +182,37 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
     </div>
     <button class="db-logout" onclick="doLogout()">Déconnexion</button>
   </div>
-
+  <div class="live-badge"><div class="live-dot"></div>Compte réel · Données sauvegardées · Supabase</div>
   <div class="db-grid">
-    <div class="db-card"><span class="dbc-icon">🔥</span><div class="dbc-val">1 842</div><div class="dbc-label">Calories aujourd'hui</div></div>
-    <div class="db-card"><span class="dbc-icon">💧</span><div class="dbc-val">2.1 L</div><div class="dbc-label">Hydratation</div></div>
-    <div class="db-card"><span class="dbc-icon">⚖️</span><div class="dbc-val">72 kg</div><div class="dbc-label">Poids actuel</div></div>
-    <div class="db-card"><span class="dbc-icon">🔥</span><div class="dbc-val">12 jours</div><div class="dbc-label">Streak actuel</div></div>
+    <div class="db-card"><span class="dbc-icon">🔥</span><div class="dbc-val">0</div><div class="dbc-label">Calories aujourd'hui</div></div>
+    <div class="db-card"><span class="dbc-icon">💧</span><div class="dbc-val">0 L</div><div class="dbc-label">Hydratation</div></div>
+    <div class="db-card"><span class="dbc-icon">📅</span><div class="dbc-val" id="db-date">-</div><div class="dbc-label">Membre depuis</div></div>
+    <div class="db-card"><span class="dbc-icon">⭐</span><div class="dbc-val" id="db-plan-val">Gratuit</div><div class="dbc-label">Votre plan</div></div>
   </div>
-
   <div class="db-actions">
     <a href="nutricam-dashboard.html" class="dba-btn"><span class="dba-icon">📊</span><div class="dba-label">Dashboard</div></a>
     <a href="nutricam-recipes.html" class="dba-btn"><span class="dba-icon">🍲</span><div class="dba-label">Recettes</div></a>
     <a href="nutricam-scanner.html" class="dba-btn"><span class="dba-icon">📷</span><div class="dba-label">Scanner</div></a>
     <a href="nutricam-chatbot.html" class="dba-btn"><span class="dba-icon">🤖</span><div class="dba-label">Coach IA</div></a>
     <a href="nutricam-statistics.html" class="dba-btn"><span class="dba-icon">📈</span><div class="dba-label">Stats</div></a>
-    <a href="nutricam-meal-planner.html" class="dba-btn"><span class="dba-icon">📅</span><div class="dba-label">Planning</div></a>
+    <a href="nutricam-world-recipes.html" class="dba-btn"><span class="dba-icon">🌍</span><div class="dba-label">Monde</div></a>
   </div>
 </div>
 
 <script>
-// ── STATE ──
-let currentPlan = 'free';
-let isLoggedIn = false;
+// ── CONNEXION SUPABASE RÉELLE ──
+const SUPABASE_URL = 'https://jtwobuhxleejuroiqgyk.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_KWBqa4TT7vSA7nbNsOmmIA_w_dIrWKH';
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// Vérifier si déjà connecté
-window.onload = () => {
-  const user = localStorage.getItem('nutricam_user');
-  if(user) {
-    const u = JSON.parse(user);
-    showDashboard(u);
+let currentPlan = 'gratuit';
+
+// Vérifier session existante
+window.onload = async () => {
+  const { data: { session } } = await db.auth.getSession();
+  if (session) {
+    await loadUserProfile(session.user);
   }
 };
 
@@ -301,81 +228,20 @@ function switchTab(tab, btn) {
 function switchTabDirect(tab) {
   const btns = document.querySelectorAll('.at-btn');
   btns.forEach(b => b.classList.remove('active'));
-  if(tab === 'login') btns[0].classList.add('active');
-  else btns[1].classList.add('active');
+  tab === 'login' ? btns[0].classList.add('active') : btns[1].classList.add('active');
   document.querySelectorAll('.auth-view').forEach(v => v.classList.remove('show'));
   document.getElementById('v-' + tab).classList.add('show');
   clearMessages();
 }
 
-function showForgot() {
-  document.querySelectorAll('.auth-view').forEach(v => v.classList.remove('show'));
-  document.getElementById('v-forgot').classList.add('show');
-}
-
-// ── PLAN ──
 function selectPlan(plan) {
   currentPlan = plan;
   document.querySelectorAll('.plan-opt').forEach(p => p.classList.remove('selected'));
   document.getElementById('plan-' + plan).classList.add('selected');
 }
 
-// ── PASSWORD STRENGTH ──
-function checkStrength(pw) {
-  const fill = document.getElementById('pw-fill');
-  let strength = 0;
-  if(pw.length >= 8) strength++;
-  if(/[A-Z]/.test(pw)) strength++;
-  if(/[0-9]/.test(pw)) strength++;
-  if(/[^A-Za-z0-9]/.test(pw)) strength++;
-  const colors = ['#ef4444','#f97316','#fbbf24','#22c55e'];
-  const widths = ['25%','50%','75%','100%'];
-  fill.style.width = pw.length ? widths[strength-1]||'10%' : '0%';
-  fill.style.background = pw.length ? colors[strength-1]||'#ef4444' : 'transparent';
-}
-
-// ── LOGIN ──
-function doLogin() {
-  const email = document.getElementById('login-email').value.trim();
-  const password = document.getElementById('login-password').value;
-  const btn = document.getElementById('login-btn');
-
-  if(!email || !password) { showError('Veuillez remplir tous les champs.'); return; }
-  if(!email.includes('@')) { showError('Email invalide.'); return; }
-
-  btn.disabled = true;
-  btn.innerHTML = '⏳ Connexion en cours...';
-
-  // Simuler connexion (en production: appel API Supabase)
-  setTimeout(() => {
-    // Vérifier si compte existe en localStorage
-    const users = JSON.parse(localStorage.getItem('nutricam_users') || '[]');
-    const user = users.find(u => u.email === email);
-
-    if(user) {
-      if(user.password !== password) {
-        showError('Mot de passe incorrect.');
-        btn.disabled = false;
-        btn.innerHTML = '🔓 Se connecter';
-        return;
-      }
-      localStorage.setItem('nutricam_user', JSON.stringify(user));
-      showDashboard(user);
-    } else if(email === 'pitchouduplece9@gmail.com') {
-      // Compte fondateur
-      const u = { prenom: 'Georges', nom: 'Duplece Pitchou', email, plan: 'premium' };
-      localStorage.setItem('nutricam_user', JSON.stringify(u));
-      showDashboard(u);
-    } else {
-      showError('Compte introuvable. Veuillez vous inscrire.');
-      btn.disabled = false;
-      btn.innerHTML = '🔓 Se connecter';
-    }
-  }, 1200);
-}
-
-// ── REGISTER ──
-function doRegister() {
+// ── INSCRIPTION RÉELLE ──
+async function doRegister() {
   const prenom = document.getElementById('reg-prenom').value.trim();
   const nom = document.getElementById('reg-nom').value.trim();
   const email = document.getElementById('reg-email').value.trim();
@@ -383,61 +249,94 @@ function doRegister() {
   const password = document.getElementById('reg-password').value;
   const btn = document.getElementById('register-btn');
 
-  if(!prenom||!nom||!email||!password) { showError('Veuillez remplir tous les champs obligatoires.'); return; }
-  if(!email.includes('@')) { showError('Email invalide.'); return; }
-  if(password.length < 8) { showError('Le mot de passe doit faire au moins 8 caractères.'); return; }
+  if (!prenom || !nom || !email || !password) { showError('Remplissez tous les champs obligatoires.'); return; }
+  if (password.length < 6) { showError('Mot de passe : minimum 6 caractères.'); return; }
 
   btn.disabled = true;
   btn.innerHTML = '⏳ Création du compte...';
 
-  setTimeout(() => {
-    const users = JSON.parse(localStorage.getItem('nutricam_users') || '[]');
-    if(users.find(u => u.email === email)) {
-      showError('Un compte existe déjà avec cet email.');
-      btn.disabled = false;
-      btn.innerHTML = '🌿 Créer mon compte';
-      return;
-    }
-    const newUser = { prenom, nom, email, tel, password, plan: currentPlan, createdAt: new Date().toISOString() };
-    users.push(newUser);
-    localStorage.setItem('nutricam_users', JSON.stringify(users));
-    localStorage.setItem('nutricam_user', JSON.stringify(newUser));
+  try {
+    // 1. Créer le compte Auth Supabase
+    const { data: authData, error: authError } = await db.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { prenom, nom, telephone: tel, plan: currentPlan }
+      }
+    });
 
-    if(currentPlan === 'premium') {
-      showSuccess('Compte créé ! Redirection vers le paiement...');
-      setTimeout(() => { window.location.href = 'nutricam-paiement.html'; }, 1500);
+    if (authError) throw authError;
+
+    // 2. Sauvegarder dans la table utilisateurs
+    const { error: dbError } = await db.from('utilisateurs').insert([{
+      prenom,
+      nom,
+      email,
+      telephone: tel,
+      plan: currentPlan,
+    }]);
+
+    if (dbError) console.warn('DB insert:', dbError.message);
+
+    showSuccess(`✅ Compte créé ! Vérifiez votre email ${email} pour confirmer.`);
+
+    if (currentPlan === 'premium') {
+      setTimeout(() => { window.location.href = 'nutricam-paiement.html'; }, 2000);
     } else {
-      showSuccess('Compte créé avec succès ! Bienvenue sur NutriCam 🌿');
-      setTimeout(() => showDashboard(newUser), 1500);
+      setTimeout(() => loadUserProfile(authData.user), 2000);
     }
-  }, 1500);
+
+  } catch (err) {
+    showError(err.message || 'Erreur lors de la création du compte.');
+    btn.disabled = false;
+    btn.innerHTML = '🌿 Créer mon compte';
+  }
 }
 
-// ── FORGOT ──
-function doForgot() {
-  const email = document.getElementById('forgot-email').value.trim();
-  if(!email) { showError('Entrez votre email.'); return; }
-  showSuccess(`Email de réinitialisation envoyé à ${email} ! Vérifiez votre boîte mail.`);
-  setTimeout(() => switchTabDirect('login'), 3000);
+// ── CONNEXION RÉELLE ──
+async function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  const btn = document.getElementById('login-btn');
+
+  if (!email || !password) { showError('Entrez votre email et mot de passe.'); return; }
+
+  btn.disabled = true;
+  btn.innerHTML = '⏳ Connexion...';
+
+  try {
+    const { data, error } = await db.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    await loadUserProfile(data.user);
+  } catch (err) {
+    showError('Email ou mot de passe incorrect.');
+    btn.disabled = false;
+    btn.innerHTML = '🔓 Se connecter';
+  }
 }
 
-// ── SOCIAL ──
-function socialLogin(provider) {
-  showSuccess(`Connexion ${provider} en cours... (intégration disponible avec Supabase Auth)`);
-}
+// ── CHARGER PROFIL ──
+async function loadUserProfile(user) {
+  if (!user) return;
 
-// ── DASHBOARD ──
-function showDashboard(user) {
+  // Récupérer les infos de la table utilisateurs
+  const { data } = await db.from('utilisateurs').select('*').eq('email', user.email).single();
+
+  const prenom = data?.prenom || user.user_metadata?.prenom || user.email.split('@')[0];
+  const plan = data?.plan || user.user_metadata?.plan || 'gratuit';
+  const createdAt = new Date(user.created_at).toLocaleDateString('fr-FR');
+
   document.getElementById('auth-layout').style.display = 'none';
   document.getElementById('dashboard').style.display = 'block';
-  document.getElementById('db-name').textContent = user.prenom + ' 👋';
-  document.getElementById('db-plan-badge').textContent = user.plan === 'premium' ? '⭐ Plan Premium' : '🆓 Plan Gratuit';
-  if(user.plan === 'premium') document.getElementById('db-plan-badge').style.color = '#fbbf24';
+  document.getElementById('db-name').textContent = prenom + ' 👋';
+  document.getElementById('db-plan-badge').textContent = plan === 'premium' ? '⭐ Plan Premium' : '🆓 Plan Gratuit';
+  document.getElementById('db-plan-val').textContent = plan === 'premium' ? 'Premium' : 'Gratuit';
+  document.getElementById('db-date').textContent = createdAt;
 }
 
-// ── LOGOUT ──
-function doLogout() {
-  localStorage.removeItem('nutricam_user');
+// ── DÉCONNEXION ──
+async function doLogout() {
+  await db.auth.signOut();
   document.getElementById('auth-layout').style.display = 'flex';
   document.getElementById('dashboard').style.display = 'none';
   document.getElementById('login-btn').disabled = false;
@@ -447,15 +346,13 @@ function doLogout() {
 
 // ── MESSAGES ──
 function showError(msg) {
-  const el = document.getElementById('msg-error');
   document.getElementById('msg-error-text').textContent = msg;
-  el.classList.add('show');
+  document.getElementById('msg-error').classList.add('show');
   document.getElementById('msg-success').classList.remove('show');
 }
 function showSuccess(msg) {
-  const el = document.getElementById('msg-success');
   document.getElementById('msg-success-text').textContent = msg;
-  el.classList.add('show');
+  document.getElementById('msg-success').classList.add('show');
   document.getElementById('msg-error').classList.remove('show');
 }
 function clearMessages() {
