@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>NutriCam – Recettes du Monde · Afrikanische & Europäische Küche</title>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,800&family=Epilogue:wght@300;400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<title>NutriCam – Recettes du Monde · World Recipes · Weltküche</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,700&family=Epilogue:wght@300;400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 :root{
   --bg:#06080a;--surface:#0d1117;--card:#131920;--card2:#1a2330;
@@ -16,22 +16,22 @@
 html{scroll-behavior:smooth}
 body{font-family:'Epilogue',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
 
-/* ── NAV ── */
-.nav{background:rgba(6,8,10,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0.9rem 2rem;display:flex;align-items:center;gap:1.2rem;position:sticky;top:0;z-index:100}
-.nav-logo{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:#fff;white-space:nowrap}
+/* NAV */
+.nav{background:rgba(6,8,10,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0.9rem 2rem;display:flex;align-items:center;gap:1rem;position:sticky;top:0;z-index:100}
+.nav-logo{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:#fff;white-space:nowrap;text-decoration:none}
 .nav-logo span{color:var(--gold)}
-.nav-search{flex:1;max-width:400px;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:100px;padding:0.5rem 1rem;color:#fff;font-size:0.85rem;font-family:'Epilogue',sans-serif;outline:none;transition:all 0.2s}
-.nav-search:focus{border-color:rgba(245,166,35,0.4);background:rgba(255,255,255,0.08)}
+.nav-search{flex:1;max-width:380px;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:100px;padding:0.5rem 1rem;color:#fff;font-size:0.85rem;font-family:'Epilogue',sans-serif;outline:none;transition:all 0.2s}
+.nav-search:focus{border-color:rgba(245,166,35,0.4)}
 .nav-search::placeholder{color:var(--muted)}
 .nav-right{display:flex;align-items:center;gap:0.6rem;margin-left:auto}
-
-/* LANGUAGE SWITCHER */
 .lang-switcher{display:flex;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:100px;padding:3px;gap:2px}
 .lang-btn{background:none;border:none;border-radius:100px;padding:0.3rem 0.8rem;font-size:0.72rem;font-weight:800;cursor:pointer;font-family:'Epilogue',sans-serif;transition:all 0.2s;color:var(--muted)}
 .lang-btn.active{background:var(--gold);color:#000}
 .lang-btn:hover:not(.active){color:#fff}
+.hub-btn{background:rgba(255,255,255,0.06);border:1px solid var(--border);color:var(--muted);padding:0.4rem 0.9rem;border-radius:8px;font-size:0.75rem;font-weight:700;text-decoration:none;transition:all 0.2s}
+.hub-btn:hover{color:#fff}
 
-/* ── HERO ── */
+/* HERO */
 .hero{padding:4rem 2rem 3rem;text-align:center;position:relative;overflow:hidden}
 .hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 0%,rgba(245,166,35,0.06),transparent),radial-gradient(ellipse 50% 40% at 80% 100%,rgba(34,197,94,0.04),transparent);pointer-events:none}
 .hero-badge{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.2);color:var(--gold);font-size:0.72rem;font-weight:800;padding:0.3rem 1rem;border-radius:100px;margin-bottom:1.2rem;text-transform:uppercase;letter-spacing:0.1em;animation:fadeDown 0.6s ease}
@@ -39,24 +39,23 @@ body{font-family:'Epilogue',sans-serif;background:var(--bg);color:var(--text);mi
 .hero-title{font-family:'Fraunces',serif;font-size:clamp(2.2rem,5vw,4rem);font-weight:900;color:#fff;line-height:0.95;margin-bottom:0.8rem;animation:fadeUp 0.7s ease}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .hero-title .accent{color:var(--gold);font-style:italic}
-.hero-sub{color:var(--muted);font-size:0.92rem;line-height:1.7;max-width:550px;margin:0 auto 2rem;animation:fadeUp 0.7s 0.1s ease both}
-.hero-stats{display:flex;gap:2.5rem;justify-content:center;flex-wrap:wrap;animation:fadeUp 0.7s 0.2s ease both}
+.hero-sub{color:var(--muted);font-size:0.92rem;line-height:1.7;max-width:550px;margin:0 auto 2rem}
+.hero-stats{display:flex;gap:2.5rem;justify-content:center;flex-wrap:wrap}
 .hs-val{font-family:'Fraunces',serif;font-size:1.8rem;font-weight:900;color:#fff}
 .hs-label{font-size:0.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:0.1rem}
 
-/* ── CONTINENT TABS ── */
+/* CONTINENT TABS */
 .continent-nav{display:flex;gap:0.5rem;padding:1.5rem 2rem;overflow-x:auto;border-bottom:1px solid var(--border);background:var(--surface)}
 .continent-nav::-webkit-scrollbar{height:3px}
-.continent-nav::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 .cn-btn{display:flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:100px;padding:0.5rem 1.2rem;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'Epilogue',sans-serif;transition:all 0.2s;color:var(--muted);white-space:nowrap;flex-shrink:0}
 .cn-btn:hover{color:#fff;border-color:rgba(255,255,255,0.15)}
 .cn-btn.active{color:#000;border-color:transparent}
 
-/* ── MAIN ── */
+/* MAIN */
 .main{max-width:1300px;margin:0 auto;padding:2.5rem 2rem}
 
 /* COUNTRY SECTION */
-.country-section{margin-bottom:3.5rem;animation:fadeUp 0.4s ease}
+.country-section{margin-bottom:3.5rem}
 .cs-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
 .cs-flag{font-size:2rem;flex-shrink:0}
 .cs-country{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;color:#fff}
@@ -82,7 +81,7 @@ body{font-family:'Epilogue',sans-serif;background:var(--bg);color:var(--text);mi
 .rf-add{background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:7px;padding:0.3rem 0.7rem;font-size:0.72rem;font-weight:700;color:var(--text);cursor:pointer;font-family:'Epilogue',sans-serif;transition:all 0.15s}
 .rf-add:hover{background:var(--gold);color:#000;border-color:var(--gold)}
 
-/* RECIPE MODAL */
+/* MODAL */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);z-index:200;align-items:center;justify-content:center;padding:1.5rem}
 .modal-overlay.open{display:flex}
 .modal-box{background:var(--card);border:1px solid var(--border);border-radius:28px;max-width:600px;width:100%;max-height:85vh;overflow-y:auto;animation:scaleIn 0.3s ease}
@@ -99,30 +98,53 @@ body{font-family:'Epilogue',sans-serif;background:var(--bg);color:var(--text);mi
 .mb-body{padding:0 2rem 2rem}
 .mb-section{margin-bottom:1.2rem}
 .mbs-title{font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.09em;color:var(--gold);margin-bottom:0.7rem}
-.mbs-list{display:flex;flex-direction:column;gap:0.4rem}
 .mbl-item{font-size:0.83rem;color:var(--text);padding:0.4rem 0;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;align-items:flex-start;gap:0.5rem;line-height:1.5}
 .mbl-num{width:20px;height:20px;border-radius:50%;background:rgba(245,166,35,0.12);color:var(--gold);font-size:0.65rem;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
 .mb-add-btn{width:100%;background:linear-gradient(135deg,var(--gold),#f59e0b);border:none;border-radius:14px;padding:0.9rem;font-size:0.9rem;font-weight:800;color:#000;cursor:pointer;font-family:'Epilogue',sans-serif;transition:all 0.2s;margin-top:0.5rem}
 .mb-add-btn:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(245,166,35,0.3)}
 
+/* COACH IA WIDGET */
+.coach-widget{position:fixed;bottom:2rem;right:2rem;z-index:150}
+.cw-btn{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--gl),var(--green));border:none;cursor:pointer;font-size:1.5rem;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(22,163,74,0.4);transition:all 0.2s}
+.cw-btn:hover{transform:scale(1.1)}
+.cw-panel{display:none;position:absolute;bottom:70px;right:0;width:320px;background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.4)}
+.cw-panel.open{display:block;animation:slideUp2 0.3s ease}
+@keyframes slideUp2{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.cwp-header{background:linear-gradient(135deg,var(--gl),var(--green));padding:1rem 1.2rem;display:flex;align-items:center;gap:0.7rem}
+.cwph-icon{font-size:1.4rem}
+.cwph-title{font-size:0.9rem;font-weight:800;color:#fff}
+.cwph-sub{font-size:0.7rem;color:rgba(255,255,255,0.7)}
+.cwp-messages{height:200px;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:0.7rem}
+.cwp-messages::-webkit-scrollbar{width:4px}
+.cwp-messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.msg-ai{background:rgba(255,255,255,0.04);border-radius:12px 12px 12px 4px;padding:0.7rem 0.9rem;font-size:0.8rem;color:var(--text);line-height:1.5;max-width:85%;align-self:flex-start}
+.msg-user{background:rgba(22,163,74,0.15);border:1px solid rgba(22,163,74,0.2);border-radius:12px 12px 4px 12px;padding:0.7rem 0.9rem;font-size:0.8rem;color:var(--text);line-height:1.5;max-width:85%;align-self:flex-end}
+.msg-loading{display:flex;gap:4px;padding:0.5rem}
+.msg-dot{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:bounce 1.2s ease infinite}
+.msg-dot:nth-child(2){animation-delay:0.2s}
+.msg-dot:nth-child(3){animation-delay:0.4s}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.cwp-input{display:flex;gap:0.5rem;padding:0.8rem}
+.cwp-input input{flex:1;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:100px;padding:0.5rem 0.9rem;font-size:0.8rem;color:#fff;font-family:'Epilogue',sans-serif;outline:none}
+.cwp-input input::placeholder{color:var(--muted)}
+.cwp-send{background:var(--gl);border:none;border-radius:50%;width:32px;height:32px;color:#fff;font-size:0.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s}
+.cwp-send:hover{background:var(--green)}
+
 /* EMPTY */
 .empty-state{text-align:center;padding:4rem;color:var(--muted)}
-.es-icon{font-size:3rem;margin-bottom:1rem;display:block;opacity:0.4}
 
-/* SEARCH HIGHLIGHT */
-mark{background:rgba(245,166,35,0.2);color:var(--gold);border-radius:2px;padding:0 2px}
-
-@media(max-width:768px){.recipe-grid{grid-template-columns:1fr 1fr}.main{padding:1.5rem 1rem}.hero{padding:2.5rem 1rem 2rem}}
-@media(max-width:480px){.recipe-grid{grid-template-columns:1fr}}
+@media(max-width:768px){.recipe-grid{grid-template-columns:1fr 1fr}.main{padding:1.5rem 1rem}.hero{padding:2.5rem 1rem 2rem}.nav-search{max-width:200px}}
+@media(max-width:480px){.recipe-grid{grid-template-columns:1fr}.cw-panel{width:280px;right:-1rem}}
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav class="nav">
-  <div class="nav-logo">Nutri<span>Cam</span></div>
+  <a href="nutricam-hub.html" class="nav-logo">Nutri<span>Cam</span></a>
   <input class="nav-search" type="text" id="search-input" placeholder="🔍 Rechercher..." oninput="handleSearch(this.value)"/>
   <div class="nav-right">
+    <a href="nutricam-hub.html" class="hub-btn">← Hub</a>
     <div class="lang-switcher">
       <button class="lang-btn active" onclick="setLang('fr',this)">🇫🇷 FR</button>
       <button class="lang-btn" onclick="setLang('en',this)">🇬🇧 EN</button>
@@ -136,12 +158,12 @@ mark{background:rgba(245,166,35,0.2);color:var(--gold);border-radius:2px;padding
   <div class="hero-bg"></div>
   <div class="hero-badge" id="hero-badge">🌍 Cuisines du monde · 15 pays · 120+ recettes</div>
   <h1 class="hero-title" id="hero-title">Recettes <span class="accent">Africaines</span><br/>& Européennes</h1>
-  <p class="hero-sub" id="hero-sub">Découvrez les menus traditionnels de 15 pays avec leurs valeurs nutritionnelles complètes. Filtrez par pays, continent et type de plat.</p>
+  <p class="hero-sub" id="hero-sub">Découvrez les menus traditionnels de 15 pays avec leurs valeurs nutritionnelles complètes.</p>
   <div class="hero-stats">
-    <div><div class="hs-val">120+</div><div class="hs-label" data-i18n="recipes">Recettes</div></div>
-    <div><div class="hs-val">15</div><div class="hs-label" data-i18n="countries">Pays</div></div>
-    <div><div class="hs-val">2</div><div class="hs-label" data-i18n="continents">Continents</div></div>
-    <div><div class="hs-val">3</div><div class="hs-label" data-i18n="languages">Langues</div></div>
+    <div><div class="hs-val">120+</div><div class="hs-label" id="stat-recipes">Recettes</div></div>
+    <div><div class="hs-val">15</div><div class="hs-label" id="stat-countries">Pays</div></div>
+    <div><div class="hs-val">2</div><div class="hs-label" id="stat-continents">Continents</div></div>
+    <div><div class="hs-val">3</div><div class="hs-label" id="stat-languages">Langues</div></div>
   </div>
 </div>
 
@@ -156,352 +178,220 @@ mark{background:rgba(245,166,35,0.2);color:var(--gold);border-radius:2px;padding
   <div class="modal-box" id="modal-box"></div>
 </div>
 
+<!-- COACH IA WIDGET -->
+<div class="coach-widget">
+  <div class="cw-panel" id="coach-panel">
+    <div class="cwp-header">
+      <span class="cwph-icon">🤖</span>
+      <div>
+        <div class="cwph-title">Coach NutriCam IA</div>
+        <div class="cwph-sub" id="coach-sub">Posez vos questions nutrition</div>
+      </div>
+    </div>
+    <div class="cwp-messages" id="coach-messages">
+      <div class="msg-ai" id="coach-welcome">👋 Bonjour ! Je suis votre Coach NutriCam. Posez-moi toutes vos questions sur la nutrition africaine et européenne !</div>
+    </div>
+    <div class="cwp-input">
+      <input type="text" id="coach-input" placeholder="Votre question..." onkeydown="if(event.key==='Enter')sendCoachMsg()"/>
+      <button class="cwp-send" onclick="sendCoachMsg()">↑</button>
+    </div>
+  </div>
+  <button class="cw-btn" onclick="toggleCoach()">🤖</button>
+</div>
+
 <script>
 // ══ TRANSLATIONS ══
 const i18n = {
-  fr: {
-    badge: '🌍 Cuisines du monde · 15 pays · 120+ recettes',
-    title: 'Recettes <span class="accent">Africaines</span><br/>& Européennes',
-    sub: 'Découvrez les menus traditionnels de 15 pays avec leurs valeurs nutritionnelles complètes.',
-    search: '🔍 Rechercher...',
-    all: '🌍 Tous les pays',
-    africa: '🌍 Afrique',
-    europe: '🌍 Europe',
-    recipes: 'Recettes', countries: 'Pays', continents: 'Continents', languages: 'Langues',
-    min: 'min', diff_easy: 'Facile', diff_med: 'Moyen', diff_hard: 'Difficile',
-    ingredients: 'Ingrédients', steps: 'Préparation', add_journal: '+ Ajouter au journal',
-    cal: 'kcal', prot: 'Prot.', carb: 'Gluc.', fat: 'Lip.', fiber: 'Fibres',
-    traditional: 'Traditionnel', vegetarian: 'Végétarien', festive: 'Festif', street: 'Street food',
-    per_portion: 'Pour 1 portion'
-  },
-  en: {
-    badge: '🌍 World Cuisines · 15 Countries · 120+ Recipes',
-    title: '<span class="accent">African</span> &amp; European<br/>Recipes',
-    sub: 'Discover traditional menus from 15 countries with complete nutritional values.',
-    search: '🔍 Search...',
-    all: '🌍 All Countries',
-    africa: '🌍 Africa',
-    europe: '🌍 Europe',
-    recipes: 'Recipes', countries: 'Countries', continents: 'Continents', languages: 'Languages',
-    min: 'min', diff_easy: 'Easy', diff_med: 'Medium', diff_hard: 'Hard',
-    ingredients: 'Ingredients', steps: 'Preparation', add_journal: '+ Add to Journal',
-    cal: 'kcal', prot: 'Prot.', carb: 'Carbs', fat: 'Fat', fiber: 'Fiber',
-    traditional: 'Traditional', vegetarian: 'Vegetarian', festive: 'Festive', street: 'Street food',
-    per_portion: 'Per serving'
-  },
-  de: {
-    badge: '🌍 Weltküchen · 15 Länder · 120+ Rezepte',
-    title: '<span class="accent">Afrikanische</span> &amp;<br/>Europäische Küche',
-    sub: 'Entdecken Sie traditionelle Gerichte aus 15 Ländern mit vollständigen Nährwertangaben.',
-    search: '🔍 Suchen...',
-    all: '🌍 Alle Länder',
-    africa: '🌍 Afrika',
-    europe: '🌍 Europa',
-    recipes: 'Rezepte', countries: 'Länder', continents: 'Kontinente', languages: 'Sprachen',
-    min: 'Min.', diff_easy: 'Einfach', diff_med: 'Mittel', diff_hard: 'Schwer',
-    ingredients: 'Zutaten', steps: 'Zubereitung', add_journal: '+ Zum Tagebuch',
-    cal: 'kcal', prot: 'Eiweiß', carb: 'Kohlenh.', fat: 'Fett', fiber: 'Ballaststoffe',
-    traditional: 'Traditionell', vegetarian: 'Vegetarisch', festive: 'Festlich', street: 'Straßenküche',
-    per_portion: 'Pro Portion'
-  }
+  fr:{badge:'🌍 Cuisines du monde · 15 pays · 120+ recettes',title:'Recettes <span class="accent">Africaines</span><br/>& Européennes',sub:'Découvrez les menus traditionnels de 15 pays avec leurs valeurs nutritionnelles complètes.',search:'🔍 Rechercher...',all:'🌍 Tous les pays',africa:'🌍 Afrique',europe:'🌍 Europe',recipes:'Recettes',countries:'Pays',continents:'Continents',languages:'Langues',min:'min',diff_easy:'Facile',diff_med:'Moyen',diff_hard:'Difficile',ingredients:'Ingrédients',steps:'Préparation',add_journal:'+ Ajouter au journal',cal:'kcal',prot:'Prot.',carb:'Gluc.',fat:'Lip.',fiber:'Fibres',traditional:'Traditionnel',vegetarian:'Végétarien',festive:'Festif',street:'Street food',per_portion:'Pour 1 portion',coach_placeholder:'Votre question...',coach_sub:'Posez vos questions nutrition',coach_welcome:'👋 Bonjour ! Je suis votre Coach NutriCam. Posez-moi toutes vos questions sur la nutrition africaine et européenne !'},
+  en:{badge:'🌍 World Cuisines · 15 Countries · 120+ Recipes',title:'<span class="accent">African</span> &amp; European<br/>Recipes',sub:'Discover traditional menus from 15 countries with complete nutritional values.',search:'🔍 Search...',all:'🌍 All Countries',africa:'🌍 Africa',europe:'🌍 Europe',recipes:'Recipes',countries:'Countries',continents:'Continents',languages:'Languages',min:'min',diff_easy:'Easy',diff_med:'Medium',diff_hard:'Hard',ingredients:'Ingredients',steps:'Preparation',add_journal:'+ Add to Journal',cal:'kcal',prot:'Prot.',carb:'Carbs',fat:'Fat',fiber:'Fiber',traditional:'Traditional',vegetarian:'Vegetarian',festive:'Festive',street:'Street food',per_portion:'Per serving',coach_placeholder:'Your question...',coach_sub:'Ask your nutrition questions',coach_welcome:'👋 Hello! I am your NutriCam Coach. Ask me anything about African and European nutrition!'},
+  de:{badge:'🌍 Weltküchen · 15 Länder · 120+ Rezepte',title:'<span class="accent">Afrikanische</span> &amp;<br/>Europäische Küche',sub:'Entdecken Sie traditionelle Gerichte aus 15 Ländern mit vollständigen Nährwertangaben.',search:'🔍 Suchen...',all:'🌍 Alle Länder',africa:'🌍 Afrika',europe:'🌍 Europa',recipes:'Rezepte',countries:'Länder',continents:'Kontinente',languages:'Sprachen',min:'Min.',diff_easy:'Einfach',diff_med:'Mittel',diff_hard:'Schwer',ingredients:'Zutaten',steps:'Zubereitung',add_journal:'+ Zum Tagebuch',cal:'kcal',prot:'Eiweiß',carb:'Kohlenh.',fat:'Fett',fiber:'Ballaststoffe',traditional:'Traditionell',vegetarian:'Vegetarisch',festive:'Festlich',street:'Straßenküche',per_portion:'Pro Portion',coach_placeholder:'Ihre Frage...',coach_sub:'Stellen Sie Ihre Ernährungsfragen',coach_welcome:'👋 Hallo! Ich bin Ihr NutriCam-Coach. Fragen Sie mich alles über afrikanische und europäische Ernährung!'}
 };
 
-let currentLang = 'fr';
-let currentContinent = 'all';
-let searchQuery = '';
+let currentLang='fr', currentContinent='all', searchQuery='', currentRecipe=null;
 
-// ══ RECIPE DATABASE ══
-const countries = [
+// ══ DATABASE ══
+const countries=[
   // ── AFRIQUE ──
-  {
-    id:'cameroun', continent:'africa', flag:'🇨🇲', name:{fr:'Cameroun',en:'Cameroon',de:'Kamerun'},
-    color:'linear-gradient(135deg,#00a651 30%,#ce1126)', accent:'#00a651',
-    recipes:[
-      {id:'ndole',emoji:'🍲',name:{fr:'Ndolé aux crevettes',en:'Ndolé with Shrimps',de:'Ndolé mit Garnelen'},
-       origin:{fr:'Littoral, Cameroun',en:'Littoral, Cameroon',de:'Littoral, Kamerun'},
-       desc:{fr:'Le plat national camerounais aux feuilles amères, crevettes et arachides.',en:'The Cameroonian national dish with bitter leaves, shrimps and peanuts.',de:'Das kamerunische Nationalgericht mit Bitterblättern, Garnelen und Erdnüssen.'},
-       tag:'traditional',cal:380,prot:28,carb:18,fat:22,fiber:8,time:90,diff:'med',
-       ingredients:{fr:['500g feuilles de ndolé (Vernonia amygdalina)','300g crevettes fraîches','200g bœuf fumé','150g arachides grillées mixées','30ml huile de palme rouge','2 oignons émincés','4 gousses d\'ail','Sel, poivre, piment'],en:['500g ndolé leaves','300g fresh shrimps','200g smoked beef','150g ground peanuts','30ml red palm oil','2 onions','4 garlic cloves','Salt, pepper, chili'],de:['500g Ndolé-Blätter','300g frische Garnelen','200g geräuchertes Rindfleisch','150g gemahlene Erdnüsse','30ml rotes Palmöl','2 Zwiebeln','4 Knoblauchzehen','Salz, Pfeffer, Chili']},
-       steps:{fr:['Faire tremper les feuilles de ndolé 20 min dans l\'eau chaude, presser et rincer','Faire revenir l\'oignon et l\'ail dans l\'huile de palme 3 min','Ajouter le bœuf fumé, faire dorer 5 min','Incorporer les arachides mixées + 500ml d\'eau, cuire 15 min','Ajouter les feuilles de ndolé et les crevettes, mijoter 20 min','Assaisonner et servir chaud avec du plantain bouilli'],en:['Soak ndolé leaves 20 min in hot water, squeeze and rinse','Sauté onion and garlic in palm oil 3 min','Add smoked beef, brown 5 min','Add ground peanuts + 500ml water, cook 15 min','Add ndolé leaves and shrimps, simmer 20 min','Season and serve hot with boiled plantain'],de:['Ndolé-Blätter 20 Min. in heißem Wasser einweichen, auspressen','Zwiebel und Knoblauch im Palmöl 3 Min. andünsten','Geräuchertes Rindfleisch hinzufügen, 5 Min. bräunen','Erdnusspaste + 500ml Wasser dazugeben, 15 Min. kochen','Ndolé-Blätter und Garnelen hinzufügen, 20 Min. köcheln','Würzen und mit gekochtem Kochbanane servieren']}},
-      {id:'pouletdg',emoji:'🐔',name:{fr:'Poulet DG',en:'Poulet DG',de:'Hühnchen DG'},
-       origin:{fr:'Yaoundé, Cameroun',en:'Yaoundé, Cameroon',de:'Yaoundé, Kamerun'},
-       desc:{fr:'Le plat festif camerounais par excellence : poulet doré, plantains mûrs et légumes colorés.',en:'The festive Cameroonian dish: golden chicken, ripe plantains and colourful vegetables.',de:'Das festliche kamerunische Gericht: goldenes Hähnchen, reife Kochbananen und buntes Gemüse.'},
-       tag:'festive',cal:520,prot:42,carb:35,fat:22,fiber:4,time:75,diff:'med',
-       ingredients:{fr:['1 poulet entier (1.2kg) découpé','4 plantains mûrs coupés en rondelles','3 poivrons colorés','2 carottes en julienne','2 oignons','1 tête d\'ail + 50g gingembre','40ml huile végétale','Sel, poivre, curry, thym'],en:['1 whole chicken (1.2kg) cut up','4 ripe plantains sliced','3 colored bell peppers','2 carrots julienned','2 onions','Garlic + ginger','40ml vegetable oil','Salt, pepper, curry, thyme'],de:['1 ganzes Hähnchen (1,2kg) zerteilt','4 reife Kochbananen in Scheiben','3 Paprikaschoten','2 Karotten julieniert','2 Zwiebeln','Knoblauch + Ingwer','40ml Pflanzenöl','Salz, Pfeffer, Curry, Thymian']},
-       steps:{fr:['Mariner le poulet 30 min (ail, gingembre, sel, poivre)','Faire frire les rondelles de plantain dorées, réserver','Faire revenir l\'oignon, ajouter le poulet et dorer 10 min','Ajouter les légumes, mouiller avec 200ml d\'eau','Incorporer les plantains frits, mijoter 20 min','Servir chaud en plat unique festif'],en:['Marinate chicken 30 min','Fry plantain slices golden, set aside','Sauté onion, add chicken and brown 10 min','Add vegetables with 200ml water','Add fried plantains, simmer 20 min','Serve hot as festive one-pot dish'],de:['Hähnchen 30 Min. marinieren','Kochbananen-Scheiben goldbraun frittieren, beiseitestellen','Zwiebel andünsten, Hähnchen hinzufügen und 10 Min. anbraten','Gemüse mit 200ml Wasser dazugeben','Gebratene Kochbananen einrühren, 20 Min. köcheln','Heiß servieren']}},
-      {id:'eru',emoji:'🥬',name:{fr:'Eru & Waterleaf',en:'Eru & Waterleaf',de:'Eru-Eintopf'},
-       origin:{fr:'Sud-Ouest Cameroun',en:'Southwest Cameroon',de:'Südwest-Kamerun'},
-       desc:{fr:'Soupe épaisse aux feuilles d\'eru et waterleaf, condimentée au crayfish.',en:'Thick soup with eru and waterleaf, flavored with crayfish.',de:'Dicker Eintopf aus Eru- und Waterleaf-Blättern mit Garnelenpaste.'},
-       tag:'traditional',cal:310,prot:18,carb:12,fat:20,fiber:10,time:60,diff:'easy',
-       ingredients:{fr:['400g feuilles d\'eru hachées','300g waterleaf (Talinum)','50g crayfish (crevettes séchées)','250g bœuf fumé','35ml huile de palme','1 oignon','Sel, piment'],en:['400g chopped eru leaves','300g waterleaf','50g crayfish','250g smoked beef','35ml palm oil','1 onion','Salt, chili'],de:['400g gehackte Eru-Blätter','300g Waterleaf','50g Krabbentrockenpaste','250g geräuchertes Rindfleisch','35ml Palmöl','1 Zwiebel','Salz, Chili']},
-       steps:{fr:['Faire chauffer l\'huile de palme et faire revenir l\'oignon','Ajouter le bœuf fumé et faire dorer','Incorporer le crayfish et les feuilles d\'eru','Ajouter le waterleaf, cuire 15 min à feu moyen','Assaisonner, servir chaud'],en:['Heat palm oil and sauté onion','Add smoked beef and brown','Add crayfish and eru leaves','Add waterleaf, cook 15 min','Season and serve hot'],de:['Palmöl erhitzen und Zwiebel andünsten','Geräuchertes Rindfleisch hinzufügen','Krabbentrockenpaste und Eru-Blätter einrühren','Waterleaf hinzufügen, 15 Min. kochen','Würzen und heiß servieren']}},
-    ]
-  },
-  {
-    id:'senegal', continent:'africa', flag:'🇸🇳', name:{fr:'Sénégal',en:'Senegal',de:'Senegal'},
-    color:'linear-gradient(135deg,#00853f 30%,#fdef42)', accent:'#00853f',
-    recipes:[
-      {id:'thiebou',emoji:'🍚',name:{fr:'Thiéboudienne',en:'Thiéboudienne',de:'Thiéboudienne'},
-       origin:{fr:'Saint-Louis, Sénégal',en:'Saint-Louis, Senegal',de:'Saint-Louis, Senegal'},
-       desc:{fr:'Le plat national sénégalais : riz à la tomate, poisson frais et légumes mijotés.',en:'The Senegalese national dish: tomato rice, fresh fish and simmered vegetables.',de:'Das senegalesische Nationalgericht: Tomatenreis, frischer Fisch und gedünstetes Gemüse.'},
-       tag:'traditional',cal:450,prot:35,carb:52,fat:12,fiber:5,time:90,diff:'hard',
-       ingredients:{fr:['500g riz brisé','600g thiof ou capitaine','200g tomates mixées','1 chou coupé','2 carottes','1 aubergine','100g concentré de tomates','Oignon, ail, persil','Huile végétale, sel'],en:['500g broken rice','600g fresh fish','200g blended tomatoes','1 cabbage','2 carrots','1 eggplant','100g tomato paste','Onion, garlic, parsley','Vegetable oil, salt'],de:['500g gebrochener Reis','600g frischer Fisch','200g pürierte Tomaten','1 Kohl','2 Karotten','1 Aubergine','100g Tomatenmark','Zwiebel, Knoblauch, Petersilie','Pflanzenöl, Salz']},
-       steps:{fr:['Frire les morceaux de poisson, réserver','Faire la base tomate avec oignon, ail, concentré','Ajouter les légumes, mijoter 20 min','Cuire le riz dans le bouillon de cuisson','Disposer le poisson sur le riz, servir'],en:['Fry fish pieces, set aside','Make tomato base with onion, garlic, paste','Add vegetables, simmer 20 min','Cook rice in the cooking broth','Arrange fish on rice, serve'],de:['Fischstücke anbraten, beiseitestellen','Tomatenbasis mit Zwiebeln kochen','Gemüse hinzufügen, 20 Min. köcheln','Reis in der Brühe garen','Fisch auf dem Reis anrichten']}},
-      {id:'mafe',emoji:'🥜',name:{fr:'Maafé (Sauce arachide)',en:'Maafé (Peanut Stew)',de:'Maafé (Erdnuss-Eintopf)'},
-       origin:{fr:'Afrique de l\'Ouest',en:'West Africa',de:'Westafrika'},
-       desc:{fr:'Ragoût riche à la pâte d\'arachide, bœuf tendre et légumes-racines.',en:'Rich peanut butter stew with tender beef and root vegetables.',de:'Reichhaltiger Erdnusseintopf mit zartem Rindfleisch und Wurzelgemüse.'},
-       tag:'traditional',cal:520,prot:35,carb:28,fat:32,fiber:6,time:70,diff:'med',
-       ingredients:{fr:['500g bœuf en morceaux','200g pâte d\'arachide','2 tomates','2 oignons','2 patates douces','2 carottes','Piment, laurier, sel'],en:['500g beef pieces','200g peanut butter','2 tomatoes','2 onions','2 sweet potatoes','2 carrots','Chili, bay leaf, salt'],de:['500g Rindfleisch','200g Erdnussbutter','2 Tomaten','2 Zwiebeln','2 Süßkartoffeln','2 Karotten','Chili, Lorbeer, Salz']},
-       steps:{fr:['Faire revenir le bœuf avec l\'oignon et les tomates','Délayer la pâte d\'arachide dans l\'eau tiède','Ajouter la sauce arachide au bœuf','Incorporer les légumes, mijoter 40 min','Servir avec du riz blanc'],en:['Brown beef with onion and tomatoes','Dilute peanut butter in warm water','Add peanut sauce to beef','Add vegetables, simmer 40 min','Serve with white rice'],de:['Rindfleisch mit Zwiebeln und Tomaten anbraten','Erdnussbutter in warmem Wasser auflösen','Erdnusssauce zum Fleisch geben','Gemüse hinzufügen, 40 Min. köcheln','Mit weißem Reis servieren']}},
-    ]
-  },
-  {
-    id:'cote-ivoire', continent:'africa', flag:'🇨🇮', name:{fr:'Côte d\'Ivoire',en:'Ivory Coast',de:'Elfenbeinküste'},
-    color:'linear-gradient(135deg,#f77f00 30%,#009a44)', accent:'#f77f00',
-    recipes:[
-      {id:'kedjenou',emoji:'🍗',name:{fr:'Kédjénou de poulet',en:'Chicken Kédjénou',de:'Hähnchen-Kédjénou'},
-       origin:{fr:'Côte d\'Ivoire',en:'Ivory Coast',de:'Elfenbeinküste'},
-       desc:{fr:'Poulet mijoté à l\'étouffée dans une poterie avec tomates et épices. Zéro huile ajoutée !',en:'Chicken slow-cooked in a clay pot with tomatoes and spices. Zero added oil!',de:'Hähnchen in einem Tontopf geschmort mit Tomaten und Gewürzen. Kein Öl!'},
-       tag:'traditional',cal:290,prot:38,carb:8,fat:12,fiber:3,time:90,diff:'easy',
-       ingredients:{fr:['1 poulet découpé','4 tomates mûres','2 oignons','1 poivron','Gingembre, ail','Laurier, thym','Sel, piment'],en:['1 chicken cut up','4 ripe tomatoes','2 onions','1 bell pepper','Ginger, garlic','Bay leaf, thyme','Salt, chili'],de:['1 Hähnchen zerteilt','4 reife Tomaten','2 Zwiebeln','1 Paprika','Ingwer, Knoblauch','Lorbeer, Thymian','Salz, Chili']},
-       steps:{fr:['Placer tous les ingrédients dans une cocotte','Fermer hermétiquement, pas d\'eau ni d\'huile','Cuire 1h à feu doux en secouant régulièrement','Servir avec de l\'attiéké ou du riz'],en:['Place all ingredients in a pot','Seal tightly, no water or oil','Cook 1h on low heat, shaking occasionally','Serve with attiéké or rice'],de:['Alle Zutaten in einen Topf geben','Fest verschließen, kein Wasser, kein Öl','1 Stunde bei schwacher Hitze garen, gelegentlich schütteln','Mit Attiéké oder Reis servieren']}},
-      {id:'foutou',emoji:'🫙',name:{fr:'Foutou banane + Sauce graine',en:'Foutou & Palm Nut Sauce',de:'Foutou mit Palmfrucht-Sauce'},
-       origin:{fr:'Forêt ivoirienne',en:'Ivory Coast Forest',de:'Elfenbeinküste'},
-       desc:{fr:'Pâte de banane plantain écrasée accompagnée de la sauce aux graines de palme.',en:'Mashed plantain dough with rich palm nut sauce.',de:'Gestampfte Kochbananenpaste mit Palmfrucht-Sauce.'},
-       tag:'traditional',cal:480,prot:22,carb:58,fat:22,fiber:7,time:60,diff:'med',
-       ingredients:{fr:['6 bananes plantain bouillies','500g graines de palme cuites','300g poisson fumé','Oignon, ail, piment','Sel'],en:['6 boiled plantains','500g cooked palm nuts','300g smoked fish','Onion, garlic, chili','Salt'],de:['6 gekochte Kochbananen','500g gekochte Palmfrüchte','300g geräucherter Fisch','Zwiebel, Knoblauch, Chili','Salz']},
-       steps:{fr:['Piler les bananes bouillies jusqu\'à obtenir une pâte lisse','Mixer les graines de palme avec l\'eau, filtrer','Cuire la sauce avec le poisson fumé et les épices','Former des boules de foutou, servir avec la sauce'],en:['Pound boiled plantains into smooth paste','Blend palm nuts with water, strain','Cook sauce with smoked fish and spices','Shape foutou balls, serve with sauce'],de:['Gekochte Kochbananen zu glatter Paste stampfen','Palmfrüchte mit Wasser mixen, sieben','Sauce mit geräuchertem Fisch kochen','Foutou-Bällchen formen, mit Sauce servieren']}},
-    ]
-  },
-  {
-    id:'nigeria', continent:'africa', flag:'🇳🇬', name:{fr:'Nigeria',en:'Nigeria',de:'Nigeria'},
-    color:'linear-gradient(135deg,#008751 30%,#fff)', accent:'#008751',
-    recipes:[
-      {id:'jollof',emoji:'🍛',name:{fr:'Jollof Rice',en:'Jollof Rice',de:'Jollof Reis'},
-       origin:{fr:'Nigéria / Afrique de l\'Ouest',en:'Nigeria / West Africa',de:'Nigeria / Westafrika'},
-       desc:{fr:'Le riz festif par excellence en Afrique de l\'Ouest : cuit dans une sauce tomate épicée.',en:'The quintessential West African party rice: cooked in spiced tomato sauce.',de:'Der festliche westafrikanische Reis: in gewürzter Tomatensauce gekocht.'},
-       tag:'festive',cal:410,prot:15,carb:68,fat:12,fiber:4,time:55,diff:'med',
-       ingredients:{fr:['500g riz long grain','400g tomates mixées','2 poivrons','2 oignons','100ml huile','Bouillon de poulet','Curry, thym, laurier','Sel, piment'],en:['500g long grain rice','400g blended tomatoes','2 bell peppers','2 onions','100ml oil','Chicken broth','Curry, thyme, bay leaf','Salt, chili'],de:['500g Langkornreis','400g pürierte Tomaten','2 Paprikaschoten','2 Zwiebeln','100ml Öl','Hühnerbrühe','Curry, Thymian, Lorbeer','Salz, Chili']},
-       steps:{fr:['Mixer tomates, poivrons, oignons ensemble','Faire frire la purée dans l\'huile chaude 15 min','Ajouter bouillon et épices, faire bouillir','Incorporer le riz, couvrir et cuire 25 min','Ne pas ouvrir pendant la cuisson pour le smoky taste'],en:['Blend tomatoes, peppers, onions','Fry blended mix in hot oil 15 min','Add broth and spices, bring to boil','Add rice, cover and cook 25 min','Do not open during cooking for smoky taste'],de:['Tomaten, Paprika, Zwiebeln mixen','In heißem Öl 15 Min. anbraten','Brühe und Gewürze hinzufügen, aufkochen','Reis einrühren, 25 Min. zugedeckt garen','Nicht öffnen für den Rauchgeschmack']}},
-      {id:'egusi',emoji:'🥣',name:{fr:'Soupe Egusi',en:'Egusi Soup',de:'Egusi-Suppe'},
-       origin:{fr:'Nigéria',en:'Nigeria',de:'Nigeria'},
-       desc:{fr:'Soupe onctueuse aux graines de melon mixées, épinards africains et viandes.',en:'Rich soup with ground melon seeds, African spinach and assorted meats.',de:'Reichhaltige Suppe aus gemahlenen Melonensamen, afrikanischem Spinat und Fleisch.'},
-       tag:'traditional',cal:490,prot:32,carb:20,fat:32,fiber:8,time:65,diff:'med',
-       ingredients:{fr:['200g graines egusi mixées','300g feuilles d\'épinards africains','250g bœuf + poulet','50g crayfish','35ml huile de palme','2 cubes de bouillon','Piment, sel'],en:['200g ground egusi seeds','300g African spinach','250g beef + chicken','50g crayfish','35ml palm oil','2 stock cubes','Chili, salt'],de:['200g gemahlene Egusi-Samen','300g afrikanischer Spinat','250g Rind- + Hühnerfleisch','50g Krabbentrockenpaste','35ml Palmöl','2 Bouillonwürfel','Chili, Salz']},
-       steps:{fr:['Cuire les viandes jusqu\'à tendreté','Frire les egusi mixés dans l\'huile de palme','Ajouter les viandes et le bouillon','Incorporer les feuilles d\'épinards, cuire 10 min','Servir avec eba ou fufu'],en:['Cook meats until tender','Fry ground egusi in palm oil','Add meats and broth','Add spinach leaves, cook 10 min','Serve with eba or fufu'],de:['Fleisch gar kochen','Gemahlene Egusi in Palmöl anbraten','Fleisch und Brühe hinzufügen','Spinatblätter einrühren, 10 Min. köcheln','Mit Eba oder Fufu servieren']}},
-    ]
-  },
-  {
-    id:'rdc', continent:'africa', flag:'🇨🇩', name:{fr:'Congo (RDC)',en:'DR Congo',de:'Kongo (DRK)'},
-    color:'linear-gradient(135deg,#007fff 30%,#f7d900)', accent:'#007fff',
-    recipes:[
-      {id:'saka-saka',emoji:'🥬',name:{fr:'Saka-Saka (Pondu)',en:'Saka-Saka (Pondu)',de:'Saka-Saka'},
-       origin:{fr:'Congo, Centrafrique',en:'Congo, Central Africa',de:'Kongo, Zentralafrika'},
-       desc:{fr:'Ragoût de feuilles de manioc pilées avec poisson fumé ou viande de chèvre.',en:'Stew of pounded cassava leaves with smoked fish or goat meat.',de:'Eintopf aus gestampften Maniokblättern mit geräuchertem Fisch oder Ziegenfleisch.'},
-       tag:'traditional',cal:320,prot:24,carb:18,fat:16,fiber:9,time:80,diff:'med',
-       ingredients:{fr:['400g feuilles de manioc pilées','200g poisson fumé','35ml huile de palme','1 oignon','Ail, sel, piment'],en:['400g pounded cassava leaves','200g smoked fish','35ml palm oil','1 onion','Garlic, salt, chili'],de:['400g gestampfte Maniokblätter','200g geräucherter Fisch','35ml Palmöl','1 Zwiebel','Knoblauch, Salz, Chili']},
-       steps:{fr:['Faire revenir l\'oignon dans l\'huile de palme','Ajouter les feuilles de manioc pilées','Incorporer le poisson fumé émietté','Mijoter 45 min en ajoutant de l\'eau si nécessaire','Servir avec du fufu de manioc'],en:['Sauté onion in palm oil','Add pounded cassava leaves','Add crumbled smoked fish','Simmer 45 min adding water if needed','Serve with cassava fufu'],de:['Zwiebel in Palmöl andünsten','Gestampfte Maniokblätter hinzufügen','Zerkrümelten geräucherten Fisch dazugeben','45 Min. köcheln','Mit Maniok-Fufu servieren']}},
-    ]
-  },
+  {id:'cameroun',continent:'africa',flag:'🇨🇲',name:{fr:'Cameroun',en:'Cameroon',de:'Kamerun'},accent:'#00a651',
+   recipes:[
+    {id:'ndole',emoji:'🍲',name:{fr:'Ndolé aux crevettes',en:'Ndolé with Shrimps',de:'Ndolé mit Garnelen'},origin:{fr:'Littoral, Cameroun',en:'Littoral, Cameroon',de:'Littoral, Kamerun'},desc:{fr:'Le plat national camerounais aux feuilles amères, crevettes et arachides.',en:'The Cameroonian national dish with bitter leaves, shrimps and peanuts.',de:'Das kamerunische Nationalgericht mit Bitterblättern, Garnelen und Erdnüssen.'},tag:'traditional',cal:380,prot:28,carb:18,fat:22,fiber:8,time:90,diff:'med',bg:'linear-gradient(135deg,#052a14,#0a3d1e)',
+     ingredients:{fr:['500g feuilles de ndolé','300g crevettes fraîches','200g bœuf fumé','150g arachides mixées','30ml huile de palme rouge','2 oignons','4 gousses d\'ail'],en:['500g ndolé leaves','300g fresh shrimps','200g smoked beef','150g ground peanuts','30ml red palm oil','2 onions','4 garlic cloves'],de:['500g Ndolé-Blätter','300g Garnelen','200g Räucherfleisch','150g Erdnüsse','30ml Palmöl','2 Zwiebeln','4 Knoblauchzehen']},
+     steps:{fr:['Tremper les feuilles 20 min, presser et rincer','Faire revenir oignon et ail dans l\'huile de palme','Ajouter le bœuf fumé, dorer 5 min','Incorporer arachides + 500ml eau, cuire 15 min','Ajouter les feuilles et crevettes, mijoter 20 min','Servir avec du plantain bouilli'],en:['Soak leaves 20 min, squeeze and rinse','Sauté onion and garlic in palm oil','Add smoked beef, brown 5 min','Add peanuts + 500ml water, cook 15 min','Add leaves and shrimps, simmer 20 min','Serve with boiled plantain'],de:['Blätter 20 Min. einweichen, auspressen','Zwiebel und Knoblauch im Palmöl andünsten','Räucherfleisch hinzufügen, 5 Min. bräunen','Erdnüsse + 500ml Wasser, 15 Min. kochen','Blätter und Garnelen, 20 Min. köcheln','Mit Kochbanane servieren']}},
+    {id:'pouletdg',emoji:'🐔',name:{fr:'Poulet DG',en:'Poulet DG',de:'Hühnchen DG'},origin:{fr:'Yaoundé, Cameroun',en:'Yaoundé, Cameroon',de:'Yaoundé, Kamerun'},desc:{fr:'Poulet doré, plantains mûrs et légumes colorés. Le plat festif camerounais par excellence.',en:'Golden chicken, ripe plantains and colourful vegetables. The ultimate festive Cameroonian dish.',de:'Goldenes Hähnchen, reife Kochbananen und buntes Gemüse. Das festliche Gericht schlechthin.'},tag:'festive',cal:520,prot:42,carb:35,fat:22,fiber:4,time:75,diff:'med',bg:'linear-gradient(135deg,#1a0a00,#3d2000)',
+     ingredients:{fr:['1 poulet entier découpé','4 plantains mûrs','3 poivrons colorés','2 carottes','2 oignons','Ail + gingembre','40ml huile'],en:['1 chicken cut up','4 ripe plantains','3 bell peppers','2 carrots','2 onions','Garlic + ginger','40ml oil'],de:['1 Hähnchen','4 Kochbananen','3 Paprika','2 Karotten','2 Zwiebeln','Knoblauch + Ingwer','40ml Öl']},
+     steps:{fr:['Mariner le poulet 30 min','Frire les plantains, réserver','Dorer le poulet avec l\'oignon','Ajouter légumes + 200ml eau','Incorporer les plantains, mijoter 20 min','Servir chaud'],en:['Marinate chicken 30 min','Fry plantains, set aside','Brown chicken with onion','Add vegetables + 200ml water','Add plantains, simmer 20 min','Serve hot'],de:['Hähnchen 30 Min. marinieren','Kochbananen frittieren','Hähnchen mit Zwiebeln anbraten','Gemüse + 200ml Wasser','Kochbananen einrühren, 20 Min.','Heiß servieren']}},
+    {id:'eru',emoji:'🥬',name:{fr:'Eru & Waterleaf',en:'Eru & Waterleaf',de:'Eru-Eintopf'},origin:{fr:'Sud-Ouest Cameroun',en:'Southwest Cameroon',de:'Südwest-Kamerun'},desc:{fr:'Soupe épaisse aux feuilles d\'eru et waterleaf, condimentée au crayfish.',en:'Thick soup with eru and waterleaf, flavored with crayfish.',de:'Dicker Eintopf aus Eru- und Waterleaf-Blättern.'},tag:'traditional',cal:310,prot:18,carb:12,fat:20,fiber:10,time:60,diff:'easy',bg:'linear-gradient(135deg,#0a2d14,#1a4d20)',
+     ingredients:{fr:['400g feuilles d\'eru','300g waterleaf','50g crayfish','250g bœuf fumé','35ml huile de palme'],en:['400g eru leaves','300g waterleaf','50g crayfish','250g smoked beef','35ml palm oil'],de:['400g Eru-Blätter','300g Waterleaf','50g Krabbentrockenpaste','250g Räucherfleisch','35ml Palmöl']},
+     steps:{fr:['Chauffer l\'huile, faire revenir l\'oignon','Ajouter le bœuf fumé','Incorporer crayfish et eru','Ajouter waterleaf, cuire 15 min','Servir chaud'],en:['Heat oil, sauté onion','Add smoked beef','Add crayfish and eru','Add waterleaf, cook 15 min','Serve hot'],de:['Öl erhitzen, Zwiebel andünsten','Räucherfleisch hinzufügen','Krabbentrockenpaste und Eru','Waterleaf, 15 Min. köcheln','Heiß servieren']}},
+   ]},
+  {id:'senegal',continent:'africa',flag:'🇸🇳',name:{fr:'Sénégal',en:'Senegal',de:'Senegal'},accent:'#00853f',
+   recipes:[
+    {id:'thiebou',emoji:'🍚',name:{fr:'Thiéboudienne',en:'Thiéboudienne',de:'Thiéboudienne'},origin:{fr:'Saint-Louis, Sénégal',en:'Saint-Louis, Senegal',de:'Saint-Louis, Senegal'},desc:{fr:'Le plat national sénégalais : riz à la tomate, poisson frais et légumes.',en:'The Senegalese national dish: tomato rice, fresh fish and vegetables.',de:'Das senegalesische Nationalgericht: Tomatenreis mit Fisch.'},tag:'traditional',cal:450,prot:35,carb:52,fat:12,fiber:5,time:90,diff:'hard',bg:'linear-gradient(135deg,#002a0a,#004d15)',
+     ingredients:{fr:['500g riz brisé','600g poisson frais','200g tomates','1 chou','2 carottes','1 aubergine','Oignon, ail, huile'],en:['500g broken rice','600g fresh fish','200g tomatoes','1 cabbage','2 carrots','1 eggplant','Onion, garlic, oil'],de:['500g Bruchreis','600g frischer Fisch','200g Tomaten','1 Kohl','2 Karotten','1 Aubergine','Zwiebel, Knoblauch']},
+     steps:{fr:['Frire le poisson, réserver','Faire la base tomate','Ajouter les légumes, mijoter 20 min','Cuire le riz dans le bouillon','Dresser avec le poisson'],en:['Fry fish, set aside','Make tomato base','Add vegetables, simmer 20 min','Cook rice in broth','Plate with fish'],de:['Fisch anbraten','Tomatenbasis kochen','Gemüse 20 Min. köcheln','Reis in Brühe garen','Mit Fisch anrichten']}},
+    {id:'mafe',emoji:'🥜',name:{fr:'Maafé',en:'Maafé Peanut Stew',de:'Maafé Erdnuss-Eintopf'},origin:{fr:'Afrique de l\'Ouest',en:'West Africa',de:'Westafrika'},desc:{fr:'Ragoût riche à la pâte d\'arachide, bœuf tendre et légumes-racines.',en:'Rich peanut stew with tender beef and root vegetables.',de:'Reichhaltiger Erdnusseintopf mit zartem Rindfleisch.'},tag:'traditional',cal:520,prot:35,carb:28,fat:32,fiber:6,time:70,diff:'med',bg:'linear-gradient(135deg,#1a0d00,#2d1800)',
+     ingredients:{fr:['500g bœuf','200g pâte d\'arachide','2 tomates','2 oignons','2 patates douces','2 carottes'],en:['500g beef','200g peanut butter','2 tomatoes','2 onions','2 sweet potatoes','2 carrots'],de:['500g Rindfleisch','200g Erdnussbutter','2 Tomaten','2 Zwiebeln','2 Süßkartoffeln','2 Karotten']},
+     steps:{fr:['Faire revenir le bœuf','Délayer la pâte d\'arachide','Ajouter sauce + bœuf','Incorporer les légumes, mijoter 40 min','Servir avec du riz'],en:['Brown the beef','Dilute peanut butter','Add sauce + beef','Add vegetables, simmer 40 min','Serve with rice'],de:['Rindfleisch anbraten','Erdnussbutter auflösen','Sauce + Fleisch','Gemüse, 40 Min. köcheln','Mit Reis servieren']}},
+   ]},
+  {id:'nigeria',continent:'africa',flag:'🇳🇬',name:{fr:'Nigeria',en:'Nigeria',de:'Nigeria'},accent:'#008751',
+   recipes:[
+    {id:'jollof',emoji:'🍛',name:{fr:'Jollof Rice',en:'Jollof Rice',de:'Jollof Reis'},origin:{fr:'Nigéria',en:'Nigeria',de:'Nigeria'},desc:{fr:'Le riz festif par excellence en Afrique de l\'Ouest, cuit dans une sauce tomate épicée.',en:'The quintessential West African party rice cooked in spiced tomato sauce.',de:'Der festliche westafrikanische Reis in gewürzter Tomatensauce.'},tag:'festive',cal:410,prot:15,carb:68,fat:12,fiber:4,time:55,diff:'med',bg:'linear-gradient(135deg,#1a0a00,#2d1500)',
+     ingredients:{fr:['500g riz long','400g tomates mixées','2 poivrons','2 oignons','100ml huile','Bouillon, curry, thym'],en:['500g long rice','400g blended tomatoes','2 bell peppers','2 onions','100ml oil','Broth, curry, thyme'],de:['500g Langkornreis','400g pürierte Tomaten','2 Paprika','2 Zwiebeln','100ml Öl','Brühe, Curry, Thymian']},
+     steps:{fr:['Mixer tomates, poivrons, oignons','Frire la purée 15 min','Ajouter bouillon et épices','Incorporer le riz, cuire 25 min couvert','Ne pas ouvrir pour le smoky taste'],en:['Blend tomatoes, peppers, onions','Fry blended mix 15 min','Add broth and spices','Add rice, cook 25 min covered','Do not open for smoky taste'],de:['Tomaten, Paprika mixen','15 Min. in Öl anbraten','Brühe und Gewürze','Reis einrühren, 25 Min. zugedeckt','Nicht öffnen für Rauchgeschmack']}},
+    {id:'egusi',emoji:'🥣',name:{fr:'Soupe Egusi',en:'Egusi Soup',de:'Egusi-Suppe'},origin:{fr:'Nigéria',en:'Nigeria',de:'Nigeria'},desc:{fr:'Soupe onctueuse aux graines de melon, épinards africains et viandes.',en:'Rich soup with ground melon seeds, African spinach and meats.',de:'Reichhaltige Suppe aus Melonensamen und afrikanischem Spinat.'},tag:'traditional',cal:490,prot:32,carb:20,fat:32,fiber:8,time:65,diff:'med',bg:'linear-gradient(135deg,#0a1a00,#1a2d00)',
+     ingredients:{fr:['200g graines egusi','300g épinards africains','250g bœuf + poulet','50g crayfish','35ml huile de palme'],en:['200g egusi seeds','300g African spinach','250g beef + chicken','50g crayfish','35ml palm oil'],de:['200g Egusi-Samen','300g afrikanischer Spinat','250g Rind + Hähnchen','50g Krabbentrockenpaste','35ml Palmöl']},
+     steps:{fr:['Cuire les viandes','Frire egusi dans l\'huile','Ajouter viandes + bouillon','Incorporer les épinards, cuire 10 min','Servir avec fufu'],en:['Cook meats','Fry egusi in oil','Add meats + broth','Add spinach, cook 10 min','Serve with fufu'],de:['Fleisch kochen','Egusi in Öl anbraten','Fleisch + Brühe','Spinat, 10 Min.','Mit Fufu servieren']}},
+   ]},
+  {id:'cote-ivoire',continent:'africa',flag:'🇨🇮',name:{fr:'Côte d\'Ivoire',en:'Ivory Coast',de:'Elfenbeinküste'},accent:'#f77f00',
+   recipes:[
+    {id:'kedjenou',emoji:'🍗',name:{fr:'Kédjénou de poulet',en:'Chicken Kédjénou',de:'Hähnchen-Kédjénou'},origin:{fr:'Côte d\'Ivoire',en:'Ivory Coast',de:'Elfenbeinküste'},desc:{fr:'Poulet mijoté à l\'étouffée sans eau ni huile. Zéro matière grasse ajoutée !',en:'Chicken slow-cooked without water or oil. Zero added fat!',de:'Hähnchen ohne Wasser und Öl geschmort. Kein Fett!'},tag:'traditional',cal:290,prot:38,carb:8,fat:12,fiber:3,time:90,diff:'easy',bg:'linear-gradient(135deg,#2d1000,#4a2000)',
+     ingredients:{fr:['1 poulet découpé','4 tomates','2 oignons','1 poivron','Gingembre, ail, laurier'],en:['1 chicken cut up','4 tomatoes','2 onions','1 bell pepper','Ginger, garlic, bay leaf'],de:['1 Hähnchen','4 Tomaten','2 Zwiebeln','1 Paprika','Ingwer, Knoblauch, Lorbeer']},
+     steps:{fr:['Placer tout dans une cocotte fermée','Pas d\'eau ni d\'huile','Cuire 1h à feu doux en secouant','Servir avec attiéké ou riz'],en:['Place all in sealed pot','No water or oil','Cook 1h on low, shaking','Serve with attiéké or rice'],de:['Alles in verschlossenen Topf','Kein Wasser, kein Öl','1 Std. bei schwacher Hitze','Mit Attiéké oder Reis']}},
+   ]},
+  {id:'ghana',continent:'africa',flag:'🇬🇭',name:{fr:'Ghana',en:'Ghana',de:'Ghana'},accent:'#006b3f',
+   recipes:[
+    {id:'fufu',emoji:'🫙',name:{fr:'Fufu & Soupe légères',en:'Fufu & Light Soup',de:'Fufu & Leichte Suppe'},origin:{fr:'Ghana, Afrique de l\'Ouest',en:'Ghana, West Africa',de:'Ghana, Westafrika'},desc:{fr:'Pâte de manioc et d\'igname pilée, servie avec une soupe légère au poulet.',en:'Pounded cassava and yam dough served with light chicken soup.',de:'Gestampfte Maniok-Yamspaste mit leichter Hühnersuppe.'},tag:'traditional',cal:380,prot:22,carb:48,fat:10,fiber:5,time:60,diff:'med',bg:'linear-gradient(135deg,#002a00,#004d00)',
+     ingredients:{fr:['500g manioc','300g igname','400g poulet','Tomates, oignons, piment','Gingembre, sel'],en:['500g cassava','300g yam','400g chicken','Tomatoes, onions, chili','Ginger, salt'],de:['500g Maniok','300g Yams','400g Hähnchen','Tomaten, Zwiebeln, Chili','Ingwer, Salz']},
+     steps:{fr:['Bouillir manioc et igname','Piler ensemble jusqu\'à texture lisse','Cuire le poulet avec tomates et épices','Former les boules de fufu','Servir dans la soupe chaude'],en:['Boil cassava and yam','Pound together until smooth','Cook chicken with tomatoes','Form fufu balls','Serve in hot soup'],de:['Maniok und Yams kochen','Zusammenstampfen bis glatt','Hähnchen mit Tomaten kochen','Fufu-Bällchen formen','In heißer Suppe servieren']}},
+    {id:'kelewele',emoji:'🍌',name:{fr:'Kelewele',en:'Kelewele',de:'Kelewele'},origin:{fr:'Accra, Ghana',en:'Accra, Ghana',de:'Accra, Ghana'},desc:{fr:'Plantains frits épicés au gingembre et piment. Street food incontournable d\'Accra.',en:'Spicy fried plantains with ginger and chili. Accra\'s essential street food.',de:'Würzige gebratene Kochbananen. Unverzichtbares Street Food in Accra.'},tag:'street',cal:280,prot:3,carb:52,fat:8,fiber:4,time:20,diff:'easy',bg:'linear-gradient(135deg,#1a1000,#2d1800)',
+     ingredients:{fr:['4 plantains mûrs','1 cs gingembre râpé','1 cc piment de Cayenne','1/2 cc muscade','Sel, huile de friture'],en:['4 ripe plantains','1 tbsp grated ginger','1 tsp cayenne pepper','1/2 tsp nutmeg','Salt, frying oil'],de:['4 reife Kochbananen','1 EL geriebener Ingwer','1 TL Cayennepfeffer','1/2 TL Muskat','Salz, Frittieröl']},
+     steps:{fr:['Couper les plantains en cubes','Mélanger avec gingembre, piment, sel','Mariner 10 min','Frire dans l\'huile chaude 3-4 min','Égoutter et servir chaud'],en:['Cut plantains in cubes','Mix with ginger, chili, salt','Marinate 10 min','Fry in hot oil 3-4 min','Drain and serve hot'],de:['Kochbananen würfeln','Mit Ingwer, Chili, Salz mischen','10 Min. marinieren','In heißem Öl 3-4 Min. frittieren','Abtropfen und heiß servieren']}},
+   ]},
+  {id:'ethiopie',continent:'africa',flag:'🇪🇹',name:{fr:'Éthiopie',en:'Ethiopia',de:'Äthiopien'},accent:'#009a44',
+   recipes:[
+    {id:'injera',emoji:'🫓',name:{fr:'Injera & Doro Wat',en:'Injera & Doro Wat',de:'Injera & Doro Wat'},origin:{fr:'Addis-Abeba, Éthiopie',en:'Addis Ababa, Ethiopia',de:'Addis Abeba, Äthiopien'},desc:{fr:'Pain fermenté spongieux servi avec le ragoût de poulet épicé au berbéré.',en:'Spongy fermented flatbread served with spiced chicken stew.',de:'Schwammiges Fladenbrot mit würzigem Hähncheneintopf.'},tag:'traditional',cal:420,prot:28,carb:55,fat:12,fiber:6,time:120,diff:'hard',bg:'linear-gradient(135deg,#0a1a00,#003300)',
+     ingredients:{fr:['500g farine de teff','1 kg poulet','6 œufs durs','3 cs berbéré (épice)','2 oignons','Gingembre, ail, beurre'],en:['500g teff flour','1 kg chicken','6 hard eggs','3 tbsp berbere spice','2 onions','Ginger, garlic, butter'],de:['500g Teff-Mehl','1 kg Hähnchen','6 hartgekochte Eier','3 EL Berbere-Gewürz','2 Zwiebeln','Ingwer, Knoblauch, Butter']},
+     steps:{fr:['Ferment la pâte d\'injera 2-3 jours','Cuire les galettes dans une poêle','Caraméliser les oignons 30 min','Ajouter épices, poulet, œufs','Mijoter 30 min','Servir le ragoût sur l\'injera'],en:['Ferment injera batter 2-3 days','Cook flatbreads in pan','Caramelize onions 30 min','Add spices, chicken, eggs','Simmer 30 min','Serve stew on injera'],de:['Teig 2-3 Tage fermentieren','Fladenbrote backen','Zwiebeln 30 Min. karamellisieren','Gewürze, Hähnchen, Eier','30 Min. köcheln','Eintopf auf Injera servieren']}},
+   ]},
+  {id:'maroc',continent:'africa',flag:'🇲🇦',name:{fr:'Maroc',en:'Morocco',de:'Marokko'},accent:'#c1272d',
+   recipes:[
+    {id:'tagine',emoji:'🏺',name:{fr:'Tajine d\'agneau aux pruneaux',en:'Lamb Tagine with Prunes',de:'Lamm-Tajine mit Pflaumen'},origin:{fr:'Fès, Maroc',en:'Fès, Morocco',de:'Fès, Marokko'},desc:{fr:'Agneau mijoté aux pruneaux, amandes et épices marocaines dans un tajine traditionnel.',en:'Lamb simmered with prunes, almonds and Moroccan spices in a traditional tagine.',de:'Lamm mit Pflaumen, Mandeln und marokkanischen Gewürzen im Tajine.'},tag:'traditional',cal:480,prot:32,carb:38,fat:20,fiber:5,time:150,diff:'hard',bg:'linear-gradient(135deg,#2d0000,#4a0808)',
+     ingredients:{fr:['800g agneau','200g pruneaux','100g amandes','2 oignons','Gingembre, cannelle, safran','Huile d\'olive, miel, sel'],en:['800g lamb','200g prunes','100g almonds','2 onions','Ginger, cinnamon, saffron','Olive oil, honey, salt'],de:['800g Lamm','200g Pflaumen','100g Mandeln','2 Zwiebeln','Ingwer, Zimt, Safran','Olivenöl, Honig, Salz']},
+     steps:{fr:['Dorer l\'agneau avec oignon et épices','Ajouter eau à mi-hauteur','Cuire 1h30 à feu doux','Ajouter pruneaux et miel 20 min avant fin','Griller les amandes séparément','Garnir et servir avec couscous'],en:['Brown lamb with onion and spices','Add water halfway','Cook 1.5h on low','Add prunes and honey 20 min before end','Toast almonds separately','Garnish and serve with couscous'],de:['Lamm mit Zwiebel und Gewürzen anbraten','Wasser bis zur Hälfte','1,5 Std. bei schwacher Hitze','Pflaumen und Honig 20 Min. vor Ende','Mandeln rösten','Mit Couscous servieren']}},
+    {id:'couscous',emoji:'🍲',name:{fr:'Couscous Royal',en:'Royal Couscous',de:'Königlicher Couscous'},origin:{fr:'Maghreb',en:'Maghreb',de:'Maghreb'},desc:{fr:'Semoule vapeur avec 7 légumes et viandes variées. Le festin du vendredi.',en:'Steamed semolina with 7 vegetables and assorted meats. The Friday feast.',de:'Gedämpfter Grieß mit 7 Gemüsesorten. Das Freitagsfest.'},tag:'festive',cal:550,prot:38,carb:65,fat:16,fiber:8,time:120,diff:'hard',bg:'linear-gradient(135deg,#1a0d00,#2d1a00)',
+     ingredients:{fr:['500g couscous fin','300g agneau','300g poulet','2 courgettes','2 carottes','1 navet','1 oignon','Pois chiches, harissa'],en:['500g fine couscous','300g lamb','300g chicken','2 zucchini','2 carrots','1 turnip','1 onion','Chickpeas, harissa'],de:['500g feiner Couscous','300g Lamm','300g Hähnchen','2 Zucchini','2 Karotten','1 Rübe','1 Zwiebel','Kichererbsen, Harissa']},
+     steps:{fr:['Faire mijoter les viandes avec légumes','Préparer le couscous à la vapeur 3 fois','Arroser de beurre entre chaque passage','Dresser le couscous en dôme','Disposer viandes et légumes dessus','Servir avec bouillon séparé'],en:['Simmer meats with vegetables','Steam couscous 3 times','Butter between each steaming','Shape couscous in dome','Arrange meats and vegetables on top','Serve with broth separately'],de:['Fleisch mit Gemüse köcheln','Couscous 3x dämpfen','Zwischen jedem Mal buttern','Couscous als Kuppel formen','Fleisch und Gemüse obendrauf','Mit Brühe separat servieren']}},
+   ]},
   // ── EUROPE ──
-  {
-    id:'france', continent:'europe', flag:'🇫🇷', name:{fr:'France',en:'France',de:'Frankreich'},
-    color:'linear-gradient(135deg,#0055a4 30%,#ef4135)', accent:'#0055a4',
-    recipes:[
-      {id:'ratatouille',emoji:'🫕',name:{fr:'Ratatouille Provençale',en:'Ratatouille',de:'Ratatouille'},
-       origin:{fr:'Provence, France',en:'Provence, France',de:'Provence, Frankreich'},
-       desc:{fr:'Légumes méditerranéens mijotés à l\'huile d\'olive. Plat végétarien complet.',en:'Mediterranean vegetables simmered in olive oil. Complete vegetarian dish.',de:'Mediteranes Gemüse in Olivenöl geschmort. Vollständiges vegetarisches Gericht.'},
-       tag:'vegetarian',cal:180,prot:4,carb:22,fat:9,fiber:7,time:50,diff:'easy',
-       ingredients:{fr:['2 courgettes','2 aubergines','4 tomates','2 poivrons','3 gousses d\'ail','Herbes de Provence','Huile d\'olive, sel'],en:['2 zucchini','2 eggplants','4 tomatoes','2 bell peppers','3 garlic cloves','Herbes de Provence','Olive oil, salt'],de:['2 Zucchini','2 Auberginen','4 Tomaten','2 Paprika','3 Knoblauchzehen','Herbes de Provence','Olivenöl, Salz']},
-       steps:{fr:['Couper tous les légumes en rondelles','Faire revenir l\'ail dans l\'huile d\'olive','Ajouter les légumes par couches','Couvrir et mijoter 30 min','Assaisonner, servir chaud ou froid'],en:['Slice all vegetables','Sauté garlic in olive oil','Add vegetables in layers','Cover and simmer 30 min','Season, serve hot or cold'],de:['Alle Gemüse in Scheiben schneiden','Knoblauch in Olivenöl andünsten','Gemüse schichtweise hinzufügen','Zudecken und 30 Min. köcheln','Würzen, heiß oder kalt servieren']}},
-      {id:'boeuf-bourg',emoji:'🥩',name:{fr:'Bœuf Bourguignon',en:'Beef Bourguignon',de:'Bœuf Bourguignon'},
-       origin:{fr:'Bourgogne, France',en:'Burgundy, France',de:'Burgund, Frankreich'},
-       desc:{fr:'Bœuf mijoté au vin rouge de Bourgogne avec carottes, lardons et champignons.',en:'Beef braised in Burgundy red wine with carrots, bacon and mushrooms.',de:'Rindfleisch in Rotwein geschmort mit Karotten, Speck und Pilzen.'},
-       tag:'traditional',cal:480,prot:38,carb:15,fat:25,fiber:3,time:180,diff:'hard',
-       ingredients:{fr:['800g bœuf en cubes','500ml vin rouge Bourgogne','200g lardons','200g champignons','3 carottes','2 oignons','Bouquet garni, farine','Huile, beurre, sel'],en:['800g beef cubes','500ml Burgundy red wine','200g bacon lardons','200g mushrooms','3 carrots','2 onions','Bouquet garni, flour','Oil, butter, salt'],de:['800g Rindfleischwürfel','500ml Burgundy-Rotwein','200g Speckwürfel','200g Pilze','3 Karotten','2 Zwiebeln','Bouquet garni, Mehl','Öl, Butter, Salz']},
-       steps:{fr:['Faire mariner le bœuf dans le vin 2h minimum','Faire revenir les lardons, réserver','Faire dorer le bœuf, ajouter farine','Verser le vin, ajouter légumes et bouquet garni','Mijoter 2h30 à feu doux','Ajouter les champignons les 30 dernières minutes'],en:['Marinate beef in wine 2h minimum','Brown bacon, set aside','Brown beef, add flour','Pour wine, add vegetables','Simmer 2h30 on low heat','Add mushrooms last 30 minutes'],de:['Rindfleisch mindestens 2h im Wein marinieren','Speck anbraten, beiseitestellen','Rindfleisch anbraten, Mehl hinzufügen','Wein, Gemüse und Bouquet garni dazugeben','2,5 Std. bei schwacher Hitze schmoren','Pilze in den letzten 30 Min. hinzufügen']}},
-    ]
-  },
-  {
-    id:'allemagne', continent:'europe', flag:'🇩🇪', name:{fr:'Allemagne',en:'Germany',de:'Deutschland'},
-    color:'linear-gradient(135deg,#000 30%,#dd0000)', accent:'#dd0000',
-    recipes:[
-      {id:'sauerbraten',emoji:'🥩',name:{fr:'Sauerbraten',en:'Sauerbraten',de:'Sauerbraten'},
-       origin:{fr:'Rhénanie, Allemagne',en:'Rhineland, Germany',de:'Rheinland, Deutschland'},
-       desc:{fr:'Rôti de bœuf mariné 3 jours dans le vinaigre, sauce sucrée-acide au pain d\'épices.',en:'Beef roast marinated 3 days in vinegar with sweet-sour gingerbread sauce.',de:'Rinderbraten 3 Tage in Essig mariniert mit süß-saurer Lebkuchensoße.'},
-       tag:'traditional',cal:520,prot:42,carb:28,fat:22,fiber:2,time:210,diff:'hard',
-       ingredients:{fr:['1kg rôti de bœuf','500ml vinaigre de vin rouge','500ml eau','2 oignons','Clous de girofle, laurier, poivre','50g pain d\'épices émietté','2 cs de sucre','Sel'],en:['1kg beef roast','500ml red wine vinegar','500ml water','2 onions','Cloves, bay leaf, pepper','50g crumbled gingerbread','2 tbsp sugar','Salt'],de:['1kg Rinderbraten','500ml Rotweinessig','500ml Wasser','2 Zwiebeln','Nelken, Lorbeer, Pfeffer','50g zerbröckelter Lebkuchen','2 EL Zucker','Salz']},
-       steps:{fr:['Mariner le rôti 3 jours dans vinaigre + eau + épices','Égoutter, faire dorer la viande de tous côtés','Faire braiser 2h dans la marinade filtrée','Épaissir la sauce avec le pain d\'épices','Servir avec Rotkohl et Klöße'],en:['Marinate roast 3 days in vinegar + water + spices','Drain and brown meat on all sides','Braise 2h in strained marinade','Thicken sauce with gingerbread','Serve with red cabbage and dumplings'],de:['Braten 3 Tage in Essig + Wasser + Gewürzen marinieren','Abtropfen lassen und von allen Seiten anbraten','2 Std. in der Marinade schmoren','Soße mit Lebkuchen andicken','Mit Rotkohl und Klößen servieren']}},
-      {id:'schnitzel',emoji:'🥩',name:{fr:'Schnitzel Viennois',en:'Wiener Schnitzel',de:'Wiener Schnitzel'},
-       origin:{fr:'Vienne, Autriche / Allemagne',en:'Vienna, Austria / Germany',de:'Wien, Österreich / Deutschland'},
-       desc:{fr:'Escalope de veau pannée et frite, croustillante dorée. Servie avec citron et pommes de terre.',en:'Breaded fried veal escalope, golden crispy. Served with lemon and potatoes.',de:'Paniertes gebratenes Kalbsschnitzel, goldbraun knusprig. Mit Zitrone und Kartoffeln.'},
-       tag:'traditional',cal:460,prot:38,carb:35,fat:18,fiber:2,time:30,diff:'easy',
-       ingredients:{fr:['4 escalopes de veau (150g chacune)','2 œufs battus','Chapelure fine','Farine','Beurre clarifié ou huile','Citron, sel, poivre'],en:['4 veal escalopes (150g each)','2 beaten eggs','Fine breadcrumbs','Flour','Clarified butter or oil','Lemon, salt, pepper'],de:['4 Kalbsschnitzel (je 150g)','2 geschlagene Eier','Feine Semmelbrösel','Mehl','Butterschmalz oder Öl','Zitrone, Salz, Pfeffer']},
-       steps:{fr:['Aplatir les escalopes à 3-4mm','Passer dans farine → œuf → chapelure','Faire frire dans beurre clarifié chaud 3 min/côté','La panure doit former des vagues (souffler)','Servir immédiatement avec citron'],en:['Flatten escalopes to 3-4mm','Coat in flour → egg → breadcrumbs','Fry in hot clarified butter 3 min/side','Breading should form waves (puff)','Serve immediately with lemon'],de:['Schnitzel auf 3-4mm flachklopfen','In Mehl → Ei → Semmelbrösel wenden','Im heißen Butterschmalz 3 Min./Seite braten','Panade soll wellen (aufgehen)','Sofort mit Zitrone servieren']}},
-      {id:'spaetzle',emoji:'🍝',name:{fr:'Spätzle au fromage',en:'Cheese Spätzle',de:'Käsespätzle'},
-       origin:{fr:'Souabe, Allemagne',en:'Swabia, Germany',de:'Schwaben, Deutschland'},
-       desc:{fr:'Petites pâtes fraîches al\'oeuf gratinées au fromage Emmental, oignons caramélisés.',en:'Fresh egg pasta au gratin with Emmental cheese and caramelised onions.',de:'Frische Eierspätzle mit überbackenem Emmentaler und karamellisierten Zwiebeln.'},
-       tag:'traditional',cal:520,prot:22,carb:58,fat:22,fiber:2,time:40,diff:'med',
-       ingredients:{fr:['400g farine','4 œufs','150ml eau','200g Emmental râpé','2 oignons en lanières','50g beurre','Sel, noix de muscade'],en:['400g flour','4 eggs','150ml water','200g grated Emmental','2 onions sliced','50g butter','Salt, nutmeg'],de:['400g Mehl','4 Eier','150ml Wasser','200g geriebener Emmentaler','2 Zwiebeln in Streifen','50g Butter','Salz, Muskatnuss']},
-       steps:{fr:['Mélanger farine, œufs, eau, sel pour la pâte','Passer au Spätzle-Hobel dans l\'eau bouillante','Égoutter, réserver','Caraméliser les oignons au beurre 15 min','Alterner couches de Spätzle et fromage','Gratiner 10 min au four 200°C'],en:['Mix flour, eggs, water, salt for dough','Press through Spätzle maker into boiling water','Drain and set aside','Caramelize onions in butter 15 min','Layer Spätzle and cheese','Bake 10 min at 200°C'],de:['Mehl, Eier, Wasser, Salz zu Teig mischen','Durch Spätzle-Hobel in kochendes Wasser pressen','Abgießen, beiseitestellen','Zwiebeln 15 Min. in Butter karamellisieren','Spätzle und Käse abwechselnd schichten','10 Min. bei 200°C überbacken']}},
-    ]
-  },
-  {
-    id:'italie', continent:'europe', flag:'🇮🇹', name:{fr:'Italie',en:'Italy',de:'Italien'},
-    color:'linear-gradient(135deg,#009246 30%,#ce2b37)', accent:'#009246',
-    recipes:[
-      {id:'risotto',emoji:'🍚',name:{fr:'Risotto Milanese',en:'Risotto Milanese',de:'Risotto Milanese'},
-       origin:{fr:'Milan, Italie',en:'Milan, Italy',de:'Mailand, Italien'},
-       desc:{fr:'Riz Arborio crémeux au safran et Parmesan. La recette emblématique de Milan.',en:'Creamy Arborio rice with saffron and Parmesan. The iconic Milanese recipe.',de:'Cremiger Arborio-Reis mit Safran und Parmesan. Das ikonische Mailänder Rezept.'},
-       tag:'traditional',cal:420,prot:14,carb:62,fat:14,fiber:2,time:35,diff:'med',
-       ingredients:{fr:['350g riz Arborio','1L bouillon de poulet chaud','150ml vin blanc','1 oignon','50g beurre','80g Parmesan râpé','1g safran','Sel, poivre'],en:['350g Arborio rice','1L hot chicken broth','150ml white wine','1 onion','50g butter','80g grated Parmesan','1g saffron','Salt, pepper'],de:['350g Arborio-Reis','1L heiße Hühnerbrühe','150ml Weißwein','1 Zwiebel','50g Butter','80g geriebener Parmesan','1g Safran','Salz, Pfeffer']},
-       steps:{fr:['Faire revenir l\'oignon dans le beurre','Ajouter le riz, nacrer 2 min','Déglacer au vin blanc','Ajouter le bouillon chaud louche par louche en remuant constamment','Incorporer le safran','Mantecatura finale avec beurre froid + Parmesan'],en:['Sauté onion in butter','Add rice, toast 2 min','Deglaze with white wine','Add hot broth ladle by ladle stirring constantly','Add saffron','Final mantecatura with cold butter + Parmesan'],de:['Zwiebel in Butter andünsten','Reis hinzufügen, 2 Min. glasig dünsten','Mit Weißwein ablöschen','Heiße Brühe kellenweise unter ständigem Rühren hinzufügen','Safran einrühren','Abschluss-Mantecatura mit kalter Butter + Parmesan']}},
-      {id:'ossobuco',emoji:'🍖',name:{fr:'Osso Buco',en:'Osso Buco',de:'Osso Buco'},
-       origin:{fr:'Lombardie, Italie',en:'Lombardy, Italy',de:'Lombardei, Italien'},
-       desc:{fr:'Jarret de veau braisé à la tomate et citron avec gremolata (ail, citron, persil).',en:'Braised veal shank with tomato and lemon with gremolata.',de:'Geschmorte Kalbshaxe mit Tomate und Zitrone mit Gremolata.'},
-       tag:'traditional',cal:450,prot:42,carb:12,fat:24,fiber:3,time:150,diff:'hard',
-       ingredients:{fr:['4 tranches jarret de veau','400g tomates en boîte','200ml vin blanc','1 oignon, carotte, céleri','Ail, persil, zeste citron','Farine, beurre, huile d\'olive'],en:['4 veal shank slices','400g canned tomatoes','200ml white wine','Onion, carrot, celery','Garlic, parsley, lemon zest','Flour, butter, olive oil'],de:['4 Kalbshaxenscheiben','400g Dosentomaten','200ml Weißwein','Zwiebel, Karotte, Sellerie','Knoblauch, Petersilie, Zitronenschale','Mehl, Butter, Olivenöl']},
-       steps:{fr:['Fariner les tranches de veau, dorer des deux côtés','Faire le soffritto (oignon, carotte, céleri)','Ajouter vin blanc, tomates, mouiller à hauteur','Cuire au four 1h30 à 160°C','Préparer la gremolata (ail haché + zeste + persil)','Servir avec risotto milanese et gremolata'],en:['Flour veal slices, brown both sides','Make soffritto (onion, carrot, celery)','Add white wine, tomatoes','Bake 1.5h at 160°C','Prepare gremolata (garlic + zest + parsley)','Serve with risotto and gremolata'],de:['Kalbshaxen mehlieren, von beiden Seiten anbraten','Soffritto (Zwiebel, Karotte, Sellerie) zubereiten','Weißwein und Tomaten hinzufügen','1,5 Std. bei 160°C backen','Gremolata zubereiten','Mit Risotto und Gremolata servieren']}},
-    ]
-  },
-  {
-    id:'espagne', continent:'europe', flag:'🇪🇸', name:{fr:'Espagne',en:'Spain',de:'Spanien'},
-    color:'linear-gradient(135deg,#aa151b 30%,#f1bf00)', accent:'#aa151b',
-    recipes:[
-      {id:'paella',emoji:'🥘',name:{fr:'Paella Valenciana',en:'Paella Valenciana',de:'Paella Valenciana'},
-       origin:{fr:'Valence, Espagne',en:'Valencia, Spain',de:'Valencia, Spanien'},
-       desc:{fr:'Le plat espagnol emblématique : riz au safran, lapin, poulet et haricots verts.',en:'The iconic Spanish dish: saffron rice, rabbit, chicken and green beans.',de:'Das ikonische spanische Gericht: Safranreis, Kaninchen, Hähnchen und grüne Bohnen.'},
-       tag:'traditional',cal:480,prot:35,carb:52,fat:15,fiber:4,time:60,diff:'hard',
-       ingredients:{fr:['400g riz Bomba','300g poulet découpé','200g lapin','150g haricots verts','4 tomates','1g safran','Paprika doux et fumé','Huile d\'olive, sel','Bouillon de viande'],en:['400g Bomba rice','300g chicken pieces','200g rabbit','150g green beans','4 tomatoes','1g saffron','Sweet and smoked paprika','Olive oil, salt','Meat broth'],de:['400g Bomba-Reis','300g Hähnchenstücke','200g Kaninchen','150g grüne Bohnen','4 Tomaten','1g Safran','Mildes und geräuchertes Paprikapulver','Olivenöl, Salz','Fleischbrühe']},
-       steps:{fr:['Faire dorer poulet et lapin dans la paellera','Ajouter tomates, paprika, haricots verts','Ajouter le riz, faire nacrer 2 min','Verser le bouillon chaud 2× le volume du riz','Ajouter le safran, étaler le riz uniformément','Cuire 18 min sans remuer, faire le socarrat'],en:['Brown chicken and rabbit in paellera','Add tomatoes, paprika, green beans','Add rice, toast 2 min','Pour hot broth 2× rice volume','Add saffron, spread rice evenly','Cook 18 min without stirring, make socarrat'],de:['Hähnchen und Kaninchen in der Paellera anbraten','Tomaten, Paprika, grüne Bohnen hinzufügen','Reis hinzufügen, 2 Min. glasig dünsten','Heiße Brühe im 2-fachen Reisvolumen eingießen','Safran hinzufügen, Reis gleichmäßig verteilen','18 Min. ohne Rühren garen']}},
-    ]
-  },
+  {id:'france',continent:'europe',flag:'🇫🇷',name:{fr:'France',en:'France',de:'Frankreich'},accent:'#0055a4',
+   recipes:[
+    {id:'ratatouille',emoji:'🫕',name:{fr:'Ratatouille Provençale',en:'Ratatouille',de:'Ratatouille'},origin:{fr:'Provence, France',en:'Provence, France',de:'Provence, Frankreich'},desc:{fr:'Légumes méditerranéens mijotés à l\'huile d\'olive. Végétarien et délicieux.',en:'Mediterranean vegetables simmered in olive oil. Vegetarian and delicious.',de:'Mediteranes Gemüse in Olivenöl. Vegetarisch und köstlich.'},tag:'vegetarian',cal:180,prot:4,carb:22,fat:9,fiber:7,time:50,diff:'easy',bg:'linear-gradient(135deg,#00052a,#0a0f2d)',
+     ingredients:{fr:['2 courgettes','2 aubergines','4 tomates','2 poivrons','3 gousses d\'ail','Herbes de Provence','Huile d\'olive'],en:['2 zucchini','2 eggplants','4 tomatoes','2 bell peppers','3 garlic cloves','Herbes de Provence','Olive oil'],de:['2 Zucchini','2 Auberginen','4 Tomaten','2 Paprika','3 Knoblauchzehen','Herbes de Provence','Olivenöl']},
+     steps:{fr:['Couper tous les légumes en rondelles','Faire revenir l\'ail dans l\'huile','Ajouter les légumes par couches','Couvrir et mijoter 30 min','Servir chaud ou froid'],en:['Slice all vegetables','Sauté garlic in olive oil','Add vegetables in layers','Cover and simmer 30 min','Serve hot or cold'],de:['Alle Gemüse in Scheiben','Knoblauch in Öl andünsten','Schichtweise hinzufügen','30 Min. köcheln','Heiß oder kalt servieren']}},
+    {id:'boeuf-bourguignon',emoji:'🥩',name:{fr:'Bœuf Bourguignon',en:'Beef Bourguignon',de:'Bœuf Bourguignon'},origin:{fr:'Bourgogne, France',en:'Burgundy, France',de:'Burgund, Frankreich'},desc:{fr:'Bœuf mijoté au vin rouge avec champignons et lardons.',en:'Beef braised in red wine with mushrooms and bacon.',de:'Rindfleisch in Rotwein mit Pilzen und Speck.'},tag:'traditional',cal:480,prot:38,carb:15,fat:25,fiber:3,time:180,diff:'hard',bg:'linear-gradient(135deg,#1a0020,#2d0035)',
+     ingredients:{fr:['800g bœuf','500ml vin rouge','200g lardons','200g champignons','3 carottes','2 oignons','Bouquet garni, farine'],en:['800g beef','500ml red wine','200g bacon','200g mushrooms','3 carrots','2 onions','Bouquet garni, flour'],de:['800g Rindfleisch','500ml Rotwein','200g Speck','200g Pilze','3 Karotten','2 Zwiebeln','Bouquet garni, Mehl']},
+     steps:{fr:['Mariner le bœuf dans le vin 2h','Dorer les lardons, réserver','Faire dorer le bœuf, fariner','Verser le vin et les légumes','Mijoter 2h30 à feu doux','Ajouter champignons les 30 dernières min'],en:['Marinate beef in wine 2h','Brown bacon, set aside','Brown beef, add flour','Pour wine and vegetables','Simmer 2.5h on low','Add mushrooms last 30 min'],de:['Fleisch 2h marinieren','Speck anbraten','Rindfleisch anbraten, mehlieren','Wein und Gemüse','2,5 Std. köcheln','Pilze letzte 30 Min.']}},
+   ]},
+  {id:'allemagne',continent:'europe',flag:'🇩🇪',name:{fr:'Allemagne',en:'Germany',de:'Deutschland'},accent:'#dd0000',
+   recipes:[
+    {id:'schnitzel',emoji:'🥩',name:{fr:'Wiener Schnitzel',en:'Wiener Schnitzel',de:'Wiener Schnitzel'},origin:{fr:'Vienne / Allemagne',en:'Vienna / Germany',de:'Wien / Deutschland'},desc:{fr:'Escalope de veau pannée et frite, croustillante dorée. Avec citron et pommes de terre.',en:'Breaded fried veal escalope, golden crispy. With lemon and potatoes.',de:'Paniertes Kalbsschnitzel, goldbraun knusprig. Mit Zitrone.'},tag:'traditional',cal:460,prot:38,carb:35,fat:18,fiber:2,time:30,diff:'easy',bg:'linear-gradient(135deg,#1a0000,#2d0000)',
+     ingredients:{fr:['4 escalopes de veau 150g','2 œufs battus','Chapelure fine','Farine','Beurre clarifié','Citron, sel, poivre'],en:['4 veal escalopes 150g','2 beaten eggs','Fine breadcrumbs','Flour','Clarified butter','Lemon, salt, pepper'],de:['4 Kalbsschnitzel 150g','2 Eier','Semmelbrösel','Mehl','Butterschmalz','Zitrone, Salz, Pfeffer']},
+     steps:{fr:['Aplatir les escalopes à 3-4mm','Passer farine → œuf → chapelure','Frire dans beurre chaud 3 min/côté','La panure doit former des vagues','Servir avec citron et persil'],en:['Flatten to 3-4mm','Coat flour → egg → breadcrumbs','Fry in hot butter 3 min/side','Breading should puff','Serve with lemon and parsley'],de:['Auf 3-4mm flachklopfen','Mehl → Ei → Semmelbrösel','Im Butterschmalz 3 Min./Seite','Panade soll wellen','Mit Zitrone servieren']}},
+    {id:'spaetzle',emoji:'🍝',name:{fr:'Käsespätzle',en:'Cheese Spätzle',de:'Käsespätzle'},origin:{fr:'Souabe, Allemagne',en:'Swabia, Germany',de:'Schwaben, Deutschland'},desc:{fr:'Pâtes fraîches aux œufs gratinées à l\'Emmental avec oignons caramélisés.',en:'Fresh egg pasta au gratin with Emmental and caramelised onions.',de:'Frische Eierspätzle mit Emmentaler und karamellisierten Zwiebeln.'},tag:'traditional',cal:520,prot:22,carb:58,fat:22,fiber:2,time:40,diff:'med',bg:'linear-gradient(135deg,#1a0800,#2d1500)',
+     ingredients:{fr:['400g farine','4 œufs','200g Emmental râpé','2 oignons','50g beurre','Sel, muscade'],en:['400g flour','4 eggs','200g grated Emmental','2 onions','50g butter','Salt, nutmeg'],de:['400g Mehl','4 Eier','200g Emmentaler','2 Zwiebeln','50g Butter','Salz, Muskatnuss']},
+     steps:{fr:['Mélanger farine, œufs, eau, sel','Passer au Spätzle-Hobel dans l\'eau bouillante','Égoutter et réserver','Caraméliser oignons 15 min','Alterner Spätzle et fromage','Gratiner 10 min à 200°C'],en:['Mix flour, eggs, water, salt','Press through maker into boiling water','Drain and set aside','Caramelize onions 15 min','Layer Spätzle and cheese','Bake 10 min 200°C'],de:['Mehl, Eier, Wasser mischen','In kochendes Wasser pressen','Abgießen','Zwiebeln 15 Min. karamellisieren','Spätzle und Käse schichten','10 Min. bei 200°C überbacken']}},
+    {id:'sauerbraten',emoji:'🥩',name:{fr:'Sauerbraten',en:'Sauerbraten',de:'Sauerbraten'},origin:{fr:'Rhénanie, Allemagne',en:'Rhineland, Germany',de:'Rheinland, Deutschland'},desc:{fr:'Rôti mariné 3 jours dans le vinaigre avec sauce au pain d\'épices.',en:'Roast marinated 3 days in vinegar with gingerbread sauce.',de:'3 Tage marinierter Braten mit Lebkuchensoße.'},tag:'traditional',cal:520,prot:42,carb:28,fat:22,fiber:2,time:210,diff:'hard',bg:'linear-gradient(135deg,#0d0000,#1a0000)',
+     ingredients:{fr:['1kg rôti de bœuf','500ml vinaigre de vin','Oignons, laurier, clous de girofle','50g pain d\'épices','2 cs sucre'],en:['1kg beef roast','500ml wine vinegar','Onions, bay leaf, cloves','50g gingerbread','2 tbsp sugar'],de:['1kg Rinderbraten','500ml Weinessig','Zwiebeln, Lorbeer, Nelken','50g Lebkuchen','2 EL Zucker']},
+     steps:{fr:['Mariner 3 jours dans vinaigre+épices','Égoutter et faire dorer','Braiser 2h dans la marinade','Épaissir sauce avec pain d\'épices','Servir avec Rotkohl et Klöße'],en:['Marinate 3 days in vinegar','Drain and brown','Braise 2h in marinade','Thicken with gingerbread','Serve with red cabbage'],de:['3 Tage in Essig marinieren','Abtropfen und anbraten','2 Std. in Marinade schmoren','Mit Lebkuchen andicken','Mit Rotkohl und Klößen']}},
+   ]},
+  {id:'italie',continent:'europe',flag:'🇮🇹',name:{fr:'Italie',en:'Italy',de:'Italien'},accent:'#009246',
+   recipes:[
+    {id:'risotto',emoji:'🍚',name:{fr:'Risotto Milanese',en:'Risotto Milanese',de:'Risotto Milanese'},origin:{fr:'Milan, Italie',en:'Milan, Italy',de:'Mailand, Italien'},desc:{fr:'Riz Arborio crémeux au safran et Parmesan. La recette emblématique de Milan.',en:'Creamy Arborio rice with saffron and Parmesan.',de:'Cremiger Arborio-Reis mit Safran und Parmesan.'},tag:'traditional',cal:420,prot:14,carb:62,fat:14,fiber:2,time:35,diff:'med',bg:'linear-gradient(135deg,#002008,#003015)',
+     ingredients:{fr:['350g riz Arborio','1L bouillon chaud','150ml vin blanc','1 oignon','50g beurre','80g Parmesan','1g safran'],en:['350g Arborio rice','1L hot broth','150ml white wine','1 onion','50g butter','80g Parmesan','1g saffron'],de:['350g Arborio-Reis','1L heiße Brühe','150ml Weißwein','1 Zwiebel','50g Butter','80g Parmesan','1g Safran']},
+     steps:{fr:['Faire revenir l\'oignon dans le beurre','Ajouter le riz, nacrer 2 min','Déglacer au vin blanc','Ajouter bouillon louche par louche','Incorporer safran','Mantecatura avec beurre + Parmesan'],en:['Sauté onion in butter','Add rice, toast 2 min','Deglaze with white wine','Add broth ladle by ladle','Add saffron','Mantecatura with butter + Parmesan'],de:['Zwiebel in Butter andünsten','Reis 2 Min. glasig','Mit Weißwein ablöschen','Brühe kellenweise einrühren','Safran einrühren','Mantecatura mit Butter + Parmesan']}},
+    {id:'carbonara',emoji:'🍝',name:{fr:'Pâtes Carbonara',en:'Pasta Carbonara',de:'Pasta Carbonara'},origin:{fr:'Rome, Italie',en:'Rome, Italy',de:'Rom, Italien'},desc:{fr:'Spaghetti crémeux aux œufs, guanciale et Pecorino. La recette romaine authentique.',en:'Creamy spaghetti with eggs, guanciale and Pecorino. The authentic Roman recipe.',de:'Cremige Spaghetti mit Eiern, Guanciale und Pecorino.'},tag:'traditional',cal:490,prot:28,carb:55,fat:18,fiber:2,time:25,diff:'med',bg:'linear-gradient(135deg,#1a0d00,#2d1800)',
+     ingredients:{fr:['400g spaghetti','150g guanciale ou lardons','4 jaunes d\'œufs','80g Pecorino râpé','Poivre noir, sel'],en:['400g spaghetti','150g guanciale or bacon','4 egg yolks','80g grated Pecorino','Black pepper, salt'],de:['400g Spaghetti','150g Guanciale','4 Eigelb','80g Pecorino','Schwarzer Pfeffer, Salz']},
+     steps:{fr:['Cuire les pâtes al dente','Faire revenir le guanciale sans huile','Mélanger jaunes + Pecorino + poivre','Égoutter pâtes, garder l\'eau de cuisson','Mélanger hors du feu avec sauce','Ajouter eau de pâtes si trop épais'],en:['Cook pasta al dente','Fry guanciale without oil','Mix yolks + Pecorino + pepper','Drain pasta, keep water','Mix off heat with sauce','Add pasta water if too thick'],de:['Pasta al dente kochen','Guanciale ohne Öl braten','Eigelb + Pecorino + Pfeffer mischen','Pasta abgießen, Wasser aufheben','Außer Hitze mit Sauce mischen','Pasta-Wasser bei Bedarf']}},
+   ]},
+  {id:'espagne',continent:'europe',flag:'🇪🇸',name:{fr:'Espagne',en:'Spain',de:'Spanien'},accent:'#aa151b',
+   recipes:[
+    {id:'paella',emoji:'🥘',name:{fr:'Paella Valenciana',en:'Paella Valenciana',de:'Paella Valenciana'},origin:{fr:'Valence, Espagne',en:'Valencia, Spain',de:'Valencia, Spanien'},desc:{fr:'Riz au safran, lapin, poulet et haricots verts. La vraie paella valencienne.',en:'Saffron rice, rabbit, chicken and green beans. The real Valencian paella.',de:'Safranreis mit Kaninchen, Hähnchen und grünen Bohnen.'},tag:'traditional',cal:480,prot:35,carb:52,fat:15,fiber:4,time:60,diff:'hard',bg:'linear-gradient(135deg,#2a0000,#400000)',
+     ingredients:{fr:['400g riz Bomba','300g poulet','200g lapin','150g haricots verts','4 tomates','1g safran','Paprika doux et fumé'],en:['400g Bomba rice','300g chicken','200g rabbit','150g green beans','4 tomatoes','1g saffron','Sweet and smoked paprika'],de:['400g Bomba-Reis','300g Hähnchen','200g Kaninchen','150g grüne Bohnen','4 Tomaten','1g Safran','Paprikapulver']},
+     steps:{fr:['Dorer poulet et lapin','Ajouter tomates, paprika, haricots','Ajouter le riz, nacrer 2 min','Verser bouillon 2× le volume du riz','Ajouter le safran, étaler uniformément','Cuire 18 min sans remuer'],en:['Brown chicken and rabbit','Add tomatoes, paprika, beans','Add rice, toast 2 min','Pour broth 2× rice volume','Add saffron, spread evenly','Cook 18 min without stirring'],de:['Hähnchen und Kaninchen anbraten','Tomaten, Paprika, Bohnen','Reis 2 Min. glasig','Brühe 2× Reisvolumen','Safran, gleichmäßig verteilen','18 Min. ohne Rühren']}},
+   ]},
+  {id:'portugal',continent:'europe',flag:'🇵🇹',name:{fr:'Portugal',en:'Portugal',de:'Portugal'},accent:'#006600',
+   recipes:[
+    {id:'bacalhau',emoji:'🐟',name:{fr:'Bacalhau à Brás',en:'Bacalhau à Brás',de:'Bacalhau à Brás'},origin:{fr:'Lisbonne, Portugal',en:'Lisbon, Portugal',de:'Lissabon, Portugal'},desc:{fr:'Morue salée effilochée avec pommes de terre paille, œufs brouillés et olives.',en:'Shredded salted cod with straw potatoes, scrambled eggs and olives.',de:'Zerfaserter Stockfisch mit Strohkartoffeln, Rührei und Oliven.'},tag:'traditional',cal:420,prot:35,carb:30,fat:18,fiber:3,time:45,diff:'med',bg:'linear-gradient(135deg,#001a00,#002d00)',
+     ingredients:{fr:['500g morue dessalée','4 pommes de terre','4 œufs','2 oignons','Olives noires','Persil, huile d\'olive'],en:['500g desalted cod','4 potatoes','4 eggs','2 onions','Black olives','Parsley, olive oil'],de:['500g entsalzter Stockfisch','4 Kartoffeln','4 Eier','2 Zwiebeln','Schwarze Oliven','Petersilie, Olivenöl']},
+     steps:{fr:['Effilocher la morue dessalée','Faire frire les pommes de terre paille','Faire revenir oignons + morue','Incorporer pommes de terre','Ajouter œufs battus, remuer hors du feu','Garnir d\'olives et persil'],en:['Shred desalted cod','Fry straw potatoes','Sauté onions + cod','Add potatoes','Add beaten eggs, stir off heat','Garnish with olives and parsley'],de:['Stockfisch zerfasern','Strohkartoffeln frittieren','Zwiebeln + Fisch andünsten','Kartoffeln hinzufügen','Eier einrühren, außer Hitze','Mit Oliven und Petersilie']}},
+   ]},
 ];
 
-let currentRecipe = null;
-
 // ── RENDER ──
-function getContinent(id) { return countries.find(c=>c.id===id)?.continent; }
-
-function renderContinentNav() {
-  const t = i18n[currentLang];
-  const buttons = [
-    {id:'all', label:t.all, color:'#f5a623'},
-    {id:'africa', label:t.africa, color:'#22c55e'},
-    {id:'europe', label:t.europe, color:'#3b82f6'},
-  ];
-  document.getElementById('continent-nav').innerHTML = buttons.map(b=>`
+function renderContinentNav(){
+  const t=i18n[currentLang];
+  const btns=[{id:'all',label:t.all,color:'#f5a623'},{id:'africa',label:t.africa,color:'#22c55e'},{id:'europe',label:t.europe,color:'#3b82f6'}];
+  document.getElementById('continent-nav').innerHTML=btns.map(b=>`
     <button class="cn-btn ${currentContinent===b.id?'active':''}"
-      style="${currentContinent===b.id?'background:'+b.color+';color:#000;border-color:'+b.color:''}"
-      onclick="setContinent('${b.id}',this,'${b.color}')">${b.label}</button>`).join('');
+      style="${currentContinent===b.id?`background:${b.color};color:#000;border-color:${b.color}`:''}"
+      onclick="setContinent('${b.id}','${b.color}')">${b.label}</button>`).join('');
 }
 
-function renderMain() {
-  const t = i18n[currentLang];
-  const filtered = countries.filter(c => {
-    const matchContinent = currentContinent === 'all' || c.continent === currentContinent;
-    return matchContinent;
-  });
-
-  let html = '';
-  filtered.forEach(country => {
-    const recipes = country.recipes.filter(r => {
-      if(!searchQuery) return true;
-      const q = searchQuery.toLowerCase();
-      return r.name[currentLang].toLowerCase().includes(q) ||
-             r.desc[currentLang].toLowerCase().includes(q) ||
-             country.name[currentLang].toLowerCase().includes(q);
+function renderMain(){
+  const t=i18n[currentLang];
+  const filtered=countries.filter(c=>currentContinent==='all'||c.continent===currentContinent);
+  let html='';
+  filtered.forEach(country=>{
+    const recipes=country.recipes.filter(r=>{
+      if(!searchQuery)return true;
+      const q=searchQuery.toLowerCase();
+      return r.name[currentLang].toLowerCase().includes(q)||r.desc[currentLang].toLowerCase().includes(q)||country.name[currentLang].toLowerCase().includes(q);
     });
-    if(!recipes.length) return;
-
-    html += `<div class="country-section" id="country-${country.id}">
+    if(!recipes.length)return;
+    html+=`<div class="country-section">
       <div class="cs-header">
         <span class="cs-flag">${country.flag}</span>
         <div class="cs-country">${country.name[currentLang]}</div>
         <div class="cs-count">${recipes.length} ${t.recipes.toLowerCase()}</div>
         <div class="cs-line"></div>
       </div>
-      <div class="recipe-grid">
-        ${recipes.map(r => renderRecipeCard(r, country)).join('')}
-      </div>
+      <div class="recipe-grid">${recipes.map(r=>renderCard(r,country)).join('')}</div>
     </div>`;
   });
-
-  document.getElementById('main-content').innerHTML = html ||
-    `<div class="empty-state"><span class="es-icon">🔍</span><div>Aucune recette trouvée</div></div>`;
+  document.getElementById('main-content').innerHTML=html||`<div class="empty-state"><div style="font-size:3rem;opacity:0.4">🔍</div><div>Aucune recette trouvée</div></div>`;
 }
 
-function getDiffLabel(diff) {
-  const t = i18n[currentLang];
-  return diff==='easy'?t.diff_easy:diff==='med'?t.diff_med:t.diff_hard;
-}
+function getDiff(d){const t=i18n[currentLang];return d==='easy'?t.diff_easy:d==='med'?t.diff_med:t.diff_hard}
+function getDiffColor(d){return d==='easy'?'rgba(34,197,94,0.15);color:#22c55e':d==='med'?'rgba(251,191,36,0.15);color:#fbbf24':'rgba(239,68,68,0.15);color:#ef4444'}
+function getTagLabel(tag){const t=i18n[currentLang];return{traditional:t.traditional,vegetarian:t.vegetarian,festive:t.festive,street:t.street}[tag]||tag}
+function getTagColor(tag){return{traditional:'rgba(59,130,246,0.15);color:#3b82f6',vegetarian:'rgba(34,197,94,0.15);color:#22c55e',festive:'rgba(245,166,35,0.15);color:#f5a623',street:'rgba(239,68,68,0.15);color:#ef4444'}[tag]||'rgba(255,255,255,0.1);color:#fff'}
 
-function getDiffColor(diff) {
-  return diff==='easy'?'rgba(34,197,94,0.15);color:#22c55e':diff==='med'?'rgba(251,191,36,0.15);color:#fbbf24':'rgba(239,68,68,0.15);color:#ef4444';
-}
-
-function getTagLabel(tag) {
-  const t = i18n[currentLang];
-  const map = {traditional:t.traditional,vegetarian:t.vegetarian,festive:t.festive,street:t.street};
-  return map[tag]||tag;
-}
-
-function getTagColor(tag) {
-  const map = {traditional:'rgba(59,130,246,0.15);color:#3b82f6',vegetarian:'rgba(34,197,94,0.15);color:#22c55e',festive:'rgba(245,166,35,0.15);color:#f5a623',street:'rgba(239,68,68,0.15);color:#ef4444'};
-  return map[tag]||'rgba(255,255,255,0.1);color:#fff';
-}
-
-function renderRecipeCard(r, country) {
-  const t = i18n[currentLang];
-  const bgColors = {
-    'cameroun':'linear-gradient(135deg,#052a14,#0a3d1e)',
-    'senegal':'linear-gradient(135deg,#0a1f08,#1a3d10)',
-    'cote-ivoire':'linear-gradient(135deg,#2d1100,#4a2000)',
-    'nigeria':'linear-gradient(135deg,#051a0a,#0a3015)',
-    'rdc':'linear-gradient(135deg,#00100a,#001f30)',
-    'france':'linear-gradient(135deg,#00052a,#0a0f2d)',
-    'allemagne':'linear-gradient(135deg,#1a0000,#2d0000)',
-    'italie':'linear-gradient(135deg,#002008,#003015)',
-    'espagne':'linear-gradient(135deg,#2a0000,#400000)',
-  };
-  return `
-    <div class="recipe-card" onclick="openModal('${country.id}','${r.id}')">
-      <div class="rc-top" style="background:${bgColors[country.id]||'#131920'}">
-        <span class="rc-country-badge">${country.flag}</span>
-        <span class="rc-tag" style="background:${getTagColor(r.tag).split(';')[0]};${getTagColor(r.tag).split(';')[1]}">${getTagLabel(r.tag)}</span>
-        <span>${r.emoji}</span>
+function renderCard(r,country){
+  const t=i18n[currentLang];
+  return `<div class="recipe-card" onclick="openModal('${country.id}','${r.id}')">
+    <div class="rc-top" style="background:${r.bg||'#131920'}">
+      <span class="rc-country-badge">${country.flag}</span>
+      <span class="rc-tag" style="background:${getTagColor(r.tag).split(';')[0]};${getTagColor(r.tag).split(';')[1]}">${getTagLabel(r.tag)}</span>
+      <span>${r.emoji}</span>
+    </div>
+    <div class="rc-body">
+      <div class="rc-name">${r.name[currentLang]}</div>
+      <div class="rc-origin">📍 ${r.origin[currentLang]}</div>
+      <div class="rc-desc">${r.desc[currentLang].substring(0,85)}...</div>
+      <div class="rc-macros">
+        <span class="rcm-item" style="background:rgba(251,191,36,0.1);color:#fbbf24">${r.cal} kcal</span>
+        <span class="rcm-item" style="background:rgba(34,197,94,0.1);color:#22c55e">${r.prot}g ${t.prot}</span>
+        <span class="rcm-item" style="background:rgba(239,68,68,0.1);color:#ef4444">${r.fat}g ${t.fat}</span>
       </div>
-      <div class="rc-body">
-        <div class="rc-name">${r.name[currentLang]}</div>
-        <div class="rc-origin">📍 ${r.origin[currentLang]}</div>
-        <div class="rc-desc">${r.desc[currentLang].substring(0,90)}...</div>
-        <div class="rc-macros">
-          <span class="rcm-item" style="background:rgba(251,191,36,0.1);color:#fbbf24">${r.cal} kcal</span>
-          <span class="rcm-item" style="background:rgba(34,197,94,0.1);color:#22c55e">${r.prot}g ${t.prot}</span>
-          <span class="rcm-item" style="background:rgba(239,68,68,0.1);color:#ef4444">${r.fat}g ${t.fat}</span>
-        </div>
-        <div class="rc-footer">
-          <div class="rf-time">⏱ ${r.time} ${t.min}</div>
-          <div class="rf-diff" style="background:${getDiffColor(r.diff).split(';')[0]};${getDiffColor(r.diff).split(';')[1]}">${getDiffLabel(r.diff)}</div>
-          <button class="rf-add" onclick="event.stopPropagation();addToJournal('${r.name[currentLang]}',${r.cal})">+</button>
-        </div>
+      <div class="rc-footer">
+        <div class="rf-time">⏱ ${r.time} ${t.min}</div>
+        <div class="rf-diff" style="background:${getDiffColor(r.diff).split(';')[0]};${getDiffColor(r.diff).split(';')[1]}">${getDiff(r.diff)}</div>
+        <button class="rf-add" onclick="event.stopPropagation();alert('✅ Ajouté !')">+</button>
       </div>
-    </div>`;
+    </div>
+  </div>`;
 }
 
-function openModal(countryId, recipeId) {
-  const country = countries.find(c=>c.id===countryId);
-  const r = country?.recipes.find(x=>x.id===recipeId);
-  if(!r) return;
-  currentRecipe = {r, country};
-  const t = i18n[currentLang];
-  document.getElementById('modal-box').innerHTML = `
+function openModal(cid,rid){
+  const country=countries.find(c=>c.id===cid);
+  const r=country?.recipes.find(x=>x.id===rid);
+  if(!r)return;
+  currentRecipe={r,country};
+  const t=i18n[currentLang];
+  document.getElementById('modal-box').innerHTML=`
     <div class="mb-header">
       <span class="mb-emoji">${r.emoji}</span>
-      <div>
-        <div class="mb-title">${r.name[currentLang]}</div>
-        <div class="mb-origin">${country.flag} ${r.origin[currentLang]} · ⏱ ${r.time} ${t.min} · ${getDiffLabel(r.diff)}</div>
-      </div>
+      <div><div class="mb-title">${r.name[currentLang]}</div><div class="mb-origin">${country.flag} ${r.origin[currentLang]} · ⏱ ${r.time} ${t.min}</div></div>
       <button class="mb-close" onclick="closeModal()">✕</button>
     </div>
     <div class="mb-macros">
@@ -513,57 +403,83 @@ function openModal(countryId, recipeId) {
     </div>
     <div class="mb-body">
       <div style="font-size:0.85rem;color:#c9d1d9;line-height:1.65;margin-bottom:1.2rem">${r.desc[currentLang]}</div>
-      <div class="mb-section">
-        <div class="mbs-title">🥬 ${t.ingredients}</div>
-        <div class="mbs-list">${r.ingredients[currentLang].map(i=>`<div class="mbl-item">• ${i}</div>`).join('')}</div>
-      </div>
-      <div class="mb-section">
-        <div class="mbs-title">👨‍🍳 ${t.steps}</div>
-        <div class="mbs-list">${r.steps[currentLang].map((s,i)=>`<div class="mbl-item"><span class="mbl-num">${i+1}</span>${s}</div>`).join('')}</div>
-      </div>
-      <div style="font-size:0.72rem;color:#4d6070;margin-bottom:0.5rem;text-align:center">${t.per_portion}</div>
-      <button class="mb-add-btn" onclick="addToJournal('${r.name[currentLang].replace(/'/g,"\\'")}',${r.cal});closeModal()">🍽️ ${t.add_journal}</button>
+      <div class="mb-section"><div class="mbs-title">🥬 ${t.ingredients}</div>${r.ingredients[currentLang].map(i=>`<div class="mbl-item">• ${i}</div>`).join('')}</div>
+      <div class="mb-section"><div class="mbs-title">👨‍🍳 ${t.steps}</div>${r.steps[currentLang].map((s,i)=>`<div class="mbl-item"><span class="mbl-num">${i+1}</span>${s}</div>`).join('')}</div>
+      <div style="font-size:0.72rem;color:#4d6070;text-align:center;margin-bottom:0.5rem">${t.per_portion}</div>
+      <button class="mb-add-btn" onclick="alert('✅ ${r.name[currentLang].replace(/'/g,"\\'")} ajouté !');closeModal()">🍽️ ${t.add_journal}</button>
     </div>`;
   document.getElementById('recipe-modal').classList.add('open');
 }
 
-function closeModal() { document.getElementById('recipe-modal').classList.remove('open'); }
+function closeModal(){document.getElementById('recipe-modal').classList.remove('open')}
 
-function addToJournal(name, cal) {
-  const t = i18n[currentLang];
-  const msgs = {fr:`✅ "${name}" ajouté au journal ! +${cal} kcal`,en:`✅ "${name}" added to journal! +${cal} kcal`,de:`✅ "${name}" zum Tagebuch hinzugefügt! +${cal} kcal`};
-  alert(msgs[currentLang]);
-}
-
-function setLang(lang, btn) {
-  currentLang = lang;
+function setLang(lang,btn){
+  currentLang=lang;
   document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  document.documentElement.lang = lang;
-  document.getElementById('search-input').placeholder = i18n[lang].search;
-  document.getElementById('hero-badge').textContent = '';
-  document.getElementById('hero-badge').textContent = i18n[lang].badge;
-  document.getElementById('hero-title').innerHTML = i18n[lang].title;
-  document.getElementById('hero-sub').textContent = i18n[lang].sub;
-  renderContinentNav();
-  renderMain();
-  if(currentRecipe) openModal(currentRecipe.country.id, currentRecipe.r.id);
+  const t=i18n[lang];
+  document.getElementById('hero-badge').textContent=t.badge;
+  document.getElementById('hero-title').innerHTML=t.title;
+  document.getElementById('hero-sub').textContent=t.sub;
+  document.getElementById('search-input').placeholder=t.search;
+  document.getElementById('stat-recipes').textContent=t.recipes;
+  document.getElementById('stat-countries').textContent=t.countries;
+  document.getElementById('stat-continents').textContent=t.continents;
+  document.getElementById('stat-languages').textContent=t.languages;
+  document.getElementById('coach-sub').textContent=t.coach_sub;
+  document.getElementById('coach-input').placeholder=t.coach_placeholder;
+  renderContinentNav();renderMain();
 }
 
-function setContinent(id, btn, color) {
-  currentContinent = id;
-  renderContinentNav();
-  renderMain();
+function setContinent(id,color){
+  currentContinent=id;
+  renderContinentNav();renderMain();
 }
 
-function handleSearch(q) {
-  searchQuery = q;
-  renderMain();
+function handleSearch(q){searchQuery=q;renderMain()}
+
+// ── COACH IA ──
+let coachOpen=false;
+function toggleCoach(){
+  coachOpen=!coachOpen;
+  document.getElementById('coach-panel').classList.toggle('open',coachOpen);
+}
+
+const coachResponses={
+  fr:{'ndolé':'Le Ndolé est riche en fer (8.9mg/100g) et en protéines. Excellent contre l\'anémie ! 🌿','calories':'Les calories varient selon les plats. Le Ndolé ≈ 380 kcal, le Poulet DG ≈ 520 kcal, la Ratatouille ≈ 180 kcal.','protéines':'Les meilleures sources de protéines : crevettes, bœuf fumé, poulet (28-42g/portion). 💪','diabète':'Privilégiez : Ratatouille (IG bas), Eru & Waterleaf, Kédjénou. Évitez : Jollof Rice, Foutou.','grossesse':'Pendant la grossesse : Ndolé (fer+folates), Eru (magnésium), Injera éthiopien (fibres). 🤰','default':'Je suis votre Coach NutriCam ! Posez-moi des questions sur les recettes, les calories, les nutriments ou la nutrition santé. 🤖'},
+  en:{'ndole':'Ndolé is rich in iron (8.9mg/100g) and protein. Excellent against anaemia! 🌿','calories':'Calories vary by dish. Ndolé ≈ 380 kcal, Poulet DG ≈ 520 kcal, Ratatouille ≈ 180 kcal.','protein':'Best protein sources: shrimp, smoked beef, chicken (28-42g/portion). 💪','diabetes':'Prefer: Ratatouille (low GI), Eru & Waterleaf, Kédjénou. Avoid: Jollof Rice.','pregnancy':'During pregnancy: Ndolé (iron+folate), Eru (magnesium), Ethiopian Injera (fiber). 🤰','default':'I am your NutriCam Coach! Ask me about recipes, calories, nutrients or health nutrition. 🤖'},
+  de:{'ndole':'Ndolé ist reich an Eisen (8,9mg/100g) und Proteinen. Ausgezeichnet gegen Anämie! 🌿','kalorien':'Kalorien variieren: Ndolé ≈ 380 kcal, Hähnchen DG ≈ 520 kcal, Ratatouille ≈ 180 kcal.','protein':'Beste Proteinquellen: Garnelen, Räucherfleisch, Hähnchen (28-42g). 💪','diabetes':'Bevorzugen: Ratatouille, Eru & Waterleaf, Kédjénou. Vermeiden: Jollof Reis.','schwangerschaft':'Während der Schwangerschaft: Ndolé (Eisen+Folsäure), Eru (Magnesium). 🤰','default':'Ich bin Ihr NutriCam-Coach! Fragen Sie mich zu Rezepten, Kalorien, Nährstoffen. 🤖'}
+};
+
+async function sendCoachMsg(){
+  const input=document.getElementById('coach-input');
+  const msg=input.value.trim();
+  if(!msg)return;
+  input.value='';
+
+  const msgs=document.getElementById('coach-messages');
+  msgs.innerHTML+=`<div class="msg-user">${msg}</div>`;
+  msgs.innerHTML+=`<div class="msg-ai msg-loading" id="loading"><div class="msg-dot"></div><div class="msg-dot"></div><div class="msg-dot"></div></div>`;
+  msgs.scrollTop=msgs.scrollHeight;
+
+  await new Promise(r=>setTimeout(r,800));
+
+  const loading=document.getElementById('loading');
+  if(loading)loading.remove();
+
+  const responses=coachResponses[currentLang]||coachResponses.fr;
+  const q=msg.toLowerCase();
+  let reply=responses.default;
+  for(const[key,val] of Object.entries(responses)){
+    if(q.includes(key)){reply=val;break;}
+  }
+
+  msgs.innerHTML+=`<div class="msg-ai">${reply}</div>`;
+  msgs.scrollTop=msgs.scrollHeight;
 }
 
 // INIT
-renderContinentNav();
-renderMain();
+renderContinentNav();renderMain();
 </script>
 </body>
 </html>
