@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Recettes Détaillées & Boissons Detox</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,800&family=Cabinet+Grotesk:wght@300;400;500;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#030805;--s1:#071009;--s2:#0c1a0e;--s3:#111f13;
+  --gold:#f0a500;--gold2:#fbbf24;--green:#16a34a;--gl:#22c55e;
+  --glight:#4ade80;--red:#ef4444;--blue:#3b82f6;--purple:#a855f7;
+  --teal:#14b8a6;--orange:#f97316;
+  --border:rgba(255,255,255,0.06);--border2:rgba(34,197,94,0.15);
+  --text:#dff0e2;--muted:#3d6047;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* NAV */
+.nav{background:rgba(3,8,5,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0.9rem 2rem;display:flex;align-items:center;gap:1rem;position:sticky;top:0;z-index:100}
+.nav-logo{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;color:#fff;text-decoration:none}
+.nav-logo em{color:var(--gold);font-style:italic}
+.nav-search{flex:1;max-width:340px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:100px;padding:0.5rem 1rem;color:#fff;font-size:0.85rem;font-family:'Cabinet Grotesk',sans-serif;outline:none;transition:all 0.2s}
+.nav-search:focus{border-color:var(--border2)}
+.nav-search::placeholder{color:var(--muted)}
+.nav-right{display:flex;align-items:center;gap:0.5rem;margin-left:auto}
+.nav-btn{background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--muted);padding:0.4rem 0.9rem;border-radius:8px;font-size:0.75rem;font-weight:700;text-decoration:none;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;transition:all 0.2s}
+.nav-btn:hover{color:#fff}
+.nav-btn.active{background:rgba(34,197,94,0.1);border-color:var(--border2);color:var(--gl)}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#030805 0%,#071a09 50%,#0a2010 100%);padding:3.5rem 2rem;text-align:center;position:relative;overflow:hidden;border-bottom:1px solid var(--border)}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(240,165,0,0.05),transparent);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(240,165,0,0.08);border:1px solid rgba(240,165,0,0.2);color:var(--gold);font-size:0.72rem;font-weight:800;padding:0.3rem 1rem;border-radius:100px;margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.1em}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(2rem,4vw,3.5rem);font-weight:900;color:#fff;margin-bottom:0.5rem;line-height:1}
+.hero h1 em{color:var(--gold);font-style:italic}
+.hero-sub{color:var(--muted);font-size:0.9rem;max-width:580px;margin:0 auto;line-height:1.7}
+
+/* CATEGORY TABS */
+.cat-tabs{display:flex;gap:0.5rem;padding:1.2rem 2rem;overflow-x:auto;background:var(--s1);border-bottom:1px solid var(--border);position:sticky;top:65px;z-index:90}
+.cat-tabs::-webkit-scrollbar{height:3px}
+.cat-btn{display:flex;align-items:center;gap:0.4rem;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:100px;padding:0.5rem 1.1rem;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;transition:all 0.2s;color:var(--muted);white-space:nowrap;flex-shrink:0}
+.cat-btn:hover{color:#fff}
+.cat-btn.active{background:rgba(240,165,0,0.1);border-color:rgba(240,165,0,0.3);color:var(--gold)}
+
+/* MAIN */
+.main{max-width:1100px;margin:0 auto;padding:2.5rem 2rem}
+
+/* SECTION */
+.recipe-section{margin-bottom:3rem}
+.rs-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;padding-bottom:0.8rem;border-bottom:1px solid var(--border)}
+.rs-flag{font-size:1.8rem}
+.rs-country{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;color:#fff}
+.rs-line{flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent)}
+
+/* RECIPE CARD DÉTAILLÉE */
+.recipe-card{background:var(--s2);border:1px solid var(--border);border-radius:22px;overflow:hidden;margin-bottom:1.5rem;transition:all 0.2s}
+.recipe-card:hover{border-color:var(--border2)}
+
+.rc-header{padding:1.5rem;display:flex;align-items:flex-start;gap:1rem;cursor:pointer;border-bottom:1px solid var(--border)}
+.rc-emoji{font-size:3rem;flex-shrink:0;line-height:1}
+.rc-info{flex:1}
+.rc-top{display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;margin-bottom:0.3rem}
+.rc-name{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;color:#fff}
+.rc-origin{font-size:0.72rem;color:var(--muted)}
+.rc-tags{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.5rem}
+.tag{font-size:0.62rem;font-weight:800;padding:0.15rem 0.55rem;border-radius:4px;text-transform:uppercase;letter-spacing:0.06em}
+.tag-trad{background:rgba(59,130,246,0.1);color:#3b82f6}
+.tag-veg{background:rgba(34,197,94,0.1);color:var(--gl)}
+.tag-fest{background:rgba(240,165,0,0.1);color:var(--gold)}
+.tag-street{background:rgba(239,68,68,0.1);color:var(--red)}
+.tag-detox{background:rgba(20,184,166,0.1);color:var(--teal)}
+.tag-ghana{background:rgba(34,197,94,0.1);color:var(--gl)}
+
+.rc-desc{font-size:0.85rem;color:var(--muted);line-height:1.6}
+.rc-expand{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;padding:0.4rem 0.8rem;font-size:0.75rem;font-weight:700;color:var(--muted);cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;transition:all 0.2s;margin-left:auto;flex-shrink:0}
+.rc-expand:hover{color:#fff}
+
+/* Macros bar */
+.rc-macros{display:flex;gap:0.8rem;padding:1rem 1.5rem;border-bottom:1px solid var(--border);flex-wrap:wrap;background:rgba(0,0,0,0.1)}
+.macro-item{display:flex;flex-direction:column;align-items:center;min-width:60px}
+.macro-val{font-family:'DM Mono',monospace;font-size:1rem;font-weight:700}
+.macro-label{font-size:0.6rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-top:0.1rem}
+.macro-bar{width:100%;height:3px;border-radius:2px;margin-top:0.3rem;opacity:0.4}
+
+/* Timing badges */
+.rc-timing{display:flex;gap:1rem;padding:0.8rem 1.5rem;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.05)}
+.time-badge{display:flex;align-items:center;gap:0.4rem;font-size:0.78rem;font-weight:700;color:var(--text)}
+.time-badge span{color:var(--muted);font-weight:400;font-size:0.72rem}
+
+/* DÉTAILS RECIPE (expandable) */
+.rc-details{display:none;padding:1.5rem}
+.rc-details.open{display:block;animation:fadeIn 0.3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* Ingrédients */
+.detail-section{margin-bottom:1.5rem}
+.ds-title{font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold);margin-bottom:0.8rem;display:flex;align-items:center;gap:0.4rem}
+.ingredients-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0.5rem}
+.ing-item{display:flex;align-items:center;gap:0.7rem;padding:0.6rem 0.8rem;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;font-size:0.82rem;color:var(--text)}
+.ing-qty{font-family:'DM Mono',monospace;font-size:0.78rem;font-weight:700;color:var(--gold);min-width:60px;flex-shrink:0}
+.ing-name{flex:1}
+.ing-note{font-size:0.68rem;color:var(--muted);font-style:italic}
+
+/* Ustensiles */
+.tools-list{display:flex;gap:0.5rem;flex-wrap:wrap}
+.tool-chip{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:0.3rem 0.7rem;font-size:0.75rem;color:var(--text);display:flex;align-items:center;gap:0.3rem}
+
+/* Étapes */
+.steps-list{display:flex;flex-direction:column;gap:1rem}
+.step-item{display:flex;gap:1rem;padding:1rem;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:14px;transition:all 0.2s;cursor:pointer}
+.step-item:hover{background:rgba(255,255,255,0.04);border-color:var(--border2)}
+.step-item.done{background:rgba(34,197,94,0.04);border-color:rgba(34,197,94,0.2)}
+.step-item.done .step-text{text-decoration:line-through;opacity:0.5}
+.step-num{width:32px;height:32px;border-radius:50%;background:rgba(240,165,0,0.1);border:1px solid rgba(240,165,0,0.3);color:var(--gold);font-size:0.8rem;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'DM Mono',monospace}
+.step-item.done .step-num{background:rgba(34,197,94,0.15);border-color:var(--gl);color:var(--gl)}
+.step-content{flex:1}
+.step-duration{font-size:0.65rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.3rem;display:flex;align-items:center;gap:0.3rem}
+.step-text{font-size:0.85rem;color:var(--text);line-height:1.7}
+.step-tip{font-size:0.75rem;color:var(--gl);margin-top:0.4rem;background:rgba(34,197,94,0.05);border-left:2px solid var(--gl);padding:0.3rem 0.6rem;border-radius:0 6px 6px 0}
+.step-warning{font-size:0.75rem;color:var(--gold);margin-top:0.4rem;background:rgba(240,165,0,0.05);border-left:2px solid var(--gold);padding:0.3rem 0.6rem;border-radius:0 6px 6px 0}
+
+/* Conseils chef */
+.chef-tips{background:rgba(240,165,0,0.04);border:1px solid rgba(240,165,0,0.2);border-radius:14px;padding:1rem 1.2rem;margin-top:1rem}
+.ct-title{font-size:0.75rem;font-weight:800;color:var(--gold);margin-bottom:0.6rem}
+.ct-list{display:flex;flex-direction:column;gap:0.4rem}
+.ct-item{font-size:0.8rem;color:var(--text);display:flex;gap:0.5rem;line-height:1.5}
+
+/* Variantes */
+.variants{background:rgba(59,130,246,0.04);border:1px solid rgba(59,130,246,0.15);border-radius:14px;padding:1rem 1.2rem;margin-top:1rem}
+.var-title{font-size:0.75rem;font-weight:800;color:#3b82f6;margin-bottom:0.5rem}
+.var-text{font-size:0.8rem;color:var(--text);line-height:1.6}
+
+/* DETOX SECTION */
+.detox-section{background:linear-gradient(135deg,rgba(20,184,166,0.04),rgba(34,197,94,0.03));border:1px solid rgba(20,184,166,0.15);border-radius:22px;overflow:hidden;margin-bottom:1.5rem}
+.detox-header{padding:1.2rem 1.5rem;border-bottom:1px solid rgba(20,184,166,0.15);display:flex;align-items:center;gap:0.8rem;cursor:pointer}
+.dh-icon{font-size:2rem}
+.dh-name{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:900;color:#fff}
+.dh-sub{font-size:0.72rem;color:var(--teal)}
+.dh-tags{display:flex;gap:0.3rem;margin-top:0.2rem;flex-wrap:wrap}
+.detox-macros{display:flex;gap:1rem;padding:0.8rem 1.5rem;border-bottom:1px solid rgba(20,184,166,0.1);flex-wrap:wrap}
+.dm-item{font-size:0.75rem;color:var(--teal);font-family:'DM Mono',monospace;font-weight:700}
+.dm-label{color:var(--muted);font-weight:400}
+.detox-details{display:none;padding:1.5rem}
+.detox-details.open{display:block;animation:fadeIn 0.3s ease}
+.detox-benefits{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem}
+.benefit-chip{background:rgba(20,184,166,0.08);border:1px solid rgba(20,184,166,0.2);border-radius:8px;padding:0.3rem 0.7rem;font-size:0.72rem;color:var(--teal);font-weight:700}
+
+/* PROGRESS BAR */
+.cook-progress{margin:1rem 0;padding:0.8rem 1rem;background:rgba(255,255,255,0.02);border-radius:12px;border:1px solid var(--border)}
+.cp-label{font-size:0.72rem;color:var(--muted);margin-bottom:0.5rem;display:flex;justify-content:space-between}
+.cp-bar{height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden}
+.cp-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--gl));border-radius:3px;transition:width 0.5s ease;width:0%}
+
+/* EMPTY */
+.empty-state{text-align:center;padding:4rem;color:var(--muted)}
+
+@media(max-width:768px){.ingredients-grid{grid-template-columns:1fr}.main{padding:1.5rem 1rem}.rc-macros{gap:0.6rem}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="nutricam-hub.html" class="nav-logo">Nutri<em>Cam</em></a>
+  <input class="nav-search" type="text" placeholder="🔍 Rechercher une recette..." oninput="filterRecipes(this.value)"/>
+  <div class="nav-right">
+    <a href="nutricam-hub.html" class="nav-btn">← Hub</a>
+    <button class="nav-btn active" onclick="filterCat('all',this)">🌍 Toutes</button>
+    <button class="nav-btn" onclick="filterCat('afrique',this)">🌍 Afrique</button>
+    <button class="nav-btn" onclick="filterCat('europe',this)">🌍 Europe</button>
+    <button class="nav-btn" onclick="filterCat('detox',this)">🌿 Detox</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-badge">👨‍🍳 Guide culinaire complet · Novice à Expert</div>
+  <h1>Recettes <em>Détaillées</em><br/>& Boissons Santé</h1>
+  <p class="hero-sub">Chaque recette expliquée étape par étape avec les durées exactes, les astuces de chef et les valeurs nutritionnelles. Même un débutant peut réussir !</p>
+</div>
+
+<!-- CATEGORY TABS -->
+<div class="cat-tabs">
+  <button class="cat-btn active" onclick="filterCat('all',this)">🌍 Toutes les recettes</button>
+  <button class="cat-btn" onclick="filterCat('ghana',this)">🇬🇭 Ghana</button>
+  <button class="cat-btn" onclick="filterCat('cameroun',this)">🇨🇲 Cameroun</button>
+  <button class="cat-btn" onclick="filterCat('senegal',this)">🇸🇳 Sénégal</button>
+  <button class="cat-btn" onclick="filterCat('nigeria',this)">🇳🇬 Nigeria</button>
+  <button class="cat-btn" onclick="filterCat('maroc',this)">🇲🇦 Maroc</button>
+  <button class="cat-btn" onclick="filterCat('france',this)">🇫🇷 France</button>
+  <button class="cat-btn" onclick="filterCat('allemagne',this)">🇩🇪 Allemagne</button>
+  <button class="cat-btn" onclick="filterCat('detox',this)">🌿 Detox & Jus</button>
+</div>
+
+<!-- MAIN -->
+<div class="main" id="main-content">
+
+<!-- ══════════════════════════════════════════════════════
+     🇬🇭 GHANA
+══════════════════════════════════════════════════════ -->
+<div class="recipe-section" data-cat="ghana">
+  <div class="rs-header">
+    <span class="rs-flag">🇬🇭</span>
+    <span class="rs-country">Ghana</span>
+    <div class="rs-line"></div>
+  </div>
+
+  <!-- FUFU & LIGHT SOUP -->
+  <div class="recipe-card">
+    <div class="rc-header" onclick="toggleRecipe(this)">
+      <span class="rc-emoji">🫙</span>
+      <div class="rc-info">
+        <div class="rc-top">
+          <span class="rc-name">Fufu & Light Soup au poulet</span>
+        </div>
+        <div class="rc-tags">
+          <span class="tag tag-trad">Traditionnel</span>
+          <span class="tag tag-ghana">🇬🇭 Ghana</span>
+        </div>
+        <div class="rc-desc">Le plat emblématique ghanéen — pâte de manioc et d'igname pilée à la main, accompagnée d'une soupe légère parfumée au gingembre et piment. Un repas complet et nourrissant.</div>
+      </div>
+      <button class="rc-expand">▼ Voir la recette</button>
+    </div>
+    <div class="rc-macros">
+      <div class="macro-item"><span class="macro-val" style="color:#fbbf24">380</span><span class="macro-label">kcal</span><div class="macro-bar" style="background:#fbbf24"></div></div>
+      <div class="macro-item"><span class="macro-val" style="color:#22c55e">22g</span><span class="macro-label">Protéines</span><div class="macro-bar" style="background:#22c55e"></div></div>
+      <div class="macro-item"><span class="macro-val" style="color:#fbbf24">48g</span><span class="macro-label">Glucides</span><div class="macro-bar" style="background:#fbbf24"></div></div>
+      <div class="macro-item"><span class="macro-val" style="color:#ef4444">10g</span><span class="macro-label">Lipides</span><div class="macro-bar" style="background:#ef4444"></div></div>
+      <div class="macro-item"><span class="macro-val" style="color:#a855f7">5g</span><span class="macro-label">Fibres</span><div class="macro-bar" style="background:#a855f7"></div></div>
+    </div>
+    <div class="rc-timing">
+      <span class="time-badge">⏱ Préparation <span>20 min</span></span>
+      <span class="time-badge">🔥 Cuisson <span>55 min</span></span>
+      <span class="time-badge">⏳ Total <span>1h15</span></span>
+      <span class="time-badge">👥 Portions <span>4 personnes</span></span>
+      <span class="time-badge">📊 Niveau <span>Moyen</span></span>
+    </div>
+    <div class="rc-details">
+      <div class="detail-section">
+        <div class="ds-title">🥘 Ingrédients — Fufu (4 personnes)</div>
+        <div class="ingredients-grid">
+          <div class="ing-item"><span class="ing-qty">600g</span><span class="ing-name">Manioc frais<span class="ing-note"> (pelé et coupé)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">400g</span><span class="ing-name">Igname blanche<span class="ing-note"> (pelée et coupée)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">1L</span><span class="ing-name">Eau pour cuisson</span></div>
+          <div class="ing-item"><span class="ing-qty">1 cc</span><span class="ing-name">Sel</span></div>
+        </div>
+      </div>
+      <div class="detail-section">
+        <div class="ds-title">🍲 Ingrédients — Light Soup (4 personnes)</div>
+        <div class="ingredients-grid">
+          <div class="ing-item"><span class="ing-qty">1 kg</span><span class="ing-name">Poulet entier<span class="ing-note"> (découpé en 8 morceaux)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">4</span><span class="ing-name">Tomates mûres<span class="ing-note"> (mixées)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">2</span><span class="ing-name">Oignons<span class="ing-note"> (1 haché, 1 mixé)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">4 cm</span><span class="ing-name">Gingembre frais<span class="ing-note"> (râpé finement)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">4</span><span class="ing-name">Gousses d'ail<span class="ing-note"> (écrasées)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">2</span><span class="ing-name">Piments scotch bonnet<span class="ing-note"> (entiers ou mixés selon force)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">1.5L</span><span class="ing-name">Eau ou bouillon de poulet</span></div>
+          <div class="ing-item"><span class="ing-qty">2</span><span class="ing-name">Cubes de bouillon Maggi</span></div>
+          <div class="ing-item"><span class="ing-qty">1 bouquet</span><span class="ing-name">Persil ou feuilles de basilic africain</span></div>
+          <div class="ing-item"><span class="ing-qty">Sel</span><span class="ing-name">Poivre noir<span class="ing-note"> (selon goût)</span></span></div>
+        </div>
+      </div>
+      <div class="detail-section">
+        <div class="ds-title">🔧 Ustensiles nécessaires</div>
+        <div class="tools-list">
+          <span class="tool-chip">🪣 Grand mortier et pilon (pour le fufu)</span>
+          <span class="tool-chip">🥘 Grande marmite (6L minimum)</span>
+          <span class="tool-chip">🔪 Couteau et planche</span>
+          <span class="tool-chip">🌀 Mixeur ou blender</span>
+          <span class="tool-chip">🥄 Grande cuillère en bois</span>
+          <span class="tool-chip">⏱ Minuteur</span>
+        </div>
+      </div>
+      <div class="detail-section">
+        <div class="ds-title">👨‍🍳 Préparation — Étapes détaillées</div>
+        <div class="cook-progress"><div class="cp-label"><span>Progression</span><span id="prog-fufu">0%</span></div><div class="cp-bar"><div class="cp-fill" id="fill-fufu"></div></div></div>
+        <div class="steps-list">
+          <div class="step-item" onclick="checkStep(this,'fufu',1,10)">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 5 minutes — Préparation</div>
+              <div class="step-text">Pelez et coupez le manioc et l'igname en gros cubes de 4-5 cm. Rincez-les abondamment sous l'eau froide pour enlever l'amidon. Dans une grande marmite, portez 1L d'eau à ébullition à feu vif.</div>
+              <div class="step-tip">💡 Astuce : Le manioc cuit plus vite que l'igname. Ajoutez le manioc 5 minutes avant l'igname si vous les faites cuire ensemble.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'fufu',2,10)">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 25-30 minutes — Cuisson fufu</div>
+              <div class="step-text">Ajoutez les morceaux de manioc et d'igname dans l'eau bouillante avec 1 cc de sel. Couvrez et laissez cuire à feu moyen-fort. Ils sont prêts quand une fourchette les transperce sans résistance (comme des pommes de terre cuites). Égouttez complètement.</div>
+              <div class="step-warning">⚠️ Ne pas trop cuire : les morceaux doivent rester fermes (pas en purée), sinon ils seront impossibles à piler correctement.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'fufu',3,10)">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 15-20 minutes — Pilage (étape clé !)</div>
+              <div class="step-text">Transférez les morceaux encore chauds dans le mortier. Pilez énergiquement avec le pilon en effectuant des mouvements de haut en bas réguliers. Retournez la pâte entre les coups de pilon. Continuez jusqu'à obtenir une pâte lisse, élastique et sans grumeaux. Ajoutez 2-3 cuillères d'eau chaude si la pâte est trop sèche.</div>
+              <div class="step-tip">💡 Technique : Tenez le pilon à deux mains, montez-le à hauteur d'épaule et frappez au centre du mortier. Après chaque 5 coups, humidifiez vos mains et retournez la pâte.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'fufu',4,10)">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 2 minutes — Façonnage</div>
+              <div class="step-text">Avec des mains légèrement humides, formez des boules de la taille d'une orange (environ 120g chacune). Posez-les dans un bol légèrement huilé pour éviter qu'elles ne collent. Couvrez d'un film plastique pour garder la chaleur le temps de préparer la soupe.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'fufu',5,10)">
+            <div class="step-num">5</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 5 minutes — Préparation soupe</div>
+              <div class="step-text">Dans une grande marmite, faites dorer les morceaux de poulet à feu vif sans matière grasse pendant 3-4 minutes de chaque côté. Le poulet doit être légèrement doré mais pas cuit. Réservez. Pendant ce temps, mixez ensemble tomates, 1 oignon, gingembre et ail jusqu'à obtenir un coulis lisse.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'fufu',6,10)">
+            <div class="step-num">6</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 5 minutes — Base soupe</div>
+              <div class="step-text">Dans la même marmite, faites revenir l'oignon haché à feu moyen pendant 3 minutes jusqu'à ce qu'il soit translucide. Ajoutez le coulis tomate-gingembre-ail. Faites cuire en remuant pendant 5 minutes jusqu'à ce que la sauce réduise et change de couleur (elle devient plus foncée).</div>
+              <div class="step-tip">💡 C'est important de "frire" la sauce tomate — ça enlève l'acidité et développe les arômes.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'fufu',7,10)">
+            <div class="step-num">7</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 30-35 minutes — Cuisson soupe</div>
+              <div class="step-text">Remettez le poulet dans la marmite. Ajoutez 1.5L d'eau chaude, les piments entiers (ne pas couper pour une soupe moins forte) et les cubes de bouillon émiettés. Portez à ébullition, puis réduisez à feu moyen. Couvrez et laissez mijoter 30-35 minutes jusqu'à ce que le poulet soit tendre et se détache facilement de l'os.</div>
+              <div class="step-warning">⚠️ Ne jamais bouillir violemment : la soupe doit frémir doucement pour rester claire et "light".</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'fufu',8,10)">
+            <div class="step-num">8</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 3 minutes — Finitions</div>
+              <div class="step-text">Goûtez et ajustez l'assaisonnement (sel, piment). Ajoutez le persil haché ou les feuilles de basilic africain. Laissez reposer 2 minutes couvert hors du feu. Retirez les piments entiers si vous ne souhaitez pas une soupe trop forte.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'fufu',9,10)">
+            <div class="step-num">9</div>
+            <div class="step-content">
+              <div class="step-duration">🍽️ Service — Comment manger le Fufu</div>
+              <div class="step-text">Servez la boule de fufu dans un bol profond. Versez généreusement la soupe chaude avec les morceaux de poulet autour. On mange le fufu à la main : on pince un morceau de pâte avec les doigts, on forme une petite boule, on fait un creux avec le pouce et on trempe dans la soupe avant d'avaler sans mâcher (c'est la tradition ghanéenne !).</div>
+              <div class="step-tip">💡 Le fufu se mange traditionnellement sans couverts. La texture élastique fait que ça glisse facilement. Ne jamais mâcher — on trempe et on avale !</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chef-tips">
+        <div class="ct-title">👨‍🍳 Conseils du Chef</div>
+        <div class="ct-list">
+          <div class="ct-item"><span>🌡️</span>Le fufu doit se servir chaud — il durcit en refroidissant.</div>
+          <div class="ct-item"><span>🥘</span>La soupe peut aussi se préparer avec du mouton, du bœuf ou du poisson fumé.</div>
+          <div class="ct-item"><span>🌶️</span>Pour une soupe moins piquante : retirez les graines du piment ou n'en mettez qu'un seul.</div>
+          <div class="ct-item"><span>🧊</span>Conservation : la soupe se conserve 3 jours au réfrigérateur. Le fufu se conserve 1 jour sous film plastique.</div>
+        </div>
+      </div>
+      <div class="variants">
+        <div class="var-title">🔄 Variantes régionales</div>
+        <div class="var-text"><strong>Fufu de plantain :</strong> Remplacez l'igname par des plantains verts bouillis — donne une texture plus douce.<br/><strong>Fufu instantané :</strong> Il existe des farines de fufu en poudre (marque "Tropiway" ou "Anchor") qui se préparent en 5 min avec de l'eau bouillante — idéal pour la diaspora !<br/><strong>Soupe noire (Black soup) :</strong> Ajoutez des feuilles de cocoyam ou d'épinards mixées pour une soupe verte plus épaisse.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KELEWELE -->
+  <div class="recipe-card">
+    <div class="rc-header" onclick="toggleRecipe(this)">
+      <span class="rc-emoji">🍌</span>
+      <div class="rc-info">
+        <div class="rc-top"><span class="rc-name">Kelewele — Plantains épicés frits</span></div>
+        <div class="rc-tags">
+          <span class="tag tag-street">Street Food</span>
+          <span class="tag tag-ghana">🇬🇭 Ghana</span>
+          <span class="tag tag-veg">Végétarien</span>
+        </div>
+        <div class="rc-desc">Cubes de plantain mûr marinés dans du gingembre, piment, muscade et clous de girofle, puis frits jusqu'à être croustillants dorés. Le snack national ghanéen — parfait pour l'apéro !</div>
+      </div>
+      <button class="rc-expand">▼ Voir la recette</button>
+    </div>
+    <div class="rc-macros">
+      <div class="macro-item"><span class="macro-val" style="color:#fbbf24">280</span><span class="macro-label">kcal</span></div>
+      <div class="macro-item"><span class="macro-val" style="color:#22c55e">3g</span><span class="macro-label">Protéines</span></div>
+      <div class="macro-item"><span class="macro-val" style="color:#fbbf24">52g</span><span class="macro-label">Glucides</span></div>
+      <div class="macro-item"><span class="macro-val" style="color:#ef4444">8g</span><span class="macro-label">Lipides</span></div>
+    </div>
+    <div class="rc-timing">
+      <span class="time-badge">⏱ Préparation <span>10 min</span></span>
+      <span class="time-badge">🕐 Marinade <span>10-30 min</span></span>
+      <span class="time-badge">🔥 Friture <span>10-12 min</span></span>
+      <span class="time-badge">👥 Portions <span>4 personnes</span></span>
+      <span class="time-badge">📊 Niveau <span>Facile</span></span>
+    </div>
+    <div class="rc-details">
+      <div class="detail-section">
+        <div class="ds-title">🥘 Ingrédients</div>
+        <div class="ingredients-grid">
+          <div class="ing-item"><span class="ing-qty">4</span><span class="ing-name">Plantains très mûrs<span class="ing-note"> (peau jaune-noire, chair douce)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">2 cs</span><span class="ing-name">Gingembre frais râpé<span class="ing-note"> (environ 4cm de racine)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">1 cc</span><span class="ing-name">Piment de Cayenne<span class="ing-note"> (ou piment frais mixé)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">½ cc</span><span class="ing-name">Muscade moulue</span></div>
+          <div class="ing-item"><span class="ing-qty">¼ cc</span><span class="ing-name">Clous de girofle moulus</span></div>
+          <div class="ing-item"><span class="ing-qty">1 cc</span><span class="ing-name">Sel fin</span></div>
+          <div class="ing-item"><span class="ing-qty">½ cc</span><span class="ing-name">Poivre noir moulu</span></div>
+          <div class="ing-item"><span class="ing-qty">500ml</span><span class="ing-name">Huile végétale<span class="ing-note"> (pour friture — tournesol ou arachide)</span></span></div>
+        </div>
+      </div>
+      <div class="detail-section">
+        <div class="ds-title">👨‍🍳 Étapes détaillées</div>
+        <div class="steps-list">
+          <div class="step-item" onclick="checkStep(this,'kele',1,6)">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 5 minutes — Découpe</div>
+              <div class="step-text">Pelez les plantains : coupez les extrémités, fendez la peau en longueur avec un couteau et décollez-la. Coupez chaque plantain en cubes de 2-3 cm (pas trop petits — ils réduisent à la cuisson). Vous devez obtenir environ 40-50 cubes.</div>
+              <div class="step-tip">💡 Choisissez des plantains très mûrs (peau jaune tachetée de noir) — ils sont plus sucrés et deviennent plus caramélisés à la friture.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'kele',2,6)">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 3 minutes — Marinade</div>
+              <div class="step-text">Dans un grand bol, mélangez le gingembre râpé, le piment de Cayenne, la muscade, les clous de girofle, le sel et le poivre. Ajoutez les cubes de plantain et mélangez délicatement pour que chaque cube soit bien enrobé d'épices. Laissez mariner minimum 10 minutes (30 minutes pour plus de saveur).</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'kele',3,6)">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 5 minutes — Chauffage huile</div>
+              <div class="step-text">Versez l'huile dans une poêle profonde ou une casserole à fond épais (minimum 4 cm d'huile). Chauffez à feu moyen-vif. Pour tester la température : plongez un cure-dent ou le manche d'une cuillère en bois — des bulles doivent apparaître immédiatement. Idéalement 175-180°C.</div>
+              <div class="step-warning">⚠️ Sécurité : Ne jamais laisser l'huile seule sur le feu. Si elle commence à fumer, baissez immédiatement le feu.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'kele',4,6)">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 10-12 minutes — Friture</div>
+              <div class="step-text">Déposez les cubes de plantain dans l'huile chaude en petites portions (ne jamais surcharger — max 15 cubes à la fois). Faites frire 4-5 minutes en retournant à mi-cuisson avec une écumoire. Ils sont prêts quand ils sont brun dorés à caramélisés et légèrement croustillants.</div>
+              <div class="step-tip">💡 Frire en plusieurs fois maintient la température de l'huile et donne un résultat plus croustillant.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'kele',5,6)">
+            <div class="step-num">5</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 2 minutes — Égouttage</div>
+              <div class="step-text">Retirez les cubes avec une écumoire et posez-les sur du papier absorbant. Tapotez légèrement le dessus pour absorber l'excès d'huile. Servez immédiatement pendant qu'ils sont encore chauds et croustillants.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'kele',6,6)">
+            <div class="step-num">6</div>
+            <div class="step-content">
+              <div class="step-duration">🍽️ Service</div>
+              <div class="step-text">Servez dans un cornet de papier (comme au Ghana !) ou dans une assiette. Accompagnez de cacahuètes grillées, de sauce pimentée ou de yogourt nature pour tempérer le piquant. Le Kelewele se déguste en apéritif, en accompagnement de soupe ou seul comme snack.</div>
+              <div class="step-tip">💡 Variante santé : Vous pouvez cuire les cubes au four à 220°C pendant 20 min en les badigeonnant d'un peu d'huile — moins gras mais tout aussi délicieux !</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chef-tips">
+        <div class="ct-title">👨‍🍳 Conseils du Chef</div>
+        <div class="ct-list">
+          <div class="ct-item"><span>🍌</span>Si le plantain est encore vert/jaune (pas assez mûr), l'extérieur brûlera avant que l'intérieur soit cuit.</div>
+          <div class="ct-item"><span>🫙</span>Le mélange d'épices peut se préparer en avance et se conserver 1 semaine dans un bocal hermétique.</div>
+          <div class="ct-item"><span>❄️</span>Pas de conservation possible une fois frit — à consommer immédiatement pour la texture croustillante.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     🇨🇲 CAMEROUN
+══════════════════════════════════════════════════════ -->
+<div class="recipe-section" data-cat="cameroun">
+  <div class="rs-header">
+    <span class="rs-flag">🇨🇲</span>
+    <span class="rs-country">Cameroun</span>
+    <div class="rs-line"></div>
+  </div>
+
+  <!-- NDOLÉ -->
+  <div class="recipe-card">
+    <div class="rc-header" onclick="toggleRecipe(this)">
+      <span class="rc-emoji">🍲</span>
+      <div class="rc-info">
+        <div class="rc-top"><span class="rc-name">Ndolé aux crevettes et bœuf fumé</span></div>
+        <div class="rc-tags">
+          <span class="tag tag-trad">Plat national</span>
+          <span class="tag">🇨🇲 Cameroun</span>
+        </div>
+        <div class="rc-desc">Le plat national camerounais par excellence. Feuilles de ndolé (Vernonia amygdalina) désamérisées, crevettes fraîches, bœuf fumé et arachides pilées dans l'huile de palme rouge. Un festin de saveurs africaines.</div>
+      </div>
+      <button class="rc-expand">▼ Voir la recette</button>
+    </div>
+    <div class="rc-macros">
+      <div class="macro-item"><span class="macro-val" style="color:#fbbf24">380</span><span class="macro-label">kcal</span></div>
+      <div class="macro-item"><span class="macro-val" style="color:#22c55e">28g</span><span class="macro-label">Protéines</span></div>
+      <div class="macro-item"><span class="macro-val" style="color:#fbbf24">18g</span><span class="macro-label">Glucides</span></div>
+      <div class="macro-item"><span class="macro-val" style="color:#ef4444">22g</span><span class="macro-label">Lipides</span></div>
+      <div class="macro-item"><span class="macro-val" style="color:#a855f7">8g</span><span class="macro-label">Fibres</span></div>
+    </div>
+    <div class="rc-timing">
+      <span class="time-badge">⏱ Préparation <span>30 min</span></span>
+      <span class="time-badge">🔥 Cuisson <span>60 min</span></span>
+      <span class="time-badge">⏳ Total <span>1h30</span></span>
+      <span class="time-badge">👥 Portions <span>6 personnes</span></span>
+      <span class="time-badge">📊 Niveau <span>Intermédiaire</span></span>
+    </div>
+    <div class="rc-details">
+      <div class="detail-section">
+        <div class="ds-title">🥘 Ingrédients</div>
+        <div class="ingredients-grid">
+          <div class="ing-item"><span class="ing-qty">500g</span><span class="ing-name">Feuilles de ndolé fraîches<span class="ing-note"> (ou 200g séchées, ou 400g surgelées)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">400g</span><span class="ing-name">Crevettes fraîches<span class="ing-note"> (décortiquées et déveinées)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">300g</span><span class="ing-name">Bœuf fumé<span class="ing-note"> (ou poisson fumé selon préférence)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">250g</span><span class="ing-name">Arachides grillées non salées<span class="ing-note"> (à piler ou mixer)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">60ml</span><span class="ing-name">Huile de palme rouge<span class="ing-note"> (non raffinée, couleur orange)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">2</span><span class="ing-name">Gros oignons<span class="ing-note"> (émincés finement)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">5</span><span class="ing-name">Gousses d'ail<span class="ing-note"> (écrasées ou hachées)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">3 cm</span><span class="ing-name">Gingembre frais râpé</span></div>
+          <div class="ing-item"><span class="ing-qty">2</span><span class="ing-name">Cubes de bouillon Maggi ou Jumbo</span></div>
+          <div class="ing-item"><span class="ing-qty">500ml</span><span class="ing-name">Eau tiède</span></div>
+          <div class="ing-item"><span class="ing-qty">1-2</span><span class="ing-name">Piments rouges<span class="ing-note"> (frais ou séchés, selon goût)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">Sel</span><span class="ing-name">Poivre noir selon goût</span></div>
+        </div>
+      </div>
+      <div class="detail-section">
+        <div class="ds-title">👨‍🍳 Étapes détaillées</div>
+        <div class="steps-list">
+          <div class="step-item" onclick="checkStep(this,'ndole',1,9)">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 20 minutes — Désamérisation des feuilles (étape CRITIQUE)</div>
+              <div class="step-text">C'est l'étape la plus importante ! Remplissez une grande marmite d'eau et portez à ébullition. Plongez les feuilles de ndolé 3-4 minutes. Égouttez. Répétez cette opération 2-3 fois en changeant l'eau à chaque fois. Goûtez une feuille — elle doit être légèrement amère mais supportable (pas comme du médicament).</div>
+              <div class="step-warning">⚠️ Ne sautez pas cette étape ! Le ndolé cru est très amer et potentiellement toxique en grande quantité. Chaque eau de trempage enlève de l'amertume.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'ndole',2,9)">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 5 minutes — Préparation arachides</div>
+              <div class="step-text">Mixez les arachides grillées dans un blender avec 200ml d'eau tiède jusqu'à obtenir une pâte épaisse et crémeuse (texture beurre de cacahuète liquide). Réservez dans un bol. Si vous n'avez pas de mixeur, écrasez-les dans un mortier en ajoutant l'eau petit à petit.</div>
+              <div class="step-tip">💡 La qualité de la pâte d'arachide est essentielle — elle doit être lisse sans morceaux pour une sauce onctueuse.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'ndole',3,9)">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 3 minutes — Préparation bœuf fumé</div>
+              <div class="step-text">Coupez le bœuf fumé en morceaux de 3-4 cm. Si le bœuf est très sec et dur, faites-le tremper dans de l'eau chaude 10 minutes pour le ramollir avant de le couper. Rincez les crevettes à l'eau froide et séchez-les avec du papier absorbant.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'ndole',4,9)">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 8 minutes — Base aromatique</div>
+              <div class="step-text">Dans une grande cocotte, faites chauffer l'huile de palme à feu moyen (elle doit être fluide et dégager son arôme caractéristique). Ajoutez les oignons et faites-les revenir 5 minutes en remuant jusqu'à ce qu'ils soient translucides et légèrement dorés. Ajoutez l'ail, le gingembre et les piments. Faites revenir encore 3 minutes.</div>
+              <div class="step-tip">💡 L'huile de palme rouge ne doit pas trop chauffer (ne pas dépasser la fumée) — elle perdrait ses nutriments et son goût.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'ndole',5,9)">
+            <div class="step-num">5</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 10 minutes — Cuisson bœuf fumé</div>
+              <div class="step-text">Ajoutez les morceaux de bœuf fumé dans la cocotte. Mélangez bien et faites dorer 5 minutes. Ajoutez les cubes de bouillon émiettés. Versez la pâte d'arachide et 300ml d'eau tiède. Mélangez vigoureusement. La sauce doit épaissir. Couvrez et laissez cuire 10 minutes à feu moyen en remuant toutes les 2-3 minutes pour éviter que ça colle.</div>
+              <div class="step-warning">⚠️ La pâte d'arachide a tendance à coller au fond — remuez régulièrement et ajoutez un peu d'eau si nécessaire.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'ndole',6,9)">
+            <div class="step-num">6</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 20 minutes — Intégration des feuilles</div>
+              <div class="step-text">Ajoutez les feuilles de ndolé désamérisées dans la cocotte. Mélangez délicatement pour les enrober de sauce. Ajoutez les 200ml d'eau restants. Couvrez et laissez mijoter à feu doux 20 minutes. Les feuilles vont ramollir et absorber les saveurs de la sauce. Remuez doucement toutes les 5 minutes.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'ndole',7,9)">
+            <div class="step-num">7</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 5 minutes — Ajout crevettes</div>
+              <div class="step-text">En fin de cuisson, ajoutez les crevettes fraîches. Mélangez et couvrez. Laissez cuire exactement 3-4 minutes — les crevettes cuisent très vite et doivent rester roses et juteuses. Trop cuites, elles deviennent caoutchouteuses.</div>
+              <div class="step-warning">⚠️ Les crevettes s'ajoutent en DERNIER et cuisent seulement 3-4 minutes. C'est une erreur courante de les ajouter trop tôt.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'ndole',8,9)">
+            <div class="step-num">8</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 2 minutes — Assaisonnement final</div>
+              <div class="step-text">Goûtez et ajustez le sel, le poivre et le piment. La sauce doit être épaisse et crémeuse, légèrement amère (agréablement), avec les saveurs de l'huile de palme et des arachides. Si trop épaisse, ajoutez un peu d'eau. Si trop liquide, laissez mijoter découvert 5 minutes supplémentaires.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'ndole',9,9)">
+            <div class="step-num">9</div>
+            <div class="step-content">
+              <div class="step-duration">🍽️ Service</div>
+              <div class="step-text">Servez chaud accompagné de : plantains bouillis ou mûrs frits, riz blanc, miondo (bâtons de manioc), ou pain. Au Cameroun, le Ndolé se sert lors des fêtes, mariages et baptêmes — c'est un plat de célébration !</div>
+              <div class="step-tip">💡 Le Ndolé est encore meilleur le lendemain — les saveurs se développent au repos. Parfait à réchauffer !</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chef-tips">
+        <div class="ct-title">👨‍🍳 Conseils du Chef</div>
+        <div class="ct-list">
+          <div class="ct-item"><span>🌿</span>Feuilles surgelées (diaspora) : décongelez, pressez pour enlever l'eau, puis n'effectuez qu'un seul blanchiment.</div>
+          <div class="ct-item"><span>🥜</span>Vous pouvez remplacer les arachides par du beurre de cacahuète naturel (sans sucre ajouté) — résultat similaire.</div>
+          <div class="ct-item"><span>🧊</span>Conservation : 3-4 jours au réfrigérateur, 3 mois au congélateur (sans les crevettes — les ajouter au moment de réchauffer).</div>
+          <div class="ct-item"><span>🍽️</span>Valeur nutritive : Excellente source de fer (8.9mg/100g), vitamine A, calcium et protéines végétales.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     🌿 BOISSONS DETOX & JUS NATURELS
+══════════════════════════════════════════════════════ -->
+<div class="recipe-section" data-cat="detox">
+  <div class="rs-header">
+    <span class="rs-flag">🌿</span>
+    <span class="rs-country">Boissons Detox & Jus Naturels Africains</span>
+    <div class="rs-line"></div>
+  </div>
+
+  <!-- JUS DETOX GINGEMBRE-CITRON-CURCUMA -->
+  <div class="detox-section">
+    <div class="detox-header" onclick="toggleDetox(this)">
+      <span class="dh-icon">🍋</span>
+      <div>
+        <div class="dh-name">Detox Shot Gingembre · Citron · Curcuma</div>
+        <div class="dh-sub">Shot détoxifiant · Anti-inflammatoire · Boost immunité</div>
+        <div class="dh-tags">
+          <span class="tag tag-detox">Detox</span>
+          <span class="tag tag-veg">Vegan</span>
+          <span class="tag" style="background:rgba(251,191,36,0.1);color:#fbbf24">Anti-inflammatoire</span>
+        </div>
+      </div>
+    </div>
+    <div class="detox-macros">
+      <span class="dm-item">35 <span class="dm-label">kcal</span></span>
+      <span class="dm-item">0.5g <span class="dm-label">Protéines</span></span>
+      <span class="dm-item">8g <span class="dm-label">Glucides</span></span>
+      <span class="dm-item">⏱ <span class="dm-label">10 min prep</span></span>
+      <span class="dm-item">🥛 <span class="dm-label">4 shots (60ml chacun)</span></span>
+    </div>
+    <div class="detox-details">
+      <div class="detox-benefits">
+        <span class="benefit-chip">🔥 Brûle les graisses</span>
+        <span class="benefit-chip">🛡️ Renforce l'immunité</span>
+        <span class="benefit-chip">😌 Anti-inflammatoire</span>
+        <span class="benefit-chip">🌟 Antioxydant puissant</span>
+        <span class="benefit-chip">🩺 Régule la glycémie</span>
+        <span class="benefit-chip">💆 Améliore la digestion</span>
+      </div>
+      <div class="detail-section">
+        <div class="ds-title">🥘 Ingrédients</div>
+        <div class="ingredients-grid">
+          <div class="ing-item"><span class="ing-qty">80g</span><span class="ing-name">Gingembre frais<span class="ing-note"> (environ 8-10 cm de racine)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">3</span><span class="ing-name">Citrons jaunes bio<span class="ing-note"> (jus frais pressé, environ 90ml)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">2 cc</span><span class="ing-name">Curcuma en poudre<span class="ing-note"> (ou 4 cm de curcuma frais râpé)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">1 cc</span><span class="ing-name">Miel naturel brut<span class="ing-note"> (miel de moringa ou d'acacia)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">1 pincée</span><span class="ing-name">Poivre noir moulu<span class="ing-note"> (active la curcumine × 2000%)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">100ml</span><span class="ing-name">Eau filtrée froide</span></div>
+          <div class="ing-item"><span class="ing-qty">1 pincée</span><span class="ing-name">Piment de Cayenne<span class="ing-note"> (optionnel — accélère le métabolisme)</span></span></div>
+        </div>
+      </div>
+      <div class="detail-section">
+        <div class="ds-title">👨‍🍳 Préparation</div>
+        <div class="steps-list">
+          <div class="step-item" onclick="checkStep(this,'shot',1,5)">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 3 minutes — Préparation gingembre</div>
+              <div class="step-text">Lavez le gingembre soigneusement. Vous n'avez pas besoin de l'éplucher (la peau contient des nutriments). Râpez-le finement sur une râpe à microplane ou coupez-le en petits morceaux pour le blender. Pressez les citrons et filtrez le jus pour enlever les pépins.</div>
+              <div class="step-tip">💡 Pour plus de jus : roulez les citrons sous votre paume sur le comptoir avant de les presser — ça libère plus de jus.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'shot',2,5)">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 3 minutes — Mixage</div>
+              <div class="step-text">Dans un blender, mettez le gingembre râpé, le jus de citron, le curcuma, l'eau froide. Mixez à haute vitesse pendant 30 secondes. Le mélange doit être homogène et d'une belle couleur jaune-orangée.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'shot',3,5)">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 2 minutes — Filtration</div>
+              <div class="step-text">Filtrez le jus à travers un tamis fin ou une étamine en pressant bien pour extraire tout le liquide. Vous obtenez un jus clair et concentré. Ajoutez le miel, la pincée de poivre noir et le piment de Cayenne (si utilisé). Mélangez bien.</div>
+              <div class="step-warning">⚠️ Le poivre noir est ESSENTIEL avec le curcuma — la pipérine augmente l'absorption de la curcumine de 2000%. N'omettez pas cette étape !</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'shot',4,5)">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 1 minute — Conservation</div>
+              <div class="step-text">Versez dans de petites bouteilles en verre (type shot de 60ml). Fermez hermétiquement. Se conserve 4-5 jours au réfrigérateur. Secouez avant chaque utilisation car le curcuma se dépose au fond.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'shot',5,5)">
+            <div class="step-num">5</div>
+            <div class="step-content">
+              <div class="step-duration">🥛 Comment consommer</div>
+              <div class="step-text">Prenez 1 shot (60ml) chaque matin à jeun, 15-20 minutes avant le petit-déjeuner. Buvez d'un trait comme un shot ! Si trop fort, diluez dans 100ml d'eau tiède. Cure recommandée : 21 jours consécutifs pour des résultats visibles.</div>
+              <div class="step-tip">💡 Résultats attendus après 1 semaine : meilleure digestion, moins de ballonnements, plus d'énergie le matin. Après 3 semaines : peau plus lumineuse, système immunitaire renforcé.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JUS BISSAP -->
+  <div class="detox-section">
+    <div class="detox-header" onclick="toggleDetox(this)">
+      <span class="dh-icon">🌺</span>
+      <div>
+        <div class="dh-name">Bissap (Hibiscus) — Jus africain antioxydant</div>
+        <div class="dh-sub">Sénégal · Mali · Cameroun · Anti-hypertension</div>
+        <div class="dh-tags">
+          <span class="tag tag-detox">Detox</span>
+          <span class="tag" style="background:rgba(236,72,153,0.1);color:#ec4899">Antioxydant</span>
+          <span class="tag" style="background:rgba(239,68,68,0.1);color:#ef4444">Anti-hypertension</span>
+        </div>
+      </div>
+    </div>
+    <div class="detox-macros">
+      <span class="dm-item">45 <span class="dm-label">kcal</span></span>
+      <span class="dm-item">Vitamine C <span class="dm-label">×3 qu'orange</span></span>
+      <span class="dm-item">⏱ <span class="dm-label">15 min prep + 30 min infusion</span></span>
+      <span class="dm-item">🥛 <span class="dm-label">6-8 verres</span></span>
+    </div>
+    <div class="detox-details">
+      <div class="detox-benefits">
+        <span class="benefit-chip">❤️ Baisse la tension artérielle</span>
+        <span class="benefit-chip">🌟 Antioxydant puissant</span>
+        <span class="benefit-chip">🩸 Riche en fer</span>
+        <span class="benefit-chip">💊 Vitamine C</span>
+        <span class="benefit-chip">🦷 Santé dentaire</span>
+        <span class="benefit-chip">🌙 Favorise le sommeil</span>
+      </div>
+      <div class="detail-section">
+        <div class="ds-title">🥘 Ingrédients (1.5L)</div>
+        <div class="ingredients-grid">
+          <div class="ing-item"><span class="ing-qty">80g</span><span class="ing-name">Fleurs d'hibiscus séchées (bissap)<span class="ing-note"> (rouges, séchées — en épicerie africaine)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">1.5L</span><span class="ing-name">Eau filtrée</span></div>
+          <div class="ing-item"><span class="ing-qty">3-4 cs</span><span class="ing-name">Sucre ou miel<span class="ing-note"> (selon goût — ou édulcorant)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">1 cs</span><span class="ing-name">Gingembre frais râpé<span class="ing-note"> (optionnel — pour plus de punch)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">½</span><span class="ing-name">Citron vert<span class="ing-note"> (jus — pour la couleur et la conservation)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">5</span><span class="ing-name">Feuilles de menthe fraîche<span class="ing-note"> (optionnel — pour la fraîcheur)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">½ cc</span><span class="ing-name">Extrait de vanille<span class="ing-note"> (optionnel — variante douce)</span></span></div>
+        </div>
+      </div>
+      <div class="detail-section">
+        <div class="ds-title">👨‍🍳 Préparation</div>
+        <div class="steps-list">
+          <div class="step-item" onclick="checkStep(this,'bissap',1,6)">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 5 minutes — Tri et rinçage</div>
+              <div class="step-text">Triez les fleurs d'hibiscus pour enlever toute impureté (petits insectes, morceaux de tige). Rincez-les rapidement sous l'eau froide dans un tamis — ne les laissez pas tremper (vous perdriez leur couleur et nutriments).</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'bissap',2,6)">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 5 minutes — Infusion chaude</div>
+              <div class="step-text">Portez 1L d'eau à ébullition. Éteignez le feu et ajoutez les fleurs d'hibiscus, le gingembre râpé. L'eau va immédiatement virer au rouge vif — c'est la magie du bissap ! Couvrez et laissez infuser 30 minutes hors du feu.</div>
+              <div class="step-tip">💡 Ne jamais faire bouillir les fleurs avec l'eau — ça détruit la vitamine C. On infuse toujours hors du feu.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'bissap',3,6)">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 3 minutes — Filtration</div>
+              <div class="step-text">Filtrez l'infusion à travers un tamis fin en pressant bien les fleurs pour extraire tout le jus. Ajoutez les 500ml d'eau froide restants. Ajoutez le sucre/miel et mélangez jusqu'à dissolution complète. Ajoutez le jus de citron vert (préserve la couleur et ajoute de la vitamine C).</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'bissap',4,6)">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 2 heures — Refroidissement (optionnel)</div>
+              <div class="step-text">Goûtez et ajustez la douceur. Le bissap doit être légèrement acide et très fruité. Réfrigérez minimum 2 heures pour servir très frais. Ajoutez les feuilles de menthe fraîche juste avant de servir.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'bissap',5,6)">
+            <div class="step-num">5</div>
+            <div class="step-content">
+              <div class="step-duration">🥛 Service et conservation</div>
+              <div class="step-text">Servez dans de grands verres avec des glaçons. Décorez d'une fleur d'hibiscus ou de menthe. Conservation : 5-7 jours au réfrigérateur dans une bouteille fermée. Le bissap est encore meilleur le lendemain — les saveurs se développent.</div>
+              <div class="step-tip">💡 Version sans sucre : ne mettez pas de sucre — le bissap nature est une excellente boisson détox 0 calorie. Idéal pour les diabétiques !</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'bissap',6,6)">
+            <div class="step-num">6</div>
+            <div class="step-content">
+              <div class="step-duration">📊 Quand boire du bissap</div>
+              <div class="step-text"><strong>Matin :</strong> 1 verre à jeun pour activer le foie et la digestion.<br/><strong>Après le repas :</strong> aide à la digestion et réduit les ballonnements.<br/><strong>Sport :</strong> excellent pour réhydrater après l'effort.<br/><strong>Soir :</strong> sans sucre, favorise le sommeil et la régénération cellulaire.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JUS MORINGA -->
+  <div class="detox-section">
+    <div class="detox-header" onclick="toggleDetox(this)">
+      <span class="dh-icon">🌱</span>
+      <div>
+        <div class="dh-name">Smoothie Moringa — L'Arbre de Vie africain</div>
+        <div class="dh-sub">Cameroun · Nigeria · Ghana · Super-aliment africain</div>
+        <div class="dh-tags">
+          <span class="tag tag-detox">Super-aliment</span>
+          <span class="tag tag-veg">Vegan</span>
+          <span class="tag" style="background:rgba(34,197,94,0.1);color:#22c55e">Énergie</span>
+        </div>
+      </div>
+    </div>
+    <div class="detox-macros">
+      <span class="dm-item">120 <span class="dm-label">kcal</span></span>
+      <span class="dm-item">Fer <span class="dm-label">×3 épinards</span></span>
+      <span class="dm-item">Calcium <span class="dm-label">×4 lait</span></span>
+      <span class="dm-item">⏱ <span class="dm-label">5 min</span></span>
+    </div>
+    <div class="detox-details">
+      <div class="detox-benefits">
+        <span class="benefit-chip">⚡ Énergie durable</span>
+        <span class="benefit-chip">🤰 Idéal grossesse</span>
+        <span class="benefit-chip">💪 Force musculaire</span>
+        <span class="benefit-chip">🧠 Concentration</span>
+        <span class="benefit-chip">🩸 Riche en fer</span>
+        <span class="benefit-chip">🦴 Calcium</span>
+      </div>
+      <div class="detail-section">
+        <div class="ds-title">🥘 Ingrédients (2 verres)</div>
+        <div class="ingredients-grid">
+          <div class="ing-item"><span class="ing-qty">2 cc</span><span class="ing-name">Poudre de moringa<span class="ing-note"> (feuilles séchées — en herboristerie ou épicerie bio)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">1</span><span class="ing-name">Banane mûre<span class="ing-note"> (congelée de préférence — texture plus crémeuse)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">200ml</span><span class="ing-name">Lait de coco<span class="ing-note"> (ou lait d'amande, ou lait de vache)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">100ml</span><span class="ing-name">Eau froide ou lait supplémentaire</span></div>
+          <div class="ing-item"><span class="ing-qty">1 cs</span><span class="ing-name">Miel de moringa<span class="ing-note"> (ou miel ordinaire)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">½ cc</span><span class="ing-name">Gingembre en poudre</span></div>
+          <div class="ing-item"><span class="ing-qty">5-6</span><span class="ing-name">Glaçons<span class="ing-note"> (optionnel)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">1 cs</span><span class="ing-name">Graines de chia<span class="ing-note"> (optionnel — oméga-3)</span></span></div>
+        </div>
+      </div>
+      <div class="detail-section">
+        <div class="ds-title">👨‍🍳 Préparation</div>
+        <div class="steps-list">
+          <div class="step-item" onclick="checkStep(this,'moringa',1,4)">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 1 minute — Mise en place</div>
+              <div class="step-text">Pelez et cassez la banane en morceaux (si congelée, sortez-la 5 minutes avant). Dans le blender, ajoutez d'abord le liquide (lait de coco + eau) pour faciliter le mixage, puis la banane.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'moringa',2,4)">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 1 minute — Ajout moringa</div>
+              <div class="step-text">Ajoutez la poudre de moringa, le miel, le gingembre en poudre et les glaçons. Le moringa a une saveur herbacée légèrement amère — commencez avec 1 cc si vous n'y êtes pas habitué, et augmentez progressivement.</div>
+              <div class="step-tip">💡 La banane masque bien l'amertume du moringa. Plus la banane est mûre, plus le smoothie sera doux.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'moringa',3,4)">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 1 minute — Mixage</div>
+              <div class="step-text">Mixez à haute vitesse 45-60 secondes jusqu'à obtenir un smoothie vert vif et parfaitement lisse. Si trop épais, ajoutez un peu d'eau ou de lait. Si trop liquide, ajoutez un peu de banane congelée ou quelques glaçons.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'moringa',4,4)">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <div class="step-duration">🥛 Service et programme</div>
+              <div class="step-text">Versez dans un grand verre. Parsemez de graines de chia si vous en avez. Consommez immédiatement pour préserver la vitamine C et les nutriments.<br/><br/><strong>Programme recommandé :</strong><br/>• 1 verre chaque matin 30 min avant le petit-déjeuner<br/>• Cure de 30 jours pour des résultats visibles<br/>• Idéal pour femmes enceintes (sous avis médical) : riche en fer, acide folique, calcium</div>
+              <div class="step-warning">⚠️ Femmes enceintes : consultez votre médecin avant de consommer du moringa en grande quantité. En petite quantité (1 cc/jour), il est généralement sûr et bénéfique.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JUS TAMARIN DETOX -->
+  <div class="detox-section">
+    <div class="detox-header" onclick="toggleDetox(this)">
+      <span class="dh-icon">🍫</span>
+      <div>
+        <div class="dh-name">Eau de Tamarin — Détox foie et digestion</div>
+        <div class="dh-sub">Afrique de l'Ouest · Digestion · Detox foie</div>
+        <div class="dh-tags">
+          <span class="tag tag-detox">Detox foie</span>
+          <span class="tag" style="background:rgba(251,191,36,0.1);color:#fbbf24">Digestion</span>
+        </div>
+      </div>
+    </div>
+    <div class="detox-macros">
+      <span class="dm-item">55 <span class="dm-label">kcal</span></span>
+      <span class="dm-item">Potassium <span class="dm-label">riche</span></span>
+      <span class="dm-item">⏱ <span class="dm-label">10 min + trempage 30 min</span></span>
+      <span class="dm-item">🥛 <span class="dm-label">4-6 verres</span></span>
+    </div>
+    <div class="detox-details">
+      <div class="detox-benefits">
+        <span class="benefit-chip">🫀 Détoxifie le foie</span>
+        <span class="benefit-chip">🍽️ Améliore la digestion</span>
+        <span class="benefit-chip">💩 Contre la constipation</span>
+        <span class="benefit-chip">🩸 Régule la glycémie</span>
+        <span class="benefit-chip">⚡ Riche en potassium</span>
+      </div>
+      <div class="detail-section">
+        <div class="ds-title">🥘 Ingrédients (1L)</div>
+        <div class="ingredients-grid">
+          <div class="ing-item"><span class="ing-qty">100g</span><span class="ing-name">Tamarin frais en cosse<span class="ing-note"> (ou 60g de pâte de tamarin)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">1L</span><span class="ing-name">Eau filtrée tiède</span></div>
+          <div class="ing-item"><span class="ing-qty">2 cs</span><span class="ing-name">Sucre brun ou miel<span class="ing-note"> (selon goût)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">1 cc</span><span class="ing-name">Gingembre frais râpé</span></div>
+          <div class="ing-item"><span class="ing-qty">½ cc</span><span class="ing-name">Sel de mer<span class="ing-note"> (équilibre électrolytique)</span></span></div>
+          <div class="ing-item"><span class="ing-qty">1</span><span class="ing-name">Citron vert<span class="ing-note"> (jus)</span></span></div>
+        </div>
+      </div>
+      <div class="detail-section">
+        <div class="ds-title">👨‍🍳 Préparation</div>
+        <div class="steps-list">
+          <div class="step-item" onclick="checkStep(this,'tamarin',1,4)">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 5 min + 30 min trempage</div>
+              <div class="step-text">Cassez les cosses de tamarin et retirez les fils fibreux. Placez la pulpe dans un bol et versez 500ml d'eau tiède. Malaxez avec les mains pendant 3-4 minutes pour dissoudre la pulpe dans l'eau. Laissez tremper 30 minutes en mélangeant de temps en temps.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'tamarin',2,4)">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 3 minutes — Filtration</div>
+              <div class="step-text">Filtrez à travers un tamis fin en pressant fort pour extraire tout le jus. Jetez les fibres et les noyaux. Ajoutez les 500ml d'eau restants, le gingembre, le sucre, le sel et le jus de citron vert. Mélangez jusqu'à dissolution du sucre.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'tamarin',3,4)">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <div class="step-duration">⏱ 2 minutes — Ajustement</div>
+              <div class="step-text">Goûtez : le tamarin doit être à la fois acide, légèrement sucré et rafraîchissant. Ajustez le sucre selon votre goût. Réfrigérez minimum 1 heure avant de servir.</div>
+            </div>
+          </div>
+          <div class="step-item" onclick="checkStep(this,'tamarin',4,4)">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <div class="step-duration">🥛 Programme detox</div>
+              <div class="step-text"><strong>Cure detox foie :</strong> 1 grand verre (250ml) chaque matin à jeun pendant 7 jours.<br/><strong>Pour la constipation :</strong> 2 verres par jour (matin et soir) pendant 3-4 jours.<br/><strong>Conservation :</strong> 3-4 jours au réfrigérateur.</div>
+              <div class="step-warning">⚠️ Ne pas consommer en excès si vous prenez des médicaments anti-coagulants — le tamarin peut interagir avec certains médicaments.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- fin detox section -->
+
+</div><!-- fin main -->
+
+<!-- TOAST -->
+<div style="position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(22,163,74,0.9);color:#fff;padding:0.65rem 1.4rem;border-radius:100px;font-size:0.8rem;font-weight:700;opacity:0;pointer-events:none;transition:all 0.3s;z-index:300;white-space:nowrap" id="toast"></div>
+
+<script>
+// ══ TOGGLE RECIPE ══
+function toggleRecipe(header){
+  const details=header.parentElement.querySelector('.rc-details');
+  const btn=header.querySelector('.rc-expand');
+  const isOpen=details.classList.contains('open');
+  // Fermer tous les autres
+  document.querySelectorAll('.rc-details.open').forEach(d=>{
+    d.classList.remove('open');
+    d.parentElement.querySelector('.rc-expand').textContent='▼ Voir la recette';
+  });
+  if(!isOpen){
+    details.classList.add('open');
+    btn.textContent='▲ Masquer la recette';
+    details.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+}
+
+function toggleDetox(header){
+  const details=header.parentElement.querySelector('.detox-details');
+  const isOpen=details.classList.contains('open');
+  document.querySelectorAll('.detox-details.open').forEach(d=>d.classList.remove('open'));
+  if(!isOpen){details.classList.add('open');details.scrollIntoView({behavior:'smooth',block:'nearest'})}
+}
+
+// ══ CHECK STEPS ══
+const stepProgress={};
+function checkStep(el,recipeId,stepNum,total){
+  el.classList.toggle('done');
+  if(!stepProgress[recipeId])stepProgress[recipeId]=new Set();
+  if(el.classList.contains('done'))stepProgress[recipeId].add(stepNum);
+  else stepProgress[recipeId].delete(stepNum);
+  const pct=Math.round((stepProgress[recipeId].size/total)*100);
+  const bar=document.getElementById(`fill-${recipeId}`);
+  const label=document.getElementById(`prog-${recipeId}`);
+  if(bar){bar.style.width=pct+'%'}
+  if(label){label.textContent=pct+'%'}
+  if(pct===100)showToast('🎉 Recette terminée ! Bon appétit !');
+}
+
+// ══ FILTER ══
+function filterCat(cat,btn){
+  document.querySelectorAll('.cat-btn,.nav-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.querySelectorAll('.recipe-section,.detox-section').forEach(s=>{
+    if(cat==='all')s.style.display='';
+    else{
+      const sc=s.dataset.cat||'';
+      s.style.display=(sc===cat||cat==='detox'&&s.classList.contains('detox-section'))?'':'none';
+    }
+  });
+}
+
+function filterRecipes(q){
+  const lq=q.toLowerCase();
+  document.querySelectorAll('.recipe-card,.detox-section').forEach(card=>{
+    const text=card.textContent.toLowerCase();
+    card.style.display=(!q||text.includes(lq))?'':'none';
+  });
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.style.opacity='1';t.style.transform='translateX(-50%) translateY(0)';
+  setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(-50%) translateY(20px)'},3500);
+}
+
+// Ouvrir premier recipe par défaut
+document.querySelector('.rc-header').click();
+</script>
+</body>
+</html>
