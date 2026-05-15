@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Recettes du Monde Ultra-Détaillées</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Sora:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#02040a;--s1:#060c12;--s2:#0a1520;--s3:#0f1f2d;
+  --gold:#e8a020;--gold2:#f5c842;--green:#1db954;--gl:#25d366;
+  --teal:#00b4d8;--red:#e63946;--purple:#7b2d8b;--orange:#f4720a;
+  --cream:#fdf6e3;--border:rgba(255,255,255,0.06);--border2:rgba(29,185,84,0.18);
+  --text:#c8dfe8;--muted:#2d4a5a;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* ── NAV ── */
+.nav{background:rgba(2,4,10,0.96);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:0.85rem 2rem;display:flex;align-items:center;gap:1rem;position:sticky;top:0;z-index:100}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:900;color:#fff;text-decoration:none;letter-spacing:-0.01em}
+.nav-logo em{color:var(--gold);font-style:italic}
+.nav-search{flex:1;max-width:320px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:100px;padding:0.5rem 1rem;color:#fff;font-size:0.82rem;font-family:'Sora',sans-serif;outline:none;transition:border-color 0.2s}
+.nav-search:focus{border-color:var(--border2)}
+.nav-search::placeholder{color:var(--muted)}
+.nav-tabs{display:flex;gap:0.3rem;margin-left:auto;flex-wrap:wrap}
+.nt{background:none;border:1px solid var(--border);border-radius:8px;padding:0.38rem 0.85rem;font-size:0.72rem;font-weight:700;cursor:pointer;font-family:'Sora',sans-serif;color:var(--muted);transition:all 0.2s;text-decoration:none;display:inline-block}
+.nt:hover{color:#fff;border-color:rgba(255,255,255,0.15)}
+.nt.active{background:rgba(29,185,84,0.1);border-color:var(--border2);color:var(--green)}
+
+/* ── HERO ── */
+.hero{min-height:38vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:4rem 2rem 3rem;position:relative;overflow:hidden;border-bottom:1px solid var(--border)}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(232,160,32,0.07),transparent),radial-gradient(ellipse 60% 40% at 0% 100%,rgba(29,185,84,0.05),transparent)}
+.hero-label{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;color:var(--green);margin-bottom:0.8rem;display:flex;align-items:center;justify-content:center;gap:0.4rem}
+.hl-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:dot-pulse 2s infinite}
+@keyframes dot-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.3;transform:scale(0.7)}}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,4rem);font-weight:900;color:#fff;line-height:0.92;margin-bottom:0.7rem}
+.hero h1 em{color:var(--gold);font-style:italic}
+.hero-sub{color:var(--muted);font-size:0.9rem;max-width:560px;margin:0 auto;line-height:1.75}
+
+/* ── CAT PILLS ── */
+.cat-row{display:flex;gap:0.5rem;padding:1rem 2rem;overflow-x:auto;background:var(--s1);border-bottom:1px solid var(--border);position:sticky;top:64px;z-index:90}
+.cat-row::-webkit-scrollbar{height:2px}
+.cat-pill{display:flex;align-items:center;gap:0.35rem;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:100px;padding:0.42rem 1rem;font-size:0.76rem;font-weight:700;cursor:pointer;font-family:'Sora',sans-serif;color:var(--muted);white-space:nowrap;flex-shrink:0;transition:all 0.2s}
+.cat-pill:hover{color:#fff}
+.cat-pill.on{background:rgba(232,160,32,0.08);border-color:rgba(232,160,32,0.3);color:var(--gold)}
+
+/* ── MAIN ── */
+.main{max-width:1080px;margin:0 auto;padding:2.5rem 2rem}
+
+/* ── COUNTRY BLOCK ── */
+.country-block{margin-bottom:3rem}
+.cb-head{display:flex;align-items:center;gap:0.8rem;margin-bottom:1.5rem;padding-bottom:0.8rem;border-bottom:1px solid var(--border)}
+.cb-flag{font-size:1.8rem}
+.cb-name{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:900;color:#fff}
+.cb-line{flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent)}
+
+/* ── RECIPE CARD ── */
+.rcard{background:var(--s1);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-bottom:1.2rem;transition:border-color 0.2s}
+.rcard:hover{border-color:var(--border2)}
+.rcard-head{padding:1.4rem;display:flex;gap:1rem;cursor:pointer;align-items:flex-start}
+.rh-emoji{font-size:2.8rem;flex-shrink:0;line-height:1;margin-top:2px}
+.rh-body{flex:1}
+.rh-name{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:#fff;margin-bottom:0.25rem}
+.rh-origin{font-size:0.68rem;color:var(--muted);margin-bottom:0.4rem}
+.rh-tags{display:flex;gap:0.35rem;flex-wrap:wrap;margin-bottom:0.4rem}
+.rtag{font-size:0.58rem;font-weight:800;padding:0.12rem 0.5rem;border-radius:3px;text-transform:uppercase;letter-spacing:0.05em}
+.rt-trad{background:rgba(0,180,216,0.1);color:var(--teal)}
+.rt-veg{background:rgba(29,185,84,0.1);color:var(--green)}
+.rt-fest{background:rgba(232,160,32,0.1);color:var(--gold)}
+.rt-street{background:rgba(230,57,70,0.1);color:var(--red)}
+.rt-detox{background:rgba(29,185,84,0.08);color:var(--gl)}
+.rh-desc{font-size:0.8rem;color:var(--muted);line-height:1.6}
+.rh-toggle{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:7px;padding:0.35rem 0.75rem;font-size:0.7rem;font-weight:700;color:var(--muted);cursor:pointer;font-family:'Sora',sans-serif;flex-shrink:0;margin-top:2px;transition:all 0.2s}
+.rh-toggle:hover{color:#fff}
+
+/* Macros bar */
+.rcard-macros{display:flex;gap:1rem;padding:0.75rem 1.4rem;background:rgba(0,0,0,0.15);border-top:1px solid var(--border);flex-wrap:wrap}
+.mac{text-align:center;min-width:55px}
+.mac-v{font-family:'DM Mono',monospace;font-size:0.92rem;font-weight:700}
+.mac-l{font-size:0.55rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-top:0.1rem}
+
+/* Timing */
+.rcard-timing{display:flex;gap:1.2rem;padding:0.65rem 1.4rem;border-top:1px solid var(--border);background:rgba(0,0,0,0.08);flex-wrap:wrap}
+.tbadge{font-size:0.72rem;color:var(--text);display:flex;align-items:center;gap:0.3rem}
+.tbadge small{color:var(--muted)}
+
+/* Details */
+.rcard-details{display:none;border-top:1px solid var(--border)}
+.rcard-details.open{display:block;animation:fadeSlide 0.3s ease}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.rd-inner{padding:1.4rem}
+
+/* Ingredients */
+.rd-section{margin-bottom:1.4rem}
+.rds-title{font-size:0.65rem;font-weight:800;text-transform:uppercase;letter-spacing:0.12em;color:var(--gold);margin-bottom:0.7rem}
+.ing-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.45rem}
+.ing{display:flex;align-items:flex-start;gap:0.6rem;padding:0.55rem 0.75rem;background:rgba(255,255,255,0.025);border:1px solid var(--border);border-radius:9px;font-size:0.78rem}
+.ing-q{font-family:'DM Mono',monospace;font-size:0.72rem;font-weight:700;color:var(--gold);min-width:55px;flex-shrink:0}
+.ing-n{color:var(--text)}
+.ing-note{color:var(--muted);font-style:italic;font-size:0.68rem}
+
+/* Tools */
+.tools{display:flex;flex-wrap:wrap;gap:0.4rem}
+.tool{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:7px;padding:0.28rem 0.65rem;font-size:0.7rem;color:var(--text)}
+
+/* Steps */
+.steps{display:flex;flex-direction:column;gap:0.8rem}
+.step{display:flex;gap:0.85rem;padding:0.9rem;background:rgba(255,255,255,0.018);border:1px solid var(--border);border-radius:13px;cursor:pointer;transition:all 0.15s}
+.step:hover{background:rgba(255,255,255,0.03);border-color:rgba(255,255,255,0.1)}
+.step.done{background:rgba(29,185,84,0.035);border-color:rgba(29,185,84,0.18)}
+.step.done .step-txt{text-decoration:line-through;opacity:0.4}
+.step-n{width:30px;height:30px;border-radius:50%;background:rgba(232,160,32,0.08);border:1px solid rgba(232,160,32,0.25);color:var(--gold);font-size:0.75rem;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'DM Mono',monospace}
+.step.done .step-n{background:rgba(29,185,84,0.12);border-color:var(--green);color:var(--green)}
+.step-body{flex:1}
+.step-dur{font-size:0.62rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.25rem}
+.step-txt{font-size:0.82rem;color:var(--text);line-height:1.7}
+.step-tip{font-size:0.72rem;color:var(--green);margin-top:0.35rem;padding:0.28rem 0.6rem;background:rgba(29,185,84,0.04);border-left:2px solid var(--green);border-radius:0 5px 5px 0}
+.step-warn{font-size:0.72rem;color:var(--gold);margin-top:0.35rem;padding:0.28rem 0.6rem;background:rgba(232,160,32,0.04);border-left:2px solid var(--gold);border-radius:0 5px 5px 0}
+
+/* Chef tips */
+.chef-box{background:rgba(232,160,32,0.035);border:1px solid rgba(232,160,32,0.18);border-radius:12px;padding:1rem 1.1rem;margin-top:1rem}
+.cb-t{font-size:0.68rem;font-weight:800;color:var(--gold);margin-bottom:0.5rem}
+.cb-items{display:flex;flex-direction:column;gap:0.35rem}
+.cb-item{font-size:0.78rem;color:var(--text);display:flex;gap:0.4rem;line-height:1.5}
+
+/* Variants */
+.var-box{background:rgba(0,180,216,0.03);border:1px solid rgba(0,180,216,0.15);border-radius:12px;padding:1rem 1.1rem;margin-top:0.8rem}
+.vb-t{font-size:0.68rem;font-weight:800;color:var(--teal);margin-bottom:0.4rem}
+.vb-txt{font-size:0.78rem;color:var(--text);line-height:1.65}
+
+/* Progress */
+.prog-bar{margin:0.8rem 0;padding:0.7rem 0.9rem;background:rgba(255,255,255,0.015);border-radius:10px;border:1px solid var(--border)}
+.pb-top{display:flex;justify-content:space-between;font-size:0.65rem;color:var(--muted);margin-bottom:0.4rem}
+.pb-track{height:5px;background:rgba(255,255,255,0.05);border-radius:3px;overflow:hidden}
+.pb-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--gl));border-radius:3px;transition:width 0.4s ease;width:0%}
+
+/* ── DETOX CARD ── */
+.dcard{background:linear-gradient(135deg,rgba(29,185,84,0.03),rgba(0,180,216,0.02));border:1px solid rgba(29,185,84,0.12);border-radius:20px;overflow:hidden;margin-bottom:1.2rem}
+.dc-head{padding:1.3rem 1.4rem;display:flex;align-items:flex-start;gap:0.9rem;cursor:pointer;border-bottom:1px solid rgba(29,185,84,0.08)}
+.dc-icon{font-size:2.5rem;flex-shrink:0}
+.dc-name{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:0.2rem}
+.dc-sub{font-size:0.7rem;color:var(--teal)}
+.dc-tags{display:flex;gap:0.3rem;margin-top:0.3rem;flex-wrap:wrap}
+.dc-macros{display:flex;gap:1rem;padding:0.65rem 1.4rem;flex-wrap:wrap;border-bottom:1px solid rgba(29,185,84,0.08)}
+.dm{font-size:0.72rem;color:var(--green);font-family:'DM Mono',monospace;font-weight:700}
+.dm small{color:var(--muted);font-weight:400}
+.dc-benefits{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:1rem}
+.bchip{background:rgba(29,185,84,0.07);border:1px solid rgba(29,185,84,0.18);border-radius:7px;padding:0.25rem 0.6rem;font-size:0.68rem;color:var(--green);font-weight:700}
+.dc-details{display:none;padding:1.4rem}
+.dc-details.open{display:block;animation:fadeSlide 0.3s ease}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(29,185,84,0.92);color:#fff;padding:0.65rem 1.4rem;border-radius:100px;font-size:0.8rem;font-weight:700;opacity:0;pointer-events:none;transition:all 0.3s;z-index:300;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(max-width:720px){.ing-grid{grid-template-columns:1fr}.main{padding:1.5rem 1rem}.rcard-head{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="nutricam-hub.html" class="nav-logo">Nutri<em>Cam</em></a>
+  <input class="nav-search" type="text" placeholder="🔍 Rechercher..." oninput="search(this.value)"/>
+  <div class="nav-tabs">
+    <a href="nutricam-hub.html" class="nt">← Hub</a>
+    <button class="nt active" onclick="filter('all',this)">🌍 Tout</button>
+    <button class="nt" onclick="filter('senegal',this)">🇸🇳</button>
+    <button class="nt" onclick="filter('nigeria',this)">🇳🇬</button>
+    <button class="nt" onclick="filter('maroc',this)">🇲🇦</button>
+    <button class="nt" onclick="filter('france',this)">🇫🇷</button>
+    <button class="nt" onclick="filter('allemagne',this)">🇩🇪</button>
+    <button class="nt" onclick="filter('detox',this)">🌿 Detox</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div>
+    <div class="hero-label"><span class="hl-dot"></span>Recettes Pro · Étape par étape · Novice → Expert</div>
+    <h1>Cuisines du Monde<br/><em>Ultra-Détaillées</em></h1>
+    <p class="hero-sub">Chaque recette expliquée comme si un chef était à côté de vous — durées exactes, astuces, avertissements, variantes et valeurs nutritionnelles.</p>
+  </div>
+</div>
+
+<div class="cat-row">
+  <button class="cat-pill on" onclick="filter('all',this)">🌍 Toutes</button>
+  <button class="cat-pill" onclick="filter('senegal',this)">🇸🇳 Sénégal</button>
+  <button class="cat-pill" onclick="filter('nigeria',this)">🇳🇬 Nigeria</button>
+  <button class="cat-pill" onclick="filter('maroc',this)">🇲🇦 Maroc</button>
+  <button class="cat-pill" onclick="filter('france',this)">🇫🇷 France</button>
+  <button class="cat-pill" onclick="filter('allemagne',this)">🇩🇪 Allemagne</button>
+  <button class="cat-pill" onclick="filter('italie',this)">🇮🇹 Italie</button>
+  <button class="cat-pill" onclick="filter('detox',this)">🌿 Detox & Jus</button>
+</div>
+
+<div class="main">
+
+<!-- ═══════════════════════════════
+     🇸🇳 SÉNÉGAL
+═══════════════════════════════ -->
+<div class="country-block" data-cat="senegal">
+  <div class="cb-head"><span class="cb-flag">🇸🇳</span><span class="cb-name">Sénégal</span><div class="cb-line"></div></div>
+
+  <!-- THIÉBOUDIENNE -->
+  <div class="rcard">
+    <div class="rcard-head" onclick="toggle(this)">
+      <span class="rh-emoji">🍚</span>
+      <div class="rh-body">
+        <div class="rh-name">Thiéboudienne — Riz au poisson sénégalais</div>
+        <div class="rh-origin">📍 Saint-Louis & Dakar, Sénégal · Plat national</div>
+        <div class="rh-tags"><span class="rtag rt-trad">Plat national</span><span class="rtag rt-fest">Festif</span></div>
+        <div class="rh-desc">Le plat le plus célèbre d'Afrique de l'Ouest — riz brisé cuit dans une sauce tomate épicée avec du poisson frais frit et 6 légumes mijotés. Un chef-d'œuvre de la cuisine africaine inscrit à l'UNESCO.</div>
+      </div>
+      <button class="rh-toggle">▼ Recette</button>
+    </div>
+    <div class="rcard-macros">
+      <div class="mac"><span class="mac-v" style="color:#f5c842">450</span><div class="mac-l">kcal</div></div>
+      <div class="mac"><span class="mac-v" style="color:#1db954">35g</span><div class="mac-l">Prot.</div></div>
+      <div class="mac"><span class="mac-v" style="color:#f5c842">52g</span><div class="mac-l">Gluc.</div></div>
+      <div class="mac"><span class="mac-v" style="color:#e63946">12g</span><div class="mac-l">Lip.</div></div>
+      <div class="mac"><span class="mac-v" style="color:#7b2d8b">5g</span><div class="mac-l">Fibres</div></div>
+    </div>
+    <div class="rcard-timing">
+      <span class="tbadge">⏱ Prep <small>30 min</small></span>
+      <span class="tbadge">🔥 Cuisson <small>1h20</small></span>
+      <span class="tbadge">⏳ Total <small>1h50</small></span>
+      <span class="tbadge">👥 <small>6 personnes</small></span>
+      <span class="tbadge">📊 <small>Difficile</small></span>
+    </div>
+    <div class="rcard-details">
+      <div class="rd-inner">
+        <div class="rd-section">
+          <div class="rds-title">🥘 Ingrédients</div>
+          <div class="ing-grid">
+            <div class="ing"><span class="ing-q">600g</span><span class="ing-n">Riz brisé sénégalais<span class="ing-note"> (ou riz long grain)</span></span></div>
+            <div class="ing"><span class="ing-q">800g</span><span class="ing-n">Poisson frais<span class="ing-note"> (thiof/mérou, capitaine ou daurade)</span></span></div>
+            <div class="ing"><span class="ing-q">6</span><span class="ing-n">Tomates mûres<span class="ing-note"> (ou 400g concentré tomate)</span></span></div>
+            <div class="ing"><span class="ing-q">2</span><span class="ing-n">Oignons<span class="ing-note"> (gros, émincés)</span></span></div>
+            <div class="ing"><span class="ing-q">½</span><span class="ing-n">Chou blanc<span class="ing-note"> (coupé en quartiers)</span></span></div>
+            <div class="ing"><span class="ing-q">3</span><span class="ing-n">Carottes<span class="ing-note"> (entières ou coupées en 2)</span></span></div>
+            <div class="ing"><span class="ing-q">2</span><span class="ing-n">Aubergines rondes<span class="ing-note"> (africaines, coupées en 2)</span></span></div>
+            <div class="ing"><span class="ing-q">2</span><span class="ing-n">Navets<span class="ing-note"> (coupés en 2)</span></span></div>
+            <div class="ing"><span class="ing-q">2</span><span class="ing-n">Patates douces<span class="ing-note"> (pelées, entières)</span></span></div>
+            <div class="ing"><span class="ing-q">100ml</span><span class="ing-n">Huile d'arachide<span class="ing-note"> (ou huile végétale)</span></span></div>
+            <div class="ing"><span class="ing-q">3 cs</span><span class="ing-n">Concentré de tomates</span></div>
+            <div class="ing"><span class="ing-q">4</span><span class="ing-n">Gousses d'ail<span class="ing-note"> (pilées)</span></span></div>
+            <div class="ing"><span class="ing-q">1</span><span class="ing-n">Piment vert entier<span class="ing-note"> (ne pas couper)</span></span></div>
+            <div class="ing"><span class="ing-q">3</span><span class="ing-n">Cubes bouillon<span class="ing-note"> (Maggi ou Kub Or)</span></span></div>
+            <div class="ing"><span class="ing-q">1 bouquet</span><span class="ing-n">Persil + coriandre frais</span></div>
+            <div class="ing"><span class="ing-q">Sel, poivre</span><span class="ing-n">Selon goût</span></div>
+          </div>
+        </div>
+        <div class="rd-section">
+          <div class="rds-title">🔧 Ustensiles</div>
+          <div class="tools">
+            <span class="tool">🥘 Grande marmite 8L</span>
+            <span class="tool">🍳 Poêle pour frire le poisson</span>
+            <span class="tool">🔪 Couteau et planche</span>
+            <span class="tool">🌀 Mixeur ou pilon</span>
+            <span class="tool">🥄 Grande cuillère bois</span>
+          </div>
+        </div>
+        <div class="rd-section">
+          <div class="rds-title">👨‍🍳 Préparation étape par étape</div>
+          <div class="prog-bar"><div class="pb-top"><span>Progression</span><span id="p-thieb">0%</span></div><div class="pb-track"><div class="pb-fill" id="f-thieb"></div></div></div>
+          <div class="steps">
+            <div class="step" onclick="checkStep(this,'thieb',1,9)">
+              <div class="step-n">1</div>
+              <div class="step-body">
+                <div class="step-dur">⏱ 10 min — Préparation et marinade poisson</div>
+                <div class="step-txt">Nettoyez le poisson : enlevez les écailles en grattant de la queue vers la tête, videz-le et rincez à l'eau froide. Coupez-le en darnes épaisses de 4-5 cm. Dans un grand bol, mélangez : 2 gousses d'ail pilées, ½ oignon râpé, 1 cs de jus de citron, sel et poivre. Badigeonnez chaque morceau de cette marinade. Laissez reposer 10-15 minutes minimum.</div>
+                <div class="step-tip">💡 Plus le poisson marine longtemps, plus il sera savoureux. Idéalement 30 min au réfrigérateur.</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'thieb',2,9)">
+              <div class="step-n">2</div>
+              <div class="step-body">
+                <div class="step-dur">⏱ 8-10 min — Friture du poisson</div>
+                <div class="step-txt">Dans la poêle, chauffez 50ml d'huile à feu vif. Quand l'huile est chaude (un peu de farine jetée dedans doit grésiller immédiatement), déposez les darnes. Faites frire 3-4 min de chaque côté jusqu'à ce qu'elles soient bien dorées et croustillantes. Réservez sur du papier absorbant. L'huile de friture est gardée — elle a absorbé les arômes du poisson.</div>
+                <div class="step-warn">⚠️ Ne pas trop cuire le poisson — il finira de cuire dans la sauce. L'extérieur doit juste être doré.</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'thieb',3,9)">
+              <div class="step-n">3</div>
+              <div class="step-body">
+                <div class="step-dur">⏱ 5 min — Base aromatique (yett)</div>
+                <div class="step-txt">Dans la grande marmite, versez le reste de l'huile + l'huile de friture. À feu moyen, faites revenir l'oignon émincé 4-5 minutes en remuant jusqu'à dorure légère. Ajoutez l'ail pilé, mélangez 1 minute. Ajoutez les tomates mixées ou le concentré de tomates. Mélangez et faites cuire en remuant régulièrement 8-10 minutes — la sauce doit réduire, changer de couleur et "frire" dans l'huile.</div>
+                <div class="step-tip">💡 Ce stade "friture de la tomate" est crucial — il enlève l'acidité et concentre les saveurs. La sauce doit bouillonner dans l'huile, pas juste mijoter dans l'eau.</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'thieb',4,9)">
+              <div class="step-n">4</div>
+              <div class="step-body">
+                <div class="step-dur">⏱ 3 min — Ajout bouillon et épices</div>
+                <div class="step-txt">Ajoutez 1.5L d'eau chaude dans la marmite. Émiettez les cubes de bouillon et mélangez. Ajoutez le piment entier (ne pas couper — il parfume sans trop pimenter), le persil et la coriandre ficelés en bouquet. Goûtez le bouillon — il doit être bien assaisonné, légèrement salé. Portez à ébullition à feu vif.</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'thieb',5,9)">
+              <div class="step-n">5</div>
+              <div class="step-body">
+                <div class="step-dur">⏱ 25-30 min — Cuisson des légumes</div>
+                <div class="step-txt">Une fois à ébullition, ajoutez les légumes selon leur temps de cuisson : d'abord les carottes et navets (20-25 min), puis les patates douces (15 min), puis le chou et les aubergines (10 min). Ne mélangez pas les légumes — posez-les délicatement dans le bouillon. Couvrez et laissez mijoter. Chaque légume doit rester entier et ne pas s'effondrer. Retirez-les dès qu'ils sont cuits (testez avec une fourchette) et réservez.</div>
+                <div class="step-warn">⚠️ Retirez chaque légume dès qu'il est tendre — ne les laissez pas tous cuire le même temps ou certains seront en purée.</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'thieb',6,9)">
+              <div class="step-n">6</div>
+              <div class="step-body">
+                <div class="step-dur">⏱ 5 min — Ajout poisson et finition bouillon</div>
+                <div class="step-txt">Plongez délicatement les darnes de poisson frites dans le bouillon. Laissez chauffer 3-4 minutes à feu doux. Retirez le poisson avec une écumoire et réservez. Retirez le bouquet de persil/coriandre et le piment entier. Goûtez et ajustez le sel. Prélevez 1L de ce bouillon de cuisson — il servira à cuire le riz.</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'thieb',7,9)">
+              <div class="step-n">7</div>
+              <div class="step-body">
+                <div class="step-dur">⏱ 5 min — Préparation du riz</div>
+                <div class="step-txt">Rincez le riz brisé 2-3 fois à l'eau froide jusqu'à ce que l'eau soit presque claire. Égouttez. Dans la même marmite avec le bouillon restant (environ 700ml pour 600g de riz), portez à ébullition. La quantité de liquide doit être environ 1.2× le volume du riz (pas trop — le riz brisé absorbe beaucoup).</div>
+                <div class="step-tip">💡 Règle d'or : Pour le riz brisé, bouillon = 1.2× le volume du riz. Pour le riz long grain = 1.5×.</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'thieb',8,9)">
+              <div class="step-n">8</div>
+              <div class="step-body">
+                <div class="step-dur">⏱ 20-25 min — Cuisson du riz (étape clé)</div>
+                <div class="step-txt">Versez le riz dans le bouillon bouillant. Mélangez une seule fois. Réduisez à feu moyen. Couvrez et laissez cuire 15 minutes. Découvrez, mélangez délicatement une fois avec une cuillère en bois. Recouvrez et laissez cuire encore 5-10 minutes à feu très doux jusqu'à absorption complète du liquide. Le riz doit être humide mais pas collant.</div>
+                <div class="step-warn">⚠️ Ne pas ouvrir le couvercle pendant les 15 premières minutes — la vapeur est essentielle à la cuisson uniforme du riz.</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'thieb',9,9)">
+              <div class="step-n">9</div>
+              <div class="step-body">
+                <div class="step-dur">🍽️ Dressage et service</div>
+                <div class="step-txt">Dans un grand plat de service (traditionally une bassine en email), versez le riz. Disposez les légumes tout autour en les intercalant par couleur. Posez les darnes de poisson doré au centre. Servez immédiatement. Traditionnellement, le thiéboudienne se mange à même le plat commun, tous ensemble, assis en cercle. C'est un symbole de partage et de convivialité au Sénégal !</div>
+                <div class="step-tip">💡 Le fond légèrement caramélisé (le "xoon") est le morceau le plus prisé — grattez-le et partagez-le comme un trésor !</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chef-box">
+          <div class="cb-t">👨‍🍳 Secrets du Chef</div>
+          <div class="cb-items">
+            <div class="cb-item"><span>🐟</span>Le thiof (mérou blanc) est le poisson traditionnel — son goût ferme tient mieux à la cuisson que les poissons fragiles.</div>
+            <div class="cb-item"><span>🍅</span>Les tomates fraîches donnent un goût plus frais ; le concentré une couleur plus profonde. Les deux ensemble = parfait.</div>
+            <div class="cb-item"><span>🌶️</span>Le piment entier parfume sans pimenter trop fort. Pour une version plus piquante, faites une petite incision dans le piment.</div>
+            <div class="cb-item"><span>🧊</span>Encore meilleur réchauffé le lendemain ! Le riz absorbe les saveurs pendant la nuit.</div>
+          </div>
+        </div>
+        <div class="var-box">
+          <div class="vb-t">🔄 Variantes</div>
+          <div class="vb-txt"><strong>Thiébou Yapp (au viande) :</strong> Remplacez le poisson par du mouton ou du bœuf — cuire 1h30.<br/><strong>Thiébou Guinar (au poulet) :</strong> Poulet à la place du poisson — cuisson 45 min.<br/><strong>Thiébou Dieun rouge :</strong> Ajoutez du concentré de tomate supplémentaire pour une sauce plus rouge et plus riche.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     🇳🇬 NIGERIA
+═══════════════════════════════ -->
+<div class="country-block" data-cat="nigeria">
+  <div class="cb-head"><span class="cb-flag">🇳🇬</span><span class="cb-name">Nigeria</span><div class="cb-line"></div></div>
+
+  <!-- JOLLOF RICE PRO -->
+  <div class="rcard">
+    <div class="rcard-head" onclick="toggle(this)">
+      <span class="rh-emoji">🍛</span>
+      <div class="rh-body">
+        <div class="rh-name">Jollof Rice Nigérian — La vraie recette festive</div>
+        <div class="rh-origin">📍 Nigeria · Le riz le plus disputé d'Afrique !</div>
+        <div class="rh-tags"><span class="rtag rt-fest">Festif</span><span class="rtag" style="background:rgba(246,115,10,0.1);color:#f4720a">Party Rice</span></div>
+        <div class="rh-desc">Le Jollof Rice nigérian se distingue par son goût légèrement fumé ("party jollof"), sa couleur rouge-orangée profonde et ses épices. Secret : le fond caramélisé et la cuisson à feu doux à la fin.</div>
+      </div>
+      <button class="rh-toggle">▼ Recette</button>
+    </div>
+    <div class="rcard-macros">
+      <div class="mac"><span class="mac-v" style="color:#f5c842">410</span><div class="mac-l">kcal</div></div>
+      <div class="mac"><span class="mac-v" style="color:#1db954">12g</span><div class="mac-l">Prot.</div></div>
+      <div class="mac"><span class="mac-v" style="color:#f5c842">68g</span><div class="mac-l">Gluc.</div></div>
+      <div class="mac"><span class="mac-v" style="color:#e63946">11g</span><div class="mac-l">Lip.</div></div>
+    </div>
+    <div class="rcard-timing">
+      <span class="tbadge">⏱ Prep <small>15 min</small></span>
+      <span class="tbadge">🔥 Cuisson <small>55 min</small></span>
+      <span class="tbadge">👥 <small>6 personnes</small></span>
+      <span class="tbadge">📊 <small>Moyen</small></span>
+    </div>
+    <div class="rcard-details">
+      <div class="rd-inner">
+        <div class="rd-section">
+          <div class="rds-title">🥘 Ingrédients</div>
+          <div class="ing-grid">
+            <div class="ing"><span class="ing-q">500g</span><span class="ing-n">Riz long grain parboiled<span class="ing-note"> (type Uncle Ben's ou riz étuvé)</span></span></div>
+            <div class="ing"><span class="ing-q">6</span><span class="ing-n">Tomates mûres<span class="ing-note"> (ou 400g tomates en boîte)</span></span></div>
+            <div class="ing"><span class="ing-q">3</span><span class="ing-n">Poivrons rouges<span class="ing-note"> (ou 2 rouges + 1 orange)</span></span></div>
+            <div class="ing"><span class="ing-q">2</span><span class="ing-n">Oignons<span class="ing-note"> (1 pour la sauce, 1 pour faire revenir)</span></span></div>
+            <div class="ing"><span class="ing-q">2</span><span class="ing-n">Piments habanero/scotch bonnet<span class="ing-note"> (ajustez selon tolérance)</span></span></div>
+            <div class="ing"><span class="ing-q">100ml</span><span class="ing-n">Huile végétale</span></div>
+            <div class="ing"><span class="ing-q">500ml</span><span class="ing-n">Bouillon de poulet chaud<span class="ing-note"> (maison ou cubes)</span></span></div>
+            <div class="ing"><span class="ing-q">2 cs</span><span class="ing-n">Concentré de tomates</span></div>
+            <div class="ing"><span class="ing-q">1 cc</span><span class="ing-n">Curry en poudre</span></div>
+            <div class="ing"><span class="ing-q">1 cc</span><span class="ing-n">Thym séché</span></div>
+            <div class="ing"><span class="ing-q">2</span><span class="ing-n">Feuilles de laurier</span></div>
+            <div class="ing"><span class="ing-q">Sel, poivre</span><span class="ing-n">Selon goût</span></div>
+          </div>
+        </div>
+        <div class="rd-section">
+          <div class="rds-title">👨‍🍳 Étapes pro</div>
+          <div class="prog-bar"><div class="pb-top"><span>Progression</span><span id="p-jollof">0%</span></div><div class="pb-track"><div class="pb-fill" id="f-jollof"></div></div></div>
+          <div class="steps">
+            <div class="step" onclick="checkStep(this,'jollof',1,7)">
+              <div class="step-n">1</div>
+              <div class="step-body">
+                <div class="step-dur">⏱ 5 min — Blending de la base</div>
+                <div class="step-txt">Dans un blender, mixez ensemble les tomates, poivrons rouges, 1 oignon et les piments habanero (retirez les graines si vous voulez moins fort) jusqu'à obtenir un coulis lisse. Vous devez obtenir environ 800ml de purée. Réservez.</div>
+                <div class="step-tip">💡 Clé du Jollof : plus de poivrons rouges que de tomates = couleur plus profonde et goût plus sucré.</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'jollof',2,7)">
+              <div class="step-n">2</div>
+              <div class="step-body">
+                <div class="step-dur">⏱ 15-20 min — Friture de la purée (étape cruciale)</div>
+                <div class="step-txt">Dans la grande marmite, chauffez l'huile à feu moyen-vif. Faites revenir le 2e oignon émincé 3 min. Ajoutez le concentré de tomates, mélangez 2 min. Versez toute la purée de tomates-poivrons d'un coup. Attention aux éclaboussures ! Faites cuire à découvert à feu moyen-vif pendant 15-20 minutes en remuant toutes les 3-4 min. La purée doit réduire de moitié et "frire" dans l'huile — vous entendrez un son de friture, pas de mijotage.</div>
+                <div class="step-warn">⚠️ Cette étape prend du temps mais ne peut pas être précipitée — c'est ce qui donne au Jollof sa saveur profonde et concentrée.</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'jollof',3,7)">
+              <div class="step-n">3</div>
+              <div class="step-body">
+                <div class="step-dur">⏱ 3 min — Épices et bouillon</div>
+                <div class="step-txt">La sauce est prête quand elle est épaisse, brillante et l'huile remonte sur les bords. Ajoutez le curry, thym, laurier, sel et poivre. Mélangez 1 min. Versez le bouillon chaud. Goûtez — doit être légèrement salé (le riz va absorber du sel). Portez à ébullition.</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'jollof',4,7)">
+              <div class="step-n">4</div>
+              <div class="step-body">
+                <div class="step-dur">⏱ 2 min — Rinçage du riz</div>
+                <div class="step-txt">Rincez le riz parboiled 2 fois à l'eau froide (moins que le riz normal — il est déjà pré-cuit). Pour le riz parboiled, ne le laissez pas tremper — il va se désintégrer. Égouttez complètement.</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'jollof',5,7)">
+              <div class="step-n">5</div>
+              <div class="step-body">
+                <div class="step-dur">⏱ 30 min — Cuisson du riz (le secret du "party jollof")</div>
+                <div class="step-txt">Versez le riz dans la sauce bouillante. Mélangez une seule fois. Réduisez à feu moyen. Couvrez hermétiquement (utilisez du papier aluminium sous le couvercle pour une fermeture parfaite). Laissez cuire 20 min à feu moyen. Le riz cuit dans la vapeur de la sauce.</div>
+                <div class="step-tip">💡 Le secret du "smoky party jollof" : après 20 min, augmentez le feu au maximum 30 secondes pour créer le fond caramélisé fumé, puis éteignez. Le riz continue de cuire avec la chaleur résiduelle.</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'jollof',6,7)">
+              <div class="step-n">6</div>
+              <div class="step-body">
+                <div class="step-dur">⏱ 5 min — Contrôle et finition</div>
+                <div class="step-txt">Ouvrez délicatement — faites attention à la vapeur brûlante ! Testez le riz : il doit être ferme mais pas croquant. S'il est encore dur, ajoutez 50ml d'eau bouillante, recouvrez et laissez 5 min de plus. S'il est trop humide, laissez découvert 3-4 min. Retirez le laurier.</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'jollof',7,7)">
+              <div class="step-n">7</div>
+              <div class="step-body">
+                <div class="step-dur">🍽️ Service</div>
+                <div class="step-txt">Servez dans un grand plat. Le Jollof nigérian s'accompagne de : poulet grillé, fried plantain (dodo), salade de chou, ou crevettes frites. C'est LE plat des fêtes, mariages et anniversaires nigérians !</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chef-box">
+          <div class="cb-t">👨‍🍳 Pourquoi "Party Jollof" ?</div>
+          <div class="cb-items">
+            <div class="cb-item"><span>🔥</span>Le "party jollof" est celui cuit dans de grandes quantités sur feu de bois ou charbon dehors — le fumé vient de là.</div>
+            <div class="cb-item"><span>🏠</span>À la maison, on reproduit ce fumé avec la technique du feu fort 30 secondes à la fin.</div>
+            <div class="cb-item"><span>🍚</span>Riz parboiled = grains qui restent séparés. Riz ordinaire = risque de coller.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     🇲🇦 MAROC
+═══════════════════════════════ -->
+<div class="country-block" data-cat="maroc">
+  <div class="cb-head"><span class="cb-flag">🇲🇦</span><span class="cb-name">Maroc</span><div class="cb-line"></div></div>
+
+  <div class="rcard">
+    <div class="rcard-head" onclick="toggle(this)">
+      <span class="rh-emoji">🏺</span>
+      <div class="rh-body">
+        <div class="rh-name">Tajine d'agneau aux pruneaux et amandes</div>
+        <div class="rh-origin">📍 Fès & Marrakech, Maroc · Cuisine berbère</div>
+        <div class="rh-tags"><span class="rtag rt-trad">Traditionnel</span><span class="rtag rt-fest">Festif</span></div>
+        <div class="rh-desc">Le tajine sucré-salé marocain par excellence — agneau fondant cuit 2h30 dans un mélange de safran, cannelle et gingembre, nappé de pruneaux confits et d'amandes dorées. Un voyage pour les sens.</div>
+      </div>
+      <button class="rh-toggle">▼ Recette</button>
+    </div>
+    <div class="rcard-macros">
+      <div class="mac"><span class="mac-v" style="color:#f5c842">480</span><div class="mac-l">kcal</div></div>
+      <div class="mac"><span class="mac-v" style="color:#1db954">32g</span><div class="mac-l">Prot.</div></div>
+      <div class="mac"><span class="mac-v" style="color:#f5c842">38g</span><div class="mac-l">Gluc.</div></div>
+      <div class="mac"><span class="mac-v" style="color:#e63946">20g</span><div class="mac-l">Lip.</div></div>
+    </div>
+    <div class="rcard-timing">
+      <span class="tbadge">⏱ Prep <small>20 min</small></span>
+      <span class="tbadge">🔥 Cuisson <small>2h30</small></span>
+      <span class="tbadge">👥 <small>4 personnes</small></span>
+      <span class="tbadge">📊 <small>Intermédiaire</small></span>
+    </div>
+    <div class="rcard-details">
+      <div class="rd-inner">
+        <div class="rd-section">
+          <div class="rds-title">🥘 Ingrédients</div>
+          <div class="ing-grid">
+            <div class="ing"><span class="ing-q">900g</span><span class="ing-n">Épaule d'agneau<span class="ing-note"> (ou collier, coupé en gros cubes de 5cm)</span></span></div>
+            <div class="ing"><span class="ing-q">250g</span><span class="ing-n">Pruneaux secs<span class="ing-note"> (sans noyaux)</span></span></div>
+            <div class="ing"><span class="ing-q">120g</span><span class="ing-n">Amandes entières émondées<span class="ing-note"> (sans peau)</span></span></div>
+            <div class="ing"><span class="ing-q">2</span><span class="ing-n">Gros oignons<span class="ing-note"> (râpés grossièrement)</span></span></div>
+            <div class="ing"><span class="ing-q">3 cs</span><span class="ing-n">Huile d'olive extra-vierge</span></div>
+            <div class="ing"><span class="ing-q">50g</span><span class="ing-n">Beurre<span class="ing-note"> (ou smen — beurre rance marocain)</span></span></div>
+            <div class="ing"><span class="ing-q">1 cs</span><span class="ing-n">Miel naturel<span class="ing-note"> (d'argan si possible)</span></span></div>
+            <div class="ing"><span class="ing-q">1 cc</span><span class="ing-n">Safran en pistils<span class="ing-note"> (infusé dans 3 cs d'eau chaude 15 min)</span></span></div>
+            <div class="ing"><span class="ing-q">2 cc</span><span class="ing-n">Cannelle moulue<span class="ing-note"> + 1 bâton de cannelle</span></span></div>
+            <div class="ing"><span class="ing-q">2 cc</span><span class="ing-n">Gingembre frais râpé</span></div>
+            <div class="ing"><span class="ing-q">1 cc</span><span class="ing-n">Curcuma en poudre</span></div>
+            <div class="ing"><span class="ing-q">½ cc</span><span class="ing-n">Poivre blanc moulu</span></div>
+            <div class="ing"><span class="ing-q">1 cs</span><span class="ing-n">Graines de sésame<span class="ing-note"> (garniture finale)</span></span></div>
+            <div class="ing"><span class="ing-q">Sel</span><span class="ing-n">Selon goût</span></div>
+          </div>
+        </div>
+        <div class="rd-section">
+          <div class="rds-title">👨‍🍳 Étapes détaillées</div>
+          <div class="prog-bar"><div class="pb-top"><span>Progression</span><span id="p-tajine">0%</span></div><div class="pb-track"><div class="pb-fill" id="f-tajine"></div></div></div>
+          <div class="steps">
+            <div class="step" onclick="checkStep(this,'tajine',1,7)">
+              <div class="step-n">1</div>
+              <div class="step-body">
+                <div class="step-dur">⏱ 15 min — Infusion safran et préparation</div>
+                <div class="step-txt">Faites infuser le safran dans 3 cs d'eau chaude (pas bouillante — max 70°C) pendant 15 minutes minimum. Il prendra une belle couleur dorée et un parfum enivrant. Pendant ce temps, coupez l'agneau en cubes de 5cm, retirez l'excès de gras mais gardez un peu — il parfume la sauce. Râpez les oignons (pas hachés — ils doivent fondre complètement).</div>
+                <div class="step-tip">💡 Le safran doit infuser — ne jamais le jeter directement dans la casserole à sec, il brûlerait et perdrait tout son arôme.</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'tajine',2,7)">
+              <div class="step-n">2</div>
+              <div class="step-body">
+                <div class="step-dur">⏱ 10 min — Coloration de la viande</div>
+                <div class="step-txt">Dans un tajine ou une cocotte à fond épais, chauffez l'huile d'olive + beurre à feu moyen-vif. Quand le beurre mousse, ajoutez les cubes d'agneau en une seule couche (en plusieurs fois si nécessaire). Faites dorer 3-4 min sans toucher, puis retournez et dorez l'autre face 2-3 min. La viande doit être brun doré partout. Réservez.</div>
+                <div class="step-warn">⚠️ Ne pas surcharger la cocotte — si les morceaux se touchent, la viande "bouille" au lieu de dorer. Dorez en 2 fois si nécessaire.</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'tajine',3,7)">
+              <div class="step-n">3</div>
+              <div class="step-body">
+                <div class="step-dur">⏱ 5 min — Sofrito d'oignons et épices</div>
+                <div class="step-txt">Dans la même cocotte, ajoutez les oignons râpés. Faites revenir à feu moyen 5-6 min en grattant les sucs de cuisson dorés au fond (c'est la saveur !). Ajoutez : safran infusé + eau, gingembre, cannelle moulue, bâton de cannelle, curcuma, poivre blanc. Mélangez 1 min.</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'tajine',4,7)">
+              <div class="step-n">4</div>
+              <div class="step-body">
+                <div class="step-dur">⏱ 1h30-2h — Cuisson lente (braising)</div>
+                <div class="step-txt">Remettez l'agneau dans la cocotte. Ajoutez 250ml d'eau tiède (juste pour couvrir à moitié). Salez. Portez à frémissement, puis réduisez à feu doux. Couvrez hermétiquement et laissez braiser 1h30 à 2h. La viande est prête quand elle se détache facilement de l'os (testez avec une fourchette). Retournez les morceaux à mi-cuisson et ajoutez un peu d'eau si ça accroche.</div>
+                <div class="step-tip">💡 "Braiser" signifie cuisson lente à feu doux dans peu de liquide — c'est ce qui rend la viande fondante. Jamais bouillir fort !</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'tajine',5,7)">
+              <div class="step-n">5</div>
+              <div class="step-body">
+                <div class="step-dur">⏱ 20 min — Confiture de pruneaux</div>
+                <div class="step-txt">30 min avant la fin de cuisson de l'agneau : dans une petite casserole, mettez les pruneaux + 200ml d'eau + 1 cs de miel + ½ cc de cannelle. Portez à ébullition puis réduisez à feu doux. Laissez mijoter 15-20 min jusqu'à ce que les pruneaux soient gonflés et que le jus forme un sirop épais. Réservez.</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'tajine',6,7)">
+              <div class="step-n">6</div>
+              <div class="step-body">
+                <div class="step-dur">⏱ 8 min — Amandes dorées</div>
+                <div class="step-txt">Dans une poêle antiadhésive sans matière grasse, faites torréfier les amandes à feu moyen en remuant constamment pendant 3-4 minutes jusqu'à ce qu'elles soient brun doré et dégagent leur arôme. Attention : elles brûlent vite ! Réservez. Alternativement : faites-les frire dans 1 cs d'huile 2 min — elles seront plus dorées et croustillantes.</div>
+                <div class="step-warn">⚠️ Ne jamais quitter les amandes des yeux pendant la torréfaction — 30 secondes de trop et elles sont brûlées.</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'tajine',7,7)">
+              <div class="step-n">7</div>
+              <div class="step-body">
+                <div class="step-dur">🍽️ Dressage du tajine</div>
+                <div class="step-txt">Disposez les morceaux d'agneau dans le tajine de service. Napppez généreusement de sauce de cuisson (réduisez-la si trop liquide à feu vif 5 min). Disposez les pruneaux confits avec leur sirop sur et autour de la viande. Parsemez d'amandes dorées et de graines de sésame. Servez immédiatement avec du couscous, du pain marocain (khobz) ou de la semoule.</div>
+                <div class="step-tip">💡 Présentez le tajine à table dans son plat de cuisson — l'effet "wow" quand on soulève le couvercle conique est garanti !</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chef-box">
+          <div class="cb-t">👨‍🍳 L'art du tajine</div>
+          <div class="cb-items">
+            <div class="cb-item"><span>🏺</span>Un vrai tajine en terre cuite distribue la chaleur uniformément — si vous n'en avez pas, une cocotte en fonte est l'alternative parfaite.</div>
+            <div class="cb-item"><span>⏰</span>Règle d'or : plus la cuisson est lente et longue, meilleur est le tajine. Ne précipitez jamais.</div>
+            <div class="cb-item"><span>🧊</span>Il est encore meilleur réchauffé — les saveurs se développent. Idéal pour les repas en avance.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     🇫🇷 FRANCE
+═══════════════════════════════ -->
+<div class="country-block" data-cat="france">
+  <div class="cb-head"><span class="cb-flag">🇫🇷</span><span class="cb-name">France</span><div class="cb-line"></div></div>
+
+  <div class="rcard">
+    <div class="rcard-head" onclick="toggle(this)">
+      <span class="rh-emoji">🥘</span>
+      <div class="rh-body">
+        <div class="rh-name">Ratatouille Provençale — La vraie recette</div>
+        <div class="rh-origin">📍 Provence, France · Niçard d'origine</div>
+        <div class="rh-tags"><span class="rtag rt-veg">Végétarien</span><span class="rtag rt-trad">Traditionnel</span></div>
+        <div class="rh-desc">La vraie ratatouille n'est pas un simple mélange de légumes ! Chaque légume est cuit séparément pour préserver sa texture et sa saveur, puis assemblés. Le secret de la grand-mère provençale.</div>
+      </div>
+      <button class="rh-toggle">▼ Recette</button>
+    </div>
+    <div class="rcard-macros">
+      <div class="mac"><span class="mac-v" style="color:#f5c842">185</span><div class="mac-l">kcal</div></div>
+      <div class="mac"><span class="mac-v" style="color:#1db954">4g</span><div class="mac-l">Prot.</div></div>
+      <div class="mac"><span class="mac-v" style="color:#f5c842">22g</span><div class="mac-l">Gluc.</div></div>
+      <div class="mac"><span class="mac-v" style="color:#e63946">9g</span><div class="mac-l">Lip.</div></div>
+      <div class="mac"><span class="mac-v" style="color:#7b2d8b">7g</span><div class="mac-l">Fibres</div></div>
+    </div>
+    <div class="rcard-timing">
+      <span class="tbadge">⏱ Prep <small>25 min</small></span>
+      <span class="tbadge">🔥 Cuisson <small>1h</small></span>
+      <span class="tbadge">👥 <small>4 personnes</small></span>
+      <span class="tbadge">📊 <small>Facile</small></span>
+    </div>
+    <div class="rcard-details">
+      <div class="rd-inner">
+        <div class="rd-section">
+          <div class="rds-title">🥘 Ingrédients</div>
+          <div class="ing-grid">
+            <div class="ing"><span class="ing-q">2</span><span class="ing-n">Courgettes<span class="ing-note"> (moyennes, fermes)</span></span></div>
+            <div class="ing"><span class="ing-q">2</span><span class="ing-n">Aubergines<span class="ing-note"> (moyennes)</span></span></div>
+            <div class="ing"><span class="ing-q">2</span><span class="ing-n">Poivrons<span class="ing-note"> (1 rouge + 1 jaune)</span></span></div>
+            <div class="ing"><span class="ing-q">5</span><span class="ing-n">Tomates mûres<span class="ing-note"> (charnues — type Roma)</span></span></div>
+            <div class="ing"><span class="ing-q">2</span><span class="ing-n">Oignons<span class="ing-note"> (émincés)</span></span></div>
+            <div class="ing"><span class="ing-q">4</span><span class="ing-n">Gousses d'ail<span class="ing-note"> (émincées finement)</span></span></div>
+            <div class="ing"><span class="ing-q">80ml</span><span class="ing-n">Huile d'olive extra-vierge<span class="ing-note"> (bonne qualité)</span></span></div>
+            <div class="ing"><span class="ing-q">1 bouquet</span><span class="ing-n">Herbes de Provence<span class="ing-note"> (ou thym + romarin + laurier + origan)</span></span></div>
+            <div class="ing"><span class="ing-q">1 cs</span><span class="ing-n">Basilic frais<span class="ing-note"> (ajouté en fin de cuisson)</span></span></div>
+            <div class="ing"><span class="ing-q">Sel, poivre</span><span class="ing-n">Fleur de sel si possible</span></div>
+          </div>
+        </div>
+        <div class="rd-section">
+          <div class="rds-title">👨‍🍳 La vraie méthode provençale</div>
+          <div class="steps">
+            <div class="step" onclick="checkStep(this,'rata',1,6)">
+              <div class="step-n">1</div>
+              <div class="step-body">
+                <div class="step-dur">⏱ 15 min — Dégorger les aubergines et courgettes</div>
+                <div class="step-txt">Coupez aubergines et courgettes en cubes de 2cm. Mettez-les dans une passoire, saupoudrez généreusement de sel. Laissez dégorger 20 min — une eau marron va s'écouler. Rincez abondamment et séchez bien avec un torchon propre. Cette étape enlève l'amertume des aubergines et l'excès d'eau des courgettes.</div>
+                <div class="step-tip">💡 Cette étape fait toute la différence — sans elle, la ratatouille sera aqueuse et les légumes mous.</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'rata',2,6)">
+              <div class="step-n">2</div>
+              <div class="step-body">
+                <div class="step-dur">⏱ 10 min — Base tomate-oignon</div>
+                <div class="step-txt">Dans une grande poêle/sauteuse, chauffez 20ml d'huile à feu moyen. Faites revenir les oignons 5 min. Ajoutez l'ail émincé, faites revenir 2 min (ne doit pas brunir). Ajoutez les tomates coupées en morceaux + herbes de Provence. Laissez compoter 10 min à feu moyen. La sauce doit réduire et épaissir. Salez, poivrez. Réservez dans un bol.</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'rata',3,6)">
+              <div class="step-n">3</div>
+              <div class="step-body">
+                <div class="step-dur">⏱ 15 min — Cuisson séparée des aubergines</div>
+                <div class="step-txt">Dans la même poêle bien chaude avec 25ml d'huile, faites sauter les aubergines à feu vif par petites quantités (ne pas surcharger). 4-5 min par portion, en remuant, jusqu'à ce qu'elles soient dorées et fondantes. Elles absorbent beaucoup d'huile — c'est normal. Salez légèrement. Réservez séparément.</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'rata',4,6)">
+              <div class="step-n">4</div>
+              <div class="step-body">
+                <div class="step-dur">⏱ 8 min — Cuisson poivrons et courgettes</div>
+                <div class="step-txt">Coupez les poivrons en lanières. Dans la poêle avec le reste d'huile, faites sauter les poivrons 5 min à feu vif. Ajoutez les courgettes, faites sauter ensemble 4-5 min. Ils doivent être légèrement dorés mais encore fermes — pas mous. Salez légèrement.</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'rata',5,6)">
+              <div class="step-n">5</div>
+              <div class="step-body">
+                <div class="step-dur">⏱ 20 min — Assemblage final et mijotage</div>
+                <div class="step-txt">Dans la grande poêle, réunissez tous les légumes cuits + la sauce tomate. Mélangez délicatement. Rectifiez l'assaisonnement. Couvrez et laissez mijoter à feu doux 15-20 minutes pour que les saveurs se mélangent harmonieusement. Remuez doucement 2-3 fois. En fin de cuisson, ajoutez le basilic frais déchiré à la main.</div>
+                <div class="step-tip">💡 La ratatouille est meilleure refroidie à température ambiante ou réchauffée le lendemain — les saveurs se développent magnifiquement.</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'rata',6,6)">
+              <div class="step-n">6</div>
+              <div class="step-body">
+                <div class="step-dur">🍽️ Service</div>
+                <div class="step-txt">Servez chaud en accompagnement de viandes grillées, ou froid en entrée avec du pain de campagne. La ratatouille se sert aussi en garniture de pâtes, sur des tartines, ou en garniture de riz. Un filet d'huile d'olive crue et quelques feuilles de basilic frais pour finir.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     🇩🇪 ALLEMAGNE
+═══════════════════════════════ -->
+<div class="country-block" data-cat="allemagne">
+  <div class="cb-head"><span class="cb-flag">🇩🇪</span><span class="cb-name">Allemagne</span><div class="cb-line"></div></div>
+
+  <div class="rcard">
+    <div class="rcard-head" onclick="toggle(this)">
+      <span class="rh-emoji">🥩</span>
+      <div class="rh-body">
+        <div class="rh-name">Sauerbraten — Rôti mariné 3 jours</div>
+        <div class="rh-origin">📍 Rhénanie, Allemagne · Plat national</div>
+        <div class="rh-tags"><span class="rtag rt-trad">Traditionnel</span><span class="rtag rt-fest">Dimanche</span></div>
+        <div class="rh-desc">Le plat le plus emblématique d'Allemagne — un rôti de bœuf mariné 3 jours dans du vinaigre de vin avec des épices, puis braisé et servi avec une sauce unique au pain d'épices. Patience récompensée.</div>
+      </div>
+      <button class="rh-toggle">▼ Recette</button>
+    </div>
+    <div class="rcard-macros">
+      <div class="mac"><span class="mac-v" style="color:#f5c842">520</span><div class="mac-l">kcal</div></div>
+      <div class="mac"><span class="mac-v" style="color:#1db954">42g</span><div class="mac-l">Prot.</div></div>
+      <div class="mac"><span class="mac-v" style="color:#f5c842">25g</span><div class="mac-l">Gluc.</div></div>
+      <div class="mac"><span class="mac-v" style="color:#e63946">22g</span><div class="mac-l">Lip.</div></div>
+    </div>
+    <div class="rcard-timing">
+      <span class="tbadge">⏱ Marinade <small>3 jours</small></span>
+      <span class="tbadge">🔥 Cuisson <small>2h30</small></span>
+      <span class="tbadge">👥 <small>6 personnes</small></span>
+      <span class="tbadge">📊 <small>Avancé</small></span>
+    </div>
+    <div class="rcard-details">
+      <div class="rd-inner">
+        <div class="rd-section">
+          <div class="rds-title">🥘 Ingrédients</div>
+          <div class="ing-grid">
+            <div class="ing"><span class="ing-q">1.2 kg</span><span class="ing-n">Rôti de bœuf<span class="ing-note"> (épaule, gîte ou rumsteck)</span></span></div>
+            <div class="ing"><span class="ing-q">400ml</span><span class="ing-n">Vinaigre de vin rouge<span class="ing-note"> (ou vinaigre de cidre)</span></span></div>
+            <div class="ing"><span class="ing-q">400ml</span><span class="ing-n">Eau</span></div>
+            <div class="ing"><span class="ing-q">2</span><span class="ing-n">Oignons<span class="ing-note"> (grossièrement coupés)</span></span></div>
+            <div class="ing"><span class="ing-q">2</span><span class="ing-n">Carottes<span class="ing-note"> (en rondelles)</span></span></div>
+            <div class="ing"><span class="ing-q">6</span><span class="ing-n">Clous de girofle</span></div>
+            <div class="ing"><span class="ing-q">3</span><span class="ing-n">Feuilles de laurier</span></div>
+            <div class="ing"><span class="ing-q">10</span><span class="ing-n">Grains de poivre noir</span></div>
+            <div class="ing"><span class="ing-q">5</span><span class="ing-n">Baies de genévrier<span class="ing-note"> (optionnel mais authentique)</span></span></div>
+            <div class="ing"><span class="ing-q">60g</span><span class="ing-n">Pain d'épices<span class="ing-note"> (Lebkuchen — rayon épicerie allemande)</span></span></div>
+            <div class="ing"><span class="ing-q">2 cs</span><span class="ing-n">Sucre brun</span></div>
+            <div class="ing"><span class="ing-q">2 cs</span><span class="ing-n">Huile pour saisir</span></div>
+            <div class="ing"><span class="ing-q">Sel, poivre</span><span class="ing-n">Selon goût</span></div>
+          </div>
+        </div>
+        <div class="rd-section">
+          <div class="rds-title">👨‍🍳 Étapes (planning sur 3 jours)</div>
+          <div class="steps">
+            <div class="step" onclick="checkStep(this,'sauer',1,6)">
+              <div class="step-n">1</div>
+              <div class="step-body">
+                <div class="step-dur">📅 Jour 1-3 — Marinade (Crucial !)</div>
+                <div class="step-txt">Dans une casserole, portez à ébullition : vinaigre + eau + oignons + carottes + clous de girofle + laurier + poivre + genévrier + 1 cc sel. Laissez refroidir complètement à température ambiante. Placez la viande dans un sac congélation ou un grand bocal hermétique. Versez la marinade froide sur la viande. La viande doit être totalement immergée. Réfrigérez 3 jours (minimum 2) en retournant la viande une fois par jour.</div>
+                <div class="step-tip">💡 Le vinaigre attendrit la viande et lui donne ce goût caractéristique "sauer" (aigre). Plus la marinade dure, meilleur et plus fondant sera le résultat.</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'sauer',2,6)">
+              <div class="step-n">2</div>
+              <div class="step-body">
+                <div class="step-dur">⏱ 10 min — Jour J : Préparation</div>
+                <div class="step-txt">Sortez la viande de la marinade. Filtrez la marinade — gardez le liquide, jetez les légumes et épices. Séchez soigneusement la viande avec du papier absorbant. Salez et poivrez généreusement sur toutes les faces.</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'sauer',3,6)">
+              <div class="step-n">3</div>
+              <div class="step-body">
+                <div class="step-dur">⏱ 12 min — Saisie de la viande</div>
+                <div class="step-txt">Dans une grande cocotte en fonte ou une marmite à fond épais, chauffez l'huile à feu très vif jusqu'à ce qu'elle fume presque. Saisissez la viande 3-4 min sur chaque face (6 faces). Elle doit être bien brun foncé, presque noire par endroits — c'est la réaction de Maillard qui crée la saveur. Ne bougez pas la viande pendant la saisie de chaque face.</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'sauer',4,6)">
+              <div class="step-n">4</div>
+              <div class="step-body">
+                <div class="step-dur">⏱ 2h30 — Braisage lent</div>
+                <div class="step-txt">Versez 300ml de la marinade filtrée dans la cocotte. Portez à ébullition, grattez les sucs dorés au fond. Réduisez à feu doux. Couvrez hermétiquement. Cuisez 2h-2h30 à feu très doux (juste un frémissement). Retournez la viande toutes les 30 min. Ajoutez 50ml de marinade si ça accroche. La viande est prête quand une fourchette s'enfonce sans résistance.</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'sauer',5,6)">
+              <div class="step-n">5</div>
+              <div class="step-body">
+                <div class="step-dur">⏱ 10 min — Sauce au pain d'épices</div>
+                <div class="step-txt">Retirez la viande et enveloppez-la de papier aluminium pour qu'elle repose (15 min minimum). Dans la cocotte, émiettez le pain d'épices dans le jus de cuisson. Ajoutez le sucre brun et 100ml de marinade restante. Portez à ébullition en remuant vigoureusement — le pain d'épices va fondre et épaissir la sauce. Mixez si nécessaire pour lisser. Goûtez : la sauce doit être aigre-douce-épicée. Ajustez avec sucre ou vinaigre.</div>
+              </div>
+            </div>
+            <div class="step" onclick="checkStep(this,'sauer',6,6)">
+              <div class="step-n">6</div>
+              <div class="step-body">
+                <div class="step-dur">🍽️ Service traditionnel</div>
+                <div class="step-txt">Coupez le rôti en tranches épaisses (1.5-2cm). Servez nappé généreusement de sauce au pain d'épices. Accompagnements traditionnels allemands : Rotkohl (chou rouge braisé au vinaigre), Kartoffelklöße (boulettes de pommes de terre), ou Spätzle. Saupoudrez de persil haché pour la couleur.</div>
+                <div class="step-tip">💡 Ce plat se prépare idéalement la veille — réchauffé le lendemain, il est encore meilleur. Parfait pour les grandes tablées dominicales !</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     🌿 DETOX & JUS — NOUVEAUX
+═══════════════════════════════ -->
+<div class="country-block" data-cat="detox">
+  <div class="cb-head"><span class="cb-flag">🌿</span><span class="cb-name">Boissons Detox & Jus Naturels</span><div class="cb-line"></div></div>
+
+  <!-- JUS BAOBAB -->
+  <div class="dcard">
+    <div class="dc-head" onclick="toggleD(this)">
+      <span class="dc-icon">🌳</span>
+      <div style="flex:1">
+        <div class="dc-name">Jus de Baobab — La boisson miracle africaine</div>
+        <div class="dc-sub">Sénégal · Mali · Burkina · Superfruit africain</div>
+        <div class="dc-tags">
+          <span class="rtag rt-detox">Superfruit</span>
+          <span class="rtag" style="background:rgba(232,160,32,0.1);color:#e8a020">Vitamine C ×6</span>
+        </div>
+      </div>
+    </div>
+    <div class="dc-macros">
+      <span class="dm">65 <small>kcal</small></span>
+      <span class="dm">Vit C <small>×6 orange</small></span>
+      <span class="dm">Calcium <small>riche</small></span>
+      <span class="dm">⏱ <small>10 min</small></span>
+    </div>
+    <div class="dc-details">
+      <div class="dc-benefits">
+        <span class="bchip">🛡️ Immunité</span>
+        <span class="bchip">🦴 Calcium os</span>
+        <span class="bchip">⚡ Énergie</span>
+        <span class="bchip">🩸 Fer</span>
+        <span class="bchip">🌙 Sommeil</span>
+        <span class="bchip">💊 Antioxydant</span>
+      </div>
+      <div class="rd-section">
+        <div class="rds-title">🥘 Ingrédients (4 verres)</div>
+        <div class="ing-grid">
+          <div class="ing"><span class="ing-q">4 cs</span><span class="ing-n">Poudre de baobab<span class="ing-note"> (ou pulpe fraîche extraite — épicerie africaine)</span></span></div>
+          <div class="ing"><span class="ing-q">1L</span><span class="ing-n">Eau fraîche filtrée</span></div>
+          <div class="ing"><span class="ing-q">2 cs</span><span class="ing-n">Sucre ou miel<span class="ing-note"> (selon goût)</span></span></div>
+          <div class="ing"><span class="ing-q">½</span><span class="ing-n">Citron vert<span class="ing-note"> (jus)</span></span></div>
+          <div class="ing"><span class="ing-q">1 pincée</span><span class="ing-n">Fleur d'hibiscus séchée<span class="ing-note"> (optionnel — pour la couleur rosée)</span></span></div>
+          <div class="ing"><span class="ing-q">Glaçons</span><span class="ing-n">Pour servir frais</span></div>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step" onclick="checkStep(this,'baobab',1,4)">
+          <div class="step-n">1</div>
+          <div class="step-body">
+            <div class="step-dur">⏱ 5 min — Dissolution poudre</div>
+            <div class="step-txt">Versez la poudre de baobab dans un grand pichet. Ajoutez 200ml d'eau tiède (pas chaude — préserve les vitamines). Mélangez vigoureusement au fouet ou à la cuillère pendant 2-3 minutes jusqu'à dissolution complète. La poudre est dense — des grumeaux peuvent persister, c'est normal.</div>
+            <div class="step-tip">💡 La poudre de baobab a une saveur naturellement acidulée et légèrement vanillée. Très différente de tout ce que vous connaissez !</div>
+          </div>
+        </div>
+        <div class="step" onclick="checkStep(this,'baobab',2,4)">
+          <div class="step-n">2</div>
+          <div class="step-body">
+            <div class="step-dur">⏱ 2 min — Assemblage</div>
+            <div class="step-txt">Ajoutez les 800ml d'eau restants, le jus de citron vert et le sucre/miel. Mélangez jusqu'à dissolution du sucre. Filtrez à travers un tamis fin si vous souhaitez un jus parfaitement lisse.</div>
+          </div>
+        </div>
+        <div class="step" onclick="checkStep(this,'baobab',3,4)">
+          <div class="step-n">3</div>
+          <div class="step-body">
+            <div class="step-dur">⏱ 1 min — Ajustement</div>
+            <div class="step-txt">Goûtez : le jus doit être légèrement acide, rafraîchissant avec une note douce. Si trop acide, ajoutez du miel. Si trop fade, ajoutez du jus de citron. Réfrigérez 30 min avant de servir pour une meilleure expérience.</div>
+          </div>
+        </div>
+        <div class="step" onclick="checkStep(this,'baobab',4,4)">
+          <div class="step-n">4</div>
+          <div class="step-body">
+            <div class="step-dur">🥛 Programme et conservation</div>
+            <div class="step-txt"><strong>Quand boire :</strong> 1 grand verre le matin à jeun, 1 verre après le sport pour récupérer.<br/><strong>Cure immunité :</strong> 2 verres par jour pendant 21 jours avant l'hiver.<br/><strong>Conservation :</strong> 3-4 jours au réfrigérateur. Secouez avant de verser.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EAU DETOX KARKADÉ MENTHE -->
+  <div class="dcard">
+    <div class="dc-head" onclick="toggleD(this)">
+      <span class="dc-icon">🫖</span>
+      <div style="flex:1">
+        <div class="dc-name">Eau Detox Karkadé · Menthe · Concombre</div>
+        <div class="dc-sub">Fraîcheur · Detox quotidien · Hydratation premium</div>
+        <div class="dc-tags">
+          <span class="rtag rt-detox">Detox quotidien</span>
+          <span class="rtag rt-veg">0 calorie</span>
+        </div>
+      </div>
+    </div>
+    <div class="dc-macros">
+      <span class="dm">8 <small>kcal</small></span>
+      <span class="dm">Anthocyanes <small>puissants</small></span>
+      <span class="dm">⏱ <small>5 min + 2h infusion</small></span>
+      <span class="dm">🥛 <small>2L</small></span>
+    </div>
+    <div class="dc-details">
+      <div class="dc-benefits">
+        <span class="bchip">💧 Hydratation ×2</span>
+        <span class="bchip">🫀 Cœur sain</span>
+        <span class="bchip">🧘 Anti-stress</span>
+        <span class="bchip">🌡️ Rafraîchit</span>
+        <span class="bchip">💩 Digestion</span>
+      </div>
+      <div class="rd-section">
+        <div class="rds-title">🥘 Ingrédients (2L)</div>
+        <div class="ing-grid">
+          <div class="ing"><span class="ing-q">30g</span><span class="ing-n">Fleurs de karkadé séchées<span class="ing-note"> (hibiscus rouge séché)</span></span></div>
+          <div class="ing"><span class="ing-q">1</span><span class="ing-n">Concombre bio<span class="ing-note"> (en rondelles fines, non épluché)</span></span></div>
+          <div class="ing"><span class="ing-q">1 bouquet</span><span class="ing-n">Menthe fraîche<span class="ing-note"> (10-15 feuilles)</span></span></div>
+          <div class="ing"><span class="ing-q">1</span><span class="ing-n">Citron vert<span class="ing-note"> (en rondelles)</span></span></div>
+          <div class="ing"><span class="ing-q">2L</span><span class="ing-n">Eau froide filtrée</span></div>
+          <div class="ing"><span class="ing-q">1 cs</span><span class="ing-n">Miel<span class="ing-note"> (optionnel)</span></span></div>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step" onclick="checkStep(this,'detoxwater',1,3)">
+          <div class="step-n">1</div>
+          <div class="step-body">
+            <div class="step-dur">⏱ 5 min — Préparation</div>
+            <div class="step-txt">Dans un grand pichet ou bocal en verre, déposez les fleurs de karkadé, les rondelles de concombre, les feuilles de menthe légèrement froissées dans vos mains (pour libérer les huiles essentielles), et les rondelles de citron vert. Versez l'eau froide. Si désiré, ajoutez le miel et mélangez.</div>
+          </div>
+        </div>
+        <div class="step" onclick="checkStep(this,'detoxwater',2,3)">
+          <div class="step-n">2</div>
+          <div class="step-body">
+            <div class="step-dur">⏱ 2-8 heures — Infusion froide</div>
+            <div class="step-txt">Méthode froide : réfrigérez 2h minimum (8h idéalement, ou toute une nuit). L'infusion froide extrait les saveurs sans amertume et préserve maximalement les vitamines. L'eau deviendra rosée grâce au karkadé.</div>
+            <div class="step-tip">💡 Préparez cette eau le soir pour le lendemain — c'est la boisson idéale pour commencer la journée !</div>
+          </div>
+        </div>
+        <div class="step" onclick="checkStep(this,'detoxwater',3,3)">
+          <div class="step-n">3</div>
+          <div class="step-body">
+            <div class="step-dur">🥛 Consommation et bénéfices</div>
+            <div class="step-txt"><strong>Objectif :</strong> Boire 2L par jour de cette eau pour remplacer l'eau plate.<br/><strong>Bénéfices sur 7 jours :</strong> peau plus lumineuse, moins de rétention d'eau, meilleure digestion, moins de ballonnements.<br/><strong>Conservation :</strong> 24h au réfrigérateur — après, les légumes fermentent légèrement. Préparez frais chaque jour.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GREEN SMOOTHIE AFRICAIN -->
+  <div class="dcard">
+    <div class="dc-head" onclick="toggleD(this)">
+      <span class="dc-icon">💚</span>
+      <div style="flex:1">
+        <div class="dc-name">Green Smoothie Africain — Mangue · Épinards · Gingembre</div>
+        <div class="dc-sub">Petit-déjeuner santé · Énergie durable · Anti-fatigue</div>
+        <div class="dc-tags">
+          <span class="rtag rt-veg">Vegan</span>
+          <span class="rtag" style="background:rgba(29,185,84,0.1);color:#1db954">Green power</span>
+        </div>
+      </div>
+    </div>
+    <div class="dc-macros">
+      <span class="dm">145 <small>kcal</small></span>
+      <span class="dm">Vit A <small>×200%/j</small></span>
+      <span class="dm">Fer <small>riche</small></span>
+      <span class="dm">⏱ <small>5 min</small></span>
+    </div>
+    <div class="dc-details">
+      <div class="dc-benefits">
+        <span class="bchip">⚡ Énergie sans crash</span>
+        <span class="bchip">🌟 Peau lumineuse</span>
+        <span class="bchip">💪 Muscles</span>
+        <span class="bchip">🧠 Concentration</span>
+        <span class="bchip">🩸 Anti-anémie</span>
+      </div>
+      <div class="rd-section">
+        <div class="rds-title">🥘 Ingrédients (2 verres)</div>
+        <div class="ing-grid">
+          <div class="ing"><span class="ing-q">1</span><span class="ing-n">Mangue mûre<span class="ing-note"> (congelée de préférence — plus crémeuse)</span></span></div>
+          <div class="ing"><span class="ing-q">2 poignées</span><span class="ing-n">Épinards frais<span class="ing-note"> (ou feuilles de moringa fraîches)</span></span></div>
+          <div class="ing"><span class="ing-q">1</span><span class="ing-n">Banane mûre</span></div>
+          <div class="ing"><span class="ing-q">2 cm</span><span class="ing-n">Gingembre frais<span class="ing-note"> (râpé ou mixé)</span></span></div>
+          <div class="ing"><span class="ing-q">250ml</span><span class="ing-n">Lait de coco léger<span class="ing-note"> (ou eau de coco)</span></span></div>
+          <div class="ing"><span class="ing-q">1 cs</span><span class="ing-n">Graines de chia<span class="ing-note"> (oméga-3)</span></span></div>
+          <div class="ing"><span class="ing-q">1 cc</span><span class="ing-n">Spiruline<span class="ing-note"> (optionnel — booster protéines)</span></span></div>
+          <div class="ing"><span class="ing-q">Glaçons</span><span class="ing-n">5-6 cubes</span></div>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step" onclick="checkStep(this,'green',1,3)">
+          <div class="step-n">1</div>
+          <div class="step-body">
+            <div class="step-dur">⏱ 2 min — Ordre de mixage important</div>
+            <div class="step-txt">Dans le blender, ajoutez toujours dans cet ordre : 1) Liquide en premier (lait de coco), 2) Épinards, 3) Fruits (mangue + banane), 4) Gingembre, 5) Graines de chia, 6) Spiruline, 7) Glaçons en dernier. Cet ordre facilite le mixage et protège les lames du blender.</div>
+          </div>
+        </div>
+        <div class="step" onclick="checkStep(this,'green',2,3)">
+          <div class="step-n">2</div>
+          <div class="step-body">
+            <div class="step-dur">⏱ 1 min — Mixage puissant</div>
+            <div class="step-txt">Mixez à haute vitesse 60 secondes. Le smoothie doit être parfaitement lisse et d'un beau vert vif. Si trop épais, ajoutez 50ml de lait de coco. Si trop liquide, ajoutez quelques glaçons. Goûtez — la mangue doit masquer le goût des épinards. Si vous sentez trop les épinards, ajoutez un peu de miel.</div>
+            <div class="step-tip">💡 Clé : plus les épinards sont froids, moins leur goût est perceptible. Congelez-les en avance !</div>
+          </div>
+        </div>
+        <div class="step" onclick="checkStep(this,'green',3,3)">
+          <div class="step-n">3</div>
+          <div class="step-body">
+            <div class="step-dur">🥛 Consommation optimale</div>
+            <div class="step-txt"><strong>Timing :</strong> Idéalement 30 min avant le petit-déjeuner ou en remplacement du petit-déjeuner.<br/><strong>Consistance :</strong> Buvez lentement en mâchant presque — ça stimule la digestion.<br/><strong>Ne pas conserver :</strong> À consommer dans les 20 min — les nutriments s'oxydent vite au contact de l'air.<br/><strong>Variante post-sport :</strong> Ajoutez 1 cs de beurre de cacahuète pour les protéines.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- fin detox -->
+
+</div><!-- fin main -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+const stepProg={};
+function checkStep(el,id,n,tot){
+  el.classList.toggle('done');
+  if(!stepProg[id])stepProg[id]=new Set();
+  el.classList.contains('done')?stepProg[id].add(n):stepProg[id].delete(n);
+  const p=Math.round(stepProg[id].size/tot*100);
+  const b=document.getElementById('f-'+id),l=document.getElementById('p-'+id);
+  if(b)b.style.width=p+'%';
+  if(l)l.textContent=p+'%';
+  if(p===100)toast('🎉 Félicitations — recette terminée !');
+}
+
+function toggle(head){
+  const d=head.parentElement.querySelector('.rcard-details');
+  const btn=head.querySelector('.rh-toggle');
+  const open=d.classList.toggle('open');
+  btn.textContent=open?'▲ Masquer':'▼ Recette';
+  if(open)d.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function toggleD(head){
+  const d=head.parentElement.querySelector('.dc-details');
+  const open=d.classList.toggle('open');
+  if(open)d.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function filter(cat,btn){
+  document.querySelectorAll('.nt,.cat-pill').forEach(b=>b.classList.remove('active','on'));
+  if(btn){btn.classList.add(btn.classList.contains('cat-pill')?'on':'active')}
+  document.querySelectorAll('.country-block').forEach(b=>{
+    b.style.display=(cat==='all'||b.dataset.cat===cat)?'':'none';
+  });
+}
+
+function search(q){
+  const lq=q.toLowerCase();
+  document.querySelectorAll('.rcard,.dcard').forEach(c=>{
+    c.style.display=(!q||c.textContent.toLowerCase().includes(lq))?'':'none';
+  });
+}
+
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+// Ouvrir la première recette
+document.querySelector('.rcard-head').click();
+</script>
+</body>
+</html>
