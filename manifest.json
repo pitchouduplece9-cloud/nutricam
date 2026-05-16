@@ -1,0 +1,78 @@
+{
+  "name": "NutriCam — Nutrition Africaine",
+  "short_name": "NutriCam",
+  "description": "La première plateforme nutritionnelle africaine. 200+ recettes camerounaises, Coach IA, Scanner produits locaux.",
+  "start_url": "/nutricam-hub.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#030805",
+  "theme_color": "#cc0000",
+  "lang": "fr",
+  "categories": ["health", "food", "lifestyle"],
+  "icons": [
+    {
+      "src": "/nutricam-icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/nutricam-icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/nutricam-icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/nutricam-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/nutricam-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Recettes du monde",
+      "short_name": "Recettes",
+      "description": "200+ recettes africaines et européennes",
+      "url": "/nutricam-world-recipes.html",
+      "icons": [{"src": "/nutricam-icon-96.png", "sizes": "96x96"}]
+    },
+    {
+      "name": "Coach IA Nutrition",
+      "short_name": "Coach IA",
+      "description": "Votre nutritionniste IA personnelle",
+      "url": "/nutricam-chatbot.html",
+      "icons": [{"src": "/nutricam-icon-96.png", "sizes": "96x96"}]
+    },
+    {
+      "name": "Mon Dashboard",
+      "short_name": "Dashboard",
+      "description": "Vos statistiques nutrition",
+      "url": "/nutricam-dashboard.html",
+      "icons": [{"src": "/nutricam-icon-96.png", "sizes": "96x96"}]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/nutricam-screenshot-1.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "label": "NutriCam Hub — Accueil"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}
