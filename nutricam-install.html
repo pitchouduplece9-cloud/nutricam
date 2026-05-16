@@ -3,398 +3,256 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>NutriCam – Installer l'Application</title>
-
-<!-- ════ PWA META TAGS ════ -->
+<title>NutriCam – Installer l'App</title>
 <meta name="application-name" content="NutriCam"/>
-<meta name="description" content="La première plateforme nutritionnelle africaine. 200+ recettes camerounaises, Coach IA, Scanner produits."/>
-<meta name="theme-color" content="#cc0000"/>
-<meta name="mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="NutriCam"/>
-
-<!-- Icône Apple (iOS) -->
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='100' fill='%23cc0000'/%3E%3Ccircle cx='256' cy='200' r='80' fill='%234ade80' opacity='0.15'/%3E%3Ctext x='256' y='230' text-anchor='middle' font-family='Georgia,serif' font-size='120' font-weight='900' fill='white'%3EN%3C/text%3E%3Ctext x='256' y='360' text-anchor='middle' font-family='Georgia,serif' font-size='42' font-weight='700' fill='rgba(255,255,255,0.85)'%3ENutriCam%3C/text%3E%3C/svg%3E"/>
-
-<!-- Manifest PWA -->
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="theme-color" content="#cc0000"/>
 <link rel="manifest" id="pwa-manifest"/>
-
+<link rel="apple-touch-icon" id="apple-icon"/>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,800&family=Cabinet+Grotesk:wght@400;500;700;800;900&display=swap" rel="stylesheet"/>
 <style>
-:root{
-  --bg:#030805;--s2:#0c1a0e;--gold:#f0a500;--green:#16a34a;
-  --gl:#22c55e;--red:#cc0000;--border:rgba(255,255,255,0.06);
-  --border2:rgba(34,197,94,0.15);--text:#dff0e2;--muted:#3d6047;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#030805;--s1:#071009;--s2:#0c1a0e;--red:#cc0000;--gold:#f0a500;--green:#16a34a;--gl:#22c55e;--border:rgba(255,255,255,0.06);--border2:rgba(34,197,94,0.15);--text:#dff0e2;--muted:#3d6047}
+*{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-.nav{background:rgba(3,8,5,0.95);border-bottom:1px solid var(--border);padding:0.8rem 1.5rem;display:flex;align-items:center;gap:0.8rem;position:sticky;top:0;z-index:50}
-.nav-logo{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:#fff;text-decoration:none}
+.nav{background:rgba(3,8,5,0.97);border-bottom:1px solid var(--border);padding:0.85rem 1.5rem;display:flex;align-items:center;gap:1rem;position:sticky;top:0;z-index:100}
+.nav-logo{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;color:#fff;text-decoration:none}
 .nav-logo em{color:var(--gold);font-style:italic}
-.back-btn{background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--muted);padding:0.35rem 0.8rem;border-radius:8px;font-size:0.75rem;font-weight:700;text-decoration:none;margin-left:auto}
-.back-btn:hover{color:#fff}
-
-.main{max-width:900px;margin:0 auto;padding:3rem 2rem}
-
-/* HERO INSTALL */
-.install-hero{text-align:center;margin-bottom:3rem}
-.ih-badge{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(204,0,0,0.1);border:1px solid rgba(204,0,0,0.3);color:#ff6666;font-size:0.72rem;font-weight:800;padding:0.3rem 1rem;border-radius:100px;margin-bottom:1.2rem;text-transform:uppercase;letter-spacing:0.1em}
-.ih-title{font-family:'Fraunces',serif;font-size:clamp(2rem,4vw,3rem);font-weight:900;color:#fff;margin-bottom:0.5rem}
-.ih-title em{color:var(--gold);font-style:italic}
-.ih-sub{color:var(--muted);font-size:0.9rem;max-width:500px;margin:0 auto}
-
-/* ICÔNE PREVIEW */
-.icon-showcase{display:flex;justify-content:center;margin:2.5rem 0;gap:2rem;flex-wrap:wrap;align-items:flex-end}
-.icon-preview{text-align:center}
-.ip-label{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.5rem}
-.ip-frame{position:relative;display:inline-block}
-.ip-shadow{box-shadow:0 20px 60px rgba(204,0,0,0.25),0 8px 24px rgba(0,0,0,0.4)}
-
-/* SVG ICÔNE NUTRICAM */
-.nutricam-icon{border-radius:22.5%;overflow:hidden;display:block}
-
-/* INSTALL CARDS */
-.install-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.2rem;margin-bottom:2.5rem}
-.install-card{background:var(--s2);border:1px solid var(--border);border-radius:20px;padding:1.5rem;transition:all 0.2s}
-.install-card:hover{border-color:var(--border2);transform:translateY(-2px)}
-.ic-os{display:flex;align-items:center;gap:0.7rem;margin-bottom:1rem}
-.ic-os-icon{font-size:2rem}
-.ic-os-name{font-size:0.92rem;font-weight:800;color:#fff}
-.ic-os-ver{font-size:0.68rem;color:var(--muted)}
-.ic-steps{display:flex;flex-direction:column;gap:0.6rem;margin-bottom:1.2rem}
-.ics-item{display:flex;align-items:flex-start;gap:0.6rem;font-size:0.8rem;color:var(--text);line-height:1.5}
-.ics-num{width:20px;height:20px;border-radius:50%;background:rgba(34,197,94,0.12);color:var(--gl);font-size:0.65rem;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.ic-btn{width:100%;border:none;border-radius:12px;padding:0.85rem;font-size:0.88rem;font-weight:800;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:0.5rem}
-.icb-android{background:linear-gradient(135deg,#34a853,#0f9d58);color:#fff}
-.icb-ios{background:linear-gradient(135deg,#007aff,#5856d6);color:#fff}
-.icb-desktop{background:linear-gradient(135deg,var(--green),var(--gl));color:#fff}
-.ic-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,0,0,0.2)}
-
-/* PWA INSTALL BUTTON */
-.pwa-install-section{background:rgba(204,0,0,0.04);border:1px solid rgba(204,0,0,0.2);border-radius:20px;padding:2rem;text-align:center;margin-bottom:2rem}
-.pis-icon{font-size:4rem;margin-bottom:0.8rem;display:block}
-.pis-title{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;color:#fff;margin-bottom:0.3rem}
-.pis-sub{color:var(--muted);font-size:0.85rem;margin-bottom:1.2rem}
-.pis-btn{background:linear-gradient(135deg,var(--red),#ff3333);color:#fff;border:none;border-radius:14px;padding:1rem 2.5rem;font-size:0.95rem;font-weight:800;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;transition:all 0.2s;box-shadow:0 8px 28px rgba(204,0,0,0.3);display:inline-flex;align-items:center;gap:0.6rem}
-.pis-btn:hover{transform:translateY(-2px);box-shadow:0 12px 35px rgba(204,0,0,0.4)}
-.pis-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
-.pis-note{font-size:0.72rem;color:var(--muted);margin-top:0.8rem}
-
-/* FEATURES PWA */
-.pwa-features{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem}
-.pf-item{background:var(--s2);border:1px solid var(--border);border-radius:16px;padding:1.2rem;text-align:center}
-.pf-icon{font-size:1.8rem;margin-bottom:0.5rem;display:block}
-.pf-title{font-size:0.82rem;font-weight:800;color:#fff;margin-bottom:0.2rem}
-.pf-desc{font-size:0.72rem;color:var(--muted);line-height:1.4}
-
-/* QR CODE section */
-.qr-section{background:var(--s2);border:1px solid var(--border);border-radius:20px;padding:2rem;display:flex;gap:2rem;align-items:center;flex-wrap:wrap}
+.back-btn{background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--muted);padding:0.4rem 0.9rem;border-radius:8px;font-size:0.75rem;font-weight:700;text-decoration:none;margin-left:auto}
+.main{max-width:960px;margin:0 auto;padding:3rem 2rem}
+.hero{text-align:center;margin-bottom:3rem}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:900;color:#fff;margin-bottom:0.5rem}
+.hero h1 em{color:var(--gold);font-style:italic}
+.hero p{color:var(--muted);font-size:0.9rem;max-width:500px;margin:0 auto}
+.icons-row{display:flex;justify-content:center;align-items:flex-end;gap:3rem;flex-wrap:wrap;margin:2.5rem 0}
+.icon-box{text-align:center}
+.icon-label{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.09em;color:var(--muted);margin-bottom:0.7rem}
+.icon-size{font-size:0.68rem;color:rgba(255,255,255,0.2);margin-top:0.5rem}
+.phone-mock{background:#0a0a0a;border-radius:24px;padding:1.2rem;border:1px solid rgba(255,255,255,0.1);box-shadow:0 20px 60px rgba(0,0,0,0.6)}
+.phone-grid{display:grid;grid-template-columns:repeat(4,54px);gap:10px}
+.app-cell{text-align:center}
+.app-frame{width:54px;height:54px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:3px}
+.app-nm{font-size:0.5rem;color:rgba(255,255,255,0.4)}
+.install-section{text-align:center;margin:2rem 0}
+.install-btn{display:inline-flex;align-items:center;gap:0.7rem;background:linear-gradient(135deg,#cc0000,#ff3333);color:#fff;border:none;border-radius:16px;padding:1.1rem 2.5rem;font-size:1rem;font-weight:800;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;box-shadow:0 8px 32px rgba(204,0,0,0.4);transition:all 0.25s;margin-bottom:0.8rem}
+.install-btn:hover{transform:translateY(-2px);box-shadow:0 14px 45px rgba(204,0,0,0.5)}
+.install-note{font-size:0.75rem;color:var(--muted)}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:2.5rem 0}
+.feat{background:var(--s2);border:1px solid var(--border);border-radius:16px;padding:1.2rem;text-align:center}
+.feat-icon{font-size:2rem;margin-bottom:0.5rem;display:block}
+.feat-title{font-size:0.85rem;font-weight:800;color:#fff;margin-bottom:0.2rem}
+.feat-desc{font-size:0.72rem;color:var(--muted);line-height:1.5}
+.guide-title{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;color:#fff;margin-bottom:1.5rem;text-align:center}
+.guide-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-bottom:2rem}
+.guide-card{background:var(--s1);border:1px solid var(--border);border-radius:18px;overflow:hidden}
+.gc-head{padding:1.2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0.7rem}
+.gc-icon{font-size:2rem}
+.gc-name{font-size:0.9rem;font-weight:800;color:#fff}
+.gc-ver{font-size:0.65rem;color:var(--muted)}
+.gc-steps{padding:1rem;display:flex;flex-direction:column;gap:0.55rem}
+.gcs{display:flex;gap:0.6rem;align-items:flex-start;font-size:0.78rem;color:var(--text);line-height:1.55}
+.gcs-n{width:20px;height:20px;border-radius:50%;background:rgba(240,165,0,0.1);border:1px solid rgba(240,165,0,0.25);color:var(--gold);font-size:0.62rem;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.gc-btn{width:calc(100% - 2rem);margin:0 1rem 1rem;border:none;border-radius:10px;padding:0.75rem;font-size:0.82rem;font-weight:800;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;color:#fff;transition:all 0.2s}
+.gcb-a{background:linear-gradient(135deg,#34a853,#0f9d58)}
+.gcb-i{background:linear-gradient(135deg,#007aff,#5856d6)}
+.gcb-p{background:linear-gradient(135deg,var(--green),var(--gl))}
+.qr-card{background:var(--s1);border:1px solid var(--border);border-radius:20px;padding:2rem;display:flex;gap:2rem;align-items:center;flex-wrap:wrap}
 .qr-text h3{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:900;color:#fff;margin-bottom:0.4rem}
 .qr-text p{font-size:0.82rem;color:var(--muted);line-height:1.6;margin-bottom:0.8rem}
-.qr-url{font-family:'DM Mono',monospace;font-size:0.85rem;color:var(--gl);background:rgba(34,197,94,0.06);border:1px solid var(--border2);border-radius:8px;padding:0.5rem 0.9rem;display:inline-block}
-.qr-canvas{flex-shrink:0}
-
-/* Toast */
-.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(22,163,74,0.9);color:#fff;padding:0.65rem 1.4rem;border-radius:100px;font-size:0.8rem;font-weight:700;opacity:0;pointer-events:none;transition:all 0.3s;z-index:300}
+.qr-url{font-size:0.85rem;color:var(--gl);background:rgba(34,197,94,0.06);border:1px solid var(--border2);border-radius:8px;padding:0.5rem 0.9rem;display:inline-block;font-weight:700}
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(22,163,74,0.92);color:#fff;padding:0.65rem 1.4rem;border-radius:100px;font-size:0.8rem;font-weight:700;opacity:0;pointer-events:none;transition:all 0.3s;z-index:300}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-@media(max-width:600px){.pwa-features{grid-template-columns:1fr 1fr}.install-grid{grid-template-columns:1fr}.qr-section{flex-direction:column}.main{padding:2rem 1rem}}
+@media(max-width:700px){.features,.guide-grid{grid-template-columns:1fr}.icons-row{gap:1.5rem}.qr-card{flex-direction:column}}
 </style>
 </head>
 <body>
-
 <nav class="nav">
   <a href="nutricam-hub.html" class="nav-logo">Nutri<em>Cam</em></a>
-  <span style="font-size:0.82rem;color:var(--muted)">📲 Installer l'application</span>
+  <span style="font-size:0.82rem;color:var(--muted)">📲 Installer NutriCam</span>
   <a href="nutricam-hub.html" class="back-btn">← Hub</a>
 </nav>
-
 <div class="main">
-
-  <!-- HERO -->
-  <div class="install-hero">
-    <div class="ih-badge">📲 Application disponible partout</div>
-    <h1 class="ih-title">Installez <em>NutriCam</em><br/>sur votre appareil</h1>
-    <p class="ih-sub">Accédez à NutriCam comme une vraie application — hors-ligne, rapide, sans passer par le navigateur.</p>
+  <div class="hero">
+    <h1>Installez <em>NutriCam</em><br/>sur votre appareil</h1>
+    <p>Icône rouge sur votre écran d'accueil · Mode hors-ligne · Notifications repas · Gratuit</p>
   </div>
-
-  <!-- APERÇU ICÔNE -->
-  <div class="icon-showcase">
-    <!-- Grande icône -->
-    <div class="icon-preview">
-      <div class="ip-label">Icône Application</div>
-      <div class="ip-frame ip-shadow">
-        <svg class="nutricam-icon" width="180" height="180" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-          <!-- Fond rouge -->
-          <rect width="512" height="512" rx="114" fill="#cc0000"/>
-          <!-- Gradient overlay -->
-          <rect width="512" height="512" rx="114" fill="url(#grad1)"/>
-          <defs>
-            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style="stop-color:rgba(255,255,255,0.08)"/>
-              <stop offset="100%" style="stop-color:rgba(0,0,0,0.2)"/>
-            </linearGradient>
-          </defs>
-          <!-- Cercle décoratif vert -->
-          <circle cx="256" cy="210" r="130" fill="rgba(74,222,128,0.08)" stroke="rgba(74,222,128,0.15)" stroke-width="2"/>
-          <!-- Feuille décorative -->
-          <path d="M200 160 Q256 100 312 160 Q360 210 312 280 Q256 340 200 280 Q152 230 200 160Z" fill="rgba(74,222,128,0.12)" stroke="rgba(74,222,128,0.3)" stroke-width="2"/>
-          <!-- Lettre N stylisée -->
-          <text x="256" y="270" text-anchor="middle" font-family="Georgia,Times New Roman,serif" font-size="200" font-weight="900" fill="white" letter-spacing="-10">N</text>
-          <!-- Nom NutriCam -->
-          <text x="256" y="390" text-anchor="middle" font-family="Georgia,Times New Roman,serif" font-size="52" font-weight="700" fill="rgba(255,255,255,0.9)" letter-spacing="2">NutriCam</text>
-          <!-- Tagline -->
-          <text x="256" y="430" text-anchor="middle" font-family="Arial,sans-serif" font-size="28" font-weight="400" fill="rgba(255,255,255,0.45)" letter-spacing="1">🇨🇲 Nutrition Africaine</text>
-          <!-- Reflet haut -->
-          <ellipse cx="256" cy="60" rx="120" ry="30" fill="rgba(255,255,255,0.06)"/>
-        </svg>
-      </div>
+  <div class="icons-row">
+    <div class="icon-box">
+      <div class="icon-label">Icône 192px</div>
+      <canvas id="ic192" width="192" height="192" style="border-radius:42px;box-shadow:0 20px 60px rgba(204,0,0,0.35);display:block"></canvas>
+      <div class="icon-size">192 × 192 px</div>
     </div>
-
-    <!-- Simulation écran téléphone -->
-    <div class="icon-preview">
-      <div class="ip-label">Sur votre écran d'accueil</div>
-      <div style="background:#111;border-radius:20px;padding:1.5rem;border:1px solid rgba(255,255,255,0.1)">
-        <div style="display:grid;grid-template-columns:repeat(4,60px);gap:0.8rem;margin-bottom:0.5rem">
-          <!-- Apps fictives -->
-          <div style="text-align:center"><div style="width:54px;height:54px;border-radius:14px;background:linear-gradient(135deg,#cc0000,#ff4444);display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:900;color:white;font-family:Georgia,serif;box-shadow:0 4px 12px rgba(204,0,0,0.4)">N</div><div style="font-size:0.6rem;color:rgba(255,255,255,0.6);margin-top:0.3rem;font-family:sans-serif">NutriCam</div></div>
-          <div style="text-align:center"><div style="width:54px;height:54px;border-radius:14px;background:#1da1f2;display:flex;align-items:center;justify-content:center;font-size:1.2rem">🐦</div><div style="font-size:0.6rem;color:rgba(255,255,255,0.4);margin-top:0.3rem;font-family:sans-serif">Twitter</div></div>
-          <div style="text-align:center"><div style="width:54px;height:54px;border-radius:14px;background:linear-gradient(135deg,#f58529,#dd2a7b,#515bd4);display:flex;align-items:center;justify-content:center;font-size:1.2rem">📸</div><div style="font-size:0.6rem;color:rgba(255,255,255,0.4);margin-top:0.3rem;font-family:sans-serif">Insta</div></div>
-          <div style="text-align:center"><div style="width:54px;height:54px;border-radius:14px;background:#25d366;display:flex;align-items:center;justify-content:center;font-size:1.2rem">💬</div><div style="font-size:0.6rem;color:rgba(255,255,255,0.4);margin-top:0.3rem;font-family:sans-serif">WhatsApp</div></div>
+    <div class="icon-box">
+      <div class="icon-label">Sur votre écran d'accueil</div>
+      <div class="phone-mock">
+        <div style="display:flex;justify-content:space-between;font-size:0.52rem;color:rgba(255,255,255,0.25);margin-bottom:0.9rem"><span>9:41</span><span>🔋 98%</span></div>
+        <div class="phone-grid">
+          <div class="app-cell"><canvas id="ic-phone" width="54" height="54" style="border-radius:13px;box-shadow:0 4px 14px rgba(204,0,0,0.5);display:block"></canvas><div class="app-nm" style="color:rgba(255,255,255,0.85);font-weight:800">NutriCam</div></div>
+          <div class="app-cell"><div class="app-frame" style="background:#1da1f2">🐦</div><div class="app-nm">Twitter</div></div>
+          <div class="app-cell"><div class="app-frame" style="background:linear-gradient(135deg,#f58529,#dd2a7b)">📸</div><div class="app-nm">Insta</div></div>
+          <div class="app-cell"><div class="app-frame" style="background:#25d366">💬</div><div class="app-nm">WhatsApp</div></div>
+          <div class="app-cell"><div class="app-frame" style="background:#ff0000">▶️</div><div class="app-nm">YouTube</div></div>
+          <div class="app-cell"><div class="app-frame" style="background:#1877f2">f</div><div class="app-nm">Facebook</div></div>
+          <div class="app-cell"><div class="app-frame" style="background:#6c5ce7">🎵</div><div class="app-nm">Spotify</div></div>
+          <div class="app-cell"><div class="app-frame" style="background:#0088cc">✈️</div><div class="app-nm">Telegram</div></div>
         </div>
-        <div style="font-size:0.65rem;color:rgba(255,255,255,0.2);text-align:center;font-family:sans-serif">← Votre NutriCam en premier !</div>
       </div>
     </div>
-
-    <!-- Icône 72px -->
-    <div class="icon-preview">
-      <div class="ip-label">Taille notification</div>
-      <svg class="nutricam-icon ip-shadow" width="72" height="72" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-        <rect width="512" height="512" rx="114" fill="#cc0000"/>
-        <text x="256" y="310" text-anchor="middle" font-family="Georgia,serif" font-size="280" font-weight="900" fill="white">N</text>
-      </svg>
+    <div class="icon-box">
+      <div class="icon-label">Notification</div>
+      <canvas id="ic72" width="72" height="72" style="border-radius:16px;box-shadow:0 6px 20px rgba(204,0,0,0.3);display:block"></canvas>
+      <div class="icon-size">72 × 72 px</div>
     </div>
   </div>
-
-  <!-- BOUTON INSTALL PWA -->
-  <div class="pwa-install-section">
-    <span class="pis-icon">⬇️</span>
-    <div class="pis-title">Installer NutriCam maintenant</div>
-    <div class="pis-sub">Votre navigateur détecte automatiquement NutriCam comme une application installable</div>
-    <button class="pis-btn" id="install-btn" onclick="installPWA()">
-      📲 Installer NutriCam gratuitement
-    </button>
-    <div class="pis-note" id="install-note">Disponible sur Chrome, Edge, Safari · Aucune app store requise</div>
+  <div class="install-section">
+    <button class="install-btn" id="install-btn" onclick="installPWA()">📲 Installer NutriCam maintenant</button>
+    <div class="install-note" id="install-note">Détection automatique · Chrome, Edge, Safari · Gratuit · Aucun store requis</div>
   </div>
-
-  <!-- FONCTIONNALITÉS PWA -->
-  <div class="pwa-features">
-    <div class="pf-item"><span class="pf-icon">📴</span><div class="pf-title">Hors-ligne</div><div class="pf-desc">200+ recettes accessibles sans internet</div></div>
-    <div class="pf-item"><span class="pf-icon">⚡</span><div class="pf-title">Ultra rapide</div><div class="pf-desc">Chargement instantané comme une vraie app</div></div>
-    <div class="pf-item"><span class="pf-icon">🔔</span><div class="pf-title">Notifications</div><div class="pf-desc">Rappels repas, hydratation et streak</div></div>
-    <div class="pf-item"><span class="pf-icon">💾</span><div class="pf-title">0 stockage</div><div class="pf-desc">Moins de 5 Mo sur votre appareil</div></div>
-    <div class="pf-item"><span class="pf-icon">🔒</span><div class="pf-title">Sécurisé</div><div class="pf-desc">HTTPS · Données chiffrées</div></div>
-    <div class="pf-item"><span class="pf-icon">🔄</span><div class="pf-title">Mises à jour</div><div class="pf-desc">Toujours la dernière version automatiquement</div></div>
+  <div class="features">
+    <div class="feat"><span class="feat-icon">📴</span><div class="feat-title">Hors-ligne</div><div class="feat-desc">200+ recettes accessibles sans internet</div></div>
+    <div class="feat"><span class="feat-icon">⚡</span><div class="feat-title">Ultra rapide</div><div class="feat-desc">Chargement instantané comme une app native</div></div>
+    <div class="feat"><span class="feat-icon">🔔</span><div class="feat-title">Notifications</div><div class="feat-desc">Rappels repas, hydratation, objectifs</div></div>
+    <div class="feat"><span class="feat-icon">💾</span><div class="feat-title">Léger</div><div class="feat-desc">Moins de 5 Mo sur votre appareil</div></div>
+    <div class="feat"><span class="feat-icon">🔒</span><div class="feat-title">Sécurisé</div><div class="feat-desc">HTTPS · Données chiffrées</div></div>
+    <div class="feat"><span class="feat-icon">🔄</span><div class="feat-title">Auto-update</div><div class="feat-desc">Toujours la dernière version</div></div>
   </div>
-
-  <!-- GUIDE PAR OS -->
-  <div class="install-grid">
-    <!-- ANDROID -->
-    <div class="install-card">
-      <div class="ic-os"><span class="ic-os-icon">🤖</span><div><div class="ic-os-name">Android</div><div class="ic-os-ver">Chrome · Samsung Internet</div></div></div>
-      <div class="ic-steps">
-        <div class="ics-item"><span class="ics-num">1</span>Ouvrez nutricam-ashen.vercel.app dans Chrome</div>
-        <div class="ics-item"><span class="ics-num">2</span>Tapez les 3 points ⋮ en haut à droite</div>
-        <div class="ics-item"><span class="ics-num">3</span>Sélectionnez <strong>"Ajouter à l'écran d'accueil"</strong></div>
-        <div class="ics-item"><span class="ics-num">4</span>Confirmez → <strong>NutriCam</strong> apparaît sur votre écran !</div>
+  <div class="guide-title">Guide d'installation par appareil</div>
+  <div class="guide-grid">
+    <div class="guide-card">
+      <div class="gc-head"><span class="gc-icon">🤖</span><div><div class="gc-name">Android</div><div class="gc-ver">Chrome · Samsung Browser</div></div></div>
+      <div class="gc-steps">
+        <div class="gcs"><span class="gcs-n">1</span>Ouvrez <strong>nutricam.site</strong> dans Chrome</div>
+        <div class="gcs"><span class="gcs-n">2</span>Tapez les <strong>3 points ⋮</strong> en haut à droite</div>
+        <div class="gcs"><span class="gcs-n">3</span>Tapez <strong>"Ajouter à l'écran d'accueil"</strong></div>
+        <div class="gcs"><span class="gcs-n">4</span>Confirmez → icône rouge NutriCam ✅</div>
       </div>
-      <button class="ic-btn icb-android" onclick="showToast('🤖 Suivez les étapes ci-dessus sur Android !')">🤖 Guide Android</button>
+      <button class="gc-btn gcb-a" onclick="toast('🤖 Ouvrez nutricam.site dans Chrome Android !')">🤖 Guide Android</button>
     </div>
-
-    <!-- iOS -->
-    <div class="install-card">
-      <div class="ic-os"><span class="ic-os-icon">🍎</span><div><div class="ic-os-name">iPhone / iPad</div><div class="ic-os-ver">Safari iOS 16.4+</div></div></div>
-      <div class="ic-steps">
-        <div class="ics-item"><span class="ics-num">1</span>Ouvrez nutricam-ashen.vercel.app dans <strong>Safari</strong></div>
-        <div class="ics-item"><span class="ics-num">2</span>Tapez l'icône <strong>Partager</strong> 📤 en bas</div>
-        <div class="ics-item"><span class="ics-num">3</span>Défilez et tapez <strong>"Sur l'écran d'accueil"</strong></div>
-        <div class="ics-item"><span class="ics-num">4</span>Tapez <strong>"Ajouter"</strong> → NutriCam est installé !</div>
+    <div class="guide-card">
+      <div class="gc-head"><span class="gc-icon">🍎</span><div><div class="gc-name">iPhone / iPad</div><div class="gc-ver">Safari iOS 16.4+</div></div></div>
+      <div class="gc-steps">
+        <div class="gcs"><span class="gcs-n">1</span>Ouvrez <strong>nutricam.site</strong> dans <strong>Safari</strong></div>
+        <div class="gcs"><span class="gcs-n">2</span>Tapez <strong>Partager 📤</strong> en bas de Safari</div>
+        <div class="gcs"><span class="gcs-n">3</span>Tapez <strong>"Sur l'écran d'accueil"</strong></div>
+        <div class="gcs"><span class="gcs-n">4</span>Tapez <strong>"Ajouter"</strong> → icône rouge ✅</div>
       </div>
-      <button class="ic-btn icb-ios" onclick="showToast('🍎 Ouvrez Safari sur votre iPhone et suivez les étapes !')">🍎 Guide iPhone</button>
+      <button class="gc-btn gcb-i" onclick="toast('🍎 Utilisez Safari sur iPhone — pas Chrome !')">🍎 Guide iPhone</button>
     </div>
-
-    <!-- DESKTOP -->
-    <div class="install-card">
-      <div class="ic-os"><span class="ic-os-icon">💻</span><div><div class="ic-os-name">PC / Mac</div><div class="ic-os-ver">Chrome · Edge · Brave</div></div></div>
-      <div class="ic-steps">
-        <div class="ics-item"><span class="ics-num">1</span>Ouvrez NutriCam dans Chrome ou Edge</div>
-        <div class="ics-item"><span class="ics-num">2</span>Cherchez l'icône ⊕ dans la barre d'adresse</div>
-        <div class="ics-item"><span class="ics-num">3</span>Cliquez <strong>"Installer NutriCam"</strong></div>
-        <div class="ics-item"><span class="ics-num">4</span>NutriCam s'ouvre comme une vraie application !</div>
+    <div class="guide-card">
+      <div class="gc-head"><span class="gc-icon">💻</span><div><div class="gc-name">PC / Mac</div><div class="gc-ver">Chrome · Edge · Brave</div></div></div>
+      <div class="gc-steps">
+        <div class="gcs"><span class="gcs-n">1</span>Ouvrez <strong>nutricam.site</strong> dans Chrome</div>
+        <div class="gcs"><span class="gcs-n">2</span>Cherchez l'icône <strong>⊕</strong> dans la barre d'adresse</div>
+        <div class="gcs"><span class="gcs-n">3</span>Cliquez <strong>"Installer NutriCam"</strong></div>
+        <div class="gcs"><span class="gcs-n">4</span>NutriCam s'ouvre comme une vraie app ✅</div>
       </div>
-      <button class="ic-btn icb-desktop" id="desktop-install-btn" onclick="installPWA()">💻 Installer sur PC</button>
+      <button class="gc-btn gcb-p" onclick="installPWA()">💻 Installer sur PC</button>
     </div>
   </div>
-
-  <!-- QR CODE -->
-  <div class="qr-section">
+  <div class="qr-card">
     <div class="qr-text">
-      <h3>📱 Scannez pour accéder depuis votre téléphone</h3>
-      <p>Pointez l'appareil photo de votre smartphone sur ce QR code pour ouvrir NutriCam directement. Puis installez-le depuis votre navigateur mobile.</p>
-      <div class="qr-url">nutricam-ashen.vercel.app</div>
+      <h3>📱 Scannez depuis votre téléphone</h3>
+      <p>Pointez l'appareil photo de votre smartphone sur ce QR code pour ouvrir NutriCam directement sur mobile.</p>
+      <div class="qr-url">nutricam.site</div>
     </div>
-    <div class="qr-canvas">
-      <canvas id="qr-canvas" width="160" height="160"></canvas>
-    </div>
+    <canvas id="qr" width="160" height="160" style="border-radius:12px;border:1px solid var(--border);flex-shrink:0"></canvas>
   </div>
-
 </div>
-
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
-
+<div class="toast" id="toast-el"></div>
 <script>
-// ══ PWA MANIFEST DYNAMIQUE ══
-const manifest={
-  name:'NutriCam – Nutrition Africaine',
-  short_name:'NutriCam',
-  description:'La première plateforme nutritionnelle africaine. 200+ recettes camerounaises, Coach IA, Scanner produits.',
-  start_url:'/nutricam-hub.html',
-  display:'standalone',
-  orientation:'portrait',
-  background_color:'#030805',
-  theme_color:'#cc0000',
-  categories:['health','food','lifestyle'],
-  lang:'fr',
-  icons:[
-    {src:generateIconDataURL(192),sizes:'192x192',type:'image/png',purpose:'any maskable'},
-    {src:generateIconDataURL(512),sizes:'512x512',type:'image/png',purpose:'any maskable'},
-    {src:generateIconDataURL(180),sizes:'180x180',type:'image/png'},
-  ],
-  shortcuts:[
-    {name:'Recettes du monde',short_name:'Recettes',description:'200+ recettes africaines et européennes',url:'/nutricam-world-recipes.html',icons:[{src:generateIconDataURL(96),sizes:'96x96'}]},
-    {name:'Coach IA',short_name:'Coach IA',description:'Votre nutritionniste IA',url:'/nutricam-chatbot.html',icons:[{src:generateIconDataURL(96),sizes:'96x96'}]},
-    {name:'Mon Dashboard',short_name:'Dashboard',description:'Vos stats nutrition',url:'/nutricam-dashboard.html',icons:[{src:generateIconDataURL(96),sizes:'96x96'}]},
-  ]
-};
-
-function generateIconDataURL(size){
-  const canvas=document.createElement('canvas');
-  canvas.width=size;canvas.height=size;
-  const ctx=canvas.getContext('2d');
-  const r=size*0.22;
-  // Fond rouge arrondi
+function drawIcon(id, size){
+  const c = document.getElementById(id);
+  if(!c) return;
+  const ctx = c.getContext('2d');
+  const r = size*0.22;
   ctx.beginPath();
   ctx.moveTo(r,0);ctx.lineTo(size-r,0);ctx.quadraticCurveTo(size,0,size,r);
   ctx.lineTo(size,size-r);ctx.quadraticCurveTo(size,size,size-r,size);
   ctx.lineTo(r,size);ctx.quadraticCurveTo(0,size,0,size-r);
-  ctx.lineTo(0,r);ctx.quadraticCurveTo(0,0,r,0);
-  ctx.closePath();
-  ctx.fillStyle='#cc0000';ctx.fill();
-  // Gradient overlay
-  const grad=ctx.createLinearGradient(0,0,size,size);
-  grad.addColorStop(0,'rgba(255,255,255,0.1)');
-  grad.addColorStop(1,'rgba(0,0,0,0.2)');
-  ctx.fillStyle=grad;ctx.fill();
-  // Cercle vert subtil
-  ctx.beginPath();ctx.arc(size/2,size*0.4,size*0.28,0,Math.PI*2);
-  ctx.strokeStyle='rgba(74,222,128,0.2)';ctx.lineWidth=size*0.004;ctx.stroke();
-  // Lettre N
-  ctx.fillStyle='rgba(255,255,255,0.95)';
-  ctx.font=`900 ${size*0.52}px Georgia,serif`;
+  ctx.lineTo(0,r);ctx.quadraticCurveTo(0,0,r,0);ctx.closePath();
+  const g = ctx.createLinearGradient(0,0,size,size);
+  g.addColorStop(0,'#dd0000');g.addColorStop(0.5,'#cc0000');g.addColorStop(1,'#aa0000');
+  ctx.fillStyle = g; ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,0.06)';
+  ctx.beginPath();ctx.ellipse(size/2,size*0.12,size*0.35,size*0.08,0,0,Math.PI*2);ctx.fill();
+  if(size>=72){
+    ctx.beginPath();ctx.arc(size/2,size*0.42,size*0.3,0,Math.PI*2);
+    ctx.strokeStyle='rgba(74,222,128,0.12)';ctx.lineWidth=size*0.008;ctx.stroke();
+  }
+  ctx.fillStyle='#ffffff';
+  ctx.font=`900 ${size*0.50}px Georgia,'Times New Roman',serif`;
   ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.fillText('N',size/2,size*0.42);
-  // Nom
-  ctx.font=`700 ${size*0.1}px Georgia,serif`;
-  ctx.fillStyle='rgba(255,255,255,0.85)';
-  ctx.fillText('NutriCam',size/2,size*0.78);
-  return canvas.toDataURL('image/png');
+  ctx.shadowColor='rgba(0,0,0,0.25)';ctx.shadowBlur=size*0.04;
+  ctx.fillText('N',size/2,size*0.42);ctx.shadowBlur=0;
+  if(size>=72){
+    ctx.font=`700 ${size*0.092}px 'Cabinet Grotesk',Georgia,sans-serif`;
+    ctx.fillStyle='rgba(255,255,255,0.88)';
+    ctx.fillText('NutriCam',size/2,size*0.78);
+  }
+  return c.toDataURL('image/png');
 }
 
-// Injecter le manifest
-const blob=new Blob([JSON.stringify(manifest)],{type:'application/json'});
-document.getElementById('pwa-manifest').href=URL.createObjectURL(blob);
+function makeIcon(size){
+  const c=document.createElement('canvas');c.width=size;c.height=size;
+  const ctx=c.getContext('2d');const r=size*0.22;
+  ctx.beginPath();ctx.moveTo(r,0);ctx.lineTo(size-r,0);ctx.quadraticCurveTo(size,0,size,r);ctx.lineTo(size,size-r);ctx.quadraticCurveTo(size,size,size-r,size);ctx.lineTo(r,size);ctx.quadraticCurveTo(0,size,0,size-r);ctx.lineTo(0,r);ctx.quadraticCurveTo(0,0,r,0);ctx.closePath();
+  const g=ctx.createLinearGradient(0,0,size,size);g.addColorStop(0,'#dd0000');g.addColorStop(0.5,'#cc0000');g.addColorStop(1,'#aa0000');ctx.fillStyle=g;ctx.fill();
+  ctx.fillStyle='#ffffff';ctx.font=`900 ${size*0.50}px Georgia,serif`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('N',size/2,size*0.42);
+  if(size>=96){ctx.font=`700 ${size*0.092}px Arial,sans-serif`;ctx.fillStyle='rgba(255,255,255,0.88)';ctx.fillText('NutriCam',size/2,size*0.78);}
+  return c.toDataURL('image/png');
+}
 
-// ══ PWA INSTALL ══
+function drawQR(){
+  const c=document.getElementById('qr');const ctx=c.getContext('2d');
+  const sz=160;ctx.fillStyle='#fff';ctx.fillRect(0,0,sz,sz);
+  const url='nutricam.site';const cell=5.5;const grid=25;const off=(sz-grid*cell)/2;
+  ctx.fillStyle='#000';
+  for(let r=0;r<grid;r++)for(let c2=0;c2<grid;c2++){
+    const isC=(r<7&&c2<7)||(r<7&&c2>=grid-7)||(r>=grid-7&&c2<7);
+    const ch=url.charCodeAt((r*grid+c2)%url.length)||0;
+    if(!isC&&((ch+r*3+c2*2)%3===0))ctx.fillRect(off+c2*cell,off+r*cell,cell-0.8,cell-0.8);
+  }
+  [[0,0],[0,grid-7],[grid-7,0]].forEach(([row,col])=>{
+    ctx.strokeStyle='#000';ctx.lineWidth=cell;ctx.strokeRect(off+col*cell+cell*0.5,off+row*cell+cell*0.5,cell*5,cell*5);
+    ctx.fillStyle='#000';ctx.fillRect(off+col*cell+cell*2,off+row*cell+cell*2,cell*2,cell*2);
+  });
+  const cx=sz/2,cy=sz/2;ctx.beginPath();ctx.arc(cx,cy,16,0,Math.PI*2);ctx.fillStyle='#cc0000';ctx.fill();
+  ctx.font='bold 16px Georgia';ctx.fillStyle='#fff';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('N',cx,cy+1);
+}
+
 let deferredPrompt=null;
-
-window.addEventListener('beforeinstallprompt',e=>{
-  e.preventDefault();
-  deferredPrompt=e;
-  document.getElementById('install-btn').textContent='⬇️ Installer NutriCam maintenant !';
-  document.getElementById('install-btn').style.animation='pulse-install 2s ease-in-out infinite';
+window.addEventListener('DOMContentLoaded',()=>{
+  drawIcon('ic192',192);drawIcon('ic-phone',54);drawIcon('ic72',72);drawQR();
+  const i192=makeIcon(192);const i512=makeIcon(512);const i180=makeIcon(180);
+  const manifest={name:'NutriCam — Nutrition Africaine',short_name:'NutriCam',description:'La première plateforme nutritionnelle africaine',start_url:'/nutricam-hub.html',display:'standalone',background_color:'#030805',theme_color:'#cc0000',lang:'fr',categories:['health','food'],icons:[{src:makeIcon(72),sizes:'72x72',type:'image/png',purpose:'any'},{src:makeIcon(96),sizes:'96x96',type:'image/png',purpose:'any'},{src:i192,sizes:'192x192',type:'image/png',purpose:'any maskable'},{src:i512,sizes:'512x512',type:'image/png',purpose:'any maskable'}],shortcuts:[{name:'Recettes',url:'/nutricam-world-recipes.html'},{name:'Coach IA',url:'/nutricam-chatbot.html'}]};
+  const blob=new Blob([JSON.stringify(manifest)],{type:'application/json'});
+  document.getElementById('pwa-manifest').href=URL.createObjectURL(blob);
+  document.getElementById('apple-icon').href=i180;
+  if('serviceWorker' in navigator){
+    const sw=`const C='nc-v2';const U=['/nutricam-hub.html','/nutricam-world-recipes.html','/nutricam-chatbot.html'];self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(U)).catch(()=>{}));self.skipWaiting();});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).catch(()=>caches.match('/nutricam-hub.html'))));});`;
+    const swb=new Blob([sw],{type:'application/javascript'});
+    navigator.serviceWorker.register(URL.createObjectURL(swb)).catch(()=>{});
+  }
+  window.addEventListener('beforeinstallprompt',e=>{
+    e.preventDefault();deferredPrompt=e;
+    document.getElementById('install-btn').textContent='📲 Cliquez ici pour installer !';
+    document.getElementById('install-note').textContent='✅ Votre navigateur est prêt !';
+    document.getElementById('install-note').style.color='#22c55e';
+  });
+  window.addEventListener('appinstalled',()=>{toast('🎉 NutriCam installé avec succès !');});
+  if(window.matchMedia('(display-mode: standalone)').matches){
+    document.getElementById('install-btn').textContent='✅ NutriCam déjà installé !';
+    document.getElementById('install-btn').style.background='rgba(34,197,94,0.2)';
+  }
 });
 
 async function installPWA(){
-  if(deferredPrompt){
-    deferredPrompt.prompt();
-    const{outcome}=await deferredPrompt.userChoice;
-    if(outcome==='accepted'){
-      showToast('🎉 NutriCam installé avec succès !');
-      document.getElementById('install-btn').textContent='✅ NutriCam installé !';
-      document.getElementById('install-btn').disabled=true;
-    }
-    deferredPrompt=null;
-  } else {
-    showToast('💡 Utilisez Chrome/Edge et cherchez l\'icône ⊕ dans la barre d\'adresse');
-  }
+  if(deferredPrompt){deferredPrompt.prompt();const{outcome}=await deferredPrompt.userChoice;if(outcome==='accepted')toast('🎉 Installation en cours !');else toast('💡 Suivez le guide ci-dessous selon votre appareil');deferredPrompt=null;}
+  else toast('💡 Cherchez ⊕ dans la barre d\'adresse ou suivez le guide ci-dessous');
 }
 
-window.addEventListener('appinstalled',()=>{
-  showToast('🎉 NutriCam est maintenant installé sur votre appareil !');
-});
-
-// ══ QR CODE SIMPLE ══
-function drawQR(){
-  const canvas=document.getElementById('qr-canvas');
-  const ctx=canvas.getContext('2d');
-  const size=160;
-  ctx.fillStyle='#fff';ctx.fillRect(0,0,size,size);
-  // QR simplifié visuel (représentation)
-  const url='nutricam-ashen.vercel.app';
-  const cell=6;const grid=24;const offset=(size-grid*cell)/2;
-  ctx.fillStyle='#000';
-  // Pattern pseudo-QR basé sur l'URL
-  for(let r=0;r<grid;r++){
-    for(let c=0;c<grid;c++){
-      const isCorner=(r<7&&c<7)||(r<7&&c>=grid-7)||(r>=grid-7&&c<7);
-      const charCode=url.charCodeAt((r*grid+c)%url.length)||0;
-      const fill=isCorner?true:((charCode+r+c)%3===0);
-      if(fill){ctx.fillRect(offset+c*cell,offset+r*cell,cell-1,cell-1)}
-    }
-  }
-  // Corners markers
-  [[0,0],[0,grid-7],[grid-7,0]].forEach(([r,c])=>{
-    ctx.strokeStyle='#000';ctx.lineWidth=cell*0.8;
-    ctx.strokeRect(offset+c*cell+cell*0.4,offset+r*cell+cell*0.4,cell*5.2,cell*5.2);
-    ctx.fillStyle='#000';ctx.fillRect(offset+c*cell+cell*1.5,offset+r*cell+cell*1.5,cell*3,cell*3);
-  });
-  // Logo NutriCam au centre
-  ctx.fillStyle='#cc0000';
-  const logo=size/2;ctx.beginPath();ctx.arc(logo,logo,16,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle='#fff';ctx.font='bold 18px Georgia';ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.fillText('N',logo,logo+1);
-}
-drawQR();
-
-// ══ SERVICE WORKER ══
-if('serviceWorker' in navigator){
-  const swCode=`
-    const CACHE='nutricam-v1';
-    const URLS=['./nutricam-hub.html','./nutricam-world-recipes.html','./nutricam-dashboard.html','./nutricam-chatbot.html','./nutricam-recipes.html'];
-    self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(URLS)).catch(()=>{})));
-    self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).catch(()=>caches.match('./nutricam-hub.html')))));
-  `;
-  const swBlob=new Blob([swCode],{type:'application/javascript'});
-  navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(()=>{});
-}
-
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3500);
-}
+function toast(msg){const t=document.getElementById('toast-el');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),4000)}
 </script>
 </body>
 </html>
