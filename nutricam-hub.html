@@ -4,6 +4,17 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>NutriCam – La Nutrition Africaine Digitalisée 🌿</title>
+
+<!-- ═══ PWA ═══ -->
+<link rel="manifest" href="/manifest.json"/>
+<meta name="theme-color" content="#cc0000"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-title" content="NutriCam"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<link rel="apple-touch-icon" href="/nutricam-icon-192.png"/>
+<meta name="description" content="NutriCam — La première plateforme nutritionnelle africaine. 200+ recettes camerounaises, Coach IA, Scanner produits."/>
+
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,700;1,900&family=Cabinet+Grotesk:wght@300;400;500;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
@@ -581,6 +592,10 @@ async function loadStats(){
     document.getElementById('stat-users').textContent='0';
     document.getElementById('lb-users').innerHTML=`<span class="lb-dot"></span>0`;
   }
+}
+// ══ SERVICE WORKER PWA ══
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/sw.js').catch(()=>{});
 }
 loadStats();
 
