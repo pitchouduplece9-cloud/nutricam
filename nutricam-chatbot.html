@@ -3,379 +3,567 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>NutriCam – Coach IA Nutritionnel</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<title>NutriCam – Coach IA Nutritionnel 🤖</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,800&family=Cabinet+Grotesk:wght@400;500;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 :root{
-  --bg:#08120a;--surface:#0f1e12;--card:#162119;--card2:#1c2a1f;
-  --green:#22c55e;--gl:#16a34a;--gd:#14532d;--y:#fbbf24;--muted:#4d7259;
-  --border:rgba(255,255,255,0.06);--text:#e2ede5;--dim:rgba(255,255,255,0.45);
+  --bg:#030805;--s1:#071009;--s2:#0c1a0e;--s3:#111f13;
+  --gold:#f0a500;--green:#16a34a;--gl:#22c55e;--glight:#4ade80;
+  --red:#ef4444;--blue:#3b82f6;--teal:#14b8a6;
+  --border:rgba(255,255,255,0.06);--border2:rgba(34,197,94,0.15);
+  --text:#dff0e2;--muted:#3d6047;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;overflow:hidden}
-body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--text);display:flex;height:100vh}
+body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden}
+
+/* NAV */
+.nav{background:rgba(3,8,5,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0.8rem 1.5rem;display:flex;align-items:center;gap:0.8rem;flex-shrink:0}
+.nav-logo{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:#fff;text-decoration:none}
+.nav-logo em{color:var(--gold);font-style:italic}
+.nav-badge{background:rgba(34,197,94,0.08);border:1px solid var(--border2);color:var(--gl);font-size:0.65rem;font-weight:800;padding:0.2rem 0.6rem;border-radius:100px;text-transform:uppercase;letter-spacing:0.08em;display:flex;align-items:center;gap:0.3rem}
+.nb-dot{width:5px;height:5px;border-radius:50%;background:var(--gl);animation:pulse-g 1.5s infinite}
+@keyframes pulse-g{0%,100%{opacity:1}50%{opacity:0.2}}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:0.5rem}
+.nav-btn{background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--muted);padding:0.35rem 0.8rem;border-radius:8px;font-size:0.75rem;font-weight:700;text-decoration:none;transition:all 0.2s}
+.nav-btn:hover{color:#fff}
+.nav-lang{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:0.35rem 0.6rem;font-size:0.75rem;font-weight:700;color:var(--muted);cursor:pointer;font-family:'Cabinet Grotesk',sans-serif}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:280px 1fr;flex:1;overflow:hidden;min-height:0}
 
 /* SIDEBAR */
-.sidebar{width:280px;min-width:280px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;overflow:hidden}
-.sb-top{padding:1.5rem;border-bottom:1px solid var(--border)}
-.sb-logo{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;color:#fff;margin-bottom:0.2rem}
-.sb-logo span{color:var(--y)}
-.sb-sub{font-size:0.72rem;color:var(--muted)}
-.new-chat-btn{width:100%;margin-top:1rem;background:var(--gl);border:none;color:#fff;padding:0.7rem 1rem;border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:0.5rem;justify-content:center;font-family:'Instrument Sans',sans-serif;transition:background 0.2s}
-.new-chat-btn:hover{background:var(--green)}
-.sb-section{padding:1rem 1.5rem 0.5rem;font-size:0.65rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted)}
-.chat-history{flex:1;overflow-y:auto;padding:0 0.8rem 1rem}
-.chat-history::-webkit-scrollbar{width:4px}
-.chat-history::-webkit-scrollbar-track{background:transparent}
-.chat-history::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px}
-.ch-item{padding:0.7rem 0.8rem;border-radius:10px;cursor:pointer;transition:background 0.15s;margin-bottom:2px}
-.ch-item:hover{background:rgba(255,255,255,0.04)}
-.ch-item.active{background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.15)}
-.ch-title{font-size:0.82rem;font-weight:600;color:var(--text);margin-bottom:0.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ch-date{font-size:0.68rem;color:var(--muted)}
-.sb-bottom{padding:1rem 1.5rem;border-top:1px solid var(--border)}
-.sb-profile{display:flex;align-items:center;gap:0.8rem}
-.sp-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gl),var(--y));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.82rem;color:#000;flex-shrink:0}
-.sp-name{font-size:0.82rem;font-weight:600}
-.sp-plan{font-size:0.68rem;color:var(--muted)}
+.sidebar{background:var(--s1);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.sb-header{padding:1.2rem;border-bottom:1px solid var(--border)}
+.sb-title{font-size:0.65rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:0.8rem}
 
-/* CHAT MAIN */
-.chat-main{flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden}
+/* Nutritionist avatar */
+.nutri-profile{display:flex;align-items:center;gap:0.8rem;padding:0.8rem;background:rgba(34,197,94,0.04);border:1px solid var(--border2);border-radius:14px;margin-bottom:1rem}
+.np-avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#8B6014,#7a5212);border:2px solid rgba(240,165,0,0.3);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;position:relative}
+.np-online{position:absolute;bottom:1px;right:1px;width:10px;height:10px;border-radius:50%;background:var(--gl);border:2px solid var(--s1)}
+.np-name{font-size:0.85rem;font-weight:800;color:#fff}
+.np-title{font-size:0.68rem;color:var(--gl)}
+.np-exp{font-size:0.62rem;color:var(--muted);margin-top:0.1rem}
 
-/* CHAT HEADER */
-.chat-header{padding:1rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:var(--surface)}
-.ch-ai{display:flex;align-items:center;gap:0.8rem}
-.ch-avatar{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--gl),var(--green));display:flex;align-items:center;justify-content:center;font-size:1.1rem}
-.ch-name{font-size:0.9rem;font-weight:700}
-.ch-status{display:flex;align-items:center;gap:0.4rem;font-size:0.72rem;color:var(--green)}
-.ch-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
-.ch-actions{display:flex;gap:0.5rem}
-.ch-act-btn{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--dim);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.85rem;transition:all 0.15s}
-.ch-act-btn:hover{background:rgba(255,255,255,0.1);color:#fff}
+/* Quick topics */
+.quick-topics{display:flex;flex-direction:column;gap:0.4rem;padding:0 1.2rem 1rem}
+.qt-label{font-size:0.62rem;font-weight:800;text-transform:uppercase;letter-spacing:0.09em;color:var(--muted);margin-bottom:0.3rem}
+.qt-btn{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:0.55rem 0.8rem;font-size:0.78rem;color:var(--text);cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;transition:all 0.15s;text-align:left;display:flex;align-items:center;gap:0.5rem}
+.qt-btn:hover{background:rgba(34,197,94,0.06);border-color:var(--border2);color:#fff}
 
-/* MESSAGES */
-.messages{flex:1;overflow-y:auto;padding:1.5rem;display:flex;flex-direction:column;gap:1.2rem}
+/* Stats */
+.sb-stats{padding:1rem 1.2rem;border-top:1px solid var(--border);margin-top:auto}
+.stat-row{display:flex;justify-content:space-between;margin-bottom:0.5rem}
+.stat-item{text-align:center}
+.stat-val{font-family:'DM Mono',monospace;font-size:1rem;font-weight:700;color:#fff;display:block}
+.stat-label{font-size:0.58rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted)}
+
+/* CHAT ZONE */
+.chat-zone{display:flex;flex-direction:column;overflow:hidden;min-height:0}
+
+/* Chat header */
+.chat-header{padding:0.9rem 1.5rem;border-bottom:1px solid var(--border);background:rgba(3,8,5,0.5);display:flex;align-items:center;gap:0.8rem;flex-shrink:0}
+.ch-icon{font-size:1.5rem}
+.ch-title{font-size:0.92rem;font-weight:800;color:#fff}
+.ch-sub{font-size:0.68rem;color:var(--muted)}
+.ch-right{margin-left:auto;display:flex;align-items:center;gap:0.5rem}
+.ch-clear{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:0.3rem 0.7rem;font-size:0.7rem;color:var(--muted);cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;transition:all 0.15s}
+.ch-clear:hover{color:var(--red)}
+
+/* Messages */
+.messages{flex:1;overflow-y:auto;padding:1.2rem;display:flex;flex-direction:column;gap:0.8rem;scroll-behavior:smooth}
 .messages::-webkit-scrollbar{width:4px}
-.messages::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:2px}
+.messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 
-.msg{display:flex;gap:0.8rem;max-width:80%;animation:msgIn 0.3s ease}
+/* Welcome card */
+.welcome-card{background:linear-gradient(135deg,rgba(34,197,94,0.06),rgba(240,165,0,0.03));border:1px solid var(--border2);border-radius:20px;padding:1.5rem;text-align:center;margin-bottom:0.5rem}
+.wc-emoji{font-size:3rem;margin-bottom:0.6rem;display:block;animation:float-wc 3s ease-in-out infinite}
+@keyframes float-wc{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.wc-title{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:#fff;margin-bottom:0.3rem}
+.wc-sub{font-size:0.8rem;color:var(--muted);line-height:1.6;margin-bottom:1rem}
+.wc-chips{display:flex;gap:0.4rem;flex-wrap:wrap;justify-content:center}
+.wc-chip{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:100px;padding:0.3rem 0.7rem;font-size:0.72rem;color:var(--text);cursor:pointer;transition:all 0.15s}
+.wc-chip:hover{background:rgba(34,197,94,0.08);border-color:var(--border2)}
+
+/* Message bubbles */
+.msg{display:flex;gap:0.7rem;max-width:85%;animation:msgIn 0.3s ease}
 @keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.msg.user{align-self:flex-end;flex-direction:row-reverse}
-.msg.ai{align-self:flex-start}
-.msg-av{width:32px;height:32px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.9rem}
-.msg.ai .msg-av{background:linear-gradient(135deg,var(--gl),var(--green))}
-.msg.user .msg-av{background:linear-gradient(135deg,#1d4ed8,#3b82f6)}
-.msg-bubble{padding:0.9rem 1.1rem;border-radius:14px;font-size:0.88rem;line-height:1.65;max-width:100%}
-.msg.ai .msg-bubble{background:var(--card);border:1px solid var(--border);border-radius:4px 14px 14px 14px;color:var(--text)}
-.msg.user .msg-bubble{background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;border-radius:14px 4px 14px 14px}
-.msg-bubble strong{color:var(--green);font-weight:700}
-.msg-bubble em{color:var(--y);font-style:normal}
-.msg-time{font-size:0.65rem;color:var(--muted);margin-top:0.3rem;text-align:right}
-.msg.user .msg-time{text-align:left}
+.msg-ai{align-self:flex-start}
+.msg-user{align-self:flex-end;flex-direction:row-reverse}
+.msg-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;margin-top:2px}
+.ma-ai{background:linear-gradient(135deg,#8B6014,#7a5212);border:1px solid rgba(240,165,0,0.2)}
+.ma-user{background:rgba(34,197,94,0.15);border:1px solid var(--border2);color:var(--gl);font-size:0.8rem;font-weight:900}
+.msg-bubble{padding:0.9rem 1.1rem;border-radius:18px;font-size:0.85rem;line-height:1.7;max-width:100%}
+.mb-ai{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:18px 18px 18px 4px;color:var(--text)}
+.mb-user{background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.2);border-radius:18px 18px 4px 18px;color:var(--text)}
+.msg-time{font-size:0.6rem;color:var(--muted);margin-top:0.3rem;text-align:right}
 
-/* RECIPE CARD IN CHAT */
-.chat-recipe{background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:1rem;margin-top:0.8rem;display:flex;gap:0.8rem;align-items:flex-start;cursor:pointer;transition:border-color 0.2s}
-.chat-recipe:hover{border-color:rgba(34,197,94,0.3)}
-.cr-emoji{font-size:1.8rem;flex-shrink:0}
-.cr-name{font-size:0.85rem;font-weight:700;color:#fff}
-.cr-cal{font-size:0.72rem;color:var(--y);font-weight:700;margin-bottom:0.2rem}
-.cr-desc{font-size:0.75rem;color:var(--muted);line-height:1.4}
+/* Typing indicator */
+.typing-bubble{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:18px 18px 18px 4px;padding:0.8rem 1.1rem;display:flex;gap:4px;align-items:center}
+.typing-dot{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:bounce-t 1.2s ease infinite}
+.typing-dot:nth-child(2){animation-delay:0.2s}
+.typing-dot:nth-child(3){animation-delay:0.4s}
+@keyframes bounce-t{0%,100%{transform:translateY(0);opacity:0.4}50%{transform:translateY(-5px);opacity:1}}
 
-/* MACRO CARD IN CHAT */
-.chat-macros{background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:1rem;margin-top:0.8rem;display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem}
-.cm-item{text-align:center;background:rgba(255,255,255,0.03);border-radius:10px;padding:0.6rem}
-.cm-val{font-family:'DM Mono',monospace;font-size:1rem;font-weight:700}
-.cm-label{font-size:0.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em}
+/* Formatted response */
+.ai-response h3{font-size:0.88rem;font-weight:800;color:var(--gold);margin:0.6rem 0 0.3rem}
+.ai-response ul{padding-left:1.2rem;margin:0.3rem 0}
+.ai-response li{margin-bottom:0.2rem}
+.ai-response strong{color:var(--glight)}
+.ai-response em{color:var(--gold);font-style:normal}
+.ai-response .kcal{color:#fbbf24;font-family:'DM Mono',monospace;font-weight:700}
+.ai-response .tip{background:rgba(34,197,94,0.05);border-left:2px solid var(--gl);padding:0.3rem 0.6rem;border-radius:0 6px 6px 0;margin:0.4rem 0;font-size:0.8rem}
+.ai-response .warn{background:rgba(240,165,0,0.05);border-left:2px solid var(--gold);padding:0.3rem 0.6rem;border-radius:0 6px 6px 0;margin:0.4rem 0;font-size:0.8rem}
 
-/* TYPING INDICATOR */
-.typing{display:flex;gap:0.8rem;align-items:center;animation:msgIn 0.3s ease}
-.typing-dots{display:flex;gap:4px;padding:0.7rem 0.9rem;background:var(--card);border-radius:14px;border:1px solid var(--border)}
-.typing-dot{width:7px;height:7px;border-radius:50%;background:var(--muted)}
-.typing-dot:nth-child(1){animation:bounce 1.2s 0s infinite}
-.typing-dot:nth-child(2){animation:bounce 1.2s 0.2s infinite}
-.typing-dot:nth-child(3){animation:bounce 1.2s 0.4s infinite}
-@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+/* Feedback */
+.msg-feedback{display:flex;gap:0.4rem;margin-top:0.4rem;padding-left:0.5rem}
+.fb-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:0.2rem 0.5rem;font-size:0.75rem;cursor:pointer;color:var(--muted);transition:all 0.15s;font-family:'Cabinet Grotesk',sans-serif}
+.fb-btn:hover{color:#fff;border-color:rgba(255,255,255,0.2)}
+.fb-btn.active{color:var(--gl);border-color:var(--gl)}
 
-/* QUICK SUGGESTIONS */
-.quick-wrap{padding:0 1.5rem 0.8rem;flex-shrink:0}
-.quick-label{font-size:0.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.6rem;font-weight:700}
-.quick-chips{display:flex;gap:0.5rem;flex-wrap:wrap}
-.quick-chip{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:100px;padding:0.4rem 0.9rem;font-size:0.78rem;color:var(--dim);cursor:pointer;transition:all 0.15s;white-space:nowrap;font-family:'Instrument Sans',sans-serif}
-.quick-chip:hover{background:rgba(34,197,94,0.08);border-color:rgba(34,197,94,0.25);color:var(--green)}
+/* INPUT */
+.input-zone{padding:0.9rem 1.2rem;border-top:1px solid var(--border);background:rgba(3,8,5,0.6);flex-shrink:0}
+.input-wrap{display:flex;gap:0.6rem;align-items:flex-end}
+.input-box{flex:1;background:rgba(255,255,255,0.04);border:1.5px solid var(--border);border-radius:16px;padding:0.75rem 1rem;display:flex;flex-direction:column;gap:0.4rem;transition:border-color 0.2s}
+.input-box:focus-within{border-color:var(--border2)}
+.ib-textarea{background:none;border:none;color:#fff;font-size:0.88rem;font-family:'Cabinet Grotesk',sans-serif;outline:none;resize:none;min-height:22px;max-height:100px;line-height:1.5;width:100%}
+.ib-textarea::placeholder{color:var(--muted)}
+.ib-footer{display:flex;align-items:center;gap:0.5rem}
+.ib-emoji{background:none;border:none;font-size:1rem;cursor:pointer;color:var(--muted)}
+.ib-chars{font-size:0.6rem;color:var(--muted);margin-left:auto;font-family:'DM Mono',monospace}
+.send-btn{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--gl));border:none;color:#fff;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;box-shadow:0 4px 14px rgba(22,163,74,0.3)}
+.send-btn:hover{transform:scale(1.08)}
+.send-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none}
 
-/* INPUT BAR */
-.input-bar{padding:1rem 1.5rem 1.5rem;border-top:1px solid var(--border);flex-shrink:0;background:var(--surface)}
-.input-wrap{display:flex;gap:0.8rem;align-items:flex-end;background:var(--card);border:1.5px solid var(--border);border-radius:16px;padding:0.6rem 0.6rem 0.6rem 1rem;transition:border-color 0.2s}
-.input-wrap:focus-within{border-color:rgba(34,197,94,0.4)}
-.input-wrap textarea{flex:1;background:none;border:none;color:var(--text);font-size:0.9rem;line-height:1.5;resize:none;outline:none;font-family:'Instrument Sans',sans-serif;max-height:120px;min-height:24px}
-.input-wrap textarea::placeholder{color:var(--muted)}
-.input-btns{display:flex;gap:0.4rem;align-items:flex-end}
-.in-btn{width:36px;height:36px;border-radius:10px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.9rem;transition:all 0.15s}
-.in-btn-mic{background:rgba(255,255,255,0.05);color:var(--dim)}
-.in-btn-mic:hover{background:rgba(255,255,255,0.1);color:#fff}
-.in-btn-send{background:var(--gl);color:#fff}
-.in-btn-send:hover{background:var(--green)}
-.in-btn-send:disabled{opacity:0.4;cursor:not-allowed}
+/* Usage bar */
+.usage-bar{display:flex;align-items:center;gap:0.5rem;padding:0.4rem 1.2rem;font-size:0.65rem;color:var(--muted);border-top:1px solid var(--border)}
+.ub-track{flex:1;height:3px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden}
+.ub-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--gl));border-radius:2px;transition:width 0.5s ease}
 
-/* WELCOME SCREEN */
-.welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center;gap:1.5rem}
-.wl-icon{font-size:4rem;margin-bottom:0.5rem}
-.wl-title{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:#fff}
-.wl-sub{color:var(--muted);max-width:440px;line-height:1.7;font-size:0.9rem}
-.wl-features{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;max-width:480px;width:100%;margin-top:0.5rem}
-.wl-feat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:0.9rem 1rem;text-align:left;display:flex;align-items:flex-start;gap:0.7rem}
-.wf-icon{font-size:1.1rem;flex-shrink:0}
-.wf-text{font-size:0.78rem;color:var(--dim);line-height:1.4}
-.wf-text strong{color:var(--text);display:block;margin-bottom:0.2rem}
+/* Toast */
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(22,163,74,0.9);color:#fff;padding:0.65rem 1.4rem;border-radius:100px;font-size:0.8rem;font-weight:700;opacity:0;pointer-events:none;transition:all 0.3s;z-index:300}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* RESPONSIVE */
-@media(max-width:768px){
-  .sidebar{display:none}
-  .msg{max-width:92%}
-}
+@media(max-width:768px){.layout{grid-template-columns:1fr}.sidebar{display:none}}
 </style>
 </head>
 <body>
 
-<!-- SIDEBAR -->
-<aside class="sidebar">
-  <div class="sb-top">
-    <div class="sb-logo">Nutri<span>Cam</span></div>
-    <div class="sb-sub">Coach IA Nutritionnel</div>
-    <button class="new-chat-btn" onclick="newChat()">✏️ Nouvelle conversation</button>
+<!-- NAV -->
+<nav class="nav">
+  <a href="nutricam-hub.html" class="nav-logo">Nutri<em>Cam</em></a>
+  <div class="nav-badge"><span class="nb-dot"></span>Coach IA · Claude Sonnet · En ligne</div>
+  <div class="nav-right">
+    <select class="nav-lang" id="lang-select" onchange="setLang(this.value)">
+      <option value="fr">🇫🇷 Français</option>
+      <option value="en">🇬🇧 English</option>
+      <option value="de">🇩🇪 Deutsch</option>
+    </select>
+    <a href="nutricam-hub.html" class="nav-btn">← Hub</a>
   </div>
-  <div class="sb-section">Conversations récentes</div>
-  <div class="chat-history" id="chat-history">
-    <div class="ch-item active"><div class="ch-title">Plan repas sportif</div><div class="ch-date">Aujourd'hui</div></div>
-    <div class="ch-item"><div class="ch-title">Calories ndolé aux crevettes</div><div class="ch-date">Hier</div></div>
-    <div class="ch-item"><div class="ch-title">Alimentation grossesse</div><div class="ch-date">13 Jan</div></div>
-    <div class="ch-item"><div class="ch-title">Substituts locaux protéines</div><div class="ch-date">12 Jan</div></div>
-    <div class="ch-item"><div class="ch-title">Perte de poids doucement</div><div class="ch-date">10 Jan</div></div>
-  </div>
-  <div class="sb-bottom">
-    <div class="sb-profile">
-      <div class="sp-av">GDP</div>
-      <div><div class="sp-name">Georges D. Pitchou</div><div class="sp-plan">⭐ Plan Premium</div></div>
+</nav>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sb-header">
+      <div class="sb-title">Votre Nutritionniste IA</div>
+      <div class="nutri-profile">
+        <div class="np-avatar">👩🏿‍⚕️<div class="np-online"></div></div>
+        <div>
+          <div class="np-name">Dr. NutriCam</div>
+          <div class="np-title">Nutritionniste IA · Claude Sonnet</div>
+          <div class="np-exp">Spécialiste cuisine africaine & européenne</div>
+        </div>
+      </div>
+      <div class="sb-title">Sujets populaires</div>
+    </div>
+
+    <div class="quick-topics">
+      <div class="qt-label">🌍 Afrique</div>
+      <button class="qt-btn" onclick="quickAsk('Quelles sont les valeurs nutritionnelles du Ndolé camerounais ?')">🍲 Valeurs Ndolé</button>
+      <button class="qt-btn" onclick="quickAsk('Le Thiéboudienne est-il bon pour la santé ?')">🐟 Thiéboudienne santé</button>
+      <button class="qt-btn" onclick="quickAsk('Quels plats africains sont bons pour les diabétiques ?')">💊 Diabète & cuisine africaine</button>
+      <button class="qt-btn" onclick="quickAsk('Quels aliments africains sont riches en fer pour lutter contre l\'anémie ?')">🩸 Fer & anémie</button>
+
+      <div class="qt-label" style="margin-top:0.5rem">🤰 Santé spéciale</div>
+      <button class="qt-btn" onclick="quickAsk('Que manger pendant la grossesse avec des aliments africains ?')">🤰 Grossesse</button>
+      <button class="qt-btn" onclick="quickAsk('Comment perdre du poids en mangeant africain ?')">⚖️ Perte de poids</button>
+      <button class="qt-btn" onclick="quickAsk('Quels plats africains sont bons pour la musculation ?')">💪 Musculation</button>
+
+      <div class="qt-label" style="margin-top:0.5rem">🌿 Detox</div>
+      <button class="qt-btn" onclick="quickAsk('Quels jus naturels africains sont les meilleurs pour détoxifier le corps ?')">🌿 Jus detox africains</button>
+      <button class="qt-btn" onclick="quickAsk('Le bissap (hibiscus) est-il vraiment bon pour la santé ?')">🌺 Bissap & santé</button>
+    </div>
+
+    <div class="sb-stats">
+      <div class="sb-title">Statistiques session</div>
+      <div class="stat-row">
+        <div class="stat-item"><span class="stat-val" id="msg-count">0</span><span class="stat-label">Messages</span></div>
+        <div class="stat-item"><span class="stat-val" id="token-count">0</span><span class="stat-label">Tokens</span></div>
+        <div class="stat-item"><span class="stat-val" id="cost-count">$0.00</span><span class="stat-label">Coût</span></div>
+      </div>
     </div>
   </div>
-</aside>
 
-<!-- CHAT MAIN -->
-<div class="chat-main">
-  <div class="chat-header">
-    <div class="ch-ai">
-      <div class="ch-avatar">🥗</div>
+  <!-- CHAT ZONE -->
+  <div class="chat-zone">
+    <div class="chat-header">
+      <span class="ch-icon">🤖</span>
       <div>
-        <div class="ch-name">Coach NutriCam</div>
-        <div class="ch-status"><div class="ch-dot"></div>En ligne · Expert nutrition africaine</div>
+        <div class="ch-title" id="ch-title">Coach NutriCam IA — Nutrition Africaine & Européenne</div>
+        <div class="ch-sub" id="ch-sub">Posez toutes vos questions sur la nutrition, les recettes et la santé</div>
+      </div>
+      <div class="ch-right">
+        <button class="ch-clear" onclick="clearChat()">🗑 Effacer</button>
       </div>
     </div>
-    <div class="ch-actions">
-      <button class="ch-act-btn" title="Rechercher">🔍</button>
-      <button class="ch-act-btn" title="Exporter">📤</button>
-      <button class="ch-act-btn" title="Paramètres">⚙️</button>
-    </div>
-  </div>
 
-  <div class="messages" id="messages">
-    <!-- WELCOME -->
-    <div class="welcome" id="welcome-screen">
-      <div class="wl-icon">🥗</div>
-      <div class="wl-title">Bonjour, je suis votre Coach NutriCam</div>
-      <div class="wl-sub">Je suis spécialisé en nutrition africaine et camerounaise. Posez-moi n'importe quelle question sur votre alimentation, vos calories, vos recettes ou votre santé.</div>
-      <div class="wl-features">
-        <div class="wl-feat"><div class="wf-icon">🍲</div><div class="wf-text"><strong>Recettes camerounaises</strong>Valeurs nutritionnelles, ingrédients, temps de cuisson</div></div>
-        <div class="wl-feat"><div class="wf-icon">🔥</div><div class="wf-text"><strong>Calcul calories</strong>Besoins quotidiens selon votre profil</div></div>
-        <div class="wl-feat"><div class="wf-icon">🎯</div><div class="wf-text"><strong>Objectifs santé</strong>Perte poids, masse, énergie, diabète</div></div>
-        <div class="wl-feat"><div class="wf-icon">👧</div><div class="wf-text"><strong>Nutrition enfants</strong>Portions, croissance, vitamines</div></div>
+    <div class="messages" id="messages">
+      <div class="welcome-card">
+        <span class="wc-emoji">👩🏿‍⚕️</span>
+        <div class="wc-title" id="wc-title">Bonjour ! Je suis Dr. NutriCam</div>
+        <div class="wc-sub" id="wc-sub">Nutritionniste IA spécialisée en cuisine africaine & européenne. Je suis connectée à Claude Sonnet et je peux répondre à toutes vos questions sur la nutrition, les calories, la santé et les recettes !</div>
+        <div class="wc-chips">
+          <div class="wc-chip" onclick="quickAsk('Combien de calories dans le Ndolé ?')">🍲 Calories Ndolé</div>
+          <div class="wc-chip" onclick="quickAsk('Meilleurs aliments africains anti-hypertension')">❤️ Anti-HTA</div>
+          <div class="wc-chip" onclick="quickAsk('Plan repas africain pour perdre du poids')">⚖️ Perdre du poids</div>
+          <div class="wc-chip" onclick="quickAsk('Quels sont les superaliments africains ?')">🌟 Superaliments</div>
+          <div class="wc-chip" onclick="quickAsk('Nutrition pour bébé 0-12 mois en Afrique')">👶 Bébé</div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- QUICK SUGGESTIONS -->
-  <div class="quick-wrap" id="quick-wrap">
-    <div class="quick-label">Suggestions</div>
-    <div class="quick-chips" id="quick-chips">
-      <div class="quick-chip" onclick="sendSuggestion(this)">Combien de calories dans le ndolé ?</div>
-      <div class="quick-chip" onclick="sendSuggestion(this)">Plan repas pour sportif</div>
-      <div class="quick-chip" onclick="sendSuggestion(this)">Que manger pour perdre du poids ?</div>
-      <div class="quick-chip" onclick="sendSuggestion(this)">Alimentation femme enceinte</div>
-      <div class="quick-chip" onclick="sendSuggestion(this)">Recette ndolé complète</div>
-      <div class="quick-chip" onclick="sendSuggestion(this)">Alternatives locales aux protéines</div>
+    <div class="usage-bar">
+      <span id="usage-label">Tokens utilisés ce mois</span>
+      <div class="ub-track"><div class="ub-fill" id="usage-fill" style="width:0%"></div></div>
+      <span id="usage-pct">0%</span>
     </div>
-  </div>
 
-  <div class="input-bar">
-    <div class="input-wrap">
-      <textarea id="user-input" placeholder="Posez votre question nutritionnelle..." rows="1" oninput="autoResize(this)" onkeydown="handleKey(event)"></textarea>
-      <div class="input-btns">
-        <button class="in-btn in-btn-mic" title="Micro">🎤</button>
-        <button class="in-btn in-btn-send" id="send-btn" onclick="sendMessage()" title="Envoyer">➤</button>
+    <div class="input-zone">
+      <div class="input-wrap">
+        <div class="input-box">
+          <textarea class="ib-textarea" id="user-input" placeholder="Posez votre question nutrition... (Ex: Combien de protéines dans le Poulet DG ?)" maxlength="1000" rows="1"
+            onkeydown="handleKey(event)" oninput="handleInput(this)"></textarea>
+          <div class="ib-footer">
+            <button class="ib-emoji" onclick="addEmoji('🌿')">🌿</button>
+            <button class="ib-emoji" onclick="addEmoji('🇨🇲')">🇨🇲</button>
+            <button class="ib-emoji" onclick="addEmoji('💊')">💊</button>
+            <span class="ib-chars" id="char-count">1000</span>
+          </div>
+        </div>
+        <button class="send-btn" id="send-btn" onclick="sendMessage()">↑</button>
       </div>
     </div>
   </div>
+
 </div>
 
+<div class="toast" id="toast"></div>
+
 <script>
-const knowledge = {
-  'ndolé': {
-    answer: `Le **ndolé** est le plat national camerounais et l'un des plus nutritifs de la gastronomie africaine !\n\n🔥 **Valeurs nutritionnelles (portion 350g avec riz) :**`,
-    macros: [{val:'380', label:'kcal', color:'#fbbf24'}, {val:'28g', label:'Protéines', color:'#4ade80'}, {val:'18g', label:'Glucides', color:'#60a5fa'}],
-    recipe: {e:'🍲', name:'Ndolé aux crevettes', kcal:380, desc:'Feuilles amères + crevettes + pâte d\'arachides. Riche en fer, protéines et fibres.'},
-    extra: `\n**Atouts nutritionnels :**\n• Très riche en **fer et antioxydants** (feuilles amères)\n• Bonne source de **protéines complètes** (crevettes)\n• Les arachides apportent des **graisses insaturées** bénéfiques\n• Index glycémique bas grâce aux fibres\n\n💡 *Astuce : Sans huile de palme en excès, le ndolé peut descendre à 280 kcal pour les régimes de perte de poids.*`
+// ══ CONFIG ══
+const API_KEY = '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';
+const MODEL = 'claude-sonnet-4-20250514';
+
+// ══ SYSTEM PROMPT ══
+const SYSTEM_PROMPT = `Tu es Dr. NutriCam, une nutritionniste IA spécialisée en cuisine africaine et européenne, créée par NutriCam (fondée par Georges Duplece Pitchou, Cameroun 🇨🇲).
+
+TES SPÉCIALITÉS :
+- Nutrition des plats africains (camerounais, sénégalais, nigérian, ghanéen, marocain, éthiopien, ivoirien...)
+- Valeurs nutritionnelles des ingrédients africains (ndolé, eru, moringa, baobab, bissap, crayfish, huile de palme...)
+- Plans repas adaptés à la culture africaine
+- Nutrition santé : diabète, HTA, grossesse, anémie, perte de poids, musculation
+- Comparaisons cuisine africaine vs européenne
+- Jus naturels et boissons detox africaines
+
+PLATS QUE TU CONNAIS PARFAITEMENT :
+Cameroun : Ndolé (380 kcal, 28g prot), Poulet DG (520 kcal, 42g prot), Eru & Waterleaf (310 kcal), Koki, Mbongo, Nnam ngon
+Sénégal : Thiéboudienne (450 kcal, 35g prot), Maafé (520 kcal), Yassa poulet, Mafé
+Nigeria : Jollof Rice (410 kcal), Egusi soup (490 kcal), Suya, Pounded yam
+Ghana : Fufu & Light soup (380 kcal), Kelewele (280 kcal), Waakye, Banku
+Maroc : Tajine (480 kcal), Couscous royal (550 kcal), Harira
+France : Ratatouille (180 kcal), Bœuf bourguignon (480 kcal)
+Allemagne : Schnitzel (460 kcal), Käsespätzle (520 kcal)
+
+RÈGLES DE COMMUNICATION :
+- Réponds TOUJOURS dans la langue de la question (français, anglais ou allemand)
+- Sois précise, bienveillante et professionnelle
+- Donne des valeurs nutritionnelles concrètes (kcal, protéines, glucides, lipides)
+- Adapte tes conseils à la réalité africaine (ingrédients disponibles au Cameroun, Sénégal...)
+- Utilise des émojis pertinents pour rendre la réponse vivante
+- Pour les questions médicales sérieuses, recommande toujours de consulter un médecin
+- Mentionne NutriCam et ses fonctionnalités quand c'est pertinent
+- Sois concise mais complète (max 300 mots par réponse)`;
+
+// ══ STATE ══
+let conversationHistory = [];
+let currentLang = 'fr';
+let totalTokens = 0;
+let msgCount = 0;
+let isLoading = false;
+
+const i18n = {
+  fr: {
+    placeholder: 'Posez votre question nutrition...',
+    chTitle: 'Coach NutriCam IA — Nutrition Africaine & Européenne',
+    chSub: 'Posez toutes vos questions sur la nutrition, les recettes et la santé',
+    wcTitle: 'Bonjour ! Je suis Dr. NutriCam',
+    wcSub: 'Nutritionniste IA spécialisée en cuisine africaine & européenne. Connectée à Claude Sonnet.',
+    usageLabel: 'Tokens utilisés ce mois',
+    clearConfirm: 'Effacer la conversation ?',
+    errorMsg: 'Désolée, une erreur est survenue. Vérifiez votre connexion et réessayez.',
+    thinking: 'Dr. NutriCam réfléchit...'
   },
-  'sportif': {
-    answer: `Excellente question ! Un plan repas pour sportif camerounais doit couvrir entre **2200 et 2800 kcal/jour** selon l'intensité de l'effort.\n\n🏋️ **Principes clés :**\n• **Protéines élevées** : 1,6-2g/kg de poids corporel\n• **Glucides pré-entraînement** : plantains, riz, maïs\n• **Récupération post-entraînement** : dans les 30 min\n\n**Exemple journée type (75 kg) :**`,
-    macros: [{val:'2600', label:'kcal/jour', color:'#fbbf24'}, {val:'120g', label:'Protéines', color:'#4ade80'}, {val:'320g', label:'Glucides', color:'#60a5fa'}],
-    recipe: {e:'🐟', name:'Poisson braisé + plantain', kcal:420, desc:'Repas post-entraînement idéal : protéines maigres + glucides complexes + oméga-3.'},
-    extra: `\n**Timing des repas sportif :**\n• ☀️ **Matin** : Bouillie de maïs + œufs + café\n• 🏃 **Pré-sport** (1h avant) : Plantain bouilli + arachides\n• 💪 **Post-sport** (30 min) : Poisson + riz ou ndolé\n• 🌙 **Soir** : Poulet DG ou sardines + légumes\n\n💡 *Les aliments camerounais sont parfaitement adaptés aux besoins sportifs, sans suppléments coûteux importés !*`
+  en: {
+    placeholder: 'Ask your nutrition question...',
+    chTitle: 'NutriCam AI Coach — African & European Nutrition',
+    chSub: 'Ask all your questions about nutrition, recipes and health',
+    wcTitle: 'Hello! I am Dr. NutriCam',
+    wcSub: 'AI nutritionist specialized in African & European cuisine. Connected to Claude Sonnet.',
+    usageLabel: 'Tokens used this month',
+    clearConfirm: 'Clear conversation?',
+    errorMsg: 'Sorry, an error occurred. Check your connection and try again.',
+    thinking: 'Dr. NutriCam is thinking...'
   },
-  'poids': {
-    answer: `Très bonne démarche ! Il est tout à fait possible de perdre du poids sainement en mangeant camerounais. Voici ma stratégie :\n\n📉 **Principe** : Déficit calorique de 300-500 kcal/jour = perte de 0,3-0,5 kg/semaine (rythme sain)\n\n✅ **Aliments à favoriser :**`,
-    macros: [{val:'-400', label:'kcal déficit', color:'#f87171'}, {val:'1600', label:'kcal/jour', color:'#fbbf24'}, {val:'0.5kg', label:'/semaine', color:'#4ade80'}],
-    recipe: {e:'🥬', name:'Eru & Waterleaf', kcal:310, desc:'Pauvre en glucides, riche en protéines et fer. Excellent pour les régimes avec variété.'},
-    extra: `\n**✅ À privilégier :**\n• Poisson braisé (protéines maigres, peu de graisses)\n• Légumes feuilles : eru, ndolé, waterleaf\n• Plantains **bouillis** (pas frits)\n• Haricots + légumineuses (fibres satiétogènes)\n\n**❌ À limiter :**\n• Alloco frits et friture en excès\n• Sodas et jus industriels\n• Sauces arachides en grande quantité\n• Huile de palme en excès\n\n💡 *Perdre du poids ne signifie pas abandonner la cuisine camerounaise, mais l'adapter intelligemment !*`
-  },
-  'enceinte': {
-    answer: `Félicitations ! La grossesse est une période où la nutrition est cruciale. Voici ce qu'une femme enceinte camerounaise devrait manger :\n\n🤰 **Besoins spéciaux :** +300 kcal/jour au 2ème trimestre, +500 au 3ème\n\n**Nutriments prioritaires :**`,
-    macros: [{val:'+300', label:'kcal/jour', color:'#fbbf24'}, {val:'71g', label:'Protéines', color:'#4ade80'}, {val:'1000mg', label:'Calcium/j', color:'#60a5fa'}],
-    recipe: {e:'🥬', name:'Eru & Waterleaf', kcal:310, desc:'Superaliment grossesse : très riche en fer, calcium et protéines végétales.'},
-    extra: `\n**🌟 Aliments essentiels grossesse :**\n• **Eru/Waterleaf** → Fer + calcium (anti-anémie)\n• **Poisson frais** → Oméga-3 pour le cerveau du bébé\n• **Lait + yaourt** → Calcium pour les os\n• **Légumineuses** → Acide folique (prévient spina-bifida)\n• **Huile de palme rouge** → Vitamine A\n• **Patate douce** → Bêta-carotène\n\n⚠️ **À éviter absolument :**\nPoisson cru, charcuteries, alcool, excès de sel\n\n💡 *Consulter systématiquement un gynécologue ou sage-femme pour un suivi personnalisé !*`
-  },
-  'recette ndolé': {
-    answer: `Voici la recette complète du **Ndolé aux crevettes** avec toutes les étapes détaillées !\n\n⏱️ Temps total : 90 min · 👥 4 personnes\n\n🛒 **Ingrédients :**\n• 500g feuilles de ndolé\n• 300g crevettes fraîches\n• 200g bœuf fumé\n• 150g arachides grillées\n• 2 oignons, 3 gousses d'ail\n• 100ml huile de palme rouge\n• 1 cube Maggi, sel, poivre\n\n👨‍🍳 **Préparation :**`,
-    macros: [{val:'90', label:'minutes', color:'#fbbf24'}, {val:'380', label:'kcal/pers.', color:'#f87171'}, {val:'28g', label:'Protéines', color:'#4ade80'}],
-    recipe: null,
-    extra: `\n**1.** Tremper les feuilles de ndolé 30 min dans eau chaude. Essorer et ciseler finement.\n**2.** Mixer les arachides avec peu d'eau en pâte lisse.\n**3.** Faire revenir oignon + ail dans l'huile de palme, 5 min.\n**4.** Ajouter le bœuf fumé en morceaux, dorer 10 min.\n**5.** Incorporer ndolé + pâte d'arachides + cube + 200ml eau. Mijoter 25 min.\n**6.** Ajouter les crevettes décortiquées, cuire 10 min.\n**7.** Servir chaud avec riz, miondo ou plantains.\n\n💡 *Pour réduire les calories : moins d'huile de palme (50ml) = -80 kcal par portion.*`
-  },
-  'protéines': {
-    answer: `Excellente question sur les **protéines locales camerounaises** ! Inutile d'acheter des protéines en poudre importées coûteuses — voici les meilleures sources locales :\n\n💪 **Top protéines camerounaises (pour 100g) :**`,
-    macros: [{val:'100g', label:'Crevettes séchées', color:'#fbbf24'}, {val:'32g', label:'de protéines', color:'#4ade80'}, {val:'150f', label:'CFA / portion', color:'#60a5fa'}],
-    recipe: {e:'🦐', name:'Crevettes sautées pimentées', kcal:190, desc:'30g de protéines pour seulement 190 kcal. Meilleure source protéinée locale.'},
-    extra: `\n**📊 Classement protéines locales :**\n\n🥇 **Crevettes séchées (crayfish)** : 32g/100g\n🥈 **Tilapia / carpe braisée** : 26g/100g\n🥉 **Bœuf grillé maigre** : 28g/100g\n4. **Haricots rouges cuits** : 9g/100g (végétal)\n5. **Arachides** : 26g/100g (mais caloriques !)\n6. **Œuf de poule** : 13g/100g\n7. **Poulet fermier** : 25g/100g\n\n💡 *Le crayfish (crevettes moulues) est l'un des condiments les plus riches en protéines au monde. 1 c.à.s dans vos sauces = +4g de protéines.*`
+  de: {
+    placeholder: 'Stellen Sie Ihre Ernährungsfrage...',
+    chTitle: 'NutriCam KI-Coach — Afrikanische & Europäische Ernährung',
+    chSub: 'Stellen Sie alle Ihre Fragen zu Ernährung, Rezepten und Gesundheit',
+    wcTitle: 'Hallo! Ich bin Dr. NutriCam',
+    wcSub: 'KI-Ernährungsberaterin spezialisiert auf afrikanische & europäische Küche. Mit Claude Sonnet verbunden.',
+    usageLabel: 'Verwendete Tokens diesen Monat',
+    clearConfirm: 'Gespräch löschen?',
+    errorMsg: 'Entschuldigung, ein Fehler ist aufgetreten. Überprüfen Sie Ihre Verbindung.',
+    thinking: 'Dr. NutriCam denkt nach...'
   }
 };
 
-const timeNow = () => {
-  const n=new Date(); return `${n.getHours().toString().padStart(2,'0')}:${n.getMinutes().toString().padStart(2,'0')}`;
-};
+// ══ SEND MESSAGE ══
+async function sendMessage() {
+  const input = document.getElementById('user-input');
+  const msg = input.value.trim();
+  if (!msg || isLoading) return;
 
-let messageCount = 0;
+  input.value = '';
+  document.getElementById('char-count').textContent = '1000';
+  input.style.height = 'auto';
 
-function appendMsg(role, content, time=timeNow()){
-  const welcome = document.getElementById('welcome-screen');
-  if(welcome) welcome.remove();
-  const container = document.getElementById('messages');
-  const div = document.createElement('div');
-  div.className=`msg ${role}`;
-  div.innerHTML = `
-    <div class="msg-av">${role==='ai'?'🥗':'👤'}</div>
+  // Add user message
+  addMessage('user', msg);
+  conversationHistory.push({ role: 'user', content: msg });
+
+  // Show typing
+  const typingId = showTyping();
+  isLoading = true;
+  document.getElementById('send-btn').disabled = true;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': API_KEY,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: MODEL,
+        max_tokens: 1024,
+        system: SYSTEM_PROMPT,
+        messages: conversationHistory
+      })
+    });
+
+    removeTyping(typingId);
+
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const aiResponse = data.content[0].text;
+    const tokens = data.usage?.input_tokens + data.usage?.output_tokens || 0;
+
+    // Add AI response
+    conversationHistory.push({ role: 'assistant', content: aiResponse });
+    addMessage('ai', aiResponse);
+
+    // Update stats
+    totalTokens += tokens;
+    msgCount++;
+    updateStats(tokens);
+
+  } catch (error) {
+    removeTyping(typingId);
+    const t = i18n[currentLang];
+    addMessage('ai', `❌ ${t.errorMsg}\n\nErreur technique: ${error.message}`);
+    console.error('API Error:', error);
+  }
+
+  isLoading = false;
+  document.getElementById('send-btn').disabled = false;
+}
+
+// ══ ADD MESSAGE ══
+function addMessage(role, text) {
+  const messages = document.getElementById('messages');
+  const time = new Date().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+
+  const msg = document.createElement('div');
+  msg.className = `msg msg-${role}`;
+
+  const initials = role === 'user' ? '👤' : '👩🏿‍⚕️';
+  const avatarClass = role === 'user' ? 'ma-user' : 'ma-ai';
+  const bubbleClass = role === 'user' ? 'mb-user' : 'mb-ai';
+
+  const formattedText = role === 'ai' ? formatAIResponse(text) : escapeHtml(text).replace(/\n/g, '<br/>');
+
+  msg.innerHTML = `
+    <div class="msg-avatar ${avatarClass}">${initials}</div>
     <div>
-      <div class="msg-bubble" id="bubble-${++messageCount}">${role==='ai'?formatMarkdown(content):escHtml(content)}</div>
+      <div class="msg-bubble ${bubbleClass}">
+        <div class="${role === 'ai' ? 'ai-response' : ''}">${formattedText}</div>
+      </div>
       <div class="msg-time">${time}</div>
+      ${role === 'ai' ? `<div class="msg-feedback">
+        <button class="fb-btn" onclick="feedback(this,'👍')">👍</button>
+        <button class="fb-btn" onclick="feedback(this,'👎')">👎</button>
+        <button class="fb-btn" onclick="copyMsg(this)">📋 Copier</button>
+      </div>` : ''}
     </div>`;
-  container.appendChild(div);
-  container.scrollTop = container.scrollHeight;
-  return messageCount;
+
+  messages.appendChild(msg);
+  messages.scrollTop = messages.scrollHeight;
 }
 
-function appendRecipeCard(recipe){
-  const container = document.getElementById('messages');
-  const lastBubble = container.querySelector('.msg.ai:last-child .msg-bubble');
-  if(!lastBubble||!recipe)return;
-  const card = document.createElement('div');
-  card.className='chat-recipe';
-  card.innerHTML=`<div class="cr-emoji">${recipe.e}</div><div><div class="cr-cal">🔥 ${recipe.kcal} kcal</div><div class="cr-name">${recipe.name}</div><div class="cr-desc">${recipe.desc}</div></div>`;
-  lastBubble.appendChild(card);
+// ══ FORMAT AI RESPONSE ══
+function formatAIResponse(text) {
+  return escapeHtml(text)
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/^### (.*?)$/gm, '<h3>$1</h3>')
+    .replace(/^## (.*?)$/gm, '<h3>$1</h3>')
+    .replace(/^- (.*?)$/gm, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>')
+    .replace(/💡(.*?)$/gm, '<div class="tip">💡$1</div>')
+    .replace(/⚠️(.*?)$/gm, '<div class="warn">⚠️$1</div>')
+    .replace(/(\d+)\s*kcal/g, '<span class="kcal">$1 kcal</span>')
+    .replace(/\n/g, '<br/>');
 }
 
-function appendMacros(macros){
-  const container = document.getElementById('messages');
-  const lastBubble = container.querySelector('.msg.ai:last-child .msg-bubble');
-  if(!lastBubble)return;
-  const card = document.createElement('div');
-  card.className='chat-macros';
-  card.innerHTML=macros.map(m=>`<div class="cm-item"><div class="cm-val" style="color:${m.color}">${m.val}</div><div class="cm-label">${m.label}</div></div>`).join('');
-  lastBubble.appendChild(card);
+function escapeHtml(text) {
+  return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-function showTyping(){
-  const container = document.getElementById('messages');
-  const el = document.createElement('div');
-  el.className='typing'; el.id='typing-indicator';
-  el.innerHTML=`<div class="msg-av" style="background:linear-gradient(135deg,var(--gl),var(--green));width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0">🥗</div><div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
-  container.appendChild(el);
-  container.scrollTop=container.scrollHeight;
-}
-function removeTyping(){const t=document.getElementById('typing-indicator');if(t)t.remove();}
-
-function getResponse(input){
-  const q=input.toLowerCase();
-  if(q.includes('ndolé')||q.includes('ndole')){
-    if(q.includes('recette')||q.includes('cuisin')||q.includes('préparer')) return knowledge['recette ndolé'];
-    return knowledge['ndolé'];
-  }
-  if(q.includes('sportif')||q.includes('sport')||q.includes('muscl')||q.includes('performance')) return knowledge['sportif'];
-  if(q.includes('poids')||q.includes('maigrir')||q.includes('mince')||q.includes('régime')||q.includes('perte')) return knowledge['poids'];
-  if(q.includes('enceinte')||q.includes('grossesse')||q.includes('bébé')||q.includes('allaitement')) return knowledge['enceinte'];
-  if(q.includes('protéine')||q.includes('protein')||q.includes('alternative')||q.includes('substitut')) return knowledge['protéines'];
-  if(q.includes('calories')||q.includes('kcal')||q.includes('combien')) return knowledge['ndolé'];
-  // Generic
-  return {
-    answer:`Merci pour votre question ! En tant que Coach NutriCam, je suis spécialisé en nutrition camerounaise et africaine.\n\nVoici ce que je recommande de manière générale :\n\n**Principes fondamentaux d'une alimentation saine :**\n• **Diversité** : consommer des aliments de toutes les couleurs\n• **Équilibre** : 50% glucides, 25% protéines, 25% lipides\n• **Hydratation** : 2L d'eau minimum par jour\n• **Locavore** : les aliments camerounais frais sont excellents !\n\n**Questions que je peux traiter :**\n• Calories et valeurs nutritionnelles des plats camerounais\n• Plans repas personnalisés (sportif, enfant, enceinte...)\n• Recettes détaillées avec étapes de cuisson\n• Conseils de perte de poids avec cuisine locale\n• Nutrition médicale (diabète, hypertension, anémie)\n\n💡 *N'hésitez pas à préciser votre profil (âge, poids, objectif) pour une réponse plus personnalisée !*`,
-    macros:null, recipe:null, extra:null
-  };
+// ══ TYPING ══
+function showTyping() {
+  const messages = document.getElementById('messages');
+  const t = i18n[currentLang];
+  const id = 'typing-' + Date.now();
+  const div = document.createElement('div');
+  div.id = id;
+  div.className = 'msg msg-ai';
+  div.innerHTML = `
+    <div class="msg-avatar ma-ai">👩🏿‍⚕️</div>
+    <div>
+      <div class="typing-bubble">
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <span style="font-size:0.72rem;color:var(--muted);margin-left:0.4rem">${t.thinking}</span>
+      </div>
+    </div>`;
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
+  return id;
 }
 
-function formatMarkdown(text){
-  return text
-    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g,'<em>$1</em>')
-    .replace(/\n/g,'<br/>');
-}
-function escHtml(t){return t.replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-
-async function sendMessage(){
-  const input=document.getElementById('user-input');
-  const text=input.value.trim();
-  if(!text)return;
-  input.value=''; input.style.height='auto';
-  document.getElementById('quick-wrap').style.display='none';
-  appendMsg('user',text);
-  showTyping();
-  await new Promise(r=>setTimeout(r,900+Math.random()*800));
-  removeTyping();
-  const resp=getResponse(text);
-  const fullText=resp.answer+(resp.extra||'');
-  appendMsg('ai',fullText);
-  if(resp.macros) appendMacros(resp.macros);
-  if(resp.recipe) appendRecipeCard(resp.recipe);
+function removeTyping(id) {
+  document.getElementById(id)?.remove();
 }
 
-function sendSuggestion(chip){
-  document.getElementById('user-input').value=chip.textContent;
+// ══ STATS ══
+function updateStats(newTokens) {
+  document.getElementById('msg-count').textContent = msgCount;
+  document.getElementById('token-count').textContent = totalTokens.toLocaleString();
+  const cost = (totalTokens / 1000000 * 3).toFixed(4);
+  document.getElementById('cost-count').textContent = '$' + cost;
+  const pct = Math.min(totalTokens / 10000 * 100, 100).toFixed(1);
+  document.getElementById('usage-fill').style.width = pct + '%';
+  document.getElementById('usage-pct').textContent = pct + '%';
+}
+
+// ══ QUICK ASK ══
+function quickAsk(question) {
+  document.getElementById('user-input').value = question;
   sendMessage();
 }
 
-function handleKey(e){
-  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}
+// ══ FEEDBACK ══
+function feedback(btn, type) {
+  btn.classList.add('active');
+  btn.textContent = type === '👍' ? '👍 Merci !' : '👎 Noté';
+  showToast(type === '👍' ? '✅ Merci pour votre retour !' : '📝 Retour enregistré — nous nous améliorons !');
 }
-function autoResize(ta){ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,120)+'px';}
-function newChat(){
-  const msgs=document.getElementById('messages');
-  msgs.innerHTML=`<div class="welcome" id="welcome-screen">
-    <div class="wl-icon">🥗</div>
-    <div class="wl-title">Nouvelle conversation</div>
-    <div class="wl-sub">Posez votre question sur la nutrition camerounaise ou africaine.</div>
-    <div class="wl-features">
-      <div class="wl-feat"><div class="wf-icon">🍲</div><div class="wf-text"><strong>Recettes camerounaises</strong>Valeurs nutritionnelles, ingrédients</div></div>
-      <div class="wl-feat"><div class="wf-icon">🔥</div><div class="wf-text"><strong>Calcul calories</strong>Besoins selon votre profil</div></div>
-      <div class="wl-feat"><div class="wf-icon">🎯</div><div class="wf-text"><strong>Objectifs santé</strong>Poids, masse, énergie</div></div>
-      <div class="wl-feat"><div class="wf-icon">👧</div><div class="wf-text"><strong>Nutrition enfants</strong>Portions, croissance</div></div>
-    </div>
-  </div>`;
-  document.getElementById('quick-wrap').style.display='block';
+
+function copyMsg(btn) {
+  const bubble = btn.closest('.msg').querySelector('.msg-bubble');
+  navigator.clipboard.writeText(bubble.innerText).then(() => {
+    btn.textContent = '✅ Copié !';
+    setTimeout(() => btn.textContent = '📋 Copier', 2000);
+  });
+}
+
+// ══ CLEAR ══
+function clearChat() {
+  const t = i18n[currentLang];
+  if (!confirm(t.clearConfirm)) return;
+  conversationHistory = [];
+  msgCount = 0;
+  totalTokens = 0;
+  updateStats(0);
+  document.getElementById('messages').innerHTML = '';
+  showToast('🗑 Conversation effacée');
+}
+
+// ══ LANG ══
+function setLang(lang) {
+  currentLang = lang;
+  const t = i18n[lang];
+  document.getElementById('user-input').placeholder = t.placeholder;
+  document.getElementById('ch-title').textContent = t.chTitle;
+  document.getElementById('ch-sub').textContent = t.chSub;
+  document.getElementById('wc-title').textContent = t.wcTitle;
+  document.getElementById('wc-sub').textContent = t.wcSub;
+  document.getElementById('usage-label').textContent = t.usageLabel;
+}
+
+// ══ INPUT HANDLERS ══
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+}
+
+function handleInput(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+  const rem = 1000 - el.value.length;
+  document.getElementById('char-count').textContent = rem;
+}
+
+function addEmoji(emoji) {
+  const inp = document.getElementById('user-input');
+  inp.value += emoji;
+  inp.focus();
+}
+
+// ══ TOAST ══
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
 }
 </script>
 </body>
