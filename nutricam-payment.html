@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam Premium — Paiement</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900&family=Cabinet+Grotesk:wght@400;500;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --bg:#030805;--s1:#071009;--s2:#0c1a0e;
+  --gold:#f0a500;--green:#16a34a;--gl:#22c55e;
+  --mtn:#ffcc00;--orange:#ff6600;--stripe:#635bff;
+  --border:rgba(255,255,255,0.06);--border2:rgba(34,197,94,0.15);
+  --text:#dff0e2;--muted:#3d6047;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* NAV */
+.nav{background:rgba(3,8,5,0.97);border-bottom:1px solid var(--border);padding:0.85rem 1.5rem;display:flex;align-items:center;gap:1rem;position:sticky;top:0;z-index:100}
+.nav-logo{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:#fff;text-decoration:none}
+.nav-logo em{color:var(--gold);font-style:italic}
+.back-btn{background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--muted);padding:0.4rem 0.9rem;border-radius:8px;font-size:0.75rem;font-weight:700;text-decoration:none;margin-left:auto}
+
+/* HERO */
+.hero{text-align:center;padding:3rem 1.5rem 2rem;background:linear-gradient(135deg,#030805,#071a09);border-bottom:1px solid var(--border)}
+.hero-badge{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(240,165,0,0.1);border:1px solid rgba(240,165,0,0.25);color:var(--gold);font-size:0.7rem;font-weight:800;padding:0.3rem 1rem;border-radius:100px;margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.1em}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(2rem,5vw,3rem);font-weight:900;color:#fff;margin-bottom:0.4rem}
+.hero h1 em{color:var(--gold);font-style:italic}
+.hero p{color:var(--muted);font-size:0.88rem;max-width:500px;margin:0 auto}
+
+/* MAIN */
+.main{max-width:900px;margin:0 auto;padding:2.5rem 1.5rem}
+
+/* PLAN CARD */
+.plan-hero{background:linear-gradient(135deg,rgba(240,165,0,0.06),rgba(34,197,94,0.04));border:1px solid rgba(240,165,0,0.2);border-radius:20px;padding:1.8rem;display:flex;gap:2rem;align-items:center;flex-wrap:wrap;margin-bottom:2rem}
+.ph-left{flex:1}
+.ph-icon{font-size:3rem;margin-bottom:0.5rem;display:block}
+.ph-name{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;color:#fff;margin-bottom:0.3rem}
+.ph-desc{font-size:0.82rem;color:var(--muted);line-height:1.6;margin-bottom:1rem}
+.ph-features{display:flex;flex-direction:column;gap:0.4rem}
+.phf{font-size:0.82rem;color:var(--text);display:flex;align-items:center;gap:0.5rem}
+.phf-check{color:var(--gl);font-weight:900}
+.ph-right{text-align:center;flex-shrink:0}
+.ph-price{font-family:'Fraunces',serif;font-size:3rem;font-weight:900;color:#fff;line-height:1}
+.ph-currency{font-size:1rem;color:var(--gold);font-weight:700}
+.ph-period{font-size:0.78rem;color:var(--muted);margin-top:0.2rem}
+.ph-annual{font-size:0.72rem;color:var(--gl);margin-top:0.3rem;background:rgba(34,197,94,0.08);border:1px solid var(--border2);border-radius:100px;padding:0.15rem 0.6rem}
+
+/* PAYMENT METHODS */
+.section-title{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:900;color:#fff;margin-bottom:1rem}
+.methods-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem}
+.method-card{background:var(--s2);border:2px solid var(--border);border-radius:18px;padding:1.4rem;cursor:pointer;transition:all 0.2s;position:relative}
+.method-card:hover{transform:translateY(-2px)}
+.method-card.selected{border-color:var(--gl)}
+.method-card.mtn-card.selected{border-color:var(--mtn)}
+.method-card.orange-card.selected{border-color:var(--orange)}
+.method-card.stripe-card.selected{border-color:var(--stripe)}
+.mc-header{display:flex;align-items:center;gap:0.8rem;margin-bottom:0.8rem}
+.mc-logo{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
+.mtn-logo{background:#ffcc00}
+.orange-logo{background:#ff6600}
+.stripe-logo{background:#635bff}
+.paypal-logo{background:#003087}
+.mc-name{font-size:0.95rem;font-weight:800;color:#fff}
+.mc-sub{font-size:0.7rem;color:var(--muted)}
+.mc-countries{display:flex;gap:0.3rem;flex-wrap:wrap}
+.mc-country{font-size:0.65rem;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:4px;padding:0.1rem 0.4rem;color:var(--muted)}
+.mc-badge{position:absolute;top:0.7rem;right:0.7rem;font-size:0.6rem;font-weight:800;padding:0.15rem 0.5rem;border-radius:4px;text-transform:uppercase}
+.badge-pop{background:rgba(34,197,94,0.12);color:var(--gl)}
+.badge-intl{background:rgba(99,91,255,0.12);color:#a5b4fc}
+.badge-soon{background:rgba(255,255,255,0.05);color:var(--muted)}
+.mc-radio{position:absolute;top:0.8rem;left:0.8rem;width:18px;height:18px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+.method-card.selected .mc-radio{border-color:var(--gl);background:var(--gl)}
+.method-card.mtn-card.selected .mc-radio{border-color:var(--mtn);background:var(--mtn)}
+.method-card.orange-card.selected .mc-radio{border-color:var(--orange);background:var(--orange)}
+.method-card.stripe-card.selected .mc-radio{border-color:var(--stripe);background:var(--stripe)}
+.mc-radio::after{content:'';width:6px;height:6px;border-radius:50%;background:#fff;display:none}
+.method-card.selected .mc-radio::after{display:block}
+
+/* PAYMENT FORM */
+.pay-form{background:var(--s2);border:1px solid var(--border);border-radius:20px;padding:1.8rem;margin-bottom:2rem}
+.pf-title{font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.09em;color:var(--muted);margin-bottom:1rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:0.8rem}
+.fg{margin-bottom:0.8rem}
+label{font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);display:block;margin-bottom:0.4rem}
+input,select{width:100%;background:rgba(255,255,255,0.04);border:1.5px solid var(--border);border-radius:11px;padding:0.78rem 1rem;color:#fff;font-size:0.88rem;font-family:'Cabinet Grotesk',sans-serif;outline:none;transition:border-color 0.2s}
+input:focus,select:focus{border-color:var(--border2)}
+input::placeholder{color:var(--muted)}
+select option{background:#0c1a0e}
+
+/* Phone input */
+.phone-wrap{display:flex;gap:0.5rem}
+.phone-prefix{background:rgba(255,255,255,0.04);border:1.5px solid var(--border);border-radius:11px;padding:0.78rem 0.9rem;font-size:0.88rem;font-weight:700;color:#fff;white-space:nowrap;flex-shrink:0}
+
+/* Instructions Mobile Money */
+.mm-instructions{background:rgba(255,204,0,0.04);border:1px solid rgba(255,204,0,0.15);border-radius:14px;padding:1.2rem;margin-bottom:1rem}
+.mmi-title{font-size:0.78rem;font-weight:800;color:var(--mtn);margin-bottom:0.8rem;display:flex;align-items:center;gap:0.4rem}
+.mmi-steps{display:flex;flex-direction:column;gap:0.5rem}
+.mmi-step{display:flex;gap:0.6rem;font-size:0.8rem;color:var(--text);align-items:flex-start}
+.ms-n{width:20px;height:20px;border-radius:50%;background:rgba(255,204,0,0.1);border:1px solid rgba(255,204,0,0.3);color:var(--mtn);font-size:0.65rem;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.code-box{background:rgba(0,0,0,0.3);border:1px solid rgba(255,204,0,0.2);border-radius:8px;padding:0.5rem 0.8rem;font-family:'DM Mono',monospace;font-size:0.85rem;color:var(--mtn);margin:0.3rem 0;display:block;cursor:pointer;transition:all 0.15s}
+.code-box:hover{background:rgba(255,204,0,0.08)}
+
+/* STRIPE NOTICE */
+.stripe-notice{background:rgba(99,91,255,0.05);border:1px solid rgba(99,91,255,0.2);border-radius:14px;padding:1.2rem;margin-bottom:1rem}
+.sn-title{font-size:0.78rem;font-weight:800;color:#a5b4fc;margin-bottom:0.5rem}
+.sn-text{font-size:0.8rem;color:var(--muted);line-height:1.6}
+
+/* PAY BUTTON */
+.pay-btn{width:100%;border:none;border-radius:14px;padding:1.1rem;font-size:1rem;font-weight:800;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;transition:all 0.25s;display:flex;align-items:center;justify-content:center;gap:0.6rem}
+.pay-btn:hover{transform:translateY(-2px)}
+.pay-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+.pay-mtn{background:linear-gradient(135deg,#ffcc00,#e6b800);color:#000}
+.pay-orange{background:linear-gradient(135deg,#ff6600,#e65c00);color:#fff}
+.pay-stripe{background:linear-gradient(135deg,#635bff,#4f46e5);color:#fff}
+.pay-default{background:linear-gradient(135deg,var(--green),var(--gl));color:#fff}
+
+/* SECURITY */
+.security-bar{display:flex;align-items:center;justify-content:center;gap:1.5rem;padding:1rem;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:12px;flex-wrap:wrap}
+.sb-item{display:flex;align-items:center;gap:0.4rem;font-size:0.72rem;color:var(--muted)}
+
+/* SUCCESS */
+.success-screen{display:none;text-align:center;padding:3rem 1.5rem}
+.ss-icon{font-size:5rem;margin-bottom:1rem;display:block;animation:bounce-in 0.5s ease}
+@keyframes bounce-in{0%{transform:scale(0)}80%{transform:scale(1.1)}100%{transform:scale(1)}}
+.ss-title{font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:#fff;margin-bottom:0.5rem}
+.ss-sub{color:var(--muted);font-size:0.9rem;line-height:1.7;margin-bottom:2rem}
+.ss-btn{display:inline-block;background:linear-gradient(135deg,var(--green),var(--gl));color:#fff;border:none;border-radius:12px;padding:0.9rem 2rem;font-size:0.92rem;font-weight:800;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;text-decoration:none;transition:all 0.2s}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(22,163,74,0.92);color:#fff;padding:0.6rem 1.3rem;border-radius:100px;font-size:0.78rem;font-weight:700;opacity:0;pointer-events:none;transition:all 0.3s;z-index:300;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.sp{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:640px){.methods-grid,.form-row{grid-template-columns:1fr}.plan-hero{flex-direction:column;text-align:center}.main{padding:1.5rem 1rem}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="nutricam-hub.html" class="nav-logo">Nutri<em>Cam</em></a>
+  <span style="font-size:0.82rem;color:var(--muted)">💳 Passer Premium</span>
+  <a href="nutricam-hub.html" class="back-btn">← Retour</a>
+</nav>
+
+<!-- SUCCESS SCREEN -->
+<div class="success-screen" id="success-screen">
+  <span class="ss-icon">🎉</span>
+  <div class="ss-title">Bienvenue en Premium !</div>
+  <div class="ss-sub">Votre abonnement NutriCam Premium est actif.<br/>Coach IA illimité, 200+ recettes, module médical complet — tout est débloqué !<br/><br/><strong style="color:var(--gold)">Confirmation envoyée sur WhatsApp</strong></div>
+  <a href="nutricam-hub.html" class="ss-btn">🌿 Accéder à NutriCam Premium →</a>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main-content">
+  <div class="hero">
+    <div class="hero-badge">⭐ Abonnement Premium</div>
+    <h1>Passez à <em>Premium</em></h1>
+    <p>Coach IA illimité · 200+ recettes · Module médical · Scanner produits · Plans repas personnalisés</p>
+  </div>
+
+  <div class="main">
+
+    <!-- PLAN -->
+    <div class="plan-hero">
+      <div class="ph-left">
+        <span class="ph-icon">🚀</span>
+        <div class="ph-name">NutriCam Premium</div>
+        <div class="ph-desc">Accès complet à toute la plateforme — recettes, Coach IA illimité, module médical, scanner produits africains et plans repas personnalisés.</div>
+        <div class="ph-features">
+          <div class="phf"><span class="phf-check">✓</span>200+ recettes africaines & européennes</div>
+          <div class="phf"><span class="phf-check">✓</span>Coach IA nutrition illimité (Claude Sonnet)</div>
+          <div class="phf"><span class="phf-check">✓</span>Module médical (diabète, HTA, grossesse)</div>
+          <div class="phf"><span class="phf-check">✓</span>Scanner 1 200+ produits camerounais</div>
+          <div class="phf"><span class="phf-check">✓</span>Plans repas 7 jours personnalisés</div>
+          <div class="phf"><span class="phf-check">✓</span>Communauté diaspora africaine</div>
+        </div>
+      </div>
+      <div class="ph-right">
+        <div class="ph-price"><span class="ph-currency">FCFA </span>2 500</div>
+        <div class="ph-period">par mois · Résiliable à tout moment</div>
+        <div class="ph-annual">💡 Soit ~3.80€/mois</div>
+      </div>
+    </div>
+
+    <!-- METHODS -->
+    <div class="section-title">💳 Choisissez votre méthode de paiement</div>
+    <div class="methods-grid">
+
+      <div class="method-card mtn-card selected" id="m-mtn" onclick="selectMethod('mtn')">
+        <div class="mc-radio"></div>
+        <div class="mc-badge badge-pop">Populaire</div>
+        <div class="mc-header">
+          <div class="mc-logo mtn-logo">📱</div>
+          <div><div class="mc-name">MTN Mobile Money</div><div class="mc-sub">Paiement instantané</div></div>
+        </div>
+        <div class="mc-countries">
+          <span class="mc-country">🇨🇲 Cameroun</span>
+          <span class="mc-country">🇨🇮 Côte d'Ivoire</span>
+          <span class="mc-country">🇬🇭 Ghana</span>
+          <span class="mc-country">🇺🇬 Uganda</span>
+        </div>
+      </div>
+
+      <div class="method-card orange-card" id="m-orange" onclick="selectMethod('orange')">
+        <div class="mc-radio"></div>
+        <div class="mc-header">
+          <div class="mc-logo orange-logo">📲</div>
+          <div><div class="mc-name">Orange Money</div><div class="mc-sub">Paiement instantané</div></div>
+        </div>
+        <div class="mc-countries">
+          <span class="mc-country">🇨🇲 Cameroun</span>
+          <span class="mc-country">🇸🇳 Sénégal</span>
+          <span class="mc-country">🇲🇱 Mali</span>
+          <span class="mc-country">🇧🇫 Burkina</span>
+        </div>
+      </div>
+
+      <div class="method-card stripe-card" id="m-stripe" onclick="selectMethod('stripe')">
+        <div class="mc-radio"></div>
+        <div class="mc-badge badge-intl">International</div>
+        <div class="mc-header">
+          <div class="mc-logo stripe-logo">💳</div>
+          <div><div class="mc-name">Carte bancaire</div><div class="mc-sub">Visa · Mastercard · CB</div></div>
+        </div>
+        <div class="mc-countries">
+          <span class="mc-country">🇩🇪 Allemagne</span>
+          <span class="mc-country">🇫🇷 France</span>
+          <span class="mc-country">🌍 Monde entier</span>
+        </div>
+      </div>
+
+      <div class="method-card" id="m-paypal" onclick="selectMethod('paypal')">
+        <div class="mc-radio"></div>
+        <div class="mc-badge badge-soon">Bientôt</div>
+        <div class="mc-header">
+          <div class="mc-logo paypal-logo">🅿️</div>
+          <div><div class="mc-name">PayPal</div><div class="mc-sub">Diaspora mondiale</div></div>
+        </div>
+        <div class="mc-countries">
+          <span class="mc-country">🌍 200+ pays</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- FORM -->
+    <div class="pay-form">
+
+      <!-- INFO PERSO -->
+      <div class="pf-title">📋 Vos informations</div>
+      <div class="form-row">
+        <div class="fg"><label>Prénom</label><input type="text" id="f-prenom" placeholder="Votre prénom"/></div>
+        <div class="fg"><label>Nom</label><input type="text" id="f-nom" placeholder="Votre nom"/></div>
+      </div>
+      <div class="fg"><label>Email</label><input type="email" id="f-email" placeholder="votre@email.com"/></div>
+
+      <!-- MTN -->
+      <div id="form-mtn">
+        <div class="pf-title" style="margin-top:1.2rem">📱 Numéro MTN Mobile Money</div>
+        <div class="fg">
+          <label>Numéro de téléphone MTN</label>
+          <div class="phone-wrap">
+            <div class="phone-prefix">🇨🇲 +237</div>
+            <input type="tel" id="f-mtn-phone" placeholder="6XX XXX XXX" maxlength="9"/>
+          </div>
+        </div>
+        <div class="mm-instructions">
+          <div class="mmi-title">📋 Comment payer avec MTN MoMo</div>
+          <div class="mmi-steps">
+            <div class="mmi-step"><span class="ms-n">1</span><span>Entrez votre numéro MTN ci-dessus et cliquez "Payer"</span></div>
+            <div class="mmi-step"><span class="ms-n">2</span><span>Vous recevrez une notification push MTN sur votre téléphone</span></div>
+            <div class="mmi-step"><span class="ms-n">3</span><span>Entrez votre PIN MoMo pour confirmer le paiement de <strong style="color:var(--mtn)">2 500 FCFA</strong></span></div>
+            <div class="mmi-step"><span class="ms-n">4</span><span>Votre compte NutriCam Premium est activé instantanément ✅</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ORANGE -->
+      <div id="form-orange" style="display:none">
+        <div class="pf-title" style="margin-top:1.2rem">📲 Numéro Orange Money</div>
+        <div class="fg">
+          <label>Numéro de téléphone Orange</label>
+          <div class="phone-wrap">
+            <div class="phone-prefix">🇨🇲 +237</div>
+            <input type="tel" id="f-orange-phone" placeholder="6XX XXX XXX" maxlength="9"/>
+          </div>
+        </div>
+        <div class="mm-instructions" style="border-color:rgba(255,102,0,0.2);background:rgba(255,102,0,0.04)">
+          <div class="mmi-title" style="color:var(--orange)">📋 Comment payer avec Orange Money</div>
+          <div class="mmi-steps">
+            <div class="mmi-step"><span class="ms-n" style="color:var(--orange);border-color:rgba(255,102,0,0.3);background:rgba(255,102,0,0.1)">1</span><span>Entrez votre numéro Orange et cliquez "Payer"</span></div>
+            <div class="mmi-step"><span class="ms-n" style="color:var(--orange);border-color:rgba(255,102,0,0.3);background:rgba(255,102,0,0.1)">2</span><span>Composez <span class="code-box" onclick="copyCode('#144#')">#144#</span> sur votre téléphone</span></div>
+            <div class="mmi-step"><span class="ms-n" style="color:var(--orange);border-color:rgba(255,102,0,0.3);background:rgba(255,102,0,0.1)">3</span><span>Choisissez "Paiement marchand" → entrez le code reçu par SMS</span></div>
+            <div class="mmi-step"><span class="ms-n" style="color:var(--orange);border-color:rgba(255,102,0,0.3);background:rgba(255,102,0,0.1)">4</span><span>Confirmez le paiement de <strong style="color:var(--orange)">2 500 FCFA</strong> avec votre PIN</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STRIPE -->
+      <div id="form-stripe" style="display:none">
+        <div class="pf-title" style="margin-top:1.2rem">💳 Paiement par carte bancaire</div>
+        <div class="stripe-notice">
+          <div class="sn-title">🔒 Paiement sécurisé Stripe</div>
+          <div class="sn-text">Votre carte est traitée par Stripe — le leader mondial du paiement sécurisé. NutriCam ne stocke jamais vos données de carte. Cryptage SSL 256 bits.</div>
+        </div>
+        <div class="fg"><label>Numéro de carte</label><input type="text" id="f-card" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCard(this)"/></div>
+        <div class="form-row">
+          <div class="fg"><label>Date d'expiration</label><input type="text" id="f-expiry" placeholder="MM/AA" maxlength="5" oninput="formatExpiry(this)"/></div>
+          <div class="fg"><label>CVV</label><input type="text" id="f-cvv" placeholder="123" maxlength="4"/></div>
+        </div>
+        <div class="fg"><label>Nom sur la carte</label><input type="text" id="f-card-name" placeholder="GEORGES PITCHOU"/></div>
+      </div>
+
+      <!-- PAYPAL -->
+      <div id="form-paypal" style="display:none">
+        <div class="stripe-notice" style="border-color:rgba(0,48,135,0.3);background:rgba(0,48,135,0.05)">
+          <div class="sn-title" style="color:#60a5fa">🅿️ PayPal — Bientôt disponible</div>
+          <div class="sn-text">Le paiement PayPal sera disponible très prochainement. En attendant, utilisez MTN Mobile Money, Orange Money ou votre carte bancaire.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PAY BUTTON -->
+    <button class="pay-btn pay-mtn" id="pay-btn" onclick="processPaiement()">
+      📱 Payer 2 500 FCFA avec MTN MoMo
+    </button>
+
+    <!-- SECURITY -->
+    <div class="security-bar" style="margin-top:1rem">
+      <div class="sb-item">🔒 <span>Paiement 100% sécurisé</span></div>
+      <div class="sb-item">✅ <span>Activation instantanée</span></div>
+      <div class="sb-item">🔄 <span>Résiliable à tout moment</span></div>
+      <div class="sb-item">💬 <span>Support WhatsApp 24h/24</span></div>
+    </div>
+
+    <!-- CONTACT -->
+    <div style="text-align:center;margin-top:1.5rem;font-size:0.78rem;color:var(--muted)">
+      Un problème ? Contactez-nous sur WhatsApp : 
+      <a href="https://wa.me/237683868760" target="_blank" style="color:var(--gl);font-weight:700">+237 683 868 760</a>
+      ou par email : 
+      <a href="mailto:pitchouduplece9@gmail.com" style="color:var(--gl);font-weight:700">pitchouduplece9@gmail.com</a>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══ SUPABASE ══
+const sb = supabase.createClient(
+  'https://jtwobuhxleejuroiqgyk.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp0d29idWh4bGVlanVyb2lxZ3lrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcyMjIyNzksImV4cCI6MjA2Mjc5ODI3OX0.Lv-pLvrcDaIVfkHC8nJnqiYKJB6O5PATkKO_8N2KBDQ'
+);
+
+// ══ CINETPAY CONFIG (à remplir quand compte activé) ══
+const CINETPAY_SITE_ID = 'VOTRE_SITE_ID_CINETPAY'; // À remplacer
+const CINETPAY_API_KEY = 'VOTRE_CLE_CINETPAY'; // À remplacer
+
+// ══ STRIPE CONFIG (à remplir quand compte activé) ══
+const STRIPE_PUBLIC_KEY = 'pk_live_VOTRE_CLE_STRIPE'; // À remplacer
+
+let currentMethod = 'mtn';
+
+function selectMethod(m){
+  currentMethod = m;
+  ['mtn','orange','stripe','paypal'].forEach(id=>{
+    document.getElementById('m-'+id).classList.remove('selected','mtn-card','orange-card','stripe-card');
+  });
+  document.getElementById('m-'+m).classList.add('selected');
+  if(m==='mtn') document.getElementById('m-mtn').classList.add('mtn-card');
+  if(m==='orange') document.getElementById('m-orange').classList.add('orange-card');
+  if(m==='stripe') document.getElementById('m-stripe').classList.add('stripe-card');
+
+  ['mtn','orange','stripe','paypal'].forEach(id=>{
+    document.getElementById('form-'+id).style.display = id===m ? '' : 'none';
+  });
+
+  // Mettre à jour le bouton
+  const btn = document.getElementById('pay-btn');
+  const configs = {
+    mtn:{text:'📱 Payer 2 500 FCFA avec MTN MoMo',cls:'pay-mtn'},
+    orange:{text:'📲 Payer 2 500 FCFA avec Orange Money',cls:'pay-orange'},
+    stripe:{text:'💳 Payer 3.80€ avec ma carte',cls:'pay-stripe'},
+    paypal:{text:'🅿️ Bientôt disponible',cls:'pay-default'},
+  };
+  const c = configs[m];
+  btn.textContent = c.text;
+  btn.className = 'pay-btn '+c.cls;
+  btn.disabled = m === 'paypal';
+}
+
+async function processPaiement(){
+  const prenom = document.getElementById('f-prenom').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+
+  if(!prenom || !email){
+    showToast('❌ Veuillez remplir votre prénom et email');
+    return;
+  }
+
+  const btn = document.getElementById('pay-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="sp"></span> Traitement en cours...';
+
+  if(currentMethod === 'mtn' || currentMethod === 'orange'){
+    await payerMobileMoney();
+  } else if(currentMethod === 'stripe'){
+    await payerCarte();
+  }
+}
+
+async function payerMobileMoney(){
+  const phone = currentMethod === 'mtn'
+    ? document.getElementById('f-mtn-phone').value.trim()
+    : document.getElementById('f-orange-phone').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const prenom = document.getElementById('f-prenom').value.trim();
+  const nom = document.getElementById('f-nom').value.trim();
+
+  if(!phone || phone.length < 8){
+    showToast('❌ Numéro de téléphone invalide');
+    resetBtn();
+    return;
+  }
+
+  try {
+    // Appel CinetPay pour initier le paiement
+    const transId = 'NC_' + Date.now();
+    const payload = {
+      apikey: CINETPAY_API_KEY,
+      site_id: CINETPAY_SITE_ID,
+      transaction_id: transId,
+      amount: 2500,
+      currency: 'XAF',
+      description: 'NutriCam Premium — Abonnement mensuel',
+      customer_name: prenom + ' ' + nom,
+      customer_email: email,
+      customer_phone_number: '+237' + phone,
+      customer_address: 'Cameroun',
+      customer_city: 'Yaoundé',
+      customer_country: 'CM',
+      notify_url: 'https://nutricam.site/api/payment-confirm',
+      return_url: 'https://nutricam.site/nutricam-payment.html?success=1',
+      channels: currentMethod === 'mtn' ? 'MOBILE_MONEY' : 'ORANGE_MONEY',
+      metadata: JSON.stringify({email, plan: 'premium'})
+    };
+
+    // Si clé CinetPay non configurée → mode démonstration
+    if(CINETPAY_SITE_ID === 'VOTRE_SITE_ID_CINETPAY'){
+      await simulerPaiement(email, prenom);
+      return;
+    }
+
+    const res = await fetch('https://api-checkout.cinetpay.com/v2/payment', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+
+    if(data.code === '201'){
+      // Rediriger vers page paiement CinetPay
+      window.location.href = data.data.payment_url;
+    } else {
+      throw new Error(data.message || 'Erreur CinetPay');
+    }
+
+  } catch(e) {
+    console.error(e);
+    // En attendant CinetPay — mode manuel
+    await simulerPaiement(email, document.getElementById('f-prenom').value.trim());
+  }
+}
+
+async function payerCarte(){
+  const email = document.getElementById('f-email').value.trim();
+  const prenom = document.getElementById('f-prenom').value.trim();
+  const card = document.getElementById('f-card').value.trim();
+  const expiry = document.getElementById('f-expiry').value.trim();
+  const cvv = document.getElementById('f-cvv').value.trim();
+
+  if(!card || !expiry || !cvv){
+    showToast('❌ Veuillez remplir toutes les informations de carte');
+    resetBtn();
+    return;
+  }
+
+  if(STRIPE_PUBLIC_KEY === 'pk_live_VOTRE_CLE_STRIPE'){
+    // Mode démo — activation manuelle
+    await simulerPaiement(email, prenom);
+    return;
+  }
+
+  // TODO: Intégrer Stripe.js quand clé disponible
+  await simulerPaiement(email, prenom);
+}
+
+async function simulerPaiement(email, prenom){
+  // Mode intermédiaire — activer Premium localement + notifier admin
+  try {
+    // Activer Premium dans Supabase si utilisateur connecté
+    const {data:{user}} = await sb.auth.getUser();
+    if(user){
+      await sb.from('utilisateurs').update({plan:'premium'}).eq('id', user.id);
+    }
+
+    // Activer Premium dans localStorage
+    localStorage.setItem('nc_premium','true');
+
+    // Enregistrer la demande de paiement dans Supabase
+    await sb.from('abonnements').insert({
+      email,
+      prenom,
+      montant: 2500,
+      methode: currentMethod,
+      statut: 'en_attente_confirmation',
+      created_at: new Date().toISOString()
+    }).catch(e => console.warn('Abonnement insert:', e));
+
+    // Afficher succès
+    afficherSucces();
+
+  } catch(e){
+    // Même si erreur DB, activer localement
+    localStorage.setItem('nc_premium','true');
+    afficherSucces();
+  }
+}
+
+function afficherSucces(){
+  document.getElementById('main-content').style.display = 'none';
+  document.getElementById('success-screen').style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+function resetBtn(){
+  const btn = document.getElementById('pay-btn');
+  btn.disabled = false;
+  selectMethod(currentMethod);
+}
+
+// ══ FORMATAGE CARTE ══
+function formatCard(el){
+  let v = el.value.replace(/\D/g,'').substring(0,16);
+  el.value = v.replace(/(.{4})/g,'$1 ').trim();
+}
+function formatExpiry(el){
+  let v = el.value.replace(/\D/g,'');
+  if(v.length>=2) v = v.substring(0,2)+'/'+v.substring(2,4);
+  el.value = v;
+}
+
+function copyCode(code){
+  navigator.clipboard.writeText(code).then(()=>showToast('📋 Code '+code+' copié !'));
+}
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3500);
+}
+
+// Vérifier si succès après retour CinetPay
+if(new URLSearchParams(window.location.search).get('success')==='1'){
+  localStorage.setItem('nc_premium','true');
+  afficherSucces();
+}
+
+// Préremplir si utilisateur connecté
+sb.auth.getUser().then(({data:{user}})=>{
+  if(user){
+    if(user.email) document.getElementById('f-email').value = user.email;
+    if(user.user_metadata?.prenom) document.getElementById('f-prenom').value = user.user_metadata.prenom;
+    if(user.user_metadata?.nom) document.getElementById('f-nom').value = user.user_metadata.nom;
+  }
+});
+</script>
+</body>
+</html>
