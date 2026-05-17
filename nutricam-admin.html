@@ -324,7 +324,7 @@ async function loadAll(){
 async function loadUsers(){
   try {
     const { data, error } = await sb
-      .from('users')
+      .from('utilisateurs')
       .select('*')
       .order('created_at', { ascending: false });
 
@@ -566,7 +566,7 @@ function closeModal(){ document.getElementById('modal').classList.remove('open')
 // ══ ACTIONS ══
 async function upgradePremium(userId, name){
   try {
-    await sb.from('users').update({plan:'premium'}).eq('id', userId);
+    await sb.from('utilisateurs').update({plan:'premium'}).eq('id', userId);
     const u = allUsers.find(x=>x.id===userId);
     if(u) u.plan = 'premium';
     renderTable(); updateKPIs(); renderPieChart();
