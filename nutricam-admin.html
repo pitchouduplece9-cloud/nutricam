@@ -340,16 +340,25 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  const SUPABASE_URL = 'https://jtwobuhxleejuroiqgyk.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp0d29idWh4bGVlanVyb2lxZ3lrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcyMjIyNzksImV4cCI6MjA2Mjc5ODI3OX0.Lv-pLvrcDaIVfkHC8nJnqiYKJB6O5PATkKO_8N2KBDQ';
-  const sbAdmin = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const SB_URL = 'https://jtwobuhxleejuroiqgyk.supabase.co';
+  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp0d29idWh4bGVlanVyb2lxZ3lrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcyMjIyNzksImV4cCI6MjA2Mjc5ODI3OX0.Lv-pLvrcDaIVfkHC8nJnqiYKJB6O5PATkKO_8N2KBDQ';
+
+  async function sbFetch(table) {
+    const res = await fetch(`${SB_URL}/rest/v1/${table}?order=created_at.desc`, {
+      headers: {
+        'apikey': SB_KEY,
+        'Authorization': 'Bearer ' + SB_KEY,
+        'Content-Type': 'application/json'
+      }
+    });
+    if (!res.ok) { const e = await res.json(); throw new Error(e.message || res.status); }
+    return res.json();
+  }
 
   const ADMIN_CODE = 'NUTRICAM_ADMIN_2025';
   let allUsers = [];
 
-  // ===== LOGIN =====
   function login() {
     const code = document.getElementById('adminCode').value.trim();
     if (code === ADMIN_CODE) {
@@ -367,143 +376,85 @@
     document.getElementById('adminCode').value = '';
   }
 
-  // ===== LOAD DATA =====
   async function loadData() {
     await Promise.all([loadUsers(), loadAbonnements()]);
   }
 
-  // ===== UTILISATEURS =====
   async function loadUsers() {
-    document.getElementById('usersContainer').innerHTML = '<div class="loading-text">⏳ Chargement...</div>';
-
-    const { data, error } = await sbAdmin
-      .from('utilisateurs')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    if (error) {
-      document.getElementById('usersContainer').innerHTML = `<div class="empty-state"><div class="icon">⚠️</div><p>Erreur: ${error.message}</p></div>`;
-      return;
+    document.getElementById('usersContainer').innerHTML = '<div class="loading-text">Chargement...</div>';
+    try {
+      const data = await sbFetch('utilisateurs');
+      allUsers = Array.isArray(data) ? data : [];
+      renderUsers(allUsers);
+      updateStats(allUsers);
+    } catch(e) {
+      document.getElementById('usersContainer').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><p>Erreur: ' + e.message + '</p></div>';
     }
-
-    allUsers = data || [];
-    renderUsers(allUsers);
-    updateStats(allUsers);
   }
 
   function updateStats(users) {
     const total = users.length;
-    const premium = users.filter(u => u.plan === 'premium').length;
-    const gratuit = users.filter(u => u.plan === 'gratuit' || !u.plan).length;
+    const premium = users.filter(function(u){ return u.plan === 'premium'; }).length;
+    const gratuit = users.filter(function(u){ return u.plan === 'gratuit' || !u.plan; }).length;
     const taux = total > 0 ? Math.round((premium / total) * 100) : 0;
-
-    // Aujourd'hui
     const today = new Date().toISOString().split('T')[0];
-    const newToday = users.filter(u => u.created_at && u.created_at.startsWith(today)).length;
+    const newToday = users.filter(function(u){ return u.created_at && u.created_at.startsWith(today); }).length;
 
     document.getElementById('statTotal').textContent = total;
     document.getElementById('statPremium').textContent = premium;
     document.getElementById('statGratuit').textContent = gratuit;
-    document.getElementById('statAujourdhui').textContent = `+${newToday} aujourd'hui`;
-    document.getElementById('statRevenu').textContent = `${premium * 2500} FCFA/mois`;
-    document.getElementById('statTaux').textContent = `Taux: ${taux}%`;
+    document.getElementById('statAujourdhui').textContent = '+' + newToday + " aujourd'hui";
+    document.getElementById('statRevenu').textContent = (premium * 2500) + ' FCFA/mois';
+    document.getElementById('statTaux').textContent = 'Taux: ' + taux + '%';
     document.getElementById('userCount').textContent = total;
   }
 
   function renderUsers(users) {
     if (users.length === 0) {
-      document.getElementById('usersContainer').innerHTML = `
-        <div class="empty-state">
-          <div class="icon">👥</div>
-          <p>Aucun utilisateur inscrit pour l'instant.<br/>Partagez nutricam.site pour attirer vos premiers membres !</p>
-        </div>`;
+      document.getElementById('usersContainer').innerHTML = '<div class="empty-state"><div class="icon">👥</div><p>Aucun utilisateur encore.<br/>Partagez nutricam.site !</p></div>';
       return;
     }
-
-    const rows = users.map(u => {
-      const plan = u.plan || 'gratuit';
-      const date = u.created_at ? new Date(u.created_at).toLocaleDateString('fr-FR') : '—';
-      return `
-        <tr>
-          <td><strong>${u.prenom || ''} ${u.nom || ''}</strong><br/><span class="date-small">${u.email || '—'}</span></td>
-          <td>${u.telephone || '—'}</td>
-          <td><span class="plan-tag ${plan}">${plan.charAt(0).toUpperCase() + plan.slice(1)}</span></td>
-          <td>${u.poids ? u.poids + ' kg' : '—'}</td>
-          <td class="date-small">${date}</td>
-        </tr>`;
+    var rows = users.map(function(u) {
+      var plan = u.plan || 'gratuit';
+      var date = u.created_at ? new Date(u.created_at).toLocaleDateString('fr-FR') : '-';
+      return '<tr><td><strong>' + (u.prenom||'') + ' ' + (u.nom||'') + '</strong><br/><span class="date-small">' + (u.email||'-') + '</span></td><td>' + (u.telephone||'-') + '</td><td><span class="plan-tag ' + plan + '">' + plan.charAt(0).toUpperCase() + plan.slice(1) + '</span></td><td>' + (u.poids ? u.poids+' kg' : '-') + '</td><td class="date-small">' + date + '</td></tr>';
     }).join('');
-
-    document.getElementById('usersContainer').innerHTML = `
-      <table class="user-table">
-        <thead>
-          <tr>
-            <th>Nom / Email</th>
-            <th>Téléphone</th>
-            <th>Plan</th>
-            <th>Poids</th>
-            <th>Inscrit le</th>
-          </tr>
-        </thead>
-        <tbody>${rows}</tbody>
-      </table>`;
+    document.getElementById('usersContainer').innerHTML = '<table class="user-table"><thead><tr><th>Nom / Email</th><th>Téléphone</th><th>Plan</th><th>Poids</th><th>Date</th></tr></thead><tbody>' + rows + '</tbody></table>';
   }
 
   function filterUsers(query) {
-    const q = query.toLowerCase();
-    const filtered = allUsers.filter(u =>
-      (u.prenom || '').toLowerCase().includes(q) ||
-      (u.nom || '').toLowerCase().includes(q) ||
-      (u.email || '').toLowerCase().includes(q) ||
-      (u.telephone || '').includes(q)
-    );
+    var q = query.toLowerCase();
+    var filtered = allUsers.filter(function(u) {
+      return (u.prenom||'').toLowerCase().includes(q) || (u.nom||'').toLowerCase().includes(q) || (u.email||'').toLowerCase().includes(q) || (u.telephone||'').includes(q);
+    });
     renderUsers(filtered);
   }
 
-  // ===== ABONNEMENTS =====
   async function loadAbonnements() {
-    const { data, error } = await sbAdmin
-      .from('abonnements')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    if (error) {
-      document.getElementById('abosContainer').innerHTML = `<div class="empty-state"><div class="icon">⚠️</div><p>Erreur: ${error.message}</p></div>`;
-      return;
+    try {
+      const data = await sbFetch('abonnements');
+      var abos = Array.isArray(data) ? data : [];
+      document.getElementById('aboCount').textContent = abos.length;
+      document.getElementById('statAbos').textContent = abos.length;
+      if (abos.length === 0) {
+        document.getElementById('abosContainer').innerHTML = '<div class="empty-state"><div class="icon">💳</div><p>Aucun paiement reçu.<br/>FedaPay en attente de validation.</p></div>';
+        return;
+      }
+      var items = abos.map(function(a) {
+        var date = a.created_at ? new Date(a.created_at).toLocaleDateString('fr-FR') : '-';
+        return '<div class="abo-item"><div><div class="abo-email">' + (a.prenom||'') + ' — ' + (a.email||'-') + '</div><div class="abo-meta">' + (a.methode||'-') + ' · ' + date + '</div></div><div class="abo-amount">' + (a.montant||2500) + ' FCFA</div></div>';
+      }).join('');
+      document.getElementById('abosContainer').innerHTML = items;
+    } catch(e) {
+      document.getElementById('abosContainer').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><p>Erreur: ' + e.message + '</p></div>';
     }
-
-    const abos = data || [];
-    document.getElementById('aboCount').textContent = abos.length;
-    document.getElementById('statAbos').textContent = abos.length;
-
-    if (abos.length === 0) {
-      document.getElementById('abosContainer').innerHTML = `
-        <div class="empty-state">
-          <div class="icon">💳</div>
-          <p>Aucun paiement reçu pour l'instant.<br/>FedaPay est prêt — en attente de validation du compte.</p>
-        </div>`;
-      return;
-    }
-
-    const items = abos.map(a => {
-      const date = a.created_at ? new Date(a.created_at).toLocaleDateString('fr-FR') : '—';
-      return `
-        <div class="abo-item">
-          <div>
-            <div class="abo-email">${a.prenom || ''} — ${a.email || '—'}</div>
-            <div class="abo-meta">${a.methode || '—'} · ${date}</div>
-          </div>
-          <div class="abo-amount">${a.montant || 2500} FCFA</div>
-        </div>`;
-    }).join('');
-
-    document.getElementById('abosContainer').innerHTML = items;
   }
 
-  // Enter key pour login
-  document.getElementById('adminCode').addEventListener('keypress', e => {
-    if (e.key === 'Enter') login();
+  document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('adminCode').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') login();
+    });
   });
 </script>
-
 </body>
 </html>
