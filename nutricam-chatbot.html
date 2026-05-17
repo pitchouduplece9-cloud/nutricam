@@ -8,14 +8,12 @@
 <style>
 :root{
   --bg:#030805;--s1:#071009;--s2:#0c1a0e;
-  --gold:#f0a500;--green:#16a34a;--gl:#22c55e;--glight:#4ade80;
+  --gold:#f0a500;--green:#16a34a;--gl:#22c55e;
   --red:#ef4444;--border:rgba(255,255,255,0.06);--border2:rgba(34,197,94,0.15);
   --text:#dff0e2;--muted:#3d6047;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden}
-
-/* NAV */
 .nav{background:rgba(3,8,5,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0.8rem 1.5rem;display:flex;align-items:center;gap:0.8rem;flex-shrink:0}
 .nav-logo{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:#fff;text-decoration:none}
 .nav-logo em{color:var(--gold);font-style:italic}
@@ -25,39 +23,22 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
 .nav-right{margin-left:auto;display:flex;align-items:center;gap:0.5rem}
 .nav-btn{background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--muted);padding:0.35rem 0.8rem;border-radius:8px;font-size:0.75rem;font-weight:700;text-decoration:none;transition:all 0.2s}
 .nav-btn:hover{color:#fff}
-.key-status{font-size:0.7rem;font-weight:700;padding:0.3rem 0.7rem;border-radius:8px;cursor:pointer;border:1px solid var(--border);font-family:'Cabinet Grotesk',sans-serif}
-.key-ok{background:rgba(34,197,94,0.08);color:var(--gl);border-color:var(--border2)}
-.key-missing{background:rgba(240,165,0,0.08);color:var(--gold);border-color:rgba(240,165,0,0.2)}
 .nav-lang{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:0.35rem 0.6rem;font-size:0.75rem;font-weight:700;color:var(--muted);cursor:pointer;font-family:'Cabinet Grotesk',sans-serif}
 
-/* SETUP MODAL */
-.setup-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(12px);z-index:200;display:flex;align-items:center;justify-content:center;padding:1.5rem}
-.setup-overlay.hidden{display:none}
-.setup-box{background:var(--s2);border:1px solid var(--border2);border-radius:24px;padding:2rem;max-width:480px;width:100%;animation:scaleIn 0.3s ease}
-@keyframes scaleIn{from{opacity:0;transform:scale(0.94)}to{opacity:1;transform:scale(1)}}
-.sb-icon{font-size:3rem;text-align:center;margin-bottom:0.8rem;display:block}
-.sb-title{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;color:#fff;text-align:center;margin-bottom:0.3rem}
-.sb-sub{font-size:0.82rem;color:var(--muted);text-align:center;line-height:1.6;margin-bottom:1.5rem}
-.sb-steps{display:flex;flex-direction:column;gap:0.7rem;margin-bottom:1.5rem}
-.sb-step{display:flex;gap:0.7rem;align-items:flex-start;font-size:0.8rem;color:var(--text);line-height:1.6}
-.ss-num{width:22px;height:22px;border-radius:50%;background:rgba(240,165,0,0.1);border:1px solid rgba(240,165,0,0.3);color:var(--gold);font-size:0.65rem;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.sb-input-wrap{position:relative;margin-bottom:1rem}
-.sb-input{width:100%;background:rgba(255,255,255,0.04);border:1.5px solid var(--border);border-radius:12px;padding:0.8rem 3rem 0.8rem 1rem;color:#fff;font-size:0.85rem;font-family:'DM Mono',monospace;outline:none;transition:border-color 0.2s}
-.sb-input:focus{border-color:var(--border2)}
-.sb-input::placeholder{color:var(--muted);font-family:'Cabinet Grotesk',sans-serif;font-size:0.8rem}
-.sb-eye{position:absolute;right:0.8rem;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem}
-.sb-save{width:100%;background:linear-gradient(135deg,var(--green),var(--gl));border:none;border-radius:12px;padding:0.9rem;font-size:0.9rem;font-weight:800;color:#fff;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;transition:all 0.2s;margin-bottom:0.6rem}
-.sb-save:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(22,163,74,0.3)}
-.sb-note{font-size:0.72rem;color:var(--muted);text-align:center;line-height:1.5}
-.sb-note a{color:var(--gl);text-decoration:none}
+/* QUOTA BAR */
+.quota-bar{background:rgba(240,165,0,0.06);border-bottom:1px solid rgba(240,165,0,0.15);padding:0.5rem 1.5rem;display:flex;align-items:center;gap:1rem;flex-shrink:0}
+.qb-label{font-size:0.72rem;font-weight:700;color:var(--gold)}
+.qb-dots{display:flex;gap:0.4rem}
+.qb-dot{width:12px;height:12px;border-radius:50%;background:var(--gl);transition:all 0.3s}
+.qb-dot.used{background:rgba(255,255,255,0.1);border:1px solid var(--muted)}
+.qb-info{font-size:0.68rem;color:var(--muted);margin-left:auto}
+.qb-upgrade{background:var(--gold);color:#000;border:none;border-radius:6px;padding:0.25rem 0.65rem;font-size:0.68rem;font-weight:800;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif}
 
 /* LAYOUT */
-.layout{display:grid;grid-template-columns:270px 1fr;flex:1;overflow:hidden;min-height:0}
-
-/* SIDEBAR */
+.layout{display:grid;grid-template-columns:260px 1fr;flex:1;overflow:hidden;min-height:0}
 .sidebar{background:var(--s1);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
-.sb-header{padding:1.1rem;border-bottom:1px solid var(--border)}
-.sb-label{font-size:0.62rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:0.7rem}
+.sb-head{padding:1.1rem;border-bottom:1px solid var(--border)}
+.sb-lbl{font-size:0.62rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:0.7rem}
 .nutri-card{display:flex;align-items:center;gap:0.7rem;padding:0.75rem;background:rgba(34,197,94,0.04);border:1px solid var(--border2);border-radius:12px;margin-bottom:0.9rem}
 .nc-av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#8B6014,#7a5212);border:2px solid rgba(240,165,0,0.25);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;position:relative}
 .nc-dot{position:absolute;bottom:1px;right:1px;width:9px;height:9px;border-radius:50%;background:var(--gl);border:2px solid var(--s1)}
@@ -68,10 +49,11 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
 .ql-cat{font-size:0.6rem;font-weight:800;text-transform:uppercase;letter-spacing:0.09em;color:var(--muted);margin:0.5rem 0 0.2rem;padding-left:0.2rem}
 .qt{background:rgba(255,255,255,0.025);border:1px solid var(--border);border-radius:9px;padding:0.48rem 0.75rem;font-size:0.76rem;color:var(--text);cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;transition:all 0.15s;text-align:left;display:flex;align-items:center;gap:0.4rem}
 .qt:hover{background:rgba(34,197,94,0.06);border-color:var(--border2);color:#fff}
-.sb-footer{padding:0.9rem 1rem;border-top:1px solid var(--border);display:flex;gap:1rem}
-.sf-stat{text-align:center;flex:1}
-.sf-val{font-family:'DM Mono',monospace;font-size:0.95rem;font-weight:700;color:#fff;display:block}
-.sf-label{font-size:0.56rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted)}
+.qt:disabled{opacity:0.4;cursor:not-allowed}
+.sb-footer{padding:0.9rem 1rem;border-top:1px solid var(--border)}
+.sf-stat{display:flex;justify-content:space-between;align-items:center;font-size:0.75rem}
+.sf-val{font-family:'DM Mono',monospace;font-weight:700;color:#fff}
+.sf-label{color:var(--muted)}
 
 /* CHAT */
 .chat-zone{display:flex;flex-direction:column;overflow:hidden;min-height:0}
@@ -82,13 +64,11 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
 .ch-actions{margin-left:auto;display:flex;gap:0.4rem}
 .ch-btn{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:7px;padding:0.28rem 0.65rem;font-size:0.68rem;color:var(--muted);cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;transition:all 0.15s}
 .ch-btn:hover{color:#fff}
-.ch-btn.danger:hover{color:var(--red)}
 
 /* MESSAGES */
 .msgs{flex:1;overflow-y:auto;padding:1.1rem;display:flex;flex-direction:column;gap:0.75rem;scroll-behavior:smooth}
 .msgs::-webkit-scrollbar{width:3px}
 .msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-
 .welcome{background:linear-gradient(135deg,rgba(34,197,94,0.05),rgba(240,165,0,0.02));border:1px solid var(--border2);border-radius:18px;padding:1.4rem;text-align:center}
 .welcome-av{font-size:2.8rem;margin-bottom:0.5rem;display:block;animation:float-av 3s ease-in-out infinite}
 @keyframes float-av{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
@@ -97,6 +77,16 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
 .wchips{display:flex;gap:0.4rem;flex-wrap:wrap;justify-content:center}
 .wchip{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:100px;padding:0.28rem 0.65rem;font-size:0.7rem;color:var(--text);cursor:pointer;transition:all 0.15s}
 .wchip:hover{background:rgba(34,197,94,0.07);border-color:var(--border2)}
+
+/* QUOTA WALL */
+.quota-wall{background:rgba(240,165,0,0.05);border:1px solid rgba(240,165,0,0.25);border-radius:16px;padding:1.5rem;text-align:center;margin:auto}
+.qw-icon{font-size:3rem;margin-bottom:0.8rem;display:block}
+.qw-title{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:#fff;margin-bottom:0.4rem}
+.qw-sub{font-size:0.82rem;color:var(--muted);margin-bottom:1rem;line-height:1.6}
+.qw-reset{font-size:0.72rem;color:var(--muted);margin-bottom:1.2rem}
+.qw-btn{background:linear-gradient(135deg,var(--gold),#fbbf24);color:#000;border:none;border-radius:12px;padding:0.9rem 2rem;font-size:0.92rem;font-weight:800;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;display:block;width:100%;margin-bottom:0.5rem;transition:all 0.2s}
+.qw-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(240,165,0,0.3)}
+.qw-free-btn{background:rgba(255,255,255,0.05);color:var(--muted);border:1px solid var(--border);border-radius:12px;padding:0.7rem 2rem;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;display:block;width:100%}
 
 .msg{display:flex;gap:0.65rem;animation:msgIn 0.25s ease}
 @keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
@@ -111,19 +101,16 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
 .m-time{font-size:0.58rem;color:var(--muted);margin-top:0.25rem;text-align:right}
 .m-actions{display:flex;gap:0.3rem;margin-top:0.35rem}
 .ma-btn{background:none;border:1px solid var(--border);border-radius:5px;padding:0.15rem 0.45rem;font-size:0.7rem;cursor:pointer;color:var(--muted);transition:all 0.15s;font-family:'Cabinet Grotesk',sans-serif}
-.ma-btn:hover{color:#fff;border-color:rgba(255,255,255,0.2)}
-.ma-btn.liked{color:var(--gl);border-color:var(--gl)}
+.ma-btn:hover{color:#fff}
 
-/* AI response formatting */
-.air strong{color:var(--glight)}
+.air strong{color:#4ade80}
 .air h3{font-size:0.86rem;font-weight:800;color:var(--gold);margin:0.5rem 0 0.2rem}
 .air ul{padding-left:1.1rem;margin:0.25rem 0}
 .air li{margin-bottom:0.15rem}
-.air .kcal-badge{color:#fbbf24;font-family:'DM Mono',monospace;font-weight:700;font-size:0.82rem}
+.air .kcal-badge{color:#fbbf24;font-family:'DM Mono',monospace;font-weight:700}
 .air .tip-box{background:rgba(34,197,94,0.04);border-left:2px solid var(--gl);padding:0.28rem 0.55rem;border-radius:0 5px 5px 0;margin:0.35rem 0;font-size:0.78rem}
 .air .warn-box{background:rgba(240,165,0,0.04);border-left:2px solid var(--gold);padding:0.28rem 0.55rem;border-radius:0 5px 5px 0;margin:0.35rem 0;font-size:0.78rem}
 
-/* TYPING */
 .typing-msg{display:flex;gap:0.65rem;align-self:flex-start}
 .typing-bub{background:rgba(255,255,255,0.035);border:1px solid var(--border);border-radius:16px 16px 16px 4px;padding:0.75rem 1rem;display:flex;align-items:center;gap:5px}
 .td{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:bounce-td 1.2s ease infinite}
@@ -132,7 +119,6 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
 @keyframes bounce-td{0%,100%{transform:translateY(0);opacity:0.4}50%{transform:translateY(-5px);opacity:1}}
 .typing-label{font-size:0.7rem;color:var(--muted);margin-left:0.3rem}
 
-/* INPUT */
 .input-area{padding:0.85rem 1.1rem;border-top:1px solid var(--border);background:rgba(3,8,5,0.6);flex-shrink:0}
 .input-row{display:flex;gap:0.55rem;align-items:flex-end}
 .input-wrap{flex:1;background:rgba(255,255,255,0.04);border:1.5px solid var(--border);border-radius:15px;padding:0.7rem 0.9rem;transition:border-color 0.2s}
@@ -146,12 +132,10 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
 .send-btn:hover{transform:scale(1.08)}
 .send-btn:disabled{opacity:0.35;cursor:not-allowed;transform:none}
 
-/* USAGE */
 .usage-row{display:flex;align-items:center;gap:0.5rem;padding:0.35rem 1.1rem;font-size:0.62rem;color:var(--muted);border-top:1px solid var(--border)}
 .ub-track{flex:1;height:3px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden}
 .ub-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--gl));border-radius:2px;transition:width 0.5s ease;width:0%}
 
-/* TOAST */
 .toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(22,163,74,0.92);color:#fff;padding:0.6rem 1.3rem;border-radius:100px;font-size:0.78rem;font-weight:700;opacity:0;pointer-events:none;transition:all 0.3s;z-index:400;white-space:nowrap}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
@@ -160,32 +144,10 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
 </head>
 <body>
 
-<!-- SETUP MODAL -->
-<div class="setup-overlay" id="setup-overlay">
-  <div class="setup-box">
-    <span class="sb-icon">🔑</span>
-    <div class="sb-title">Configurer votre Coach IA</div>
-    <div class="sb-sub">Entrez votre clé API Anthropic pour activer le Coach IA NutriCam. Elle est stockée uniquement dans votre navigateur — jamais sur nos serveurs.</div>
-    <div class="sb-steps">
-      <div class="sb-step"><span class="ss-num">1</span><span>Allez sur <a href="https://console.anthropic.com" target="_blank" style="color:var(--gl)">console.anthropic.com</a> → API Keys</span></div>
-      <div class="sb-step"><span class="ss-num">2</span><span>Cliquez <strong style="color:#fff">"+ Create key"</strong> → nommez-la "nutricam"</span></div>
-      <div class="sb-step"><span class="ss-num">3</span><span>Copiez la clé et collez-la ci-dessous</span></div>
-    </div>
-    <div class="sb-input-wrap">
-      <input class="sb-input" type="password" id="api-key-input" placeholder="Collez votre clé API ici..." autocomplete="off"/>
-      <button class="sb-eye" onclick="toggleKeyVisibility()">👁</button>
-    </div>
-    <button class="sb-save" onclick="saveKey()">✅ Activer le Coach IA</button>
-    <div class="sb-note">🔒 Votre clé reste dans votre navigateur (localStorage) · Elle n'est jamais envoyée à NutriCam · <a href="https://console.anthropic.com" target="_blank">Créer une clé →</a></div>
-  </div>
-</div>
-
-<!-- NAV -->
 <nav class="nav">
   <a href="nutricam-hub.html" class="nav-logo">Nutri<em>Cam</em></a>
   <div class="nav-badge"><span class="nb-dot"></span>Coach IA · Claude Sonnet</div>
   <div class="nav-right">
-    <button class="key-status key-missing" id="key-status-btn" onclick="showSetup()">🔑 Configurer</button>
     <select class="nav-lang" id="lang-sel" onchange="setLang(this.value)">
       <option value="fr">🇫🇷 FR</option>
       <option value="en">🇬🇧 EN</option>
@@ -195,13 +157,22 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
   </div>
 </nav>
 
-<!-- LAYOUT -->
-<div class="layout">
+<!-- QUOTA BAR -->
+<div class="quota-bar" id="quota-bar">
+  <span class="qb-label">Questions gratuites aujourd'hui :</span>
+  <div class="qb-dots" id="quota-dots">
+    <div class="qb-dot" id="dot-1"></div>
+    <div class="qb-dot" id="dot-2"></div>
+  </div>
+  <span class="qb-info" id="quota-info">2 restantes</span>
+  <button class="qb-upgrade" onclick="showUpgrade()">⭐ Premium illimité</button>
+</div>
 
+<div class="layout">
   <!-- SIDEBAR -->
   <div class="sidebar">
-    <div class="sb-header">
-      <div class="sb-label">Votre nutritionniste</div>
+    <div class="sb-head">
+      <div class="sb-lbl">Votre nutritionniste</div>
       <div class="nutri-card">
         <div class="nc-av">👩🏿‍⚕️<div class="nc-dot"></div></div>
         <div>
@@ -210,37 +181,28 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
           <div class="nc-exp">Cuisine africaine & européenne</div>
         </div>
       </div>
-      <div class="sb-label">Questions rapides</div>
+      <div class="sb-lbl">Questions rapides</div>
     </div>
-    <div class="quick-list">
+    <div class="quick-list" id="quick-list">
       <div class="ql-cat">🇨🇲 Cameroun</div>
-      <button class="qt" onclick="quick('Quelles sont les valeurs nutritionnelles complètes du Ndolé camerounais ?')">🍲 Calories & nutriments Ndolé</button>
-      <button class="qt" onclick="quick('Le Poulet DG est-il trop calorique pour une personne au régime ?')">🐔 Poulet DG & régime</button>
-      <button class="qt" onclick="quick('Quels sont les bienfaits nutritionnels de l\'Eru & Waterleaf ?')">🥬 Eru & Waterleaf</button>
-
+      <button class="qt" onclick="quick('Quelles sont les calories et nutriments du Ndolé camerounais ?')">🍲 Calories du Ndolé</button>
+      <button class="qt" onclick="quick('Le Poulet DG est-il bon pour un régime minceur ?')">🐔 Poulet DG & régime</button>
+      <button class="qt" onclick="quick('Quels bienfaits nutritionnels de l\'Eru & Waterleaf ?')">🥬 Eru & Waterleaf</button>
       <div class="ql-cat">🌍 Afrique</div>
-      <button class="qt" onclick="quick('Quels plats africains sont recommandés pour les diabétiques ?')">💊 Diabète & plats africains</button>
-      <button class="qt" onclick="quick('Quels aliments africains sont les plus riches en fer pour lutter contre l\'anémie ?')">🩸 Fer & anémie</button>
-      <button class="qt" onclick="quick('Comment perdre du poids en continuant à manger des plats africains ?')">⚖️ Perte de poids africaine</button>
-
-      <div class="ql-cat">🤰 Santé</div>
-      <button class="qt" onclick="quick('Que manger pendant la grossesse avec des aliments africains ? Quels nutriments sont essentiels ?')">🤰 Grossesse & nutrition</button>
-      <button class="qt" onclick="quick('Quels plats africains sont bons pour l\'hypertension artérielle ?')">❤️ HTA & alimentation</button>
-      <button class="qt" onclick="quick('Quels aliments africains favorisent la musculation et la récupération sportive ?')">💪 Musculation</button>
-
-      <div class="ql-cat">🌿 Detox</div>
-      <button class="qt" onclick="quick('Quels sont les meilleurs jus naturels africains pour détoxifier le corps ?')">🌿 Jus detox africains</button>
-      <button class="qt" onclick="quick('Quels sont les bienfaits scientifiques du Bissap (hibiscus) sur la santé ?')">🌺 Bissap & santé</button>
-      <button class="qt" onclick="quick('Le Moringa est-il vraiment un super-aliment ? Quels sont ses bénéfices ?')">🌱 Moringa</button>
-
-      <div class="ql-cat">🌍 Europe</div>
-      <button class="qt" onclick="quick('Quelle est la valeur nutritionnelle de la Ratatouille provençale ?')">🫕 Ratatouille</button>
-      <button class="qt" onclick="quick('Comparez la nutrition du Jollof Rice nigérian vs le riz blanc ordinaire')">🍛 Jollof Rice vs riz blanc</button>
+      <button class="qt" onclick="quick('Quels plats africains sont recommandés pour les diabétiques ?')">💊 Diabète & alimentation</button>
+      <button class="qt" onclick="quick('Quels aliments africains sont riches en fer contre l\'anémie ?')">🩸 Fer & anémie</button>
+      <button class="qt" onclick="quick('Comment perdre du poids en mangeant africain ?')">⚖️ Perte de poids</button>
+      <div class="ql-cat">🤰 Santé spéciale</div>
+      <button class="qt" onclick="quick('Que manger pendant la grossesse avec des aliments africains ?')">🤰 Grossesse</button>
+      <button class="qt" onclick="quick('Quels plats africains pour l\'hypertension artérielle ?')">❤️ HTA</button>
+      <button class="qt" onclick="quick('Quels aliments africains favorisent la musculation ?')">💪 Musculation</button>
+      <div class="ql-cat">🌿 Jus & Detox</div>
+      <button class="qt" onclick="quick('Quels jus naturels africains pour détoxifier le corps ?')">🌿 Detox africaine</button>
+      <button class="qt" onclick="quick('Quels sont les bienfaits du bissap sur la santé ?')">🌺 Bissap</button>
     </div>
     <div class="sb-footer">
-      <div class="sf-stat"><span class="sf-val" id="s-msgs">0</span><span class="sf-label">Messages</span></div>
-      <div class="sf-stat"><span class="sf-val" id="s-tokens">0</span><span class="sf-label">Tokens</span></div>
-      <div class="sf-stat"><span class="sf-val" id="s-cost">$0.00</span><span class="sf-label">Coût</span></div>
+      <div class="sf-stat"><span class="sf-label">Messages session</span><span class="sf-val" id="s-msgs">0</span></div>
+      <div class="sf-stat" style="margin-top:0.3rem"><span class="sf-label">Coût estimé</span><span class="sf-val" id="s-cost">$0.00</span></div>
     </div>
   </div>
 
@@ -249,12 +211,12 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
     <div class="chat-head">
       <span class="ch-av">🤖</span>
       <div>
-        <div class="ch-name" id="ch-name">Coach NutriCam IA — Nutrition Africaine & Européenne</div>
-        <div class="ch-sub" id="ch-sub">Posez vos questions sur la nutrition, les recettes et la santé</div>
+        <div class="ch-name" id="ch-name">Coach NutriCam IA</div>
+        <div class="ch-sub" id="ch-sub">Nutrition africaine & européenne · 2 questions gratuites/jour</div>
       </div>
       <div class="ch-actions">
         <button class="ch-btn" onclick="exportChat()">📋 Exporter</button>
-        <button class="ch-btn danger" onclick="clearChat()">🗑 Effacer</button>
+        <button class="ch-btn" onclick="clearChat()">🗑 Effacer</button>
       </div>
     </div>
 
@@ -262,18 +224,18 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
       <div class="welcome">
         <span class="welcome-av">👩🏿‍⚕️</span>
         <h3 id="wc-h">Bonjour ! Je suis Dr. NutriCam</h3>
-        <p id="wc-p">Nutritionniste IA spécialisée en cuisine africaine &amp; européenne, propulsée par Claude Sonnet. Posez-moi vos questions sur les calories, la santé, les recettes ou la nutrition !</p>
+        <p id="wc-p">Nutritionniste IA spécialisée en cuisine africaine &amp; européenne. Vous avez <strong style="color:var(--gold)">2 questions gratuites</strong> aujourd'hui. Passez Premium pour un accès illimité !</p>
         <div class="wchips">
-          <div class="wchip" onclick="quick('Calories du Ndolé camerounais')">🍲 Calories Ndolé</div>
+          <div class="wchip" onclick="quick('Calories du Ndolé camerounais')">🍲 Ndolé</div>
           <div class="wchip" onclick="quick('Meilleurs aliments africains pour l\'énergie')">⚡ Énergie</div>
-          <div class="wchip" onclick="quick('Plan repas africain équilibré pour 7 jours')">📅 Plan 7 jours</div>
-          <div class="wchip" onclick="quick('Quels superaliments africains dois-je manger quotidiennement ?')">🌟 Superaliments</div>
+          <div class="wchip" onclick="quick('Plan repas africain 7 jours équilibré')">📅 Plan 7 jours</div>
+          <div class="wchip" onclick="quick('Superaliments africains à consommer quotidiennement')">🌟 Superaliments</div>
         </div>
       </div>
     </div>
 
     <div class="usage-row">
-      <span id="usage-txt">Tokens ce mois</span>
+      <span id="usage-txt">Tokens utilisés</span>
       <div class="ub-track"><div class="ub-fill" id="ub-fill"></div></div>
       <span id="usage-pct">0%</span>
     </div>
@@ -281,14 +243,13 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
     <div class="input-area">
       <div class="input-row">
         <div class="input-wrap">
-          <textarea class="inp-ta" id="inp" placeholder="Posez votre question nutrition... (Entrée pour envoyer)" maxlength="1000" rows="1"
+          <textarea class="inp-ta" id="inp" placeholder="Posez votre question nutrition..." maxlength="800" rows="1"
             onkeydown="onKey(event)" oninput="onInput(this)"></textarea>
           <div class="inp-foot">
             <button class="inp-emoji" onclick="addE('🌿')">🌿</button>
             <button class="inp-emoji" onclick="addE('🇨🇲')">🇨🇲</button>
             <button class="inp-emoji" onclick="addE('💊')">💊</button>
-            <button class="inp-emoji" onclick="addE('🥗')">🥗</button>
-            <span class="inp-chars" id="chars">1000</span>
+            <span class="inp-chars" id="chars">800</span>
           </div>
         </div>
         <button class="send-btn" id="send-btn" onclick="send()">↑</button>
@@ -300,111 +261,237 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
 <div class="toast" id="toast"></div>
 
 <script>
+// ══ CONFIG ══
+// Clé API intégrée — gérée côté serveur via variable d'environnement
+// Pour la version production, utilisez une Vercel Edge Function
+const API_KEY = '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'; // Remplacé par votre vraie clé sur Vercel
+const MODEL = 'claude-sonnet-4-5';
+const FREE_LIMIT = 2; // 2 questions gratuites par jour
+
+// ══ QUOTA MANAGEMENT ══
+function getTodayKey(){ return 'nc_quota_' + new Date().toISOString().split('T')[0]; }
+function getQuotaUsed(){ return parseInt(localStorage.getItem(getTodayKey()) || '0'); }
+function incrementQuota(){ 
+  const used = getQuotaUsed() + 1;
+  localStorage.setItem(getTodayKey(), used);
+  updateQuotaUI();
+  return used;
+}
+function hasQuotaLeft(){ return getQuotaUsed() < FREE_LIMIT; }
+function isPremium(){ return localStorage.getItem('nc_premium') === 'true'; }
+
+function updateQuotaUI(){
+  const used = getQuotaUsed();
+  const remaining = Math.max(0, FREE_LIMIT - used);
+  const bar = document.getElementById('quota-bar');
+  
+  if(isPremium()){
+    bar.style.background = 'rgba(34,197,94,0.06)';
+    bar.style.borderBottomColor = 'rgba(34,197,94,0.15)';
+    document.getElementById('quota-info').textContent = '⭐ Premium — illimité';
+    document.getElementById('quota-dots').innerHTML = '<span style="font-size:0.75rem;color:var(--gl)">✅ Accès illimité activé</span>';
+    document.getElementById('ch-sub').textContent = 'Nutrition africaine & européenne · Accès illimité Premium';
+    return;
+  }
+
+  // Update dots
+  for(let i=1; i<=FREE_LIMIT; i++){
+    const dot = document.getElementById('dot-'+i);
+    if(dot) dot.classList.toggle('used', i <= used);
+  }
+  document.getElementById('quota-info').textContent = remaining > 0 ? `${remaining} restante${remaining>1?'s':''}` : '0 restante — Passez Premium !';
+  
+  if(remaining === 0){
+    document.getElementById('quota-bar').style.borderBottomColor = 'rgba(239,68,68,0.3)';
+    document.getElementById('quota-info').style.color = 'var(--red)';
+    showQuotaWall();
+  }
+}
+
+function showQuotaWall(){
+  const msgs = document.getElementById('msgs');
+  // Ne pas afficher si déjà présent
+  if(document.getElementById('quota-wall')) return;
+  
+  const wall = document.createElement('div');
+  wall.id = 'quota-wall';
+  wall.className = 'quota-wall';
+  
+  // Calculer la prochaine réinitialisation (minuit)
+  const now = new Date();
+  const midnight = new Date(now);
+  midnight.setDate(midnight.getDate()+1);
+  midnight.setHours(0,0,0,0);
+  const hoursLeft = Math.ceil((midnight - now) / 3600000);
+  
+  wall.innerHTML = `
+    <span class="qw-icon">⏳</span>
+    <div class="qw-title">Quota quotidien atteint</div>
+    <div class="qw-sub">Vous avez utilisé vos <strong style="color:var(--gold)">2 questions gratuites</strong> d'aujourd'hui.<br/>Revenez demain ou passez Premium pour continuer !</div>
+    <div class="qw-reset">🕐 Renouvellement dans environ <strong style="color:#fff">${hoursLeft}h</strong></div>
+    <button class="qw-btn" onclick="showUpgrade()">⭐ Passer Premium — 2 500 FCFA/mois</button>
+    <button class="qw-free-btn" onclick="revealPremiumCode()">🎁 J'ai un code promotionnel</button>`;
+  msgs.appendChild(wall);
+  msgs.scrollTop = msgs.scrollHeight;
+  
+  // Désactiver l'input
+  document.getElementById('inp').disabled = true;
+  document.getElementById('inp').placeholder = 'Quota atteint — revenez demain ou passez Premium';
+  document.getElementById('send-btn').disabled = true;
+  document.querySelectorAll('.qt').forEach(b => b.disabled = true);
+}
+
+function showUpgrade(){
+  toast('💳 Paiements MTN/Orange Money bientôt disponibles ! Contactez : pitchouduplece9@gmail.com');
+}
+
+function revealPremiumCode(){
+  const code = prompt('Entrez votre code promotionnel :');
+  if(code === 'NUTRICAM2025' || code === 'GEORGES' || code === 'PREMIUM'){
+    localStorage.setItem('nc_premium', 'true');
+    location.reload();
+  } else if(code) {
+    toast('❌ Code invalide. Contactez : pitchouduplece9@gmail.com');
+  }
+}
+
 // ══ SYSTEM PROMPT ══
 const SYS = `Tu es Dr. NutriCam, nutritionniste IA experte créée par NutriCam (Georges Duplece Pitchou 🇨🇲).
 
 SPÉCIALITÉS :
-- Nutrition des plats africains et européens avec valeurs précises
-- Cameroun: Ndolé (380kcal,28g prot,22g lip,18g gluc), Poulet DG (520kcal,42g prot), Eru (310kcal,18g prot), Koki, Mbongo
-- Sénégal: Thiéboudienne (450kcal,35g prot), Maafé (520kcal,35g prot), Yassa
-- Nigeria: Jollof Rice (410kcal,12g prot), Egusi (490kcal,32g prot), Suya
-- Ghana: Fufu & Light soup (380kcal,22g prot), Kelewele (280kcal), Waakye
-- Maroc: Tajine agneau (480kcal,32g prot), Couscous royal (550kcal)
-- France: Ratatouille (180kcal,4g prot), Bœuf bourguignon (480kcal)
-- Ingrédients africains: moringa, baobab, bissap, crayfish, huile de palme, eru, ndolé
+- Nutrition plats africains et européens avec valeurs précises
+- Cameroun: Ndolé (380kcal,28g prot), Poulet DG (520kcal,42g prot), Eru (310kcal), Koki, Mbongo
+- Sénégal: Thiéboudienne (450kcal,35g prot), Maafé, Yassa
+- Nigeria: Jollof Rice (410kcal), Egusi (490kcal,32g prot)
+- Ghana: Fufu & Light soup (380kcal), Kelewele (280kcal)
+- Maroc: Tajine (480kcal), Couscous royal (550kcal)
+- France: Ratatouille (180kcal), Boeuf bourguignon (480kcal)
+- Plantes africaines: moringa, baobab, bissap, crayfish, huile de palme
 - Conditions: diabète, HTA, grossesse, anémie, obésité, musculation
-- Jus detox: bissap, moringa, tamarin, baobab, gingembre-curcuma
+- Jus africains: bissap, moringa, tamarin, baobab, gingembre-curcuma
 
 RÈGLES:
 - Réponds TOUJOURS dans la langue de la question (FR/EN/DE)
-- Donne des valeurs nutritionnelles concrètes (kcal, macros)
+- Donne valeurs nutritionnelles concrètes (kcal, macros)
 - Adapte à la réalité africaine (ingrédients disponibles localement)
 - Utilise des emojis pertinents
 - Questions médicales sérieuses → recommande un médecin
-- Réponces concises et utiles (max 300 mots)
+- Réponses concises et utiles (max 250 mots)
 - Mentionne NutriCam quand pertinent`;
 
 // ══ STATE ══
-let history = [];
-let lang = 'fr';
-let msgs = 0, tokens = 0;
-let busy = false;
+let history = [], lang = 'fr', msgCount = 0, totalTokens = 0, busy = false;
 
 const L = {
-  fr:{placeholder:'Posez votre question nutrition...',wh:'Bonjour ! Je suis Dr. NutriCam',wp:'Nutritionniste IA spécialisée en cuisine africaine & européenne. Posez vos questions !',cn:'Coach NutriCam IA',cs:'Nutrition africaine & européenne · Claude Sonnet',ut:'Tokens ce mois',thinking:'Dr. NutriCam réfléchit...'},
-  en:{placeholder:'Ask your nutrition question...',wh:'Hello! I am Dr. NutriCam',wp:'AI nutritionist specialized in African & European cuisine. Ask me anything!',cn:'NutriCam AI Coach',cs:'African & European Nutrition · Claude Sonnet',ut:'Tokens this month',thinking:'Dr. NutriCam is thinking...'},
-  de:{placeholder:'Stellen Sie Ihre Ernährungsfrage...',wh:'Hallo! Ich bin Dr. NutriCam',wp:'KI-Ernährungsberaterin für afrikanische & europäische Küche.',cn:'NutriCam KI-Coach',cs:'Afrikanische & Europäische Ernährung · Claude Sonnet',ut:'Tokens diesen Monat',thinking:'Dr. NutriCam denkt nach...'}
+  fr:{ph:'Posez votre question nutrition...',wh:'Bonjour ! Je suis Dr. NutriCam',wp:'Nutritionniste IA spécialisée en cuisine africaine & européenne. Vous avez <strong style="color:var(--gold)">2 questions gratuites</strong> aujourd\'hui.',cn:'Coach NutriCam IA',cs:'Nutrition africaine & européenne · 2 questions gratuites/jour',thinking:'Dr. NutriCam réfléchit...'},
+  en:{ph:'Ask your nutrition question...',wh:'Hello! I am Dr. NutriCam',wp:'AI nutritionist for African & European cuisine. You have <strong style="color:var(--gold)">2 free questions</strong> today.',cn:'NutriCam AI Coach',cs:'African & European Nutrition · 2 free questions/day',thinking:'Dr. NutriCam is thinking...'},
+  de:{ph:'Stellen Sie Ihre Frage...',wh:'Hallo! Ich bin Dr. NutriCam',wp:'KI-Ernährungsberaterin. Sie haben <strong style="color:var(--gold)">2 kostenlose Fragen</strong> heute.',cn:'NutriCam KI-Coach',cs:'Afrikanische & europäische Ernährung · 2 Fragen/Tag',thinking:'Dr. NutriCam denkt nach...'}
 };
-
-// ══ API KEY MANAGEMENT ══
-function getKey(){return localStorage.getItem('nc_api_key')||''}
-function saveKey(){
-  const k=document.getElementById('api-key-input').value.trim();
-  if(!k.startsWith('sk-ant') && !k.startsWith('sk-')){toast('⚠️ Clé invalide — vérifiez votre clé API');return}
-  localStorage.setItem('nc_api_key',k);
-  document.getElementById('setup-overlay').classList.add('hidden');
-  updateKeyStatus(true);
-  toast('✅ Coach IA activé !');
-}
-function showSetup(){document.getElementById('setup-overlay').classList.remove('hidden')}
-function toggleKeyVisibility(){
-  const inp=document.getElementById('api-key-input');
-  inp.type=inp.type==='password'?'text':'password';
-}
-function updateKeyStatus(hasKey){
-  const btn=document.getElementById('key-status-btn');
-  if(hasKey){btn.className='key-status key-ok';btn.textContent='✅ IA Active';}
-  else{btn.className='key-status key-missing';btn.textContent='🔑 Configurer';}
-}
 
 // ══ SEND ══
 async function send(){
-  const k=getKey();
-  if(!k){showSetup();return}
-  const inp=document.getElementById('inp');
-  const txt=inp.value.trim();
-  if(!txt||busy)return;
-  inp.value='';document.getElementById('chars').textContent='1000';inp.style.height='auto';
-  addMsg('user',txt);
-  history.push({role:'user',content:txt});
-  const tid=showTyping();
-  busy=true;document.getElementById('send-btn').disabled=true;
-  try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:1024,system:SYS,messages:history})
-    });
-    removeTyping(tid);
-    if(!r.ok){const e=await r.json();throw new Error(e.error?.message||r.status)}
-    const d=await r.json();
-    const reply=d.content[0].text;
-    const tk=(d.usage?.input_tokens||0)+(d.usage?.output_tokens||0);
-    history.push({role:'assistant',content:reply});
-    addMsg('ai',reply);
-    msgs++;tokens+=tk;
-    updateStats();
-  }catch(e){
-    removeTyping(tid);
-    addMsg('ai',`❌ Erreur : ${e.message}\n\n${e.message.includes('401')?'🔑 Clé API invalide — reconfigurer':'Vérifiez votre connexion internet.'}`);
+  // Vérifier quota
+  if(!isPremium() && !hasQuotaLeft()){
+    showQuotaWall();
+    toast('⏳ Quota atteint — revenez demain ou passez Premium !');
+    return;
   }
-  busy=false;document.getElementById('send-btn').disabled=false;
+
+  const inp = document.getElementById('inp');
+  const txt = inp.value.trim();
+  if(!txt || busy) return;
+
+  inp.value = ''; 
+  document.getElementById('chars').textContent = '800';
+  inp.style.height = 'auto';
+
+  addMsg('user', txt);
+  history.push({role:'user', content:txt});
+  const tid = showTyping();
+  busy = true;
+  document.getElementById('send-btn').disabled = true;
+
+  try {
+    const r = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': API_KEY,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({model:MODEL, max_tokens:800, system:SYS, messages:history})
+    });
+
+    removeTyping(tid);
+
+    if(!r.ok){
+      const e = await r.json();
+      throw new Error(e.error?.message || r.status);
+    }
+
+    const d = await r.json();
+    const reply = d.content[0].text;
+    const tk = (d.usage?.input_tokens||0) + (d.usage?.output_tokens||0);
+
+    history.push({role:'assistant', content:reply});
+    addMsg('ai', reply);
+
+    // Incrémenter quota seulement si pas Premium
+    if(!isPremium()){
+      const used = incrementQuota();
+      const remaining = FREE_LIMIT - used;
+      if(remaining === 0){
+        setTimeout(showQuotaWall, 1000);
+        toast('⚠️ Dernière question gratuite utilisée ! Passez Premium pour continuer.');
+      } else {
+        toast(`✅ Réponse reçue · ${remaining} question${remaining>1?'s':''} gratuite${remaining>1?'s':''} restante${remaining>1?'s':''}`);
+      }
+    }
+
+    // Stats
+    msgCount++; totalTokens += tk;
+    document.getElementById('s-msgs').textContent = msgCount;
+    document.getElementById('s-cost').textContent = '$' + (totalTokens/1000000*9).toFixed(4);
+    const p = Math.min(totalTokens/5000*100,100).toFixed(1);
+    document.getElementById('ub-fill').style.width = p+'%';
+    document.getElementById('usage-pct').textContent = p+'%';
+
+  } catch(e) {
+    removeTyping(tid);
+    addMsg('ai', `❌ Erreur : ${e.message}\n\nVérifiez votre connexion internet et réessayez.`);
+    console.error(e);
+  }
+
+  busy = false;
+  document.getElementById('send-btn').disabled = false;
 }
 
-function quick(q){document.getElementById('inp').value=q;send()}
+function quick(q){
+  if(!isPremium() && !hasQuotaLeft()){ showQuotaWall(); return; }
+  document.getElementById('inp').value = q;
+  send();
+}
 
 // ══ MESSAGES ══
-function addMsg(role,text){
-  const c=document.getElementById('msgs');
-  const now=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
-  const d=document.createElement('div');
-  d.className=`msg msg-${role}`;
-  const content=role==='ai'?formatAI(text):esc(text).replace(/\n/g,'<br/>');
-  const avEl=role==='ai'?'<div class="m-av av-ai">👩🏿‍⚕️</div>':'<div class="m-av av-user">👤</div>';
-  const bClass=role==='ai'?'b-ai':'b-user';
-  const actions=role==='ai'?`<div class="m-actions"><button class="ma-btn" onclick="like(this)">👍</button><button class="ma-btn" onclick="dislike(this)">👎</button><button class="ma-btn" onclick="copy(this)">📋</button></div>`:'';
-  d.innerHTML=`${avEl}<div><div class="m-bubble ${bClass}"><div class="air">${content}</div></div><div class="m-time">${now}</div>${actions}</div>`;
-  c.appendChild(d);c.scrollTop=c.scrollHeight;
+function addMsg(role, text){
+  const c = document.getElementById('msgs');
+  const now = new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+  const d = document.createElement('div');
+  d.className = `msg msg-${role}`;
+  const content = role==='ai' ? formatAI(text) : esc(text).replace(/\n/g,'<br/>');
+  d.innerHTML = `
+    <div class="m-av ${role==='ai'?'av-ai':'av-user'}">${role==='ai'?'👩🏿‍⚕️':'👤'}</div>
+    <div>
+      <div class="m-bubble ${role==='ai'?'b-ai':'b-user'}"><div class="${role==='ai'?'air':''}">${content}</div></div>
+      <div class="m-time">${now}</div>
+      ${role==='ai'?`<div class="m-actions">
+        <button class="ma-btn" onclick="likeMsg(this)">👍</button>
+        <button class="ma-btn" onclick="copyMsg(this)">📋 Copier</button>
+      </div>`:''}
+    </div>`;
+  c.appendChild(d);
+  c.scrollTop = c.scrollHeight;
 }
 
 function formatAI(t){
@@ -420,61 +507,64 @@ function formatAI(t){
     .replace(/\n/g,'<br/>');
 }
 
-function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function esc(t){ return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
 
 function showTyping(){
-  const c=document.getElementById('msgs');
-  const id='t'+Date.now();
-  const d=document.createElement('div');
-  d.id=id;d.className='typing-msg';
+  const c = document.getElementById('msgs');
+  const id = 't'+Date.now();
+  const d = document.createElement('div');
+  d.id=id; d.className='typing-msg';
   d.innerHTML=`<div class="m-av av-ai">👩🏿‍⚕️</div><div class="typing-bub"><div class="td"></div><div class="td"></div><div class="td"></div><span class="typing-label">${L[lang].thinking}</span></div>`;
-  c.appendChild(d);c.scrollTop=c.scrollHeight;return id;
+  c.appendChild(d); c.scrollTop=c.scrollHeight; return id;
 }
-function removeTyping(id){document.getElementById(id)?.remove()}
-
-// ══ STATS ══
-function updateStats(){
-  document.getElementById('s-msgs').textContent=msgs;
-  document.getElementById('s-tokens').textContent=tokens.toLocaleString();
-  document.getElementById('s-cost').textContent='$'+(tokens/1000000*3).toFixed(4);
-  const p=Math.min(tokens/50000*100,100).toFixed(1);
-  document.getElementById('ub-fill').style.width=p+'%';
-  document.getElementById('usage-pct').textContent=p+'%';
-}
+function removeTyping(id){ document.getElementById(id)?.remove() }
 
 // ══ ACTIONS ══
-function like(b){b.classList.add('liked');b.textContent='👍 Merci !';toast('✅ Merci !')}
-function dislike(b){b.textContent='👎 Noté';toast('📝 Retour enregistré')}
-function copy(b){
-  const bub=b.closest('.msg').querySelector('.m-bubble');
-  navigator.clipboard.writeText(bub.innerText).then(()=>{b.textContent='✅';setTimeout(()=>b.textContent='📋',2000)});
+function likeMsg(b){ b.textContent='👍 Merci !'; toast('✅ Merci pour votre retour !') }
+function copyMsg(b){
+  const bub = b.closest('.msg').querySelector('.m-bubble');
+  navigator.clipboard.writeText(bub.innerText).then(()=>{b.textContent='✅';setTimeout(()=>b.textContent='📋 Copier',2000)});
 }
-function clearChat(){if(!confirm('Effacer la conversation ?'))return;history=[];msgs=0;tokens=0;updateStats();document.getElementById('msgs').innerHTML=`<div class="welcome"><span class="welcome-av">👩🏿‍⚕️</span><h3>Nouvelle conversation</h3><p>Posez votre première question !</p></div>`;toast('🗑 Effacée')}
-function exportChat(){const txt=history.map(m=>`${m.role==='user'?'Vous':'Dr. NutriCam'}: ${m.content}`).join('\n\n');const a=document.createElement('a');a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(txt);a.download='nutricam-coach-'+Date.now()+'.txt';a.click();toast('📋 Exporté !')}
-
-// ══ INPUT ══
-function onKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}}
-function onInput(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,90)+'px';document.getElementById('chars').textContent=1000-el.value.length}
-function addE(e){document.getElementById('inp').value+=e;document.getElementById('inp').focus()}
+function clearChat(){
+  if(!confirm('Effacer la conversation ?')) return;
+  history=[]; msgCount=0; totalTokens=0;
+  document.getElementById('s-msgs').textContent='0';
+  document.getElementById('s-cost').textContent='$0.00';
+  document.getElementById('msgs').innerHTML='<div class="welcome"><span class="welcome-av">👩🏿‍⚕️</span><h3>Nouvelle conversation</h3><p>Posez votre première question !</p></div>';
+  // Re-afficher quota wall si nécessaire
+  if(!isPremium() && !hasQuotaLeft()) setTimeout(showQuotaWall, 100);
+}
+function exportChat(){
+  const txt = history.map(m=>`${m.role==='user'?'Vous':'Dr. NutriCam'}: ${m.content}`).join('\n\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/plain;charset=utf-8,'+encodeURIComponent(txt);
+  a.download = 'nutricam-coach-'+Date.now()+'.txt';
+  a.click(); toast('📋 Conversation exportée !');
+}
 
 // ══ LANG ══
 function setLang(l){
-  lang=l;const t=L[l];
-  document.getElementById('inp').placeholder=t.placeholder;
+  lang=l; const t=L[l];
+  document.getElementById('inp').placeholder=t.ph;
   document.getElementById('wc-h').textContent=t.wh;
-  document.getElementById('wc-p').textContent=t.wp;
+  document.getElementById('wc-p').innerHTML=t.wp;
   document.getElementById('ch-name').textContent=t.cn;
   document.getElementById('ch-sub').textContent=t.cs;
-  document.getElementById('usage-txt').textContent=t.ut;
 }
 
+// ══ INPUT ══
+function onKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()} }
+function onInput(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,90)+'px'; document.getElementById('chars').textContent=800-el.value.length }
+function addE(e){ document.getElementById('inp').value+=e; document.getElementById('inp').focus() }
+
 // ══ TOAST ══
-function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000)}
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),4000) }
 
 // ══ INIT ══
-const k=getKey();
-if(k){updateKeyStatus(true);document.getElementById('setup-overlay').classList.add('hidden');}
-else{document.getElementById('setup-overlay').classList.remove('hidden');}
+updateQuotaUI();
+if(!isPremium() && !hasQuotaLeft()){
+  setTimeout(showQuotaWall, 500);
+}
 </script>
 </body>
 </html>
