@@ -324,74 +324,63 @@
   </div>
 </div>
 
-<!-- SUPABASE SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  // ===== CONFIG SUPABASE =====
-  const SUPABASE_URL = 'https://jtwobuhxleejuroiqgyk.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp0d29idWh4bGVlanVyb2lxZ3lrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcwNjkxMDQsImV4cCI6MjA5MjY0NTEwNH0.r4fC4P3GJIPHFnpdoBmfBQ3a0nTAAjeCI52qBBnjO6E';
-  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const SB_URL = 'https://jtwobuhxleejuroiqgyk.supabase.co';
+  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp0d29idWh4bGVlanVyb2lxZ3lrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcwNjkxMDQsImV4cCI6MjA5MjY0NTEwNH0.r4fC4P3GJIPHFnpdoBmfBQ3a0nTAAjeCI52qBBnjO6E';
 
   let selectedPlan = 'gratuit';
 
-  // ===== TABS =====
   function switchTab(tab) {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+    document.querySelectorAll('.form-panel').forEach(function(p){ p.classList.remove('active'); });
     document.getElementById('tab-' + tab).classList.add('active');
     document.getElementById('panel-' + tab).classList.add('active');
   }
 
-  // ===== PLAN =====
   function selectPlan(plan) {
     selectedPlan = plan;
-    document.querySelectorAll('.plan-opt').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.plan-opt').forEach(function(el){ el.classList.remove('active'); });
     document.getElementById('plan-' + plan).classList.add('active');
   }
 
-  // ===== ALERTE =====
   function showAlert(panelId, msg, type) {
-    const el = document.getElementById('alert-' + panelId);
+    var el = document.getElementById('alert-' + panelId);
     el.textContent = msg;
-    el.className = `alert ${type} show`;
-    setTimeout(() => el.classList.remove('show'), 5000);
+    el.className = 'alert ' + type + ' show';
+    setTimeout(function(){ el.classList.remove('show'); }, 5000);
   }
 
-  // ===== INSCRIPTION =====
+  function setLoading(btnId, loading) {
+    var btn = document.getElementById(btnId);
+    btn.disabled = loading;
+    if (loading) btn.classList.add('loading');
+    else btn.classList.remove('loading');
+  }
+
   async function inscrire() {
-    const prenom = document.getElementById('reg-prenom').value.trim();
-    const nom = document.getElementById('reg-nom').value.trim();
-    const email = document.getElementById('reg-email').value.trim();
-    const telephone = document.getElementById('reg-telephone').value.trim();
-    const poids = parseFloat(document.getElementById('reg-poids').value) || null;
-    const calories = parseInt(document.getElementById('reg-calories').value) || 2000;
+    var prenom = document.getElementById('reg-prenom').value.trim();
+    var nom = document.getElementById('reg-nom').value.trim();
+    var email = document.getElementById('reg-email').value.trim();
+    var telephone = document.getElementById('reg-telephone').value.trim();
+    var poids = parseFloat(document.getElementById('reg-poids').value) || null;
+    var calories = parseInt(document.getElementById('reg-calories').value) || 2000;
 
     if (!prenom) { showAlert('inscription', 'Veuillez entrer votre prénom.', 'error'); return; }
     if (!nom) { showAlert('inscription', 'Veuillez entrer votre nom.', 'error'); return; }
-    if (!email || !email.includes('@')) { showAlert('inscription', 'Veuillez entrer un email valide.', 'error'); return; }
+    if (!email || !email.includes('@')) { showAlert('inscription', 'Email invalide.', 'error'); return; }
 
-    const btn = document.getElementById('btn-inscription');
-    btn.classList.add('loading');
-    btn.disabled = true;
+    setLoading('btn-inscription', true);
 
     try {
-      // 1. Créer compte Auth Supabase
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email: email,
-        password: 'NutriCam_' + Math.random().toString(36).slice(2, 10),
-        options: {
-          data: { prenom, nom }
-        }
-      });
-
-      if (authError && !authError.message.includes('already registered')) {
-        throw authError;
-      }
-
-      // 2. Sauvegarder dans table utilisateurs
-      const { error: dbError } = await supabase
-        .from('utilisateurs')
-        .upsert([{
+      var res = await fetch(SB_URL + '/rest/v1/utilisateurs', {
+        method: 'POST',
+        headers: {
+          'apikey': SB_KEY,
+          'Authorization': 'Bearer ' + SB_KEY,
+          'Content-Type': 'application/json',
+          'Prefer': 'resolution=merge-duplicates'
+        },
+        body: JSON.stringify({
           prenom: prenom,
           nom: nom,
           email: email,
@@ -399,19 +388,22 @@
           plan: selectedPlan,
           calories_objectif: calories,
           poids: poids
-        }], { onConflict: 'email' });
+        })
+      });
 
-      if (dbError) throw dbError;
+      if (!res.ok) {
+        var err = await res.json();
+        throw new Error(err.message || 'Erreur sauvegarde');
+      }
 
-      // 3. Sauvegarder localement
       localStorage.setItem('nutricam_user', JSON.stringify({
-        prenom, nom, email, plan: selectedPlan, calories_objectif: calories
+        prenom: prenom, nom: nom, email: email,
+        plan: selectedPlan, calories_objectif: calories
       }));
 
-      showAlert('inscription', `✅ Bienvenue ${prenom} ! Compte créé avec succès.`, 'success');
+      showAlert('inscription', 'Bienvenue ' + prenom + ' ! Compte créé avec succès.', 'success');
 
-      // Redirection selon plan
-      setTimeout(() => {
+      setTimeout(function() {
         if (selectedPlan === 'premium') {
           window.location.href = 'nutricam-payment.html';
         } else {
@@ -419,81 +411,51 @@
         }
       }, 1800);
 
-    } catch (err) {
-      console.error('Inscription error:', err);
+    } catch(err) {
       showAlert('inscription', 'Erreur : ' + (err.message || 'Vérifiez votre connexion.'), 'error');
     } finally {
-      btn.classList.remove('loading');
-      btn.disabled = false;
+      setLoading('btn-inscription', false);
     }
   }
 
-  // ===== CONNEXION =====
   async function connecter() {
-    const email = document.getElementById('login-email').value.trim();
-    const password = document.getElementById('login-password').value.trim();
+    var email = document.getElementById('login-email').value.trim();
+    var password = document.getElementById('login-password').value.trim();
 
-    if (!email || !email.includes('@')) { showAlert('connexion', 'Veuillez entrer un email valide.', 'error'); return; }
-    if (!password) { showAlert('connexion', 'Veuillez entrer votre mot de passe.', 'error'); return; }
+    if (!email || !email.includes('@')) { showAlert('connexion', 'Email invalide.', 'error'); return; }
+    if (!password) { showAlert('connexion', 'Entrez votre mot de passe.', 'error'); return; }
 
-    const btn = document.getElementById('btn-connexion');
-    btn.classList.add('loading');
-    btn.disabled = true;
+    setLoading('btn-connexion', true);
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) throw error;
-
-      // Récupérer profil
-      const { data: profile } = await supabase
-        .from('utilisateurs')
-        .select('*')
-        .eq('email', email)
-        .single();
-
-      if (profile) {
-        localStorage.setItem('nutricam_user', JSON.stringify(profile));
-        showAlert('connexion', `✅ Bienvenue ${profile.prenom} !`, 'success');
-      } else {
-        showAlert('connexion', '✅ Connecté avec succès !', 'success');
-      }
-
-      setTimeout(() => { window.location.href = 'nutricam-chatbot.html'; }, 1500);
-
-    } catch (err) {
-      // Fallback: chercher dans table utilisateurs directement
-      try {
-        const { data: profile } = await supabase
-          .from('utilisateurs')
-          .select('*')
-          .eq('email', email)
-          .single();
-
-        if (profile) {
-          localStorage.setItem('nutricam_user', JSON.stringify(profile));
-          showAlert('connexion', `✅ Bienvenue ${profile.prenom} !`, 'success');
-          setTimeout(() => { window.location.href = 'nutricam-chatbot.html'; }, 1500);
-        } else {
-          showAlert('connexion', 'Email ou mot de passe incorrect. Vérifiez vos informations.', 'error');
+      var res = await fetch(SB_URL + '/rest/v1/utilisateurs?email=eq.' + encodeURIComponent(email), {
+        headers: {
+          'apikey': SB_KEY,
+          'Authorization': 'Bearer ' + SB_KEY
         }
-      } catch {
-        showAlert('connexion', 'Erreur de connexion. Vérifiez votre réseau.', 'error');
+      });
+      var data = await res.json();
+      if (data && data.length > 0) {
+        localStorage.setItem('nutricam_user', JSON.stringify(data[0]));
+        showAlert('connexion', 'Bienvenue ' + data[0].prenom + ' !', 'success');
+        setTimeout(function(){ window.location.href = 'nutricam-chatbot.html'; }, 1500);
+      } else {
+        showAlert('connexion', 'Aucun compte trouvé avec cet email.', 'error');
       }
+    } catch(err) {
+      showAlert('connexion', 'Erreur de connexion. Vérifiez votre réseau.', 'error');
     } finally {
-      btn.classList.remove('loading');
-      btn.disabled = false;
+      setLoading('btn-connexion', false);
     }
   }
 
-  // ===== ENTER KEY =====
   document.addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
-      const activePanel = document.querySelector('.form-panel.active').id;
+      var activePanel = document.querySelector('.form-panel.active').id;
       if (activePanel === 'panel-inscription') inscrire();
       else if (activePanel === 'panel-connexion') connecter();
     }
   });
 </script>
-
 </body>
 </html>
