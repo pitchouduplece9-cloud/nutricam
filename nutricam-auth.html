@@ -3,362 +3,200 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>NutriCam – Connexion / Inscription</title>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
-<!-- SUPABASE SDK -->
+<title>NutriCam – Inscription & Connexion</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900&family=Cabinet+Grotesk:wght@400;500;700;800;900&display=swap" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{
-  --bg:#07100a;--surface:#0c1a10;--card:#111f15;
-  --green:#22c55e;--gl:#16a34a;--y:#fbbf24;--red:#ef4444;
-  --border:rgba(255,255,255,0.08);--text:#ddeee2;--muted:#4d7259;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
-.bg-effect{position:fixed;inset:0;pointer-events:none;z-index:0}
-.bg-orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:0.12}
-.bg-orb-1{width:600px;height:600px;background:var(--gl);top:-200px;left:-200px;animation:float1 8s ease-in-out infinite}
-.bg-orb-2{width:400px;height:400px;background:var(--y);bottom:-100px;right:-100px;animation:float2 10s ease-in-out infinite}
-@keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,30px)}}
-@keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,-20px)}}
-.nav{background:var(--surface);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:10}
-.nav-logo{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:#fff}
-.nav-logo span{color:var(--y)}
-.nav-back{font-size:0.8rem;color:var(--muted);text-decoration:none;font-weight:700}
-.nav-back:hover{color:#fff}
-.auth-layout{flex:1;display:flex;align-items:center;justify-content:center;padding:2rem;position:relative;z-index:1}
-.auth-card{background:rgba(17,31,21,0.95);border:1px solid var(--border);border-radius:28px;padding:2.5rem;width:100%;max-width:440px;backdrop-filter:blur(20px);animation:slideUp 0.5s ease}
-@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.auth-logo{text-align:center;margin-bottom:2rem}
-.al-icon{font-size:2.5rem;display:block;margin-bottom:0.5rem}
-.al-name{font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:#fff}
-.al-name span{color:var(--y)}
-.al-tagline{font-size:0.78rem;color:var(--muted);margin-top:0.2rem}
-.auth-tabs{display:flex;background:rgba(255,255,255,0.04);border-radius:14px;padding:4px;margin-bottom:2rem;border:1px solid var(--border)}
-.at-btn{flex:1;padding:0.65rem;border-radius:10px;border:none;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.2s;color:var(--muted);background:transparent}
-.at-btn.active{background:var(--gl);color:#fff;box-shadow:0 4px 12px rgba(22,163,74,0.3)}
-.auth-view{display:none;animation:fadeIn 0.3s ease}
-.auth-view.show{display:block}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.form-group{margin-bottom:1rem}
-.fg-label{display:block;font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-bottom:0.4rem}
-.fg-input{width:100%;background:rgba(255,255,255,0.05);border:1.5px solid var(--border);border-radius:13px;padding:0.85rem 1rem;font-size:0.9rem;font-family:'Plus Jakarta Sans',sans-serif;color:#fff;outline:none;transition:all 0.2s}
-.fg-input:focus{border-color:rgba(34,197,94,0.5);background:rgba(34,197,94,0.04)}
-.fg-input::placeholder{color:var(--muted)}
-.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem}
-.plan-selector{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-bottom:1.2rem}
-.plan-opt{background:rgba(255,255,255,0.04);border:1.5px solid var(--border);border-radius:13px;padding:0.9rem;cursor:pointer;transition:all 0.2s;text-align:center}
-.plan-opt.selected{border-color:var(--green);background:rgba(34,197,94,0.06)}
-.po-name{font-size:0.82rem;font-weight:800;color:#fff;margin-bottom:0.2rem}
-.po-price{font-size:0.72rem;color:var(--green);font-weight:700}
-.po-badge{font-size:0.6rem;background:rgba(251,191,36,0.15);color:var(--y);padding:0.1rem 0.4rem;border-radius:4px;font-weight:800;margin-top:0.3rem;display:inline-block}
-.submit-btn{width:100%;background:linear-gradient(135deg,var(--gl),var(--green));border:none;border-radius:14px;padding:1rem;font-size:0.95rem;font-weight:800;color:#fff;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.25s;display:flex;align-items:center;justify-content:center;gap:0.5rem;box-shadow:0 6px 24px rgba(22,163,74,0.25);margin-top:0.5rem}
-.submit-btn:hover{transform:translateY(-2px);box-shadow:0 10px 35px rgba(22,163,74,0.35)}
-.submit-btn:disabled{opacity:0.6;cursor:not-allowed;transform:none}
-.msg-box{border-radius:10px;padding:0.8rem 1rem;font-size:0.82rem;margin-bottom:1rem;display:none;align-items:center;gap:0.5rem}
-.msg-box.show{display:flex}
-.msg-error{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);color:var(--red)}
-.msg-success{background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);color:var(--green)}
-.terms-text{font-size:0.72rem;color:var(--muted);text-align:center;margin-top:1rem;line-height:1.5}
-.terms-text a{color:var(--green);text-decoration:none;cursor:pointer}
-.dashboard{display:none;padding:2rem;max-width:700px;margin:0 auto;width:100%;position:relative;z-index:1}
-.db-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
-.db-welcome{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:900;color:#fff}
-.db-plan{background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.2);color:var(--y);font-size:0.72rem;font-weight:800;padding:0.25rem 0.8rem;border-radius:100px;margin-top:0.3rem;display:inline-block}
-.db-logout{background:rgba(255,255,255,0.06);border:1px solid var(--border);color:var(--muted);padding:0.45rem 1rem;border-radius:9px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif}
-.db-logout:hover{color:#fff}
-.db-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
-.db-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.3rem}
-.dbc-icon{font-size:1.8rem;margin-bottom:0.6rem;display:block}
-.dbc-val{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:900;color:#fff;margin-bottom:0.2rem}
-.dbc-label{font-size:0.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em}
-.db-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:0.7rem}
-.dba-btn{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1rem;text-align:center;cursor:pointer;transition:all 0.2s;text-decoration:none;display:block}
-.dba-btn:hover{border-color:rgba(34,197,94,0.3);transform:translateY(-2px)}
-.dba-icon{font-size:1.5rem;display:block;margin-bottom:0.4rem}
-.dba-label{font-size:0.75rem;font-weight:700;color:#fff}
-.live-badge{background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);color:var(--green);font-size:0.65rem;font-weight:800;padding:0.2rem 0.6rem;border-radius:4px;text-transform:uppercase;letter-spacing:0.06em;display:inline-flex;align-items:center;gap:0.3rem;margin-bottom:1rem}
-.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.5s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
-@media(max-width:480px){.fg-row{grid-template-columns:1fr}.db-grid{grid-template-columns:1fr}.db-actions{grid-template-columns:1fr 1fr}}
+:root{--bg:#030805;--s2:#0c1a0e;--gold:#f0a500;--green:#16a34a;--gl:#22c55e;--red:#ef4444;--border:rgba(255,255,255,0.06);--border2:rgba(34,197,94,0.15);--text:#dff0e2;--muted:#3d6047}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem}
+.logo{font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:#fff;text-align:center;margin-bottom:0.3rem}
+.logo em{color:var(--gold);font-style:italic}
+.tagline{font-size:0.82rem;color:var(--muted);text-align:center;margin-bottom:2rem}
+.card{background:var(--s2);border:1px solid var(--border2);border-radius:24px;padding:2rem;width:100%;max-width:440px}
+.tabs{display:flex;background:rgba(255,255,255,0.04);border-radius:12px;padding:4px;margin-bottom:1.5rem;gap:4px}
+.tab{flex:1;padding:0.6rem;border:none;border-radius:9px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;transition:all 0.2s;color:var(--muted);background:none}
+.tab.active{background:var(--green);color:#fff}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem}
+.fg{margin-bottom:1rem}
+label{font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.09em;color:var(--muted);display:block;margin-bottom:0.4rem}
+input{width:100%;background:rgba(255,255,255,0.04);border:1.5px solid var(--border);border-radius:12px;padding:0.8rem 1rem;color:#fff;font-size:0.9rem;font-family:'Cabinet Grotesk',sans-serif;outline:none;transition:border-color 0.2s}
+input:focus{border-color:var(--border2)}
+input::placeholder{color:var(--muted)}
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-bottom:1rem}
+.plan{border:2px solid var(--border);border-radius:12px;padding:0.8rem;cursor:pointer;transition:all 0.2s;text-align:center}
+.plan.sel{border-color:var(--gl);background:rgba(34,197,94,0.06)}
+.plan-icon{font-size:1.3rem;display:block;margin-bottom:0.2rem}
+.plan-name{font-size:0.82rem;font-weight:800;color:#fff}
+.plan-price{font-size:0.7rem;color:var(--muted)}
+.plan-badge{font-size:0.58rem;background:rgba(240,165,0,0.15);color:var(--gold);padding:0.1rem 0.4rem;border-radius:4px;display:inline-block;margin-top:0.2rem}
+.btn{width:100%;background:linear-gradient(135deg,var(--green),var(--gl));border:none;border-radius:12px;padding:0.95rem;font-size:0.95rem;font-weight:800;color:#fff;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;transition:all 0.2s;margin-top:0.5rem}
+.btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(22,163,74,0.35)}
+.btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+.msg{padding:0.8rem 1rem;border-radius:10px;font-size:0.82rem;margin-top:0.8rem;display:none;line-height:1.5}
+.msg.ok{background:rgba(34,197,94,0.1);border:1px solid var(--border2);color:var(--gl);display:block}
+.msg.err{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);color:#fca5a5;display:block}
+.note{text-align:center;font-size:0.72rem;color:var(--muted);margin-top:0.8rem}
+.back{text-align:center;margin-top:1.2rem;font-size:0.8rem;color:var(--muted)}
+.back a{color:var(--gl);text-decoration:none;font-weight:700}
+.sp{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;margin-right:0.4rem;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
 
-<div class="bg-effect">
-  <div class="bg-orb bg-orb-1"></div>
-  <div class="bg-orb bg-orb-2"></div>
-</div>
+<div class="logo">Nutri<em>Cam</em></div>
+<div class="tagline">🌿 La première plateforme nutritionnelle africaine 🇨🇲</div>
 
-<nav class="nav">
-  <div class="nav-logo">Nutri<span>Cam</span></div>
-  <a href="nutricam-hub.html" class="nav-back">← Retour au Hub</a>
-</nav>
+<div class="card">
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('ins')">✨ Inscription</button>
+    <button class="tab" onclick="showTab('con')">🔐 Connexion</button>
+  </div>
 
-<!-- AUTH -->
-<div class="auth-layout" id="auth-layout">
-  <div class="auth-card">
-    <div class="auth-logo">
-      <span class="al-icon">🌿</span>
-      <div class="al-name">Nutri<span>Cam</span></div>
-      <div class="al-tagline">Mange bien. Vis fort. 🇨🇲</div>
+  <!-- INSCRIPTION -->
+  <div id="tab-ins">
+    <div class="row2">
+      <div class="fg"><label>Prénom</label><input type="text" id="i-prenom" placeholder="Madeleine"/></div>
+      <div class="fg"><label>Nom</label><input type="text" id="i-nom" placeholder="Yangon"/></div>
     </div>
-
-    <div class="live-badge"><div class="live-dot"></div>Base de données réelle · Supabase</div>
-
-    <div class="auth-tabs">
-      <button class="at-btn active" onclick="switchTab('login',this)">🔓 Connexion</button>
-      <button class="at-btn" onclick="switchTab('register',this)">✨ Inscription</button>
+    <div class="fg"><label>Email</label><input type="email" id="i-email" placeholder="votre@email.com"/></div>
+    <div class="fg"><label>Téléphone WhatsApp</label><input type="tel" id="i-tel" placeholder="690531335"/></div>
+    <div class="fg"><label>Mot de passe (min. 6 caractères)</label><input type="password" id="i-pass" placeholder="••••••••"/></div>
+    <label style="margin-bottom:0.5rem;display:block">Votre plan</label>
+    <div class="plans">
+      <div class="plan sel" id="pl-free" onclick="selPlan('free')">
+        <span class="plan-icon">🆓</span>
+        <div class="plan-name">Gratuit</div>
+        <div class="plan-price">0 FCFA</div>
+      </div>
+      <div class="plan" id="pl-prem" onclick="selPlan('premium')">
+        <span class="plan-icon">⭐</span>
+        <div class="plan-name">Premium</div>
+        <div class="plan-price">2 500 FCFA/mois</div>
+        <span class="plan-badge">Recommandé</span>
+      </div>
     </div>
+    <button class="btn" id="i-btn" onclick="inscrire()">🌿 Créer mon compte</button>
+    <div class="msg" id="i-msg"></div>
+    <div class="note">En vous inscrivant, vous acceptez nos <a href="nutricam-legal.html" style="color:var(--gl)">CGU</a></div>
+  </div>
 
-    <div class="msg-box msg-error" id="msg-error"><span>⚠️</span><span id="msg-error-text"></span></div>
-    <div class="msg-box msg-success" id="msg-success"><span>✅</span><span id="msg-success-text"></span></div>
-
-    <!-- LOGIN -->
-    <div class="auth-view show" id="v-login">
-      <div class="form-group">
-        <label class="fg-label">Email</label>
-        <input class="fg-input" type="email" id="login-email" placeholder="votre@email.com"/>
-      </div>
-      <div class="form-group">
-        <label class="fg-label">Mot de passe</label>
-        <input class="fg-input" type="password" id="login-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/>
-      </div>
-      <button class="submit-btn" id="login-btn" onclick="doLogin()">🔓 Se connecter</button>
-      <div class="terms-text">Pas de compte ? <a onclick="switchTabDirect('register')">Inscrivez-vous gratuitement →</a></div>
-    </div>
-
-    <!-- REGISTER -->
-    <div class="auth-view" id="v-register">
-      <div class="fg-row">
-        <div class="form-group">
-          <label class="fg-label">Prénom</label>
-          <input class="fg-input" type="text" id="reg-prenom" placeholder="Marie"/>
-        </div>
-        <div class="form-group">
-          <label class="fg-label">Nom</label>
-          <input class="fg-input" type="text" id="reg-nom" placeholder="Kamga"/>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="fg-label">Email</label>
-        <input class="fg-input" type="email" id="reg-email" placeholder="votre@email.com"/>
-      </div>
-      <div class="form-group">
-        <label class="fg-label">Téléphone WhatsApp</label>
-        <input class="fg-input" type="tel" id="reg-tel" placeholder="+237 6XX XXX XXX"/>
-      </div>
-      <div class="form-group">
-        <label class="fg-label">Mot de passe</label>
-        <input class="fg-input" type="password" id="reg-password" placeholder="Min. 6 caractères"/>
-      </div>
-      <div class="form-group">
-        <label class="fg-label">Votre plan</label>
-        <div class="plan-selector">
-          <div class="plan-opt selected" id="plan-gratuit" onclick="selectPlan('gratuit')">
-            <div class="po-name">🆓 Gratuit</div>
-            <div class="po-price">0 FCFA</div>
-          </div>
-          <div class="plan-opt" id="plan-premium" onclick="selectPlan('premium')">
-            <div class="po-name">⭐ Premium</div>
-            <div class="po-price">2 500 FCFA/mois</div>
-            <div class="po-badge">Recommandé</div>
-          </div>
-        </div>
-      </div>
-      <button class="submit-btn" id="register-btn" onclick="doRegister()">🌿 Créer mon compte</button>
-      <div class="terms-text">En vous inscrivant, vous acceptez nos <a href="nutricam-legal.html">CGU</a></div>
-    </div>
+  <!-- CONNEXION -->
+  <div id="tab-con" style="display:none">
+    <div class="fg"><label>Email</label><input type="email" id="c-email" placeholder="votre@email.com"/></div>
+    <div class="fg"><label>Mot de passe</label><input type="password" id="c-pass" placeholder="••••••••"/></div>
+    <button class="btn" id="c-btn" onclick="connecter()">🔐 Se connecter</button>
+    <div class="msg" id="c-msg"></div>
   </div>
 </div>
 
-<!-- DASHBOARD -->
-<div class="dashboard" id="dashboard">
-  <div class="db-header">
-    <div>
-      <div style="font-size:0.72rem;color:var(--muted);margin-bottom:0.2rem">Bienvenue,</div>
-      <div class="db-welcome" id="db-name">Georges 👋</div>
-      <div class="db-plan" id="db-plan-badge">⭐ Plan Premium</div>
-    </div>
-    <button class="db-logout" onclick="doLogout()">Déconnexion</button>
-  </div>
-  <div class="live-badge"><div class="live-dot"></div>Compte réel · Données sauvegardées · Supabase</div>
-  <div class="db-grid">
-    <div class="db-card"><span class="dbc-icon">🔥</span><div class="dbc-val">0</div><div class="dbc-label">Calories aujourd'hui</div></div>
-    <div class="db-card"><span class="dbc-icon">💧</span><div class="dbc-val">0 L</div><div class="dbc-label">Hydratation</div></div>
-    <div class="db-card"><span class="dbc-icon">📅</span><div class="dbc-val" id="db-date">-</div><div class="dbc-label">Membre depuis</div></div>
-    <div class="db-card"><span class="dbc-icon">⭐</span><div class="dbc-val" id="db-plan-val">Gratuit</div><div class="dbc-label">Votre plan</div></div>
-  </div>
-  <div class="db-actions">
-    <a href="nutricam-dashboard.html" class="dba-btn"><span class="dba-icon">📊</span><div class="dba-label">Dashboard</div></a>
-    <a href="nutricam-recipes.html" class="dba-btn"><span class="dba-icon">🍲</span><div class="dba-label">Recettes</div></a>
-    <a href="nutricam-scanner.html" class="dba-btn"><span class="dba-icon">📷</span><div class="dba-label">Scanner</div></a>
-    <a href="nutricam-chatbot.html" class="dba-btn"><span class="dba-icon">🤖</span><div class="dba-label">Coach IA</div></a>
-    <a href="nutricam-statistics.html" class="dba-btn"><span class="dba-icon">📈</span><div class="dba-label">Stats</div></a>
-    <a href="nutricam-world-recipes.html" class="dba-btn"><span class="dba-icon">🌍</span><div class="dba-label">Monde</div></a>
-  </div>
-</div>
+<div class="back"><a href="nutricam-hub.html">← Retour à l'accueil NutriCam</a></div>
 
 <script>
-// ── CONNEXION SUPABASE RÉELLE ──
-const SUPABASE_URL = 'https://jtwobuhxleejuroiqgyk.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_KWBqa4TT7vSA7nbNsOmmIA_w_dIrWKH';
-const { createClient } = supabase;
-const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+const SURL='https://jtwobuhxleejuroiqgyk.supabase.co';
+const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp0d29idWh4bGVlanVyb2lxZ3lrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcyMjIyNzksImV4cCI6MjA2Mjc5ODI3OX0.Lv-pLvrcDaIVfkHC8nJnqiYKJB6O5PATkKO_8N2KBDQ';
+const sb=supabase.createClient(SURL,SKEY);
+let plan='free';
 
-let currentPlan = 'gratuit';
+function selPlan(p){
+  plan=p;
+  document.getElementById('pl-free').classList.toggle('sel',p==='free');
+  document.getElementById('pl-prem').classList.toggle('sel',p==='premium');
+}
 
-// Vérifier session existante
-window.onload = async () => {
-  const { data: { session } } = await db.auth.getSession();
-  if (session) {
-    await loadUserProfile(session.user);
+function showTab(t){
+  document.getElementById('tab-ins').style.display=t==='ins'?'':'none';
+  document.getElementById('tab-con').style.display=t==='con'?'':'none';
+  document.querySelectorAll('.tab').forEach((b,i)=>{
+    b.classList.toggle('active',(i===0&&t==='ins')||(i===1&&t==='con'));
+  });
+}
+
+function msg(id,type,text){
+  const el=document.getElementById(id);
+  el.className='msg '+type;
+  el.textContent=text;
+}
+
+async function inscrire(){
+  const prenom=document.getElementById('i-prenom').value.trim();
+  const nom=document.getElementById('i-nom').value.trim();
+  const email=document.getElementById('i-email').value.trim();
+  const telephone=document.getElementById('i-tel').value.trim();
+  const password=document.getElementById('i-pass').value;
+
+  if(!prenom||!email||!password){
+    msg('i-msg','err','❌ Prénom, email et mot de passe sont obligatoires');return;
   }
-};
+  if(password.length<6){msg('i-msg','err','❌ Mot de passe trop court (min. 6 caractères)');return;}
 
-// ── TABS ──
-function switchTab(tab, btn) {
-  document.querySelectorAll('.at-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  document.querySelectorAll('.auth-view').forEach(v => v.classList.remove('show'));
-  document.getElementById('v-' + tab).classList.add('show');
-  clearMessages();
-}
+  const btn=document.getElementById('i-btn');
+  btn.disabled=true;
+  btn.innerHTML='<span class="sp"></span>Création...';
 
-function switchTabDirect(tab) {
-  const btns = document.querySelectorAll('.at-btn');
-  btns.forEach(b => b.classList.remove('active'));
-  tab === 'login' ? btns[0].classList.add('active') : btns[1].classList.add('active');
-  document.querySelectorAll('.auth-view').forEach(v => v.classList.remove('show'));
-  document.getElementById('v-' + tab).classList.add('show');
-  clearMessages();
-}
+  try{
+    // Créer compte auth
+    const{data,error}=await sb.auth.signUp({email,password,options:{data:{prenom,nom}}});
+    if(error)throw error;
 
-function selectPlan(plan) {
-  currentPlan = plan;
-  document.querySelectorAll('.plan-opt').forEach(p => p.classList.remove('selected'));
-  document.getElementById('plan-' + plan).classList.add('selected');
-}
-
-// ── INSCRIPTION RÉELLE ──
-async function doRegister() {
-  const prenom = document.getElementById('reg-prenom').value.trim();
-  const nom = document.getElementById('reg-nom').value.trim();
-  const email = document.getElementById('reg-email').value.trim();
-  const tel = document.getElementById('reg-tel').value.trim();
-  const password = document.getElementById('reg-password').value;
-  const btn = document.getElementById('register-btn');
-
-  if (!prenom || !nom || !email || !password) { showError('Remplissez tous les champs obligatoires.'); return; }
-  if (password.length < 6) { showError('Mot de passe : minimum 6 caractères.'); return; }
-
-  btn.disabled = true;
-  btn.innerHTML = '⏳ Création du compte...';
-
-  try {
-    // 1. Créer le compte Auth Supabase
-    const { data: authData, error: authError } = await db.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { prenom, nom, telephone: tel, plan: currentPlan }
-      }
-    });
-
-    if (authError) throw authError;
-
-    // 2. Sauvegarder dans la table utilisateurs
-    const { error: dbError } = await db.from('utilisateurs').insert([{
-      prenom,
-      nom,
-      email,
-      telephone: tel,
-      plan: currentPlan,
-    }]);
-
-    if (dbError) console.warn('DB insert:', dbError.message);
-
-    showSuccess(`✅ Compte créé ! Vérifiez votre email ${email} pour confirmer.`);
-
-    if (currentPlan === 'premium') {
-      setTimeout(() => { window.location.href = 'nutricam-paiement.html'; }, 2000);
-    } else {
-      setTimeout(() => loadUserProfile(authData.user), 2000);
+    // Sauvegarder profil dans table utilisateurs
+    const userId=data.user?.id;
+    if(userId){
+      const{error:dbErr}=await sb.from('utilisateurs').insert({
+        id:userId,
+        prenom,
+        nom,
+        email,
+        telephone:telephone||null,
+        plan,
+        created_at:new Date().toISOString()
+      });
+      if(dbErr)console.warn('Profil insert:',dbErr.message);
     }
 
-  } catch (err) {
-    showError(err.message || 'Erreur lors de la création du compte.');
-    btn.disabled = false;
-    btn.innerHTML = '🌿 Créer mon compte';
+    msg('i-msg','ok','🎉 Bienvenue sur NutriCam ! Redirection...');
+    btn.innerHTML='✅ Compte créé !';
+    setTimeout(()=>{window.location.href='nutricam-hub.html';},2000);
+
+  }catch(e){
+    let m='❌ '+e.message;
+    if(e.message?.includes('already registered'))m='❌ Email déjà utilisé — connectez-vous !';
+    if(e.message?.includes('rate limit'))m='❌ Trop de tentatives. Attendez 1 minute.';
+    msg('i-msg','err',m);
+    btn.disabled=false;
+    btn.innerHTML='🌿 Créer mon compte';
   }
 }
 
-// ── CONNEXION RÉELLE ──
-async function doLogin() {
-  const email = document.getElementById('login-email').value.trim();
-  const password = document.getElementById('login-password').value;
-  const btn = document.getElementById('login-btn');
+async function connecter(){
+  const email=document.getElementById('c-email').value.trim();
+  const password=document.getElementById('c-pass').value;
+  if(!email||!password){msg('c-msg','err','❌ Email et mot de passe requis');return;}
 
-  if (!email || !password) { showError('Entrez votre email et mot de passe.'); return; }
+  const btn=document.getElementById('c-btn');
+  btn.disabled=true;
+  btn.innerHTML='<span class="sp"></span>Connexion...';
 
-  btn.disabled = true;
-  btn.innerHTML = '⏳ Connexion...';
-
-  try {
-    const { data, error } = await db.auth.signInWithPassword({ email, password });
-    if (error) throw error;
-    await loadUserProfile(data.user);
-  } catch (err) {
-    showError('Email ou mot de passe incorrect.');
-    btn.disabled = false;
-    btn.innerHTML = '🔓 Se connecter';
+  try{
+    const{error}=await sb.auth.signInWithPassword({email,password});
+    if(error)throw error;
+    msg('c-msg','ok','✅ Connecté ! Redirection...');
+    setTimeout(()=>{window.location.href='nutricam-hub.html';},1500);
+  }catch(e){
+    let m='❌ '+e.message;
+    if(e.message?.includes('Invalid'))m='❌ Email ou mot de passe incorrect';
+    msg('c-msg','err',m);
+    btn.disabled=false;
+    btn.innerHTML='🔐 Se connecter';
   }
 }
 
-// ── CHARGER PROFIL ──
-async function loadUserProfile(user) {
-  if (!user) return;
-
-  // Récupérer les infos de la table utilisateurs
-  const { data } = await db.from('utilisateurs').select('*').eq('email', user.email).single();
-
-  const prenom = data?.prenom || user.user_metadata?.prenom || user.email.split('@')[0];
-  const plan = data?.plan || user.user_metadata?.plan || 'gratuit';
-  const createdAt = new Date(user.created_at).toLocaleDateString('fr-FR');
-
-  document.getElementById('auth-layout').style.display = 'none';
-  document.getElementById('dashboard').style.display = 'block';
-  document.getElementById('db-name').textContent = prenom + ' 👋';
-  document.getElementById('db-plan-badge').textContent = plan === 'premium' ? '⭐ Plan Premium' : '🆓 Plan Gratuit';
-  document.getElementById('db-plan-val').textContent = plan === 'premium' ? 'Premium' : 'Gratuit';
-  document.getElementById('db-date').textContent = createdAt;
-}
-
-// ── DÉCONNEXION ──
-async function doLogout() {
-  await db.auth.signOut();
-  document.getElementById('auth-layout').style.display = 'flex';
-  document.getElementById('dashboard').style.display = 'none';
-  document.getElementById('login-btn').disabled = false;
-  document.getElementById('login-btn').innerHTML = '🔓 Se connecter';
-  clearMessages();
-}
-
-// ── MESSAGES ──
-function showError(msg) {
-  document.getElementById('msg-error-text').textContent = msg;
-  document.getElementById('msg-error').classList.add('show');
-  document.getElementById('msg-success').classList.remove('show');
-}
-function showSuccess(msg) {
-  document.getElementById('msg-success-text').textContent = msg;
-  document.getElementById('msg-success').classList.add('show');
-  document.getElementById('msg-error').classList.remove('show');
-}
-function clearMessages() {
-  document.getElementById('msg-error').classList.remove('show');
-  document.getElementById('msg-success').classList.remove('show');
-}
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Enter')return;
+  if(document.getElementById('tab-ins').style.display!=='none')inscrire();
+  else connecter();
+});
 </script>
 </body>
 </html>

@@ -399,11 +399,11 @@ function renderTable(){
   }
 
   const rows = filteredUsers.map(u => {
-    const initials = ((u.first_name||'?')[0]+(u.last_name||'?')[0]).toUpperCase();
-    const name = `${u.first_name||''} ${u.last_name||''}`.trim() || 'Anonyme';
+    const initials = ((u.prenom||'?')[0]+(u.nom||'?')[0]).toUpperCase();
+    const name = `${u.prenom||''} ${u.nom||''}`.trim() || 'Anonyme';
     const plan = u.plan === 'premium' ? 'premium' : 'free';
     const date = u.created_at ? new Date(u.created_at).toLocaleDateString('fr-FR') : '—';
-    const phone = u.whatsapp_phone || u.phone || '—';
+    const phone = u.telephone || '—';
     const active = u.last_sign_in_at && (new Date() - new Date(u.last_sign_in_at)) < 7*24*3600*1000;
 
     return `<tr onclick="openModal('${u.id}')">
@@ -435,7 +435,7 @@ function renderActivity(){
   if(recent.length === 0) return;
 
   const html = recent.map(u => {
-    const name = `${u.first_name||''} ${u.last_name||''}`.trim() || u.email || 'Anonyme';
+    const name = `${u.prenom||''} ${u.nom||''}`.trim() || u.email || 'Anonyme';
     const date = u.created_at ? new Date(u.created_at) : new Date();
     const timeAgo = getTimeAgo(date);
     const plan = u.plan === 'premium' ? '⭐' : '🆓';
@@ -522,10 +522,10 @@ function filterUsers(q){
   const lq = q.toLowerCase();
   filteredUsers = allUsers.filter(u =>
     !q ||
-    (u.first_name||'').toLowerCase().includes(lq) ||
-    (u.last_name||'').toLowerCase().includes(lq) ||
+    (u.prenom||'').toLowerCase().includes(lq) ||
+    (u.nom||'').toLowerCase().includes(lq) ||
     (u.email||'').toLowerCase().includes(lq) ||
-    (u.whatsapp_phone||u.phone||'').includes(lq)
+    (u.telephone||'').includes(lq)
   );
   document.getElementById('table-count').textContent = filteredUsers.length;
   renderTable();
@@ -541,9 +541,9 @@ function filterPlan(plan){
 function openModal(id){
   const u = allUsers.find(x=>x.id===id);
   if(!u) return;
-  const name = `${u.first_name||''} ${u.last_name||''}`.trim() || 'Anonyme';
+  const name = `${u.prenom||''} ${u.nom||''}`.trim() || 'Anonyme';
   const date = u.created_at ? new Date(u.created_at).toLocaleString('fr-FR') : '—';
-  const phone = u.whatsapp_phone || u.phone || '—';
+  const phone = u.telephone || '—';
 
   document.getElementById('modal-title').textContent = `👤 ${name}`;
   document.getElementById('modal-info').innerHTML = `
@@ -586,8 +586,8 @@ function openWhatsApp(phone, name){
 function exportCSV(){
   const headers = ['Prénom','Nom','Email','WhatsApp','Plan','Date inscription'];
   const rows = allUsers.map(u => [
-    u.first_name||'', u.last_name||'', u.email||'',
-    u.whatsapp_phone||u.phone||'', u.plan||'free',
+    u.prenom||'', u.nom||'', u.email||'',
+    u.telephone||'', u.plan||'free',
     u.created_at ? new Date(u.created_at).toLocaleDateString('fr-FR') : ''
   ]);
   const csv = [headers, ...rows].map(r => r.map(c=>`"${c}"`).join(',')).join('\n');
