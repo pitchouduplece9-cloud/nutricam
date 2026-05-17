@@ -344,7 +344,7 @@
 <script>
   const SUPABASE_URL = 'https://jtwobuhxleejuroiqgyk.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp0d29idWh4bGVlanVyb2lxZ3lrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcyMjIyNzksImV4cCI6MjA2Mjc5ODI3OX0.Lv-pLvrcDaIVfkHC8nJnqiYKJB6O5PATkKO_8N2KBDQ';
-  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const sbAdmin = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
   const ADMIN_CODE = 'NUTRICAM_ADMIN_2025';
   let allUsers = [];
@@ -376,7 +376,7 @@
   async function loadUsers() {
     document.getElementById('usersContainer').innerHTML = '<div class="loading-text">⏳ Chargement...</div>';
 
-    const { data, error } = await supabase
+    const { data, error } = await sbAdmin
       .from('utilisateurs')
       .select('*')
       .order('created_at', { ascending: false });
@@ -461,7 +461,7 @@
 
   // ===== ABONNEMENTS =====
   async function loadAbonnements() {
-    const { data, error } = await supabase
+    const { data, error } = await sbAdmin
       .from('abonnements')
       .select('*')
       .order('created_at', { ascending: false });
