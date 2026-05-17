@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriCam – Jus Naturels du Cameroun 🇨🇲🌿</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,800&family=Cabinet+Grotesk:wght@300;400;500;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#030805;--s1:#071009;--s2:#0c1a0e;--s3:#111f13;
+  --gold:#f0a500;--green:#16a34a;--gl:#22c55e;--glight:#4ade80;
+  --teal:#14b8a6;--orange:#f97316;--purple:#a855f7;--red:#ef4444;
+  --pink:#ec4899;--blue:#3b82f6;--cm:#007a5e;
+  --border:rgba(255,255,255,0.06);--border2:rgba(34,197,94,0.15);
+  --text:#dff0e2;--muted:#3d6047;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+.nav{background:rgba(3,8,5,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0.85rem 1.5rem;display:flex;align-items:center;gap:1rem;position:sticky;top:0;z-index:100}
+.nav-logo{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;color:#fff;text-decoration:none}
+.nav-logo em{color:var(--gold);font-style:italic}
+.nav-search{flex:1;max-width:320px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:100px;padding:0.5rem 1rem;color:#fff;font-size:0.82rem;font-family:'Cabinet Grotesk',sans-serif;outline:none}
+.nav-search:focus{border-color:var(--border2)}
+.nav-search::placeholder{color:var(--muted)}
+.nav-right{display:flex;gap:0.4rem;margin-left:auto}
+.nav-btn{background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--muted);padding:0.4rem 0.9rem;border-radius:8px;font-size:0.75rem;font-weight:700;text-decoration:none;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;transition:all 0.2s}
+.nav-btn:hover{color:#fff}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#030805 0%,#051a0a 40%,#071f0a 100%);padding:3.5rem 2rem 2.5rem;text-align:center;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 0%,rgba(0,122,94,0.08),transparent),radial-gradient(ellipse 40% 40% at 80% 80%,rgba(34,197,94,0.05),transparent)}
+.hero-flag{font-size:3rem;display:block;margin-bottom:0.5rem;animation:flag-wave 3s ease-in-out infinite}
+@keyframes flag-wave{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+.hero-badge{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(0,122,94,0.1);border:1px solid rgba(0,122,94,0.3);color:#4ade80;font-size:0.7rem;font-weight:800;padding:0.3rem 1rem;border-radius:100px;margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.1em}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(2.2rem,5vw,4rem);font-weight:900;color:#fff;margin-bottom:0.5rem;line-height:0.95}
+.hero h1 em{color:var(--gold);font-style:italic}
+.hero-sub{color:var(--muted);font-size:0.9rem;max-width:600px;margin:0 auto 1.5rem;line-height:1.7}
+.hero-stats{display:flex;gap:2rem;justify-content:center;flex-wrap:wrap}
+.hs-item{text-align:center}
+.hs-val{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:900;color:#fff}
+.hs-label{font-size:0.62rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)}
+
+/* CAT TABS */
+.cat-tabs{display:flex;gap:0.4rem;padding:1rem 2rem;overflow-x:auto;background:var(--s1);border-bottom:1px solid var(--border);position:sticky;top:65px;z-index:90}
+.cat-tabs::-webkit-scrollbar{height:2px}
+.cat-pill{display:flex;align-items:center;gap:0.35rem;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:100px;padding:0.42rem 1rem;font-size:0.76rem;font-weight:700;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;color:var(--muted);white-space:nowrap;flex-shrink:0;transition:all 0.2s}
+.cat-pill:hover{color:#fff}
+.cat-pill.on{border-color:rgba(0,122,94,0.5);color:var(--gl);background:rgba(0,122,94,0.08)}
+
+/* MAIN */
+.main{max-width:1100px;margin:0 auto;padding:2.5rem 2rem}
+
+/* SECTION */
+.cat-section{margin-bottom:3.5rem}
+.cs-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;padding-bottom:0.8rem;border-bottom:1px solid var(--border)}
+.cs-icon{font-size:1.8rem}
+.cs-name{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:#fff}
+.cs-desc{font-size:0.75rem;color:var(--muted);flex:1}
+.cs-count{font-size:0.68rem;color:var(--muted);font-family:'DM Mono',monospace;background:rgba(255,255,255,0.04);border:1px solid var(--border);padding:0.12rem 0.6rem;border-radius:100px}
+
+/* JUS CARD */
+.jus-card{background:var(--s2);border:1px solid var(--border);border-radius:22px;overflow:hidden;margin-bottom:1.2rem;transition:border-color 0.2s}
+.jus-card:hover{border-color:var(--border2)}
+.jc-header{padding:1.4rem;display:flex;gap:1rem;cursor:pointer;align-items:flex-start}
+.jch-emoji{font-size:2.8rem;flex-shrink:0;line-height:1}
+.jch-body{flex:1}
+.jch-name{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:900;color:#fff;margin-bottom:0.2rem}
+.jch-origin{font-size:0.68rem;color:var(--muted);margin-bottom:0.4rem}
+.jch-tags{display:flex;gap:0.35rem;flex-wrap:wrap;margin-bottom:0.4rem}
+.jtag{font-size:0.58rem;font-weight:800;padding:0.12rem 0.5rem;border-radius:3px;text-transform:uppercase;letter-spacing:0.05em}
+.t-detox{background:rgba(20,184,166,0.1);color:var(--teal)}
+.t-energie{background:rgba(240,165,0,0.1);color:var(--gold)}
+.t-immune{background:rgba(34,197,94,0.1);color:var(--gl)}
+.t-beaute{background:rgba(236,72,153,0.1);color:var(--pink)}
+.t-digest{background:rgba(249,115,22,0.1);color:var(--orange)}
+.t-sport{background:rgba(59,130,246,0.1);color:var(--blue)}
+.t-anti{background:rgba(168,85,247,0.1);color:var(--purple)}
+.t-cm{background:rgba(0,122,94,0.15);color:#4ade80}
+.jch-desc{font-size:0.8rem;color:var(--muted);line-height:1.6}
+.jch-toggle{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:7px;padding:0.35rem 0.75rem;font-size:0.7rem;font-weight:700;color:var(--muted);cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;flex-shrink:0;transition:all 0.2s;white-space:nowrap}
+
+/* MACROS */
+.jc-macros{display:flex;gap:1rem;padding:0.7rem 1.4rem;background:rgba(0,0,0,0.12);border-top:1px solid var(--border);flex-wrap:wrap}
+.mac{text-align:center;min-width:55px}
+.mac-v{font-family:'DM Mono',monospace;font-size:0.88rem;font-weight:700;display:block}
+.mac-l{font-size:0.55rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted)}
+
+/* TIMING */
+.jc-timing{display:flex;gap:1.2rem;padding:0.6rem 1.4rem;border-top:1px solid var(--border);background:rgba(0,0,0,0.06);flex-wrap:wrap}
+.jct{font-size:0.72rem;color:var(--text);display:flex;align-items:center;gap:0.3rem}
+.jct small{color:var(--muted)}
+
+/* DETAILS */
+.jc-details{display:none;border-top:1px solid var(--border)}
+.jc-details.open{display:block;animation:fadeSlide 0.3s ease}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.jcd{padding:1.5rem}
+
+/* BENEFITS */
+.benefits{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:1.2rem}
+.ben{background:rgba(20,184,166,0.06);border:1px solid rgba(20,184,166,0.18);border-radius:8px;padding:0.28rem 0.65rem;font-size:0.7rem;color:var(--teal);font-weight:700}
+
+/* INGREDIENTS */
+.sec-t{font-size:0.65rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold);margin-bottom:0.7rem;margin-top:1.2rem;display:block}
+.ing-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.45rem;margin-bottom:0.8rem}
+.ing{display:flex;align-items:flex-start;gap:0.6rem;padding:0.55rem 0.75rem;background:rgba(255,255,255,0.025);border:1px solid var(--border);border-radius:9px;font-size:0.78rem}
+.ing-q{font-family:'DM Mono',monospace;font-size:0.72rem;font-weight:700;color:var(--gold);min-width:55px;flex-shrink:0}
+.ing-n{color:var(--text);line-height:1.4}
+.ing-note{font-size:0.66rem;color:var(--muted);font-style:italic;display:block}
+
+/* TOOLS */
+.tools{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.8rem}
+.tool{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:7px;padding:0.25rem 0.6rem;font-size:0.7rem;color:var(--text)}
+
+/* PROGRESS */
+.prog-bar{margin:0.8rem 0;padding:0.7rem 0.9rem;background:rgba(255,255,255,0.015);border-radius:10px;border:1px solid var(--border)}
+.pb-top{display:flex;justify-content:space-between;font-size:0.64rem;color:var(--muted);margin-bottom:0.4rem}
+.pb-track{height:5px;background:rgba(255,255,255,0.05);border-radius:3px;overflow:hidden}
+.pb-fill{height:100%;background:linear-gradient(90deg,var(--cm),var(--gl));border-radius:3px;transition:width 0.4s ease;width:0%}
+
+/* STEPS */
+.steps{display:flex;flex-direction:column;gap:0.75rem}
+.step{display:flex;gap:0.85rem;padding:0.9rem;background:rgba(255,255,255,0.018);border:1px solid var(--border);border-radius:13px;cursor:pointer;transition:all 0.15s}
+.step:hover{background:rgba(255,255,255,0.03);border-color:rgba(255,255,255,0.1)}
+.step.done{background:rgba(34,197,94,0.04);border-color:rgba(34,197,94,0.2)}
+.step.done .step-txt{text-decoration:line-through;opacity:0.45}
+.sn{width:30px;height:30px;border-radius:50%;background:rgba(0,122,94,0.1);border:1px solid rgba(0,122,94,0.3);color:var(--gl);font-size:0.75rem;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'DM Mono',monospace}
+.step.done .sn{background:rgba(34,197,94,0.12);border-color:var(--gl);color:var(--gl)}
+.sb{flex:1}
+.sd{font-size:0.62rem;font-weight:800;color:var(--gl);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.25rem}
+.step-txt{font-size:0.83rem;color:var(--text);line-height:1.7}
+.tip{font-size:0.73rem;color:var(--gl);margin-top:0.35rem;padding:0.28rem 0.6rem;background:rgba(34,197,94,0.04);border-left:2px solid var(--gl);border-radius:0 5px 5px 0}
+.warn{font-size:0.73rem;color:var(--gold);margin-top:0.35rem;padding:0.28rem 0.6rem;background:rgba(240,165,0,0.04);border-left:2px solid var(--gold);border-radius:0 5px 5px 0}
+
+/* BOXES */
+.box-blue{background:rgba(59,130,246,0.04);border:1px solid rgba(59,130,246,0.15);border-radius:12px;padding:1rem;margin-top:1rem}
+.box-gold{background:rgba(240,165,0,0.03);border:1px solid rgba(240,165,0,0.18);border-radius:12px;padding:1rem;margin-top:0.8rem}
+.box-purple{background:rgba(168,85,247,0.03);border:1px solid rgba(168,85,247,0.15);border-radius:12px;padding:1rem;margin-top:0.8rem}
+.bt{font-size:0.68rem;font-weight:800;margin-bottom:0.5rem;display:block}
+.bc{font-size:0.8rem;color:var(--text);line-height:1.65}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(0,122,94,0.92);color:#fff;padding:0.65rem 1.4rem;border-radius:100px;font-size:0.8rem;font-weight:700;opacity:0;pointer-events:none;transition:all 0.3s;z-index:300;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(max-width:720px){.ing-grid{grid-template-columns:1fr}.main{padding:1.5rem 1rem}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="nutricam-hub.html" class="nav-logo">Nutri<em>Cam</em></a>
+  <input class="nav-search" type="text" placeholder="🔍 Rechercher un jus camerounais..." oninput="search(this.value)"/>
+  <div class="nav-right">
+    <a href="nutricam-jus-naturels.html" class="nav-btn">🌿 Autres jus</a>
+    <a href="nutricam-hub.html" class="nav-btn">← Hub</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <span class="hero-flag">🇨🇲</span>
+  <div class="hero-badge">🌿 Fruits & Plantes du Cameroun · Fabrication ultra-détaillée</div>
+  <h1>Jus Naturels<br/><em>Camerounais</em></h1>
+  <p class="hero-sub">Découvrez comment fabriquer 20+ jus naturels à partir des fruits et plantes du Cameroun — ingrédients précis, processus étape par étape, valeurs nutritionnelles et bienfaits prouvés.</p>
+  <div class="hero-stats">
+    <div class="hs-item"><div class="hs-val">20+</div><div class="hs-label">Jus détaillés</div></div>
+    <div class="hs-item"><div class="hs-val">100%</div><div class="hs-label">Fruits camerounais</div></div>
+    <div class="hs-item"><div class="hs-val">0</div><div class="hs-label">Additifs chimiques</div></div>
+    <div class="hs-item"><div class="hs-val">∞</div><div class="hs-label">Bienfaits</div></div>
+  </div>
+</div>
+
+<!-- CAT TABS -->
+<div class="cat-tabs">
+  <button class="cat-pill on" onclick="filterCat('all',this)">🇨🇲 Tous les jus</button>
+  <button class="cat-pill" onclick="filterCat('agrumes',this)">🍊 Agrumes</button>
+  <button class="cat-pill" onclick="filterCat('tropicaux',this)">🥭 Fruits tropicaux</button>
+  <button class="cat-pill" onclick="filterCat('plantes',this)">🌿 Plantes médicinales</button>
+  <button class="cat-pill" onclick="filterCat('melange',this)">🧪 Mélanges detox</button>
+  <button class="cat-pill" onclick="filterCat('special',this)">⭐ Spécialités locales</button>
+</div>
+
+<div class="main" id="main">
+
+<!-- ══════════════════════════════
+     🍊 AGRUMES DU CAMEROUN
+══════════════════════════════ -->
+<div class="cat-section" data-cat="agrumes">
+  <div class="cs-header">
+    <span class="cs-icon">🍊</span>
+    <span class="cs-name">Agrumes du Cameroun</span>
+    <span class="cs-desc">Oranges, citrons, pamplemousses, clémentines locales</span>
+    <span class="cs-count">5 jus</span>
+  </div>
+
+  <!-- 1. JUS D'ORANGE CAMEROUNAISE -->
+  <div class="jus-card">
+    <div class="jc-header" onclick="toggle(this)">
+      <span class="jch-emoji">🍊</span>
+      <div class="jch-body">
+        <div class="jch-name">Jus d'Orange Camerounaise Fraîche</div>
+        <div class="jch-origin">📍 Yaoundé · Bafoussam · Région de l'Ouest Cameroun</div>
+        <div class="jch-tags"><span class="jtag t-immune">Immunité</span><span class="jtag t-energie">Énergie</span><span class="jtag t-cm">🇨🇲 Local</span></div>
+        <div class="jch-desc">L'orange camerounaise est plus petite que l'orange européenne mais bien plus juteuse et sucrée. Cueillie à maturité, elle contient 2× plus de vitamine C que les oranges importées. Le jus maison est incomparablement meilleur que les jus industriels.</div>
+      </div>
+      <button class="jch-toggle">▼ Fabrication</button>
+    </div>
+    <div class="jc-macros">
+      <div class="mac"><span class="mac-v" style="color:#fbbf24">110</span><span class="mac-l">kcal/verre</span></div>
+      <div class="mac"><span class="mac-v" style="color:#22c55e">Vit C 200%</span><span class="mac-l">besoins/j</span></div>
+      <div class="mac"><span class="mac-v" style="color:#f97316">26g</span><span class="mac-l">Glucides</span></div>
+      <div class="mac"><span class="mac-v" style="color:#a855f7">Folates</span><span class="mac-l">Acide folique</span></div>
+    </div>
+    <div class="jc-timing">
+      <span class="jct">⏱ Total <small>10 min</small></span>
+      <span class="jct">🍊 Oranges <small>8-10 pour 1L</small></span>
+      <span class="jct">🥛 Rendement <small>1L (4 verres)</small></span>
+      <span class="jct">📊 Difficulté <small>Très facile</small></span>
+    </div>
+    <div class="jc-details">
+      <div class="jcd">
+        <div class="benefits">
+          <div class="ben">🛡️ Immunité boost</div><div class="ben">⚡ Énergie rapide</div>
+          <div class="ben">🌟 Peau lumineuse</div><div class="ben">🦷 Santé dentaire</div>
+          <div class="ben">🤰 Acide folique</div><div class="ben">❤️ Cœur sain</div>
+        </div>
+        <span class="sec-t">🍊 Ingrédients (pour 1L)</span>
+        <div class="ing-grid">
+          <div class="ing"><span class="ing-q">10</span><span class="ing-n">Oranges camerounaises mûres<span class="ing-note">choisissez les plus lourdes — plus de jus. Peau orange-verte OK</span></span></div>
+          <div class="ing"><span class="ing-q">1 cs</span><span class="ing-n">Miel naturel<span class="ing-note">optionnel — l'orange mûre est déjà sucrée</span></span></div>
+          <div class="ing"><span class="ing-q">½ cc</span><span class="ing-n">Sel de mer fin<span class="ing-note">secret : une pincée rehausse la douceur de l'orange</span></span></div>
+          <div class="ing"><span class="ing-q">200ml</span><span class="ing-n">Eau filtrée froide<span class="ing-note">pour diluer si trop concentré</span></span></div>
+        </div>
+        <span class="sec-t">🔧 Matériel</span>
+        <div class="tools">
+          <span class="tool">🍋 Presse-agrumes manuel ou électrique</span>
+          <span class="tool">🫙 Tamis fin</span>
+          <span class="tool">🫙 Pichet 1.5L</span>
+          <span class="tool">🔪 Couteau</span>
+        </div>
+        <span class="sec-t">👨‍🍳 Processus de fabrication</span>
+        <div class="prog-bar"><div class="pb-top"><span>Progression</span><span id="p-orange">0%</span></div><div class="pb-track"><div class="pb-fill" id="f-orange"></div></div></div>
+        <div class="steps">
+          <div class="step" onclick="chk(this,'orange',1,5)"><div class="sn">1</div><div class="sb"><div class="sd">⏱ 3 min — Sélection et préparation des oranges</div><div class="step-txt">Choisissez des oranges lourdes (signe de jus abondant), sans moisissures. Lavez-les soigneusement sous l'eau courante en frottant avec les mains. Roulez chaque orange énergiquement sur le comptoir en appuyant avec la paume pendant 20-30 secondes — cette étape rompt les petites poches de jus internes et augmente le rendement de 30%.</div><div class="tip">💡 Les oranges camerounaises peuvent avoir une peau verte même mûres — ne vous fiez pas à la couleur de la peau, goûtez ou sentez : une bonne orange mûre a un arôme sucré intense.</div></div></div>
+          <div class="step" onclick="chk(this,'orange',2,5)"><div class="sn">2</div><div class="sb"><div class="sd">⏱ 5 min — Pressage</div><div class="step-txt">Coupez chaque orange en deux, perpendiculairement à l'axe (pas en longueur — vous obtiendrez plus de jus). Pressez sur le presse-agrumes en tournant légèrement pour extraire tout le jus. Exercez une pression ferme mais ne pressez pas trop fort — les membranes blanches donnent de l'amertume si trop compressées. Filtrez directement dans le pichet.</div><div class="warn">⚠️ Evitez les pépins dans le jus — ils amèrement rapidement. Filtrez toujours à travers un tamis même grossier.</div></div></div>
+          <div class="step" onclick="chk(this,'orange',3,5)"><div class="sn">3</div><div class="sb"><div class="sd">⏱ 1 min — Ajustement</div><div class="step-txt">Goûtez le jus. Ajoutez la pincée de sel (rehausse la douceur naturelle), le miel si nécessaire et l'eau froide si trop concentré. Mélangez doucement. Le jus frais camerounais est naturellement plus sucré que le jus industriel — résistez à l'envie d'ajouter du sucre.</div></div></div>
+          <div class="step" onclick="chk(this,'orange',4,5)"><div class="sn">4</div><div class="sb"><div class="sd">⏱ 1 min — Mise en bouteille</div><div class="step-txt">Versez dans une bouteille en verre hermétique. Remplissez à ras bord pour minimiser l'oxydation (l'air détruit la vitamine C). Fermez hermétiquement et réfrigérez immédiatement si vous ne consommez pas tout de suite.</div></div></div>
+          <div class="step" onclick="chk(this,'orange',5,5)"><div class="sn">5</div><div class="sb"><div class="sd">🥛 Service optimal</div><div class="step-txt">Servez frais mais pas glacé (le froid intense masque les arômes). Buvez dans les 30 minutes après pressage pour maximum de vitamine C. Le matin à jeun, attendez 20 minutes avant de manger — laisse le temps à la vitamine C d'être absorbée.<br/><strong>Programme santé :</strong> 1 verre chaque matin à jeun pendant 21 jours — résultats visibles sur la peau et l'énergie.</div><div class="tip">💡 Économie : 10 oranges camerounaises coûtent environ 500-800 FCFA au marché de Mokolo à Yaoundé. Soit 1L de jus premium pour moins de 1 000 FCFA !</div></div></div>
+        </div>
+        <div class="box-blue"><span class="bt" style="color:#3b82f6">🧊 Conservation</span><div class="bc"><strong style="color:#fff">Réfrigérateur :</strong> 48-72h maximum en bouteille fermée à ras bord<br/><strong style="color:#fff">À température ambiante :</strong> 4-6h seulement (fermentation rapide sous les tropiques)<br/><strong style="color:#fff">Congélateur :</strong> 3 mois en bacs à glaçons — pratique pour les smoothies</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. JUS DE PAMPLEMOUSSE ROUGE -->
+  <div class="jus-card">
+    <div class="jc-header" onclick="toggle(this)">
+      <span class="jch-emoji">🌸</span>
+      <div class="jch-body">
+        <div class="jch-name">Jus de Pamplemousse Rouge — Brûle-graisse naturel</div>
+        <div class="jch-origin">📍 Région du Centre · Région Littorale · Marchés de Douala</div>
+        <div class="jch-tags"><span class="jtag t-detox">Brûle-graisse</span><span class="jtag t-anti">Anti-cancer</span><span class="jtag t-cm">🇨🇲 Local</span></div>
+        <div class="jch-desc">Le pamplemousse rouge camerounais est plus gros que la variété européenne. Sa chair rose-rouge contient du lycopène (puissant antioxydant anti-cancer) et de la naringénine (brûle-graisse naturel qui booste le métabolisme).</div>
+      </div>
+      <button class="jch-toggle">▼ Fabrication</button>
+    </div>
+    <div class="jc-macros">
+      <div class="mac"><span class="mac-v" style="color:#fbbf24">75</span><span class="mac-l">kcal/verre</span></div>
+      <div class="mac"><span class="mac-v" style="color:#ec4899">Lycopène</span><span class="mac-l">Anti-cancer</span></div>
+      <div class="mac"><span class="mac-v" style="color:#22c55e">Naringénine</span><span class="mac-l">Brûle-graisse</span></div>
+    </div>
+    <div class="jc-timing">
+      <span class="jct">⏱ Total <small>8 min</small></span>
+      <span class="jct">🌸 Pamplemousses <small>3-4 pour 1L</small></span>
+      <span class="jct">📊 <small>Très facile</small></span>
+    </div>
+    <div class="jc-details">
+      <div class="jcd">
+        <div class="benefits">
+          <div class="ben">🔥 Brûle les graisses</div><div class="ben">🛡️ Anti-cancer lycopène</div>
+          <div class="ben">💊 Réduit cholestérol</div><div class="ben">⚖️ Contrôle le poids</div>
+          <div class="ben">🩺 Régule glycémie</div><div class="ben">❤️ Cœur sain</div>
+        </div>
+        <span class="sec-t">🥬 Ingrédients (pour 1L)</span>
+        <div class="ing-grid">
+          <div class="ing"><span class="ing-q">4</span><span class="ing-n">Pamplemousses rouges mûrs<span class="ing-note">la peau doit céder légèrement à la pression</span></span></div>
+          <div class="ing"><span class="ing-q">1 cs</span><span class="ing-n">Miel<span class="ing-note">indispensable — le pamplemousse est naturellement amer</span></span></div>
+          <div class="ing"><span class="ing-q">1 cm</span><span class="ing-n">Gingembre frais râpé<span class="ing-note">amplifie l'effet brûle-graisse</span></span></div>
+          <div class="ing"><span class="ing-q">1 pincée</span><span class="ing-n">Sel de mer<span class="ing-note">réduit l'amertume naturelle</span></span></div>
+          <div class="ing"><span class="ing-q">300ml</span><span class="ing-n">Eau froide</span></div>
+        </div>
+        <span class="sec-t">👨‍🍳 Fabrication</span>
+        <div class="prog-bar"><div class="pb-top"><span>Progression</span><span id="p-pamplemousse">0%</span></div><div class="pb-track"><div class="pb-fill" id="f-pamplemousse"></div></div></div>
+        <div class="steps">
+          <div class="step" onclick="chk(this,'pamplemousse',1,4)"><div class="sn">1</div><div class="sb"><div class="sd">⏱ 3 min — Préparation</div><div class="step-txt">Lavez soigneusement les pamplemousses. Coupez-les en deux. Avant de presser, zestez légèrement la peau sur 1 pamplemousse (passez une râpe fine sur la peau verte/jaune pour obtenir 1 cc de zeste) — le zeste contient les huiles essentielles les plus aromatiques et des flavonoïdes supplémentaires. Réservez le zeste.</div></div></div>
+          <div class="step" onclick="chk(this,'pamplemousse',2,4)"><div class="sn">2</div><div class="sb"><div class="sd">⏱ 5 min — Pressage et filtration</div><div class="step-txt">Pressez les 4 pamplemousses sur le presse-agrumes. Filtrez à travers un tamis fin pour enlever toute pulpe et les pépins. Le jus brut sera très amer — c'est normal. Versez dans le pichet avec l'eau froide.</div><div class="tip">💡 L'amertume du pamplemousse vient de la naringénine — cette molécule est précisément ce qui brûle les graisses ! Ne la supprimez pas en pressant trop doucement.</div></div></div>
+          <div class="step" onclick="chk(this,'pamplemousse',3,4)"><div class="sn">3</div><div class="sb"><div class="sd">⏱ 1 min — Équilibrage</div><div class="step-txt">Ajoutez le miel, le gingembre râpé, la pincée de sel et le zeste réservé. Mélangez vigoureusement. Le sel et le miel neutralisent 40% de l'amertume sans détruire les principes actifs. Goûtez et ajustez — le jus doit être légèrement amer, acidulé et doux à la fois.</div><div class="warn">⚠️ Médicaments : le pamplemousse interagit avec de nombreux médicaments (statines, anticoagulants, certains antidépresseurs). Si vous prenez des médicaments régulièrement, consultez votre médecin.</div></div></div>
+          <div class="step" onclick="chk(this,'pamplemousse',4,4)"><div class="sn">4</div><div class="sb"><div class="sd">🥛 Programme minceur</div><div class="step-txt"><strong>Cure minceur 14 jours :</strong> 1 verre (200ml) le matin à jeun + 1 verre 30 min avant le dîner.<br/><strong>Résultats attendus :</strong> Accélération du métabolisme, réduction de l'appétit, perte de 0.5-1kg/semaine associée à une alimentation saine.<br/><strong>Important :</strong> Efficace seulement combiné à une alimentation équilibrée et une activité physique.</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. JUS DE CITRON VERT CAMEROUNAIS -->
+  <div class="jus-card">
+    <div class="jc-header" onclick="toggle(this)">
+      <span class="jch-emoji">🍋</span>
+      <div class="jch-body">
+        <div class="jch-name">Eau Citronnée au Citron Vert & Menthe Camerounaise</div>
+        <div class="jch-origin">📍 Partout au Cameroun · Drink quotidien de la diaspora</div>
+        <div class="jch-tags"><span class="jtag t-detox">Detox quotidien</span><span class="jtag t-immune">Alcalinisant</span><span class="jtag t-cm">🇨🇲</span></div>
+        <div class="jch-desc">Simple mais extraordinairement efficace. Le citron vert camerounais (plus acide et parfumé que le citron jaune importé) associé à la menthe locale crée une eau alcalinisante qui nettoie le foie, booste l'énergie et embelli la peau en 2 semaines.</div>
+      </div>
+      <button class="jch-toggle">▼ Fabrication</button>
+    </div>
+    <div class="jc-macros">
+      <div class="mac"><span class="mac-v" style="color:#fbbf24">15</span><span class="mac-l">kcal/verre</span></div>
+      <div class="mac"><span class="mac-v" style="color:#22c55e">Alcalinisant</span><span class="mac-l">pH corporel</span></div>
+      <div class="mac"><span class="mac-v" style="color:#14b8a6">Detox</span><span class="mac-l">Foie & reins</span></div>
+    </div>
+    <div class="jc-timing">
+      <span class="jct">⏱ Total <small>5 min</small></span>
+      <span class="jct">🥛 <small>2L pour la journée</small></span>
+      <span class="jct">📊 <small>Très facile</small></span>
+    </div>
+    <div class="jc-details">
+      <div class="jcd">
+        <div class="benefits">
+          <div class="ben">🫀 Détox foie</div><div class="ben">🌟 Peau lumineuse</div>
+          <div class="ben">⚡ Énergie matin</div><div class="ben">💧 Hydratation</div>
+          <div class="ben">🦷 Blanchit les dents</div><div class="ben">🧘 Alcalinisant</div>
+        </div>
+        <span class="sec-t">🥬 Ingrédients (pour 2L — journée entière)</span>
+        <div class="ing-grid">
+          <div class="ing"><span class="ing-q">4</span><span class="ing-n">Citrons verts camerounais<span class="ing-note">bien mûrs, peau lisse et légèrement souple</span></span></div>
+          <div class="ing"><span class="ing-q">2L</span><span class="ing-n">Eau filtrée</span></div>
+          <div class="ing"><span class="ing-q">10</span><span class="ing-n">Feuilles de menthe fraîche<span class="ing-note">menthe poivrée ou menthe locale camerounaise</span></span></div>
+          <div class="ing"><span class="ing-q">2 cm</span><span class="ing-n">Gingembre frais en rondelles<span class="ing-note">optionnel — booste les effets detox</span></span></div>
+          <div class="ing"><span class="ing-q">1 cs</span><span class="ing-n">Miel brut<span class="ing-note">optionnel — version sucrée</span></span></div>
+          <div class="ing"><span class="ing-q">1 pincée</span><span class="ing-n">Sel de mer<span class="ing-note">électrolytes naturels</span></span></div>
+        </div>
+        <span class="sec-t">👨‍🍳 Fabrication</span>
+        <div class="prog-bar"><div class="pb-top"><span>Progression</span><span id="p-citron">0%</span></div><div class="pb-track"><div class="pb-fill" id="f-citron"></div></div></div>
+        <div class="steps">
+          <div class="step" onclick="chk(this,'citron',1,3)"><div class="sn">1</div><div class="sb"><div class="sd">⏱ 3 min — Préparation</div><div class="step-txt">Lavez et coupez les citrons verts en rondelles fines (ne les pressez pas — la méthode rondelles est plus lente mais donne un arôme supérieur). Froissez légèrement les feuilles de menthe. Dans un grand pichet ou bouteille, alternez couches de rondelles de citron, menthe et gingembre. Versez l'eau froide filtrée. Ajoutez le sel et miel si utilisé.</div><div class="tip">💡 Méthode express : pressez 3 citrons directement dans l'eau pour un jus instantané — moins élégant mais tout aussi efficace !</div></div></div>
+          <div class="step" onclick="chk(this,'citron',2,3)"><div class="sn">2</div><div class="sb"><div class="sd">⏱ 30 min à 8h — Infusion froide</div><div class="step-txt">Réfrigérez minimum 30 minutes. Pour une saveur optimale : préparez le soir et buvez le lendemain matin (infusion 8h). Les huiles essentielles du citron et de la menthe infusent lentement dans l'eau froide, créant une eau aromatisée naturellement sans amertume.</div></div></div>
+          <div class="step" onclick="chk(this,'citron',3,3)"><div class="sn">3</div><div class="sb"><div class="sd">🥛 Programme detox matin</div><div class="step-txt"><strong>Chaque matin :</strong> 1 grand verre (300ml) chaud ou froid à jeun, 15-20 min avant le petit-déjeuner.<br/><strong>Dans la journée :</strong> Buvez le reste de l'eau (2L) tout au long de la journée pour remplacer l'eau plate.<br/><strong>Durée de la cure :</strong> 30 jours minimum pour des résultats visibles sur la peau et l'énergie.</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════
+     🥭 FRUITS TROPICAUX
+══════════════════════════════ -->
+<div class="cat-section" data-cat="tropicaux">
+  <div class="cs-header">
+    <span class="cs-icon">🥭</span>
+    <span class="cs-name">Fruits Tropicaux du Cameroun</span>
+    <span class="cs-desc">Mangues, papayes, ananas, goyaves, corossols...</span>
+    <span class="cs-count">7 jus</span>
+  </div>
+
+  <!-- 4. JUS DE MANGUE -->
+  <div class="jus-card">
+    <div class="jc-header" onclick="toggle(this)">
+      <span class="jch-emoji">🥭</span>
+      <div class="jch-body">
+        <div class="jch-name">Jus de Mangue Camerounaise 100% Pur</div>
+        <div class="jch-origin">📍 Cameroun · Saison : Février-Juin (mangues Amélie et Kent)</div>
+        <div class="jch-tags"><span class="jtag t-energie">Énergie</span><span class="jtag t-beaute">Beauté</span><span class="jtag t-cm">🇨🇲 Saisonnier</span></div>
+        <div class="jch-desc">Le Cameroun produit parmi les meilleures mangues d'Afrique — la mangue Amélie (petite, très sucrée) et la mangue Kent (grosse, peu fibreuse, juteuse). Le jus pur de mangue camerounaise est une bombe de vitamines A, C et E pour la peau.</div>
+      </div>
+      <button class="jch-toggle">▼ Fabrication</button>
+    </div>
+    <div class="jc-macros">
+      <div class="mac"><span class="mac-v" style="color:#fbbf24">130</span><span class="mac-l">kcal/verre</span></div>
+      <div class="mac"><span class="mac-v" style="color:#ec4899">Vit A 200%</span><span class="mac-l">besoins/j</span></div>
+      <div class="mac"><span class="mac-v" style="color:#22c55e">Vit C 80%</span><span class="mac-l">besoins/j</span></div>
+      <div class="mac"><span class="mac-v" style="color:#a855f7">Bêta-caro.</span><span class="mac-l">Peau</span></div>
+    </div>
+    <div class="jc-timing">
+      <span class="jct">⏱ Total <small>10 min</small></span>
+      <span class="jct">🥭 Mangues <small>4-5 pour 1L</small></span>
+      <span class="jct">📊 <small>Facile</small></span>
+    </div>
+    <div class="jc-details">
+      <div class="jcd">
+        <div class="benefits">
+          <div class="ben">🌟 Peau rayonnante</div><div class="ben">👁️ Vue excellente</div>
+          <div class="ben">🧠 Mémoire</div><div class="ben">💪 Muscles</div>
+          <div class="ben">🛡️ Immunité</div><div class="ben">🤰 Grossesse</div>
+        </div>
+        <span class="sec-t">🥬 Ingrédients (pour 1L)</span>
+        <div class="ing-grid">
+          <div class="ing"><span class="ing-q">5</span><span class="ing-n">Mangues Kent ou Amélie mûres<span class="ing-note">peau jaune-orangée, parfum intense, chair souple au toucher</span></span></div>
+          <div class="ing"><span class="ing-q">200ml</span><span class="ing-n">Eau froide<span class="ing-note">moins si mangues très juteuses</span></span></div>
+          <div class="ing"><span class="ing-q">1 cs</span><span class="ing-n">Jus de citron vert<span class="ing-note">preserves la couleur et ajoute fraîcheur</span></span></div>
+          <div class="ing"><span class="ing-q">1 cc</span><span class="ing-n">Sucre vanillé<span class="ing-note">optionnel — la mangue mûre est très sucrée naturellement</span></span></div>
+        </div>
+        <span class="sec-t">👨‍🍳 Fabrication</span>
+        <div class="prog-bar"><div class="pb-top"><span>Progression</span><span id="p-mangue">0%</span></div><div class="pb-track"><div class="pb-fill" id="f-mangue"></div></div></div>
+        <div class="steps">
+          <div class="step" onclick="chk(this,'mangue',1,4)"><div class="sn">1</div><div class="sb"><div class="sd">⏱ 4 min — Épluchage et découpe</div><div class="step-txt">Lavez les mangues. Pour éplucher : coupez les deux "joues" de chaque côté du noyau. Avec un couteau, quadrillez la chair (sans percer la peau) et retournez pour faire apparaître les cubes. Grattez avec une cuillère. Grattez aussi la chair restant autour du noyau. Pour 1L de jus, vous avez besoin d'environ 800g de chair de mangue.</div><div class="tip">💡 Mangues moins mûres : ajoutez 1-2 cs de sucre et mixez plus longtemps pour casser les fibres.</div></div></div>
+          <div class="step" onclick="chk(this,'mangue',2,4)"><div class="sn">2</div><div class="sb"><div class="sd">⏱ 1 min — Mixage</div><div class="step-txt">Placez la chair de mangue dans le blender avec l'eau froide et le jus de citron. Mixez à haute vitesse 60 secondes. Le résultat est un nectar épais et lisse d'un beau jaune-orangé. Pour un jus clair : filtrez à travers un tamis fin en pressant. Pour un nectar épais (plus nutritif) : buvez tel quel sans filtrer.</div></div></div>
+          <div class="step" onclick="chk(this,'mangue',3,4)"><div class="sn">3</div><div class="sb"><div class="sd">⏱ 1 min — Ajustement</div><div class="step-txt">Goûtez — une bonne mangue camerounaise rend le jus naturellement très sucré. Ajoutez le sucre vanillé seulement si nécessaire. Si trop épais : ajoutez 100ml d'eau supplémentaire. Servez immédiatement sur glace ou réfrigérez.</div></div></div>
+          <div class="step" onclick="chk(this,'mangue',4,4)"><div class="sn">4</div><div class="sb"><div class="sd">🥛 Variantes camerounaises</div><div class="step-txt"><strong>Jus mangue-citron (Douala style) :</strong> + 2 citrons verts pressés + pincée de piment — délicieux et plus vitaminé.<br/><strong>Lassi mangue (diaspora) :</strong> Remplacez l'eau par du yaourt nature — boisson protéinée parfaite post-sport.<br/><strong>Cocktail fête :</strong> + menthe + gingembre + eau gazeuse — la boisson des fêtes camerounaises.</div></div></div>
+        </div>
+        <div class="box-blue"><span class="bt" style="color:#3b82f6">🧊 Conservation</span><div class="bc"><strong style="color:#fff">Frais :</strong> 24-48h au réfrigérateur<br/><strong style="color:#fff">Congélateur :</strong> 3 mois — en glaçons ou sachets portions<br/><strong style="color:#fff">Astuce saison :</strong> Pendant la saison des mangues (fév-juin), congelez en grande quantité pour avoir du jus toute l'année !</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. JUS DE PAPAYE -->
+  <div class="jus-card">
+    <div class="jc-header" onclick="toggle(this)">
+      <span class="jch-emoji">🍈</span>
+      <div class="jch-body">
+        <div class="jch-name">Jus de Papaye — Enzymes digestives naturelles</div>
+        <div class="jch-origin">📍 Yaoundé · Douala · Bertoua · Cultivée dans tout le Cameroun</div>
+        <div class="jch-tags"><span class="jtag t-digest">Digestion</span><span class="jtag t-beaute">Beauté</span><span class="jtag t-anti">Anti-âge</span><span class="jtag t-cm">🇨🇲</span></div>
+        <div class="jch-desc">La papaye camerounaise est parmi les plus douces et nutritives d'Afrique. Elle contient la papaïne — une enzyme digestive naturelle plus puissante que les médicaments pour les troubles digestifs. Excellente pour la peau, les articulations et la récupération post-maladie.</div>
+      </div>
+      <button class="jch-toggle">▼ Fabrication</button>
+    </div>
+    <div class="jc-macros">
+      <div class="mac"><span class="mac-v" style="color:#fbbf24">70</span><span class="mac-l">kcal/verre</span></div>
+      <div class="mac"><span class="mac-v" style="color:#f97316">Papaïne</span><span class="mac-l">Digestion</span></div>
+      <div class="mac"><span class="mac-v" style="color:#ec4899">Vit A ×2</span><span class="mac-l">besoins/j</span></div>
+      <div class="mac"><span class="mac-v" style="color:#22c55e">Vit C 150%</span><span class="mac-l">besoins/j</span></div>
+    </div>
+    <div class="jc-timing">
+      <span class="jct">⏱ Total <small>8 min</small></span>
+      <span class="jct">🍈 <small>½ grosse papaye pour 500ml</small></span>
+      <span class="jct">📊 <small>Très facile</small></span>
+    </div>
+    <div class="jc-details">
+      <div class="jcd">
+        <div class="benefits">
+          <div class="ben">🫀 Digestion parfaite</div><div class="ben">🌟 Peau anti-âge</div>
+          <div class="ben">🦴 Articulations</div><div class="ben">💊 Vermifuge naturel</div>
+          <div class="ben">🤰 Grossesse (modéré)</div><div class="ben">🛡️ Système immun.</div>
+        </div>
+        <span class="sec-t">🥬 Ingrédients (pour 1L)</span>
+        <div class="ing-grid">
+          <div class="ing"><span class="ing-q">1 kg</span><span class="ing-n">Papaye mûre épluchée<span class="ing-note">peau jaune-orangée, chair orange, souple au toucher</span></span></div>
+          <div class="ing"><span class="ing-q">300ml</span><span class="ing-n">Eau froide ou jus d'orange<span class="ing-note">le jus d'orange amplifie la vitamine C</span></span></div>
+          <div class="ing"><span class="ing-q">2 cs</span><span class="ing-n">Jus de citron vert<span class="ing-note">essentiel — active les enzymes et préserve la couleur</span></span></div>
+          <div class="ing"><span class="ing-q">1 cc</span><span class="ing-n">Gingembre frais râpé<span class="ing-note">booste les effets digestifs</span></span></div>
+          <div class="ing"><span class="ing-q">1 cs</span><span class="ing-n">Miel naturel<span class="ing-note">ou sucre selon goût</span></span></div>
+          <div class="ing"><span class="ing-q">1 pincée</span><span class="ing-n">Cannelle moulue<span class="ing-note">arôme et propriétés anti-inflammatoires</span></span></div>
+        </div>
+        <span class="sec-t">👨‍🍳 Fabrication</span>
+        <div class="prog-bar"><div class="pb-top"><span>Progression</span><span id="p-papaye">0%</span></div><div class="pb-track"><div class="pb-fill" id="f-papaye"></div></div></div>
+        <div class="steps">
+          <div class="step" onclick="chk(this,'papaye',1,4)"><div class="sn">1</div><div class="sb"><div class="sd">⏱ 3 min — Préparation de la papaye</div><div class="step-txt">Coupez la papaye en deux, enlevez les graines noires avec une cuillère (ne les jetez pas — elles se sèchent et s'utilisent comme poivre naturel). Épluchez avec un couteau. Coupez la chair en gros cubes. La chair doit être orange vif — si elle est encore blanche, la papaye n'est pas assez mûre.</div><div class="tip">💡 Les graines de papaye séchées : concassez-les légèrement et utilisez-les comme condiment poivré naturel ou ajoutez-en 5-6 dans votre jus pour un effet vermifuge puissant (goût légèrement piquant-poivré).</div></div></div>
+          <div class="step" onclick="chk(this,'papaye',2,4)"><div class="sn">2</div><div class="sb"><div class="sd">⏱ 1 min — Mixage</div><div class="step-txt">Placez les cubes de papaye dans le blender avec l'eau froide (ou jus d'orange), le jus de citron, le gingembre et la cannelle. Mixez 45 secondes à haute vitesse. La papaye est très molle — elle se mixe facilement sans grumeaux. Goûtez et ajoutez le miel si nécessaire.</div><div class="warn">⚠️ Femmes enceintes : La papaye TRÈS mûre en jus est généralement sûre en petite quantité. Évitez la papaye verte (non mûre) pendant la grossesse car elle contient du latex qui peut provoquer des contractions.</div></div></div>
+          <div class="step" onclick="chk(this,'papaye',3,4)"><div class="sn">3</div><div class="sb"><div class="sd">⏱ 2 min — Filtration (optionnelle)</div><div class="step-txt">Pour un nectar épais et nutritif : buvez directement sans filtrer. Pour un jus clair et plus léger : filtrez à travers un tamis fin en pressant la pulpe. La pulpe peut être réutilisée en masque visage (hydratant et exfoliant naturel grâce à la papaïne).</div></div></div>
+          <div class="step" onclick="chk(this,'papaye',4,4)"><div class="sn">4</div><div class="sb"><div class="sd">🥛 Programme digestif</div><div class="step-txt"><strong>Troubles digestifs aigus :</strong> 2 verres par jour pendant 7 jours à jeun (matin et avant le dîner).<br/><strong>Entretien :</strong> 1 verre 30 min avant le repas principal — aide à décomposer les protéines.<br/><strong>Masque visage bonus :</strong> Appliquez la pulpe filtrée sur le visage 10 minutes → peau lissée et hydratée.</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. JUS D'ANANAS CAMEROUNAIS -->
+  <div class="jus-card">
+    <div class="jc-header" onclick="toggle(this)">
+      <span class="jch-emoji">🍍</span>
+      <div class="jch-body">
+        <div class="jch-name">Jus d'Ananas Camerounais au Gingembre</div>
+        <div class="jch-origin">📍 Région du Centre · Mbalmayo · Éséka — Ananas "Pain de Sucre"</div>
+        <div class="jch-tags"><span class="jtag t-digest">Anti-inflammatoire</span><span class="jtag t-energie">Énergie</span><span class="jtag t-sport">Sport</span><span class="jtag t-cm">🇨🇲</span></div>
+        <div class="jch-desc">L'ananas "Pain de Sucre" de la région Centre du Cameroun est réputé dans toute l'Afrique pour sa douceur exceptionnelle. Riche en bromélaïne (enzyme anti-inflammatoire et aide à la digestion des protéines), en manganèse et en vitamine C. Idéal après l'effort sportif.</div>
+      </div>
+      <button class="jch-toggle">▼ Fabrication</button>
+    </div>
+    <div class="jc-macros">
+      <div class="mac"><span class="mac-v" style="color:#fbbf24">120</span><span class="mac-l">kcal/verre</span></div>
+      <div class="mac"><span class="mac-v" style="color:#f97316">Bromélaïne</span><span class="mac-l">Anti-inflam.</span></div>
+      <div class="mac"><span class="mac-v" style="color:#22c55e">Manganèse</span><span class="mac-l">Antioxydant</span></div>
+    </div>
+    <div class="jc-timing">
+      <span class="jct">⏱ Total <small>12 min</small></span>
+      <span class="jct">🍍 <small>1 ananas moyen pour 1L</small></span>
+      <span class="jct">📊 <small>Facile</small></span>
+    </div>
+    <div class="jc-details">
+      <div class="jcd">
+        <div class="benefits">
+          <div class="ben">💪 Récupération sport</div><div class="ben">🦴 Articulations</div>
+          <div class="ben">🫀 Anti-inflammatoire</div><div class="ben">🍽️ Digestion protéines</div>
+          <div class="ben">⚡ Énergie rapide</div><div class="ben">🛡️ Immunité</div>
+        </div>
+        <span class="sec-t">🥬 Ingrédients (pour 1L)</span>
+        <div class="ing-grid">
+          <div class="ing"><span class="ing-q">1</span><span class="ing-n">Ananas Pain de Sucre mûr<span class="ing-note">odeur sucrée à la base, feuilles qui se détachent facilement</span></span></div>
+          <div class="ing"><span class="ing-q">3 cm</span><span class="ing-n">Gingembre frais<span class="ing-note">amplifie la bromélaïne et ajoute du piquant</span></span></div>
+          <div class="ing"><span class="ing-q">200ml</span><span class="ing-n">Eau froide<span class="ing-note">moins si ananas très juteux</span></span></div>
+          <div class="ing"><span class="ing-q">1 cs</span><span class="ing-n">Jus de citron vert</span></div>
+          <div class="ing"><span class="ing-q">1 branche</span><span class="ing-n">Menthe fraîche<span class="ing-note">optionnel — pour la fraîcheur</span></span></div>
+          <div class="ing"><span class="ing-q">1 pincée</span><span class="ing-n">Poivre noir<span class="ing-note">amplifie l'absorption des enzymes</span></span></div>
+        </div>
+        <span class="sec-t">👨‍🍳 Fabrication</span>
+        <div class="prog-bar"><div class="pb-top"><span>Progression</span><span id="p-ananas">0%</span></div><div class="pb-track"><div class="pb-fill" id="f-ananas"></div></div></div>
+        <div class="steps">
+          <div class="step" onclick="chk(this,'ananas',1,4)"><div class="sn">1</div><div class="sb"><div class="sd">⏱ 5 min — Découpe de l'ananas</div><div class="step-txt">Coupez la couronne et la base de l'ananas. Posez-le debout et coupez la peau de haut en bas en suivant la courbure. Retirez les "yeux" (petits points bruns) avec la pointe d'un couteau en faisant des petites incisions en V. Coupez en quartiers, enlevez le cœur dur (réservez-le !), puis découpez la chair en morceaux. Le cœur d'ananas contient encore plus de bromélaïne — mixez-le aussi.</div><div class="tip">💡 Ne jetez pas la peau d'ananas ! Faites bouillir avec de l'eau et du gingembre 20 min pour une infusion detox gratuite — le "agua de piña" camerounais.</div></div></div>
+          <div class="step" onclick="chk(this,'ananas',2,4)"><div class="sn">2</div><div class="sb"><div class="sd">⏱ 2 min — Mixage et filtration</div><div class="step-txt">Mixez la chair d'ananas (y compris le cœur) avec l'eau froide, le gingembre, le jus de citron et la pincée de poivre noir à haute vitesse pendant 45 secondes. Filtrez à travers un tamis fin en pressant bien — la pulpe d'ananas est riche en fibres. Vous obtenez un jus clair, jaune doré et très parfumé.</div></div></div>
+          <div class="step" onclick="chk(this,'ananas',3,4)"><div class="sn">3</div><div class="sb"><div class="sd">⏱ 2 min — Finition</div><div class="step-txt">Goûtez — l'ananas camerounais est naturellement très sucré. N'ajoutez pas de sucre. Ajoutez la menthe froissée. Servez immédiatement sur glace pour maximum de bromélaïne active (la chaleur détruit cette enzyme).</div><div class="warn">⚠️ La bromélaïne est sensible à la chaleur. Consommez ce jus frais, jamais chauffé. Ne le mélangez pas à du lait chaud ou du thé chaud — l'enzyme sera détruite.</div></div></div>
+          <div class="step" onclick="chk(this,'ananas',4,4)"><div class="sn">4</div><div class="sb"><div class="sd">🥛 Quand boire ce jus</div><div class="step-txt"><strong>Post-sport :</strong> Dans les 30 min après l'entraînement — la bromélaïne répare les micro-déchirures musculaires.<br/><strong>Après un repas riche en viande :</strong> La bromélaïne décompose les protéines — facilite la digestion.<br/><strong>Douleurs articulaires :</strong> 2 verres par jour pendant 2 semaines — effet anti-inflammatoire notable.</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. JUS DE GOYAVE -->
+  <div class="jus-card">
+    <div class="jc-header" onclick="toggle(this)">
+      <span class="jch-emoji">🟢</span>
+      <div class="jch-body">
+        <div class="jch-name">Jus de Goyave Rose — Champion de la Vitamine C</div>
+        <div class="jch-origin">📍 Partout au Cameroun · Fruit le plus populaire des enfants camerounais</div>
+        <div class="jch-tags"><span class="jtag t-immune">Vit C ×4 orange</span><span class="jtag t-beaute">Peau</span><span class="jtag t-cm">🇨🇲</span></div>
+        <div class="jch-desc">La goyave rose camerounaise contient 4× plus de vitamine C qu'une orange à poids égal ! C'est le "superfrunt pauvre" du Cameroun — accessible à tous, extraordinairement nutritif. Le jus de goyave est le secret de beauté des femmes de l'Ouest Cameroun.</div>
+      </div>
+      <button class="jch-toggle">▼ Fabrication</button>
+    </div>
+    <div class="jc-macros">
+      <div class="mac"><span class="mac-v" style="color:#fbbf24">95</span><span class="mac-l">kcal/verre</span></div>
+      <div class="mac"><span class="mac-v" style="color:#22c55e">Vit C ×4</span><span class="mac-l">vs orange</span></div>
+      <div class="mac"><span class="mac-v" style="color:#ec4899">Lycopène</span><span class="mac-l">Anti-cancer</span></div>
+      <div class="mac"><span class="mac-v" style="color:#a855f7">Potassium</span><span class="mac-l">Cœur</span></div>
+    </div>
+    <div class="jc-timing">
+      <span class="jct">⏱ Total <small>10 min</small></span>
+      <span class="jct">🟢 <small>8-10 goyaves pour 1L</small></span>
+    </div>
+    <div class="jc-details">
+      <div class="jcd">
+        <div class="benefits">
+          <div class="ben">🌟 Peau parfaite</div><div class="ben">🛡️ Super-immunité</div>
+          <div class="ben">❤️ Cœur sain</div><div class="ben">🧠 Mémoire</div>
+          <div class="ben">🩺 Anti-diabète</div><div class="ben">💩 Constipation</div>
+        </div>
+        <span class="sec-t">🥬 Ingrédients (pour 1L)</span>
+        <div class="ing-grid">
+          <div class="ing"><span class="ing-q">10</span><span class="ing-n">Goyaves roses mûres<span class="ing-note">parfum très intense, légèrement molles au toucher</span></span></div>
+          <div class="ing"><span class="ing-q">400ml</span><span class="ing-n">Eau froide</span></div>
+          <div class="ing"><span class="ing-q">2 cs</span><span class="ing-n">Sucre ou miel<span class="ing-note">la goyave est plus acide que sucrée</span></span></div>
+          <div class="ing"><span class="ing-q">1</span><span class="ing-n">Citron vert pressé</span></div>
+          <div class="ing"><span class="ing-q">½ cc</span><span class="ing-n">Sel de mer</span></div>
+        </div>
+        <span class="sec-t">👨‍🍳 Fabrication</span>
+        <div class="prog-bar"><div class="pb-top"><span>Progression</span><span id="p-goyave">0%</span></div><div class="pb-track"><div class="pb-fill" id="f-goyave"></div></div></div>
+        <div class="steps">
+          <div class="step" onclick="chk(this,'goyave',1,4)"><div class="sn">1</div><div class="sb"><div class="sd">⏱ 3 min — Préparation</div><div class="step-txt">Lavez soigneusement les goyaves (elles ont souvent des petits insectes naturels). Coupez les extrémités. Coupez en quartiers — inutile d'éplucher (la peau est nutritive et se mixe bien). Les pépins durs au centre sont normaux — le blender les réduira ou ils seront éliminés à la filtration.</div></div></div>
+          <div class="step" onclick="chk(this,'goyave',2,4)"><div class="sn">2</div><div class="sb"><div class="sd">⏱ 2 min — Mixage puissant</div><div class="step-txt">Mixez les quartiers de goyave avec l'eau froide à haute vitesse 60 secondes. La goyave est très fibreuse — mixez longtemps pour briser les fibres. Vous obtenez une purée épaisse rose-orangée.</div></div></div>
+          <div class="step" onclick="chk(this,'goyave',3,4)"><div class="sn">3</div><div class="sb"><div class="sd">⏱ 3 min — Filtration (étape cruciale)</div><div class="step-txt">Versez la purée sur un tamis très fin ou une étamine. Pressez et malaxez énergiquement — la goyave a beaucoup de fibres qui retiennent le jus. Filtrez deux fois si nécessaire pour un jus clair. Ajoutez citron, sucre et sel. Mélangez. Le jus doit être rose-corail, légèrement trouble et très parfumé.</div><div class="tip">💡 Gardez la pulpe filtrée ! Mélangée avec du yaourt nature et du miel → dessert santé camerounais. Ou ajoutez-la dans votre porridge matinal.</div></div></div>
+          <div class="step" onclick="chk(this,'goyave',4,4)"><div class="sn">4</div><div class="sb"><div class="sd">🥛 Programme beauté goyave</div><div class="step-txt"><strong>Cure beauté peau 21 jours :</strong> 1 grand verre chaque matin à jeun.<br/><strong>Résultats semaine 1 :</strong> Teint plus lumineux<br/><strong>Résultats semaine 3 :</strong> Rides réduites, taches éclaircies<br/><strong>Explication :</strong> La vitamine C de la goyave stimule la production de collagène cutané — la protéine qui maintient la peau ferme et jeune.</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. JUS DE COROSSOL -->
+  <div class="jus-card">
+    <div class="jc-header" onclick="toggle(this)">
+      <span class="jch-emoji">🌵</span>
+      <div class="jch-body">
+        <div class="jch-name">Jus de Corossol (Soursop) — Anti-cancer legendaire</div>
+        <div class="jch-origin">📍 Région du Littoral · Limbé · Kribi · Bafang</div>
+        <div class="jch-tags"><span class="jtag t-anti">Anti-cancer</span><span class="jtag t-immune">Immunité</span><span class="jtag t-digest">Digestion</span><span class="jtag t-cm">🇨🇲</span></div>
+        <div class="jch-desc">Le corossol (Annona muricata) est le fruit le plus étudié scientifiquement en Afrique pour ses propriétés anti-cancéreuses. Les acétogénines qu'il contient ont montré in vitro une capacité à éliminer les cellules cancéreuses 10 000× supérieure à la chimiothérapie. Utilisé en médecine traditionnelle camerounaise depuis des siècles.</div>
+      </div>
+      <button class="jch-toggle">▼ Fabrication</button>
+    </div>
+    <div class="jc-macros">
+      <div class="mac"><span class="mac-v" style="color:#fbbf24">85</span><span class="mac-l">kcal/verre</span></div>
+      <div class="mac"><span class="mac-v" style="color:#a855f7">Acétogénines</span><span class="mac-l">Anti-cancer</span></div>
+      <div class="mac"><span class="mac-v" style="color:#22c55e">Vit C</span><span class="mac-l">Immunité</span></div>
+      <div class="mac"><span class="mac-v" style="color:#14b8a6">Magnésium</span><span class="mac-l">Système nerveux</span></div>
+    </div>
+    <div class="jc-timing">
+      <span class="jct">⏱ Total <small>10 min</small></span>
+      <span class="jct">🌵 <small>½ corossol moyen pour 1L</small></span>
+    </div>
+    <div class="jc-details">
+      <div class="jcd">
+        <div class="benefits">
+          <div class="ben">🛡️ Anti-cancer naturel</div><div class="ben">💆 Anti-stress</div>
+          <div class="ben">😴 Sommeil profond</div><div class="ben">🦠 Antibactérien</div>
+          <div class="ben">🫀 Anti-inflammatoire</div><div class="ben">⚡ Énergie</div>
+        </div>
+        <span class="sec-t">🥬 Ingrédients (pour 1L)</span>
+        <div class="ing-grid">
+          <div class="ing"><span class="ing-q">600g</span><span class="ing-n">Pulpe de corossol<span class="ing-note">chair blanche, sans la peau verte et sans les graines noires</span></span></div>
+          <div class="ing"><span class="ing-q">400ml</span><span class="ing-n">Eau froide ou lait de coco<span class="ing-note">le lait de coco donne un jus plus crémeux et tropical</span></span></div>
+          <div class="ing"><span class="ing-q">2 cs</span><span class="ing-n">Sucre de canne ou miel</span></div>
+          <div class="ing"><span class="ing-q">½</span><span class="ing-n">Citron vert<span class="ing-note">jus</span></span></div>
+          <div class="ing"><span class="ing-q">1 pincée</span><span class="ing-n">Noix de muscade<span class="ing-note">ajoute un arôme et amplifie l'effet relaxant</span></span></div>
+        </div>
+        <span class="sec-t">👨‍🍳 Fabrication</span>
+        <div class="prog-bar"><div class="pb-top"><span>Progression</span><span id="p-corossol">0%</span></div><div class="pb-track"><div class="pb-fill" id="f-corossol"></div></div></div>
+        <div class="steps">
+          <div class="step" onclick="chk(this,'corossol',1,4)"><div class="sn">1</div><div class="sb"><div class="sd">⏱ 5 min — Extraction de la pulpe</div><div class="step-txt">Coupez le corossol en deux. Retirez toutes les graines noires et dures avec les mains ou une cuillère — elles sont légèrement toxiques et ne doivent pas être mixées. La pulpe blanche fibreuse est comestible. Récupérez-la avec les mains en étirant les fibres. Pesez pour vous assurer d'avoir 600g de pulpe propre.</div><div class="warn">⚠️ Les graines de corossol sont toxiques — retirez-les toutes soigneusement avant de mixer. Une ou deux accidentellement n'est pas dangereux mais en grande quantité oui.</div></div></div>
+          <div class="step" onclick="chk(this,'corossol',2,4)"><div class="sn">2</div><div class="sb"><div class="sd">⏱ 2 min — Mixage et filtration</div><div class="step-txt">Mixez la pulpe avec l'eau froide ou lait de coco, le jus de citron et la noix de muscade à haute vitesse 60 secondes. Filtrez à travers un tamis fin en pressant bien — les fibres du corossol sont très présentes. Ajoutez le sucre/miel et mélangez. Goûtez — le corossol a une saveur tropicale unique, légèrement acide et florale.</div></div></div>
+          <div class="step" onclick="chk(this,'corossol',3,4)"><div class="sn">3</div><div class="sb"><div class="sd">⏱ 1 min — Service</div><div class="step-txt">Servez frais sur glaçons. Le jus de corossol au lait de coco est particulièrement délicieux — crémeux et tropical. Pour une version cocktail fête : ajoutez quelques gouttes de Baileys ou d'extrait de vanille.</div></div></div>
+          <div class="step" onclick="chk(this,'corossol',4,4)"><div class="sn">4</div><div class="sb"><div class="sd">🥛 Programme santé</div><div class="step-txt"><strong>Prévention :</strong> 1 verre 3 fois/semaine<br/><strong>Récupération post-maladie :</strong> 1 verre chaque matin pendant 14 jours<br/><strong>Insomnie :</strong> 1 verre 30 min avant de dormir — l'effet calmant naturel du corossol est bien documenté<br/><strong>⚠️ Avertissement :</strong> Ne pas consommer en excès (max 2 verres/jour sur de longues périodes). Déconseillé aux personnes sous chimiothérapie sans avis médical.</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. JUS DE GRENADILLE (FRUIT DE LA PASSION) -->
+  <div class="jus-card">
+    <div class="jc-header" onclick="toggle(this)">
+      <span class="jch-emoji">💜</span>
+      <div class="jch-body">
+        <div class="jch-name">Jus de Grenadille (Fruit de la Passion)</div>
+        <div class="jch-origin">📍 Région de l'Ouest · Bafoussam · Dschang · Mbouda</div>
+        <div class="jch-tags"><span class="jtag t-anti">Anti-stress</span><span class="jtag t-beaute">Beauté</span><span class="jtag t-immune">Immunité</span><span class="jtag t-cm">🇨🇲</span></div>
+        <div class="jch-desc">La grenadille (fruit de la passion) de la région de l'Ouest Cameroun est parmi les meilleures du monde. Son jus est naturellement concentré, très aromatique et riche en composés qui réduisent l'anxiété, améliorent le sommeil et stimulent la production de collagène.</div>
+      </div>
+      <button class="jch-toggle">▼ Fabrication</button>
+    </div>
+    <div class="jc-macros">
+      <div class="mac"><span class="mac-v" style="color:#fbbf24">95</span><span class="mac-l">kcal/verre</span></div>
+      <div class="mac"><span class="mac-v" style="color:#a855f7">Flavonoïdes</span><span class="mac-l">Anti-anxiété</span></div>
+      <div class="mac"><span class="mac-v" style="color:#22c55e">Fer</span><span class="mac-l">Antianémique</span></div>
+    </div>
+    <div class="jc-timing">
+      <span class="jct">⏱ Total <small>8 min</small></span>
+      <span class="jct">💜 <small>10-12 fruits pour 500ml</small></span>
+    </div>
+    <div class="jc-details">
+      <div class="jcd">
+        <div class="benefits">
+          <div class="ben">😌 Anti-anxiété naturel</div><div class="ben">😴 Meilleur sommeil</div>
+          <div class="ben">🌟 Collagène peau</div><div class="ben">❤️ Tension artérielle</div>
+          <div class="ben">🧠 Concentration</div><div class="ben">⚡ Énergie</div>
+        </div>
+        <span class="sec-t">🥬 Ingrédients (pour 500ml)</span>
+        <div class="ing-grid">
+          <div class="ing"><span class="ing-q">12</span><span class="ing-n">Grenadilles mûres<span class="ing-note">peau ridée et sombre = plus sucrée et mûre</span></span></div>
+          <div class="ing"><span class="ing-q">300ml</span><span class="ing-n">Eau froide</span></div>
+          <div class="ing"><span class="ing-q">2 cs</span><span class="ing-n">Sucre ou miel<span class="ing-note">la grenadille est naturellement acide</span></span></div>
+          <div class="ing"><span class="ing-q">½</span><span class="ing-n">Citron vert</span></div>
+        </div>
+        <span class="sec-t">👨‍🍳 Fabrication</span>
+        <div class="prog-bar"><div class="pb-top"><span>Progression</span><span id="p-grenadille">0%</span></div><div class="pb-track"><div class="pb-fill" id="f-grenadille"></div></div></div>
+        <div class="steps">
+          <div class="step" onclick="chk(this,'grenadille',1,3)"><div class="sn">1</div><div class="sb"><div class="sd">⏱ 4 min — Extraction</div><div class="step-txt">Coupez chaque grenadille en deux. Avec une cuillère, récupérez toute la pulpe gélatineuse orange avec ses graines dans un bol. Les graines sont comestibles et contiennent des fibres et nutriments importants — ne les retirez pas sauf si vous souhaitez un jus très clair.</div><div class="tip">💡 Astuce maturité : une grenadille à peau lisse n'est pas encore mûre. Attendez qu'elle soit ridée et sombre — sa saveur sera 3× plus intense et sucrée.</div></div></div>
+          <div class="step" onclick="chk(this,'grenadille',2,3)"><div class="sn">2</div><div class="sb"><div class="sd">⏱ 2 min — Préparation du jus</div><div class="step-txt">Méthode 1 (avec graines — le plus nutritif) : Versez la pulpe avec graines dans un pichet, ajoutez l'eau froide, le sucre et le citron. Mélangez vigoureusement. Servez tel quel.<br/>Méthode 2 (jus clair) : Filtrez la pulpe à travers un tamis en pressant avec une cuillère pour extraire le jus sans les graines. Ajoutez eau, sucre, citron.</div></div></div>
+          <div class="step" onclick="chk(this,'grenadille',3,3)"><div class="sn">3</div><div class="sb"><div class="sd">🥛 Utilisation anti-stress</div><div class="step-txt"><strong>Stress aigu :</strong> 1 verre pur (sans eau) — les flavonoïdes agissent en 20-30 minutes.<br/><strong>Insomnie :</strong> 1 verre 45 min avant de dormir — favorise un sommeil profond sans somnolence matinale.<br/><strong>Cocktail santé :</strong> Mélangez grenadille + lait de coco + miel = le dessert-santé le plus délicieux du Cameroun !</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     🌿 PLANTES MÉDICINALES
+══════════════════════════════ -->
+<div class="cat-section" data-cat="plantes">
+  <div class="cs-header">
+    <span class="cs-icon">🌿</span>
+    <span class="cs-name">Plantes Médicinales Camerounaises</span>
+    <span class="cs-desc">Citronnelle, feuilles de goyavier, feuilles de manguier, moringa...</span>
+    <span class="cs-count">4 jus</span>
+  </div>
+
+  <!-- 10. INFUSION CITRONNELLE GINGEMBRE -->
+  <div class="jus-card">
+    <div class="jc-header" onclick="toggle(this)">
+      <span class="jch-emoji">🌾</span>
+      <div class="jch-body">
+        <div class="jch-name">Infusion Citronnelle · Gingembre · Citron — Fièvre & Grippe</div>
+        <div class="jch-origin">📍 Médecine traditionnelle camerounaise · Remède des mamans</div>
+        <div class="jch-tags"><span class="jtag t-immune">Anti-fièvre</span><span class="jtag t-anti">Antibactérien</span><span class="jtag t-cm">🇨🇲 Traditionnel</span></div>
+        <div class="jch-desc">Le remède traditionnel camerounais par excellence contre la grippe, la fièvre et les douleurs. La citronnelle (nommée "localement herbe de citron") est puissamment antiseptique et antipyrétique. Combinée au gingembre et au citron, elle crée une infusion thérapeutique que les médecins camerounais recommandent en complément des médicaments.</div>
+      </div>
+      <button class="jch-toggle">▼ Fabrication</button>
+    </div>
+    <div class="jc-macros">
+      <div class="mac"><span class="mac-v" style="color:#fbbf24">20</span><span class="mac-l">kcal/tasse</span></div>
+      <div class="mac"><span class="mac-v" style="color:#22c55e">Citral</span><span class="mac-l">Anti-fièvre</span></div>
+      <div class="mac"><span class="mac-v" style="color:#14b8a6">Géraniol</span><span class="mac-l">Antibactérien</span></div>
+    </div>
+    <div class="jc-timing">
+      <span class="jct">⏱ Préparation <small>5 min</small></span>
+      <span class="jct">🕐 Infusion <small>10-15 min</small></span>
+      <span class="jct">☕ <small>4 tasses</small></span>
+    </div>
+    <div class="jc-details">
+      <div class="jcd">
+        <div class="benefits">
+          <div class="ben">🌡️ Réduit la fièvre</div><div class="ben">🤧 Anti-grippe</div>
+          <div class="ben">🦠 Antibactérien</div><div class="ben">😴 Favorise le sommeil</div>
+          <div class="ben">🫀 Calme l'estomac</div><div class="ben">💆 Anti-stress</div>
+        </div>
+        <span class="sec-t">🥬 Ingrédients (pour 4 tasses)</span>
+        <div class="ing-grid">
+          <div class="ing"><span class="ing-q">4 tiges</span><span class="ing-n">Citronnelle fraîche<span class="ing-note">écrasez le bas pour libérer les huiles essentielles</span></span></div>
+          <div class="ing"><span class="ing-q">5 cm</span><span class="ing-n">Gingembre frais en rondelles<span class="ing-note">lavé, non épluché</span></span></div>
+          <div class="ing"><span class="ing-q">1L</span><span class="ing-n">Eau filtrée</span></div>
+          <div class="ing"><span class="ing-q">2</span><span class="ing-n">Citrons verts — jus et zeste<span class="ing-note">ajoutez après infusion pour préserver vitamine C</span></span></div>
+          <div class="ing"><span class="ing-q">2 cs</span><span class="ing-n">Miel brut<span class="ing-note">ajoutez quand tiède — le miel chaud perd ses propriétés</span></span></div>
+          <div class="ing"><span class="ing-q">3</span><span class="ing-n">Clous de girofle<span class="ing-note">anesthésiant naturel — aide contre les maux de gorge</span></span></div>
+          <div class="ing"><span class="ing-q">1 bâton</span><span class="ing-n">Cannelle<span class="ing-note">anti-inflammatoire supplémentaire</span></span></div>
+        </div>
+        <span class="sec-t">👨‍🍳 Fabrication</span>
+        <div class="prog-bar"><div class="pb-top"><span>Progression</span><span id="p-citronnelle">0%</span></div><div class="pb-track"><div class="pb-fill" id="f-citronnelle"></div></div></div>
+        <div class="steps">
+          <div class="step" onclick="chk(this,'citronnelle',1,4)"><div class="sn">1</div><div class="sb"><div class="sd">⏱ 3 min — Préparation des ingrédients</div><div class="step-txt">Coupez les tiges de citronnelle en tronçons de 5 cm. Écrasez la base de chaque tronçon avec le plat d'un couteau ou un marteau — cette étape libère les huiles essentielles (citral et géraniol) qui sont les principes actifs thérapeutiques. Coupez le gingembre en rondelles épaisses. Zestez les citrons avant de les presser.</div><div class="tip">💡 Comment choisir la citronnelle : elle doit sentir intensément le citron quand vous frottez une feuille. Si l'arôme est faible, la plante a perdu ses huiles essentielles.</div></div></div>
+          <div class="step" onclick="chk(this,'citronnelle',2,4)"><div class="sn">2</div><div class="sb"><div class="sd">⏱ 15 min — Infusion chaude</div><div class="step-txt">Portez l'eau à ébullition. Ajoutez la citronnelle écrasée, le gingembre, les clous de girofle et la cannelle. Baissez à feu moyen et laissez frémir (petites bulles) pendant 10 minutes — ne pas faire bouillir violemment (détruit les huiles essentielles). Couvrez pendant l'infusion pour éviter l'évaporation des molécules aromatiques actives.</div></div></div>
+          <div class="step" onclick="chk(this,'citronnelle',3,4)"><div class="sn">3</div><div class="sb"><div class="sd">⏱ 2 min — Filtration et finition</div><div class="step-txt">Filtrez dans une théière ou pichet. Laissez tiédir à 50-60°C (trop chaud pour ajouter le miel et le jus de citron). Ajoutez le miel (il perd ses propriétés au-dessus de 40°C — vérifiez en trempant le doigt : doit être chaud mais supportable), le jus de citron et le zeste. Mélangez.</div><div class="warn">⚠️ Ne jamais ajouter le miel dans une boisson bouillante — la chaleur détruit tous ses enzymes et propriétés antibactériennes. Attendez qu'elle soit tiède.</div></div></div>
+          <div class="step" onclick="chk(this,'citronnelle',4,4)"><div class="sn">4</div><div class="sb"><div class="sd">☕ Protocole thérapeutique</div><div class="step-txt"><strong>Fièvre/grippe :</strong> 4 tasses chaudes par jour (toutes les 4h) jusqu'à guérison<br/><strong>Prévention saison des pluies :</strong> 2 tasses le soir pendant la période épidémique<br/><strong>Insomnie/stress :</strong> 1 grande tasse chaude 30 min avant de dormir<br/><strong>Douleurs menstruelles :</strong> 2-3 tasses chaudes les premiers jours — la citronnelle est un antispasmodique utérin naturel.</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11. JUS FEUILLES MANGUIER -->
+  <div class="jus-card">
+    <div class="jc-header" onclick="toggle(this)">
+      <span class="jch-emoji">🌿</span>
+      <div class="jch-body">
+        <div class="jch-name">Infusion Feuilles de Manguier — Anti-diabète naturel</div>
+        <div class="jch-origin">📍 Médecine traditionnelle camerounaise · Recommandé par herboristes</div>
+        <div class="jch-tags"><span class="jtag t-anti">Anti-diabète</span><span class="jtag t-detox">Detox</span><span class="jtag t-cm">🇨🇲 Médecine trad.</span></div>
+        <div class="jch-desc">Les jeunes feuilles de manguier (rougeâtres) contiennent de la mangiférine — un composé qui régule la glycémie aussi efficacement que certains médicaments antidiabétiques. Utilisée depuis des générations par les guérisseurs camerounais. Des études scientifiques récentes confirment ses propriétés.</div>
+      </div>
+      <button class="jch-toggle">▼ Fabrication</button>
+    </div>
+    <div class="jc-macros">
+      <div class="mac"><span class="mac-v" style="color:#fbbf24">5</span><span class="mac-l">kcal/tasse</span></div>
+      <div class="mac"><span class="mac-v" style="color:#a855f7">Mangiférine</span><span class="mac-l">Anti-diabète</span></div>
+      <div class="mac"><span class="mac-v" style="color:#22c55e">Tanins</span><span class="mac-l">Antioxydant</span></div>
+    </div>
+    <div class="jc-timing">
+      <span class="jct">⏱ Préparation <small>5 min</small></span>
+      <span class="jct">🕐 Infusion <small>10 min</small></span>
+      <span class="jct">📊 <small>Très facile</small></span>
+    </div>
+    <div class="jc-details">
+      <div class="jcd">
+        <div class="benefits">
+          <div class="ben">🩺 Régule glycémie</div><div class="ben">💊 Réduit cholestérol</div>
+          <div class="ben">❤️ Tension artérielle</div><div class="ben">🫀 Detox foie</div>
+          <div class="ben">🛡️ Antioxydant</div><div class="ben">🌡️ Anti-fièvre</div>
+        </div>
+        <span class="sec-t">🥬 Ingrédients (pour 4 tasses)</span>
+        <div class="ing-grid">
+          <div class="ing"><span class="ing-q">10</span><span class="ing-n">Jeunes feuilles de manguier<span class="ing-note">rougeâtres et tendres — pas les vieilles feuilles vertes dures</span></span></div>
+          <div class="ing"><span class="ing-q">1L</span><span class="ing-n">Eau filtrée</span></div>
+          <div class="ing"><span class="ing-q">1 cs</span><span class="ing-n">Miel (optionnel)<span class="ing-note">n'ajoutez pas si diabétique</span></span></div>
+          <div class="ing"><span class="ing-q">½</span><span class="ing-n">Citron vert<span class="ing-note">améliore le goût et la conservation</span></span></div>
+        </div>
+        <span class="sec-t">👨‍🍳 Fabrication</span>
+        <div class="prog-bar"><div class="pb-top"><span>Progression</span><span id="p-manguier">0%</span></div><div class="pb-track"><div class="pb-fill" id="f-manguier"></div></div></div>
+        <div class="steps">
+          <div class="step" onclick="chk(this,'manguier',1,3)"><div class="sn">1</div><div class="sb"><div class="sd">⏱ 3 min — Sélection et préparation des feuilles</div><div class="step-txt">Cueillez les jeunes feuilles de manguier (rougeâtres à vert clair). Évitez les vieilles feuilles vert foncé — elles sont moins actives. Lavez soigneusement. Séchage optionnel : vous pouvez sécher les feuilles au soleil 2-3 jours puis les conserver dans un bocal pour utilisation future toute l'année.</div><div class="warn">⚠️ Ne pas utiliser de feuilles venant d'un arbre traité aux pesticides. Préférez les manguiers sauvages ou bio.</div></div></div>
+          <div class="step" onclick="chk(this,'manguier',2,3)"><div class="sn">2</div><div class="sb"><div class="sd">⏱ 12 min — Infusion</div><div class="step-txt">Portez l'eau à ébullition. Ajoutez les feuilles lavées. Baissez le feu et laissez frémir 10 minutes à couvert. L'eau prendra une couleur légèrement dorée-verte. Filtrez. Laissez tiédir. Ajoutez le miel (si non diabétique) et le citron.</div></div></div>
+          <div class="step" onclick="chk(this,'manguier',3,3)"><div class="sn">3</div><div class="sb"><div class="sd">☕ Protocole anti-diabète</div><div class="step-txt"><strong>Diabétiques :</strong> 2 tasses par jour (matin à jeun + soir) pendant minimum 30 jours. Surveillez votre glycémie régulièrement. N'arrêtez pas vos médicaments sans avis médical.<br/><strong>Prévention :</strong> 1 tasse 3 fois/semaine<br/><strong>Important :</strong> Ce remède est complémentaire, pas un substitut aux médicaments prescrits.</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     🧪 MÉLANGES DETOX
+══════════════════════════════ -->
+<div class="cat-section" data-cat="melange">
+  <div class="cs-header">
+    <span class="cs-icon">🧪</span>
+    <span class="cs-name">Mélanges Detox Camerounais</span>
+    <span class="cs-desc">Combinaisons puissantes de fruits et plantes locales</span>
+    <span class="cs-count">4 jus</span>
+  </div>
+
+  <!-- 12. COCKTAIL DETOX VERT CAMEROUNAIS -->
+  <div class="jus-card">
+    <div class="jc-header" onclick="toggle(this)">
+      <span class="jch-emoji">💚</span>
+      <div class="jch-body">
+        <div class="jch-name">Cocktail Detox Vert Camerounais — Ananas · Concombre · Gingembre · Menthe</div>
+        <div class="jch-origin">📍 Recette NutriCam · Combinaison de fruits locaux</div>
+        <div class="jch-tags"><span class="jtag t-detox">Detox puissant</span><span class="jtag t-beaute">Peau verte</span><span class="jtag t-sport">Hydratation</span><span class="jtag t-cm">🇨🇲</span></div>
+        <div class="jch-desc">La synergie parfaite des fruits camerounais — l'ananas bromélaïne anti-inflammatoire, le concombre hydratant, le gingembre brûle-graisse, la menthe digestive. Ce cocktail vert est la star des marchés santé de Yaoundé et Douala.</div>
+      </div>
+      <button class="jch-toggle">▼ Fabrication</button>
+    </div>
+    <div class="jc-macros">
+      <div class="mac"><span class="mac-v" style="color:#fbbf24">65</span><span class="mac-l">kcal/verre</span></div>
+      <div class="mac"><span class="mac-v" style="color:#22c55e">Detox ×5</span><span class="mac-l">actifs</span></div>
+      <div class="mac"><span class="mac-v" style="color:#14b8a6">Hydratation</span><span class="mac-l">optimale</span></div>
+    </div>
+    <div class="jc-timing">
+      <span class="jct">⏱ Total <small>10 min</small></span>
+      <span class="jct">🥛 <small>1.5L (6 verres)</small></span>
+    </div>
+    <div class="jc-details">
+      <div class="jcd">
+        <div class="benefits">
+          <div class="ben">🫧 Detox complet</div><div class="ben">💧 Hydratation</div>
+          <div class="ben">⚖️ Perte de poids</div><div class="ben">🌟 Peau lumineuse</div>
+          <div class="ben">🫀 Anti-inflam.</div><div class="ben">😌 Anti-stress</div>
+        </div>
+        <span class="sec-t">🥬 Ingrédients (pour 1.5L)</span>
+        <div class="ing-grid">
+          <div class="ing"><span class="ing-q">½</span><span class="ing-n">Ananas Pain de Sucre<span class="ing-note">épluché et découpé en morceaux</span></span></div>
+          <div class="ing"><span class="ing-q">1</span><span class="ing-n">Concombre entier<span class="ing-note">lavé en rondelles — avec peau si bio</span></span></div>
+          <div class="ing"><span class="ing-q">4 cm</span><span class="ing-n">Gingembre frais<span class="ing-note">épluché ou non</span></span></div>
+          <div class="ing"><span class="ing-q">1 bouquet</span><span class="ing-n">Menthe fraîche<span class="ing-note">15-20 feuilles</span></span></div>
+          <div class="ing"><span class="ing-q">2</span><span class="ing-n">Citrons verts pressés</span></div>
+          <div class="ing"><span class="ing-q">500ml</span><span class="ing-n">Eau froide filtrée</span></div>
+          <div class="ing"><span class="ing-q">1 cs</span><span class="ing-n">Miel<span class="ing-note">optionnel</span></span></div>
+          <div class="ing"><span class="ing-q">1 pincée</span><span class="ing-n">Poivre noir<span class="ing-note">active le métabolisme</span></span></div>
+        </div>
+        <span class="sec-t">👨‍🍳 Fabrication</span>
+        <div class="prog-bar"><div class="pb-top"><span>Progression</span><span id="p-vert">0%</span></div><div class="pb-track"><div class="pb-fill" id="f-vert"></div></div></div>
+        <div class="steps">
+          <div class="step" onclick="chk(this,'vert',1,4)"><div class="sn">1</div><div class="sb"><div class="sd">⏱ 4 min — Préparation</div><div class="step-txt">Découpez l'ananas en morceaux en gardant le cœur (plus de bromélaïne). Coupez le concombre en rondelles. Tranchez le gingembre. Froissez légèrement la menthe pour libérer ses huiles essentielles. Pressez les citrons.</div></div></div>
+          <div class="step" onclick="chk(this,'vert',2,4)"><div class="sn">2</div><div class="sb"><div class="sd">⏱ 2 min — Mixage</div><div class="step-txt">Mixez ananas + concombre + gingembre + menthe + eau froide à haute vitesse 60 secondes. Le résultat est une purée vert clair mousseuse et très parfumée. La couleur verte vient du concombre et de la menthe.</div></div></div>
+          <div class="step" onclick="chk(this,'vert',3,4)"><div class="sn">3</div><div class="sb"><div class="sd">⏱ 3 min — Filtration et assemblage</div><div class="step-txt">Filtrez à travers un tamis fin en pressant bien. Ajoutez le jus de citron, le miel et la pincée de poivre noir. Mélangez. Goûtez — le cocktail doit être frais, légèrement sucré, acide et avec une pointe de chaleur du gingembre.</div><div class="tip">💡 Version froide intense : ajoutez 10 glaçons et mixez 10 secondes — vous obtenez un slush detox camerounais parfait pour la saison chaude !</div></div></div>
+          <div class="step" onclick="chk(this,'vert',4,4)"><div class="sn">4</div><div class="sb"><div class="sd">🥛 Programme 7 jours</div><div class="step-txt"><strong>Cure detox 7 jours :</strong> 2 verres par jour — 1 le matin à jeun + 1 en milieu d'après-midi.<br/><strong>Résultats attendus :</strong> Ventre plus plat, moins de ballonnements, peau plus lumineuse, transit amélioré, énergie accrue.<br/><strong>Conservation :</strong> 24h au réfrigérateur. Préparez frais chaque jour.</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 13. JUS ROUGE PUISSANCE -->
+  <div class="jus-card">
+    <div class="jc-header" onclick="toggle(this)">
+      <span class="jch-emoji">❤️</span>
+      <div class="jch-body">
+        <div class="jch-name">Jus Rouge Puissance — Pastèque · Hibiscus · Gingembre · Citron</div>
+        <div class="jch-origin">📍 Recette NutriCam · Fusion fruits camerounais et plantes africaines</div>
+        <div class="jch-tags"><span class="jtag t-sport">Sport</span><span class="jtag t-immune">Anti-HTA</span><span class="jtag t-beaute">Beauté rouge</span><span class="jtag t-cm">🇨🇲</span></div>
+        <div class="jch-desc">La pastèque camerounaise (très sucrée et gorgée d'eau) associée au bissap et au gingembre crée le jus le plus hydratant et anti-hypertenseur qu'on puisse fabriquer. Parfait après le sport dans la chaleur de Douala ou Yaoundé.</div>
+      </div>
+      <button class="jch-toggle">▼ Fabrication</button>
+    </div>
+    <div class="jc-macros">
+      <div class="mac"><span class="mac-v" style="color:#fbbf24">55</span><span class="mac-l">kcal/verre</span></div>
+      <div class="mac"><span class="mac-v" style="color:#ec4899">Lycopène +++</span><span class="mac-l">Cœur & peau</span></div>
+      <div class="mac"><span class="mac-v" style="color:#22c55e">L-Citrulline</span><span class="mac-l">Performance</span></div>
+    </div>
+    <div class="jc-timing">
+      <span class="jct">⏱ Total <small>15 min</small></span>
+      <span class="jct">🍉 <small>1/4 pastèque + hibiscus</small></span>
+    </div>
+    <div class="jc-details">
+      <div class="jcd">
+        <div class="benefits">
+          <div class="ben">💧 Hydratation max</div><div class="ben">❤️ Baisse tension</div>
+          <div class="ben">💪 L-citrulline muscles</div><div class="ben">🌟 Anti-âge lycopène</div>
+          <div class="ben">⚡ Post-sport</div><div class="ben">🫀 Cœur sain</div>
+        </div>
+        <span class="sec-t">🥬 Ingrédients (pour 1.5L)</span>
+        <div class="ing-grid">
+          <div class="ing"><span class="ing-q">1 kg</span><span class="ing-n">Pastèque camerounaise<span class="ing-note">chair rouge, très mûre — sans les graines</span></span></div>
+          <div class="ing"><span class="ing-q">40g</span><span class="ing-n">Fleurs d'hibiscus séchées<span class="ing-note">pour une infusion concentrée</span></span></div>
+          <div class="ing"><span class="ing-q">3 cm</span><span class="ing-n">Gingembre frais</span></div>
+          <div class="ing"><span class="ing-q">2</span><span class="ing-n">Citrons verts pressés</span></div>
+          <div class="ing"><span class="ing-q">500ml</span><span class="ing-n">Eau chaude (pour hibiscus)</span></div>
+          <div class="ing"><span class="ing-q">1 cs</span><span class="ing-n">Miel ou sucre</span></div>
+          <div class="ing"><span class="ing-q">1 pincée</span><span class="ing-n">Sel de mer<span class="ing-note">électrolytes post-sport</span></span></div>
+        </div>
+        <span class="sec-t">👨‍🍳 Fabrication</span>
+        <div class="prog-bar"><div class="pb-top"><span>Progression</span><span id="p-rouge">0%</span></div><div class="pb-track"><div class="pb-fill" id="f-rouge"></div></div></div>
+        <div class="steps">
+          <div class="step" onclick="chk(this,'rouge',1,4)"><div class="sn">1</div><div class="sb"><div class="sd">⏱ 5 min — Infusion hibiscus</div><div class="step-txt">Préparez d'abord l'infusion d'hibiscus : faites chauffer 500ml d'eau, éteignez le feu à ébullition, ajoutez les fleurs d'hibiscus et le gingembre. Couvrez et infusez 15 minutes. Filtrez. Laissez refroidir 10 minutes.</div></div></div>
+          <div class="step" onclick="chk(this,'rouge',2,4)"><div class="sn">2</div><div class="sb"><div class="sd">⏱ 3 min — Mixage pastèque</div><div class="step-txt">Découpez la pastèque en morceaux en enlevant les graines (ou gardez-les — elles ne sont pas toxiques et riche en protéines). Mixez la pastèque seule 30 secondes — elle est 92% eau donc donne beaucoup de jus sans eau ajoutée. Filtrez à travers un tamis.</div><div class="tip">💡 La L-citrulline de la pastèque est surtout présente dans la partie blanche près de la peau — si vous souhaitez les bénéfices sportifs maximaux, incluez un peu de cette partie blanche dans votre mixage.</div></div></div>
+          <div class="step" onclick="chk(this,'rouge',3,4)"><div class="sn">3</div><div class="sb"><div class="sd">⏱ 2 min — Assemblage</div><div class="step-txt">Mélangez le jus de pastèque filtré avec l'infusion d'hibiscus refroidie. Ajoutez le jus de citron, le sel de mer et le miel. Mélangez. Le résultat est un jus rouge-violet profond, légèrement acide et très rafraîchissant. Servez sur abondance de glaçons.</div></div></div>
+          <div class="step" onclick="chk(this,'rouge',4,4)"><div class="sn">4</div><div class="sb"><div class="sd">🥛 Utilisation sportive</div><div class="step-txt"><strong>Pré-workout :</strong> 1 grand verre 45 min avant le sport — la L-citrulline améliore les performances de 12%<br/><strong>Post-workout :</strong> 2 grands verres après l'effort — réhydratation rapide<br/><strong>Anti-HTA quotidien :</strong> 1 verre chaque matin</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     ⭐ SPÉCIALITÉS LOCALES
+══════════════════════════════ -->
+<div class="cat-section" data-cat="special">
+  <div class="cs-header">
+    <span class="cs-icon">⭐</span>
+    <span class="cs-name">Spécialités Locales Camerounaises</span>
+    <span class="cs-desc">Jus uniques et authentiques du terroir camerounais</span>
+    <span class="cs-count">4 jus</span>
+  </div>
+
+  <!-- 14. JUS DE CANNE À SUCRE -->
+  <div class="jus-card">
+    <div class="jc-header" onclick="toggle(this)">
+      <span class="jch-emoji">🎋</span>
+      <div class="jch-body">
+        <div class="jch-name">Jus de Canne à Sucre Frais — L'énergie des champs</div>
+        <div class="jch-origin">📍 Adamaoua · Région du Nord · Garoua · Marchés de Yaoundé</div>
+        <div class="jch-tags"><span class="jtag t-energie">Énergie immédiate</span><span class="jtag t-sport">Sport</span><span class="jtag t-cm">🇨🇲 Authentique</span></div>
+        <div class="jch-desc">Le jus de canne à sucre fraîchement pressé est la boisson énergisante la plus ancienne et naturelle du Cameroun. Riche en saccharose naturel, fer, calcium et magnésium. Les vendeurs ambulants de Yaoundé vendent ce nectar dans tout le pays. À faire chez vous avec un pressoir simple.</div>
+      </div>
+      <button class="jch-toggle">▼ Fabrication</button>
+    </div>
+    <div class="jc-macros">
+      <div class="mac"><span class="mac-v" style="color:#fbbf24">180</span><span class="mac-l">kcal/verre</span></div>
+      <div class="mac"><span class="mac-v" style="color:#22c55e">Fer naturel</span><span class="mac-l">Antianémique</span></div>
+      <div class="mac"><span class="mac-v" style="color:#f97316">Saccharose</span><span class="mac-l">Énergie rapide</span></div>
+    </div>
+    <div class="jc-timing">
+      <span class="jct">⏱ Total <small>10 min</small></span>
+      <span class="jct">🎋 <small>1 tige pour 300ml</small></span>
+    </div>
+    <div class="jc-details">
+      <div class="jcd">
+        <div class="benefits">
+          <div class="ben">⚡ Énergie immédiate</div><div class="ben">🩸 Anti-anémie</div>
+          <div class="ben">🦷 Santé dentaire</div><div class="ben">💪 Récupération sport</div>
+          <div class="ben">🫀 Foie sain</div><div class="ben">🫁 Toux & gorge</div>
+        </div>
+        <span class="sec-t">🥬 Ingrédients (pour 1L)</span>
+        <div class="ing-grid">
+          <div class="ing"><span class="ing-q">3-4 tiges</span><span class="ing-n">Canne à sucre fraîche<span class="ing-note">achetée au marché, peau verte ou violette</span></span></div>
+          <div class="ing"><span class="ing-q">1</span><span class="ing-n">Citron vert pressé<span class="ing-note">balance le sucre et préserve contre fermentation</span></span></div>
+          <div class="ing"><span class="ing-q">2 cm</span><span class="ing-n">Gingembre frais<span class="ing-note">optionnel — version digestion</span></span></div>
+          <div class="ing"><span class="ing-q">Glaçons</span><span class="ing-n">Pour servir frais</span></div>
+        </div>
+        <span class="sec-t">👨‍🍳 Fabrication</span>
+        <div class="prog-bar"><div class="pb-top"><span>Progression</span><span id="p-canne">0%</span></div><div class="pb-track"><div class="pb-fill" id="f-canne"></div></div></div>
+        <div class="steps">
+          <div class="step" onclick="chk(this,'canne',1,4)"><div class="sn">1</div><div class="sb"><div class="sd">⏱ 3 min — Préparation des tiges</div><div class="step-txt">Lavez soigneusement les tiges de canne à sucre. Pelez la peau dure verte avec un grand couteau en faisant glisser la lame le long de la tige. Coupez en tronçons de 15-20 cm pour faciliter le pressage. Si vous n'avez pas de pressoir : mâchez directement les morceaux de canne (méthode traditionnelle) ou continuez avec un blender.</div></div></div>
+          <div class="step" onclick="chk(this,'canne',2,4)"><div class="sn">2</div><div class="sb"><div class="sd">⏱ 5 min — Extraction du jus</div><div class="step-txt"><strong>Avec pressoir :</strong> Passez les tronçons dans le pressoir 2-3 fois pour extraire maximum de jus.<br/><strong>Sans pressoir (méthode blender) :</strong> Hachez les tronçons en petits morceaux de 2 cm. Mixez avec 200ml d'eau à haute vitesse 2 minutes. Filtrez à travers une étamine en pressant très fort — vous obtenez un jus trouble verdâtre naturel.</div><div class="tip">💡 Le jus de canne presse frais a une légère couleur verte due à la chlorophylle — c'est normal et c'est sain ! Ne pas confondre avec une contamination.</div></div></div>
+          <div class="step" onclick="chk(this,'canne',3,4)"><div class="sn">3</div><div class="sb"><div class="sd">⏱ 1 min — Finition</div><div class="step-txt">Ajoutez le jus de citron vert (ralentit la fermentation et équilibre le sucre) et le gingembre râpé si utilisé. Mélangez. Servez immédiatement sur glaçons — le jus de canne fermente très rapidement à température ambiante.</div><div class="warn">⚠️ Consommez dans les 2-3 heures après pressage. Le jus de canne fermente très rapidement (surtout sous les tropiques) — il devient alcoolisé légèrement après quelques heures. Réfrigérez immédiatement si vous ne consommez pas tout de suite.</div></div></div>
+          <div class="step" onclick="chk(this,'canne',4,4)"><div class="sn">4</div><div class="sb"><div class="sd">🥛 Utilisations</div><div class="step-txt"><strong>Énergie rapide :</strong> Buvez 1 grand verre avant un effort physique intense — l'énergie est disponible en 15 minutes.<br/><strong>Récupération :</strong> Après un match de football, 2 verres — reconstitue le glycogène musculaire.<br/><strong>Toux :</strong> 1 verre tiède avec gingembre et citron — calme la toux et apaise la gorge.<br/><strong>⚠️ Diabétiques :</strong> Évitez ou consommez avec extrême modération (très riche en sucres naturels).</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 15. JUS AVOCAT BANANE CACAO -->
+  <div class="jus-card">
+    <div class="jc-header" onclick="toggle(this)">
+      <span class="jch-emoji">🥑</span>
+      <div class="jch-body">
+        <div class="jch-name">Smoothie Avocat · Banane · Cacao Camerounais — Protéiné luxe</div>
+        <div class="jch-origin">📍 Cameroun est 1er producteur de cacao d'Afrique centrale 🇨🇲</div>
+        <div class="jch-tags"><span class="jtag t-sport">Protéiné</span><span class="jtag t-energie">Énergie durable</span><span class="jtag t-beaute">Beauté</span><span class="jtag t-cm">🇨🇲 Fierté nationale</span></div>
+        <div class="jch-desc">La combinaison la plus luxueuse des fruits camerounais — avocat (acides gras oméga-9), banane plantain (potassium et énergie), cacao pur camerounais (magnésium, sérotonine, antioxydants). Ce smoothie est le petit-déjeuner des athlètes et professionnels de santé camerounais.</div>
+      </div>
+      <button class="jch-toggle">▼ Fabrication</button>
+    </div>
+    <div class="jc-macros">
+      <div class="mac"><span class="mac-v" style="color:#fbbf24">320</span><span class="mac-l">kcal/verre</span></div>
+      <div class="mac"><span class="mac-v" style="color:#22c55e">7g</span><span class="mac-l">Protéines</span></div>
+      <div class="mac"><span class="mac-v" style="color:#f97316">Omega-9</span><span class="mac-l">Cerveau</span></div>
+      <div class="mac"><span class="mac-v" style="color:#a855f7">Magnésium</span><span class="mac-l">Muscles</span></div>
+    </div>
+    <div class="jc-timing">
+      <span class="jct">⏱ Total <small>7 min</small></span>
+      <span class="jct">🥛 <small>2 verres consistants</small></span>
+    </div>
+    <div class="jc-details">
+      <div class="jcd">
+        <div class="benefits">
+          <div class="ben">🧠 Cerveau boosté</div><div class="ben">💪 Muscles nourris</div>
+          <div class="ben">😊 Humeur (sérotonine)</div><div class="ben">🌟 Peau hydratée</div>
+          <div class="ben">⚡ Énergie durable</div><div class="ben">🦴 Calcium osseux</div>
+        </div>
+        <span class="sec-t">🥬 Ingrédients (pour 2 grands verres)</span>
+        <div class="ing-grid">
+          <div class="ing"><span class="ing-q">1</span><span class="ing-n">Avocat camerounais mûr<span class="ing-note">peau noire et très souple = parfait. Chair verte sans fil.</span></span></div>
+          <div class="ing"><span class="ing-q">2</span><span class="ing-n">Bananes mûres<span class="ing-note">ou 1 banane plantain mûre sucrée</span></span></div>
+          <div class="ing"><span class="ing-q">2 cs</span><span class="ing-n">Poudre de cacao pur camerounais<span class="ing-note">cacao non sucré — pas de Nesquik !</span></span></div>
+          <div class="ing"><span class="ing-q">250ml</span><span class="ing-n">Lait de vache ou lait de coco<span class="ing-note">lait entier pour plus de protéines</span></span></div>
+          <div class="ing"><span class="ing-q">1 cs</span><span class="ing-n">Miel naturel ou 3 dattes dénoyautées<span class="ing-note">les dattes donnent un sucre plus complexe</span></span></div>
+          <div class="ing"><span class="ing-q">½ cc</span><span class="ing-n">Extrait de vanille naturelle</span></div>
+          <div class="ing"><span class="ing-q">1 pincée</span><span class="ing-n">Sel de mer<span class="ing-note">intensifie le goût du cacao</span></span></div>
+          <div class="ing"><span class="ing-q">5</span><span class="ing-n">Glaçons<span class="ing-note">pour texture froide et crémeuse</span></span></div>
+        </div>
+        <span class="sec-t">👨‍🍳 Fabrication</span>
+        <div class="prog-bar"><div class="pb-top"><span>Progression</span><span id="p-avocacao">0%</span></div><div class="pb-track"><div class="pb-fill" id="f-avocacao"></div></div></div>
+        <div class="steps">
+          <div class="step" onclick="chk(this,'avocacao',1,3)"><div class="sn">1</div><div class="sb"><div class="sd">⏱ 3 min — Préparation</div><div class="step-txt">Coupez l'avocat en deux, retirez le noyau avec un coup sec du couteau. Prélevez la chair avec une cuillère — elle doit être vert clair sans parties brunes (signes d'oxydation). Ajoutez le jus de citron immédiatement pour éviter le noircissement. Pelez les bananes et cassez en morceaux.</div><div class="tip">💡 Noyau d'avocat : ne le jetez pas ! Séchez-le 3 jours, râpez-le finement (poudre rouge). Ajoutez ½ cc dans votre smoothie — très riche en antioxydants et utilisé en médecine traditionnelle contre l'arthrite.</div></div></div>
+          <div class="step" onclick="chk(this,'avocacao',2,3)"><div class="sn">2</div><div class="sb"><div class="sd">⏱ 1 min — Mixage dans l'ordre</div><div class="step-txt">Dans le blender : 1) lait (en premier), 2) bananes, 3) avocat, 4) cacao, 5) miel/dattes, 6) vanille, 7) sel, 8) glaçons. Mixez à haute vitesse 60 secondes. Le smoothie doit être très épais et crémeux — consistency de yaourt épais. Si trop épais : ajoutez 50ml de lait. Si trop liquide : ajoutez ½ banane congelée.</div></div></div>
+          <div class="step" onclick="chk(this,'avocacao',3,3)"><div class="sn">3</div><div class="sb"><div class="sd">🥛 Petit-déjeuner athlète</div><div class="step-txt"><strong>Ce smoothie REMPLACE un petit-déjeuner complet :</strong> 320 kcal, 7g protéines, bons gras, fibres.<br/><strong>Timing idéal :</strong> 30-60 min avant une séance de sport ou comme petit-déjeuner.<br/><strong>Garnitures optionnelles :</strong> Parsemez de graines de sésame grillées, noix de coco râpée ou amandes effilées pour texture et protéines supplémentaires.<br/><strong>Version dessert santé :</strong> Congelez 4h et servez comme glace — délicieux et 100% naturel !</div></div></div>
+        </div>
+        <div class="box-gold"><span class="bt" style="color:var(--gold)">👨‍🍳 Fierté camerounaise</span><div class="bc">Le Cameroun est le 1er producteur de cacao d'Afrique centrale et le 6ème mondial. Notre cacao camerounais (notamment de la région du Centre et du Sud-Ouest) est classé "Premium Fine Cacao" par les chocolatiers suisses et belges. Utiliser du cacao pur camerounais dans ce smoothie, c'est honorer notre terroir tout en se nourrissant sainement.</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</div><!-- fin main -->
+<div class="toast" id="toast"></div>
+
+<script>
+const p={};
+function chk(el,id,n,tot){
+  el.classList.toggle('done');
+  if(!p[id])p[id]=new Set();
+  el.classList.contains('done')?p[id].add(n):p[id].delete(n);
+  const pct=Math.round(p[id].size/tot*100);
+  const b=document.getElementById('f-'+id);
+  const l=document.getElementById('p-'+id);
+  if(b)b.style.width=pct+'%';
+  if(l)l.textContent=pct+'%';
+  if(pct===100)toast('🎉 Jus terminé ! Santé ! 🥛');
+}
+
+function toggle(h){
+  const d=h.parentElement.querySelector('.jc-details');
+  const btn=h.querySelector('.jch-toggle');
+  const open=d.classList.contains('open');
+  document.querySelectorAll('.jc-details.open').forEach(x=>{
+    x.classList.remove('open');
+    x.parentElement.querySelector('.jch-toggle').textContent='▼ Fabrication';
+  });
+  if(!open){d.classList.add('open');btn.textContent='▲ Masquer';setTimeout(()=>d.scrollIntoView({behavior:'smooth',block:'nearest'}),100);}
+}
+
+function filterCat(cat,btn){
+  document.querySelectorAll('.cat-pill').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.cat-section').forEach(s=>{
+    s.style.display=(cat==='all'||s.dataset.cat===cat)?'':'none';
+  });
+}
+
+function search(q){
+  const lq=q.toLowerCase();
+  document.querySelectorAll('.jus-card').forEach(c=>{
+    c.style.display=(!q||c.textContent.toLowerCase().includes(lq))?'':'none';
+  });
+}
+
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+// Ouvrir le premier jus
+document.querySelector('.jc-header').click();
+</script>
+</body>
+</html>
