@@ -6,6 +6,10 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   try {
+    const chunks = [];
+    for await (const chunk of req) chunks.push(chunk);
+    const rawBody = Buffer.concat(chunks).toString();
+
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
@@ -13,7 +17,7 @@ export default async function handler(req, res) {
         'x-api-key': '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',
         'anthropic-version': '2023-06-01'
       },
-      body: JSON.stringify(req.body)
+      body: rawBody
     });
 
     const data = await response.json();
