@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>NutriCam — Passer au Premium</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-  <script src="https://cdn.fedapay.com/checkout.js?v=1.1.7"></script>
+  
   <style>
     :root {
       --green: #1a7a4a;
@@ -484,7 +484,7 @@
       </button>
 
       <div class="security">
-        🔒 Paiement sécurisé via FedaPay · Données chiffrées SSL
+        🔒 Paiement sécurisé via Notchpay · Données chiffrées SSL
       </div>
 
       <div class="trust-bar">
@@ -499,7 +499,7 @@
 
 <script>
   // ===== CONFIG =====
-  const FEDAPAY_PUBLIC_KEY = 'pk_live_ldEJzGvZXjT5sNrBNb9VtvV9';
+  const NOTCHPAY_PUBLIC_KEY = 'pk_test.S5J9n9otr7uO4BwFgJf8HD10V6NpQpMOuPcDEa3Qtd3PypBudNRthEfgPK9XdRz29HJt7bHK8WnDBYzeNz0DsF8EleaB0tYIUGOHcEJ3rEWM8k2tzCTaFo7KBzM1z';
   const MONTANT = 2500;
   const PROMO_CODES = ['NUTRICAM2025', 'GEORGES', 'PREMIUM2025'];
 
@@ -536,69 +536,56 @@
     setTimeout(() => box.classList.remove('show'), 5000);
   }
 
-  // ===== PAIEMENT FEDAPAY =====
-  function initPaiement() {
+
+  // ===== PAIEMENT NOTCHPAY =====
+  async function initPaiement() {
     const nom = document.getElementById('userName').value.trim();
     const email = document.getElementById('userEmail').value.trim();
     const phone = document.getElementById('userPhone').value.trim();
 
-    // Validation
     if (!nom) { showAlert('Veuillez entrer votre nom complet.', 'error'); return; }
     if (!email || !email.includes('@')) { showAlert('Veuillez entrer un email valide.', 'error'); return; }
     if (!phone || phone.length < 8) { showAlert('Veuillez entrer votre numéro Mobile Money.', 'error'); return; }
 
-    // Loading state
     const btn = document.getElementById('payBtn');
     btn.classList.add('loading');
     btn.disabled = true;
 
-    // Nom séparé
-    const parts = nom.split(' ');
-    const firstName = parts[0] || nom;
-    const lastName = parts.slice(1).join(' ') || 'NutriCam';
-
-    // FedaPay Checkout
     try {
-      FedaPay.init({
-        public_key: FEDAPAY_PUBLIC_KEY,
-        transaction: {
+      const res = await fetch('https://api.notchpay.co/payments/initialize', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': NOTCHPAY_PUBLIC_KEY
+        },
+        body: JSON.stringify({
           amount: MONTANT,
-          description: 'Abonnement NutriCam Premium — 1 mois',
-        },
-        customer: {
-          firstname: firstName,
-          lastname: lastName,
+          currency: 'XAF',
           email: email,
-          phone_number: {
-            number: phone,
-            country: 'CM'
-          }
-        },
-        onComplete: function(response) {
-          btn.classList.remove('loading');
-          btn.disabled = false;
+          phone: phone,
+          name: nom,
+          description: 'Abonnement NutriCam Premium - 1 mois',
+          reference: 'nutricam_' + Date.now(),
+          callback: 'https://nutricam.site/nutricam-chatbot.html'
+        })
+      });
 
-          if (response.reason === FedaPay.DIALOG_DISMISSED) {
-            showAlert('Paiement annulé. Vous pouvez réessayer.', 'error');
-          } else if (response.transaction && response.transaction.status === 'approved') {
-            showAlert('✅ Paiement réussi ! Bienvenue dans NutriCam Premium 🎉', 'success');
-            // Sauvegarder dans Supabase
-            saveAbonnementSupabase(nom, email, phone);
-            setTimeout(() => {
-              window.location.href = 'nutricam-chatbot.html';
-            }, 2000);
-          } else {
-            showAlert('Paiement en attente de confirmation. Vérifiez votre téléphone.', 'error');
-          }
-        }
-      }).open();
+      const data = await res.json();
+
+      if (data && data.authorization_url) {
+        saveAbonnementSupabase(nom, email, phone);
+        window.location.href = data.authorization_url;
+      } else {
+        throw new Error(data.message || 'Erreur initialisation paiement');
+      }
+
     } catch (e) {
       btn.classList.remove('loading');
       btn.disabled = false;
-      showAlert('Erreur de connexion FedaPay. Vérifiez votre connexion internet.', 'error');
-      console.error('FedaPay error:', e);
+      showAlert('Erreur : ' + (e.message || 'Verifiez votre connexion.'), 'error');
     }
   }
+
 
   // ===== SUPABASE — ENREGISTRER ABONNEMENT =====
   async function saveAbonnementSupabase(nom, email, phone) {
