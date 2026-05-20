@@ -24,8 +24,6 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
 .nav-btn{background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--muted);padding:0.35rem 0.8rem;border-radius:8px;font-size:0.75rem;font-weight:700;text-decoration:none;transition:all 0.2s}
 .nav-btn:hover{color:#fff}
 .nav-lang{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:0.35rem 0.6rem;font-size:0.75rem;font-weight:700;color:var(--muted);cursor:pointer;font-family:'Cabinet Grotesk',sans-serif}
-
-/* QUOTA BAR */
 .quota-bar{background:rgba(240,165,0,0.06);border-bottom:1px solid rgba(240,165,0,0.15);padding:0.5rem 1.5rem;display:flex;align-items:center;gap:1rem;flex-shrink:0}
 .qb-label{font-size:0.72rem;font-weight:700;color:var(--gold)}
 .qb-dots{display:flex;gap:0.4rem}
@@ -33,8 +31,6 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
 .qb-dot.used{background:rgba(255,255,255,0.1);border:1px solid var(--muted)}
 .qb-info{font-size:0.68rem;color:var(--muted);margin-left:auto}
 .qb-upgrade{background:var(--gold);color:#000;border:none;border-radius:6px;padding:0.25rem 0.65rem;font-size:0.68rem;font-weight:800;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif}
-
-/* LAYOUT */
 .layout{display:grid;grid-template-columns:260px 1fr;flex:1;overflow:hidden;min-height:0}
 .sidebar{background:var(--s1);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
 .sb-head{padding:1.1rem;border-bottom:1px solid var(--border)}
@@ -54,8 +50,6 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
 .sf-stat{display:flex;justify-content:space-between;align-items:center;font-size:0.75rem}
 .sf-val{font-family:'DM Mono',monospace;font-weight:700;color:#fff}
 .sf-label{color:var(--muted)}
-
-/* CHAT */
 .chat-zone{display:flex;flex-direction:column;overflow:hidden;min-height:0}
 .chat-head{padding:0.85rem 1.4rem;border-bottom:1px solid var(--border);background:rgba(3,8,5,0.5);display:flex;align-items:center;gap:0.7rem;flex-shrink:0}
 .ch-av{font-size:1.4rem}
@@ -64,8 +58,6 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
 .ch-actions{margin-left:auto;display:flex;gap:0.4rem}
 .ch-btn{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:7px;padding:0.28rem 0.65rem;font-size:0.68rem;color:var(--muted);cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;transition:all 0.15s}
 .ch-btn:hover{color:#fff}
-
-/* MESSAGES */
 .msgs{flex:1;overflow-y:auto;padding:1.1rem;display:flex;flex-direction:column;gap:0.75rem;scroll-behavior:smooth}
 .msgs::-webkit-scrollbar{width:3px}
 .msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
@@ -77,8 +69,6 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
 .wchips{display:flex;gap:0.4rem;flex-wrap:wrap;justify-content:center}
 .wchip{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:100px;padding:0.28rem 0.65rem;font-size:0.7rem;color:var(--text);cursor:pointer;transition:all 0.15s}
 .wchip:hover{background:rgba(34,197,94,0.07);border-color:var(--border2)}
-
-/* QUOTA WALL */
 .quota-wall{background:rgba(240,165,0,0.05);border:1px solid rgba(240,165,0,0.25);border-radius:16px;padding:1.5rem;text-align:center;margin:auto}
 .qw-icon{font-size:3rem;margin-bottom:0.8rem;display:block}
 .qw-title{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:900;color:#fff;margin-bottom:0.4rem}
@@ -87,7 +77,6 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
 .qw-btn{background:linear-gradient(135deg,var(--gold),#fbbf24);color:#000;border:none;border-radius:12px;padding:0.9rem 2rem;font-size:0.92rem;font-weight:800;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;display:block;width:100%;margin-bottom:0.5rem;transition:all 0.2s}
 .qw-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(240,165,0,0.3)}
 .qw-free-btn{background:rgba(255,255,255,0.05);color:var(--muted);border:1px solid var(--border);border-radius:12px;padding:0.7rem 2rem;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'Cabinet Grotesk',sans-serif;display:block;width:100%}
-
 .msg{display:flex;gap:0.65rem;animation:msgIn 0.25s ease}
 @keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .msg-ai{align-self:flex-start;max-width:88%}
@@ -102,7 +91,6 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
 .m-actions{display:flex;gap:0.3rem;margin-top:0.35rem}
 .ma-btn{background:none;border:1px solid var(--border);border-radius:5px;padding:0.15rem 0.45rem;font-size:0.7rem;cursor:pointer;color:var(--muted);transition:all 0.15s;font-family:'Cabinet Grotesk',sans-serif}
 .ma-btn:hover{color:#fff}
-
 .air strong{color:#4ade80}
 .air h3{font-size:0.86rem;font-weight:800;color:var(--gold);margin:0.5rem 0 0.2rem}
 .air ul{padding-left:1.1rem;margin:0.25rem 0}
@@ -110,7 +98,6 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
 .air .kcal-badge{color:#fbbf24;font-family:'DM Mono',monospace;font-weight:700}
 .air .tip-box{background:rgba(34,197,94,0.04);border-left:2px solid var(--gl);padding:0.28rem 0.55rem;border-radius:0 5px 5px 0;margin:0.35rem 0;font-size:0.78rem}
 .air .warn-box{background:rgba(240,165,0,0.04);border-left:2px solid var(--gold);padding:0.28rem 0.55rem;border-radius:0 5px 5px 0;margin:0.35rem 0;font-size:0.78rem}
-
 .typing-msg{display:flex;gap:0.65rem;align-self:flex-start}
 .typing-bub{background:rgba(255,255,255,0.035);border:1px solid var(--border);border-radius:16px 16px 16px 4px;padding:0.75rem 1rem;display:flex;align-items:center;gap:5px}
 .td{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:bounce-td 1.2s ease infinite}
@@ -118,7 +105,6 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
 .td:nth-child(3){animation-delay:0.4s}
 @keyframes bounce-td{0%,100%{transform:translateY(0);opacity:0.4}50%{transform:translateY(-5px);opacity:1}}
 .typing-label{font-size:0.7rem;color:var(--muted);margin-left:0.3rem}
-
 .input-area{padding:0.85rem 1.1rem;border-top:1px solid var(--border);background:rgba(3,8,5,0.6);flex-shrink:0}
 .input-row{display:flex;gap:0.55rem;align-items:flex-end}
 .input-wrap{flex:1;background:rgba(255,255,255,0.04);border:1.5px solid var(--border);border-radius:15px;padding:0.7rem 0.9rem;transition:border-color 0.2s}
@@ -131,14 +117,11 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
 .send-btn{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--gl));border:none;color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;box-shadow:0 4px 12px rgba(22,163,74,0.28)}
 .send-btn:hover{transform:scale(1.08)}
 .send-btn:disabled{opacity:0.35;cursor:not-allowed;transform:none}
-
 .usage-row{display:flex;align-items:center;gap:0.5rem;padding:0.35rem 1.1rem;font-size:0.62rem;color:var(--muted);border-top:1px solid var(--border)}
 .ub-track{flex:1;height:3px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden}
 .ub-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--gl));border-radius:2px;transition:width 0.5s ease;width:0%}
-
 .toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(22,163,74,0.92);color:#fff;padding:0.6rem 1.3rem;border-radius:100px;font-size:0.78rem;font-weight:700;opacity:0;pointer-events:none;transition:all 0.3s;z-index:400;white-space:nowrap}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
 @media(max-width:768px){.layout{grid-template-columns:1fr}.sidebar{display:none}}
 </style>
 </head>
@@ -153,11 +136,12 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
       <option value="en">🇬🇧 EN</option>
       <option value="de">🇩🇪 DE</option>
     </select>
+    <!-- ✅ AJOUT: Bouton Analyse Photo -->
+    <a href="nutricam-photo-analyse.html" class="nav-btn" style="color:#f0a500;border-color:rgba(240,165,0,0.3)">📸 Analyse Photo</a>
     <a href="nutricam-hub.html" class="nav-btn">← Hub</a>
   </div>
 </nav>
 
-<!-- QUOTA BAR -->
 <div class="quota-bar" id="quota-bar">
   <span class="qb-label">Questions gratuites aujourd'hui :</span>
   <div class="qb-dots" id="quota-dots">
@@ -169,7 +153,6 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
 </div>
 
 <div class="layout">
-  <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="sb-head">
       <div class="sb-lbl">Votre nutritionniste</div>
@@ -199,6 +182,9 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
       <div class="ql-cat">🌿 Jus & Detox</div>
       <button class="qt" onclick="quick('Quels jus naturels africains pour détoxifier le corps ?')">🌿 Detox africaine</button>
       <button class="qt" onclick="quick('Quels sont les bienfaits du bissap sur la santé ?')">🌺 Bissap</button>
+      <!-- ✅ AJOUT: Lien Analyse Photo IA -->
+      <div class="ql-cat">📸 Analyse IA</div>
+      <button class="qt" style="background:rgba(240,165,0,0.08);border-color:rgba(240,165,0,0.2);color:#f0a500" onclick="window.location.href='nutricam-photo-analyse.html'">🍽️ Analyser une photo de plat ⭐</button>
     </div>
     <div class="sb-footer">
       <div class="sf-stat"><span class="sf-label">Messages session</span><span class="sf-val" id="s-msgs">0</span></div>
@@ -206,7 +192,6 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
     </div>
   </div>
 
-  <!-- CHAT -->
   <div class="chat-zone">
     <div class="chat-head">
       <span class="ch-av">🤖</span>
@@ -215,6 +200,8 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
         <div class="ch-sub" id="ch-sub">Nutrition africaine & européenne · 2 questions gratuites/jour</div>
       </div>
       <div class="ch-actions">
+        <!-- ✅ AJOUT: Bouton Analyse Photo dans header chat -->
+        <button class="ch-btn" style="color:#f0a500;border-color:rgba(240,165,0,0.3)" onclick="window.location.href='nutricam-photo-analyse.html'">📸 Analyse Photo</button>
         <button class="ch-btn" onclick="exportChat()">📋 Exporter</button>
         <button class="ch-btn" onclick="clearChat()">🗑 Effacer</button>
       </div>
@@ -230,6 +217,8 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
           <div class="wchip" onclick="quick('Meilleurs aliments africains pour l\'énergie')">⚡ Énergie</div>
           <div class="wchip" onclick="quick('Plan repas africain 7 jours équilibré')">📅 Plan 7 jours</div>
           <div class="wchip" onclick="quick('Superaliments africains à consommer quotidiennement')">🌟 Superaliments</div>
+          <!-- ✅ AJOUT: Chip Analyse Photo -->
+          <div class="wchip" style="background:rgba(240,165,0,0.08);border-color:rgba(240,165,0,0.25);color:#f0a500" onclick="window.location.href='nutricam-photo-analyse.html'">📸 Analyser un plat ⭐</div>
         </div>
       </div>
     </div>
@@ -261,14 +250,9 @@ body{font-family:'Cabinet Grotesk',sans-serif;background:var(--bg);color:var(--t
 <div class="toast" id="toast"></div>
 
 <script>
-// ══ CONFIG ══
-// Clé API intégrée — gérée côté serveur via variable d'environnement
-// Pour la version production, utilisez une Vercel Edge Function
-const API_KEY = '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'; // Remplacé par votre vraie clé sur Vercel
 const MODEL = 'claude-sonnet-4-5';
-const FREE_LIMIT = 2; // 2 questions gratuites par jour
+const FREE_LIMIT = 2;
 
-// ══ QUOTA MANAGEMENT ══
 function getTodayKey(){ return 'nc_quota_' + new Date().toISOString().split('T')[0]; }
 function getQuotaUsed(){ return parseInt(localStorage.getItem(getTodayKey()) || '0'); }
 function incrementQuota(){ 
@@ -284,7 +268,6 @@ function updateQuotaUI(){
   const used = getQuotaUsed();
   const remaining = Math.max(0, FREE_LIMIT - used);
   const bar = document.getElementById('quota-bar');
-  
   if(isPremium()){
     bar.style.background = 'rgba(34,197,94,0.06)';
     bar.style.borderBottomColor = 'rgba(34,197,94,0.15)';
@@ -293,14 +276,11 @@ function updateQuotaUI(){
     document.getElementById('ch-sub').textContent = 'Nutrition africaine & européenne · Accès illimité Premium';
     return;
   }
-
-  // Update dots
   for(let i=1; i<=FREE_LIMIT; i++){
     const dot = document.getElementById('dot-'+i);
     if(dot) dot.classList.toggle('used', i <= used);
   }
   document.getElementById('quota-info').textContent = remaining > 0 ? `${remaining} restante${remaining>1?'s':''}` : '0 restante — Passez Premium !';
-  
   if(remaining === 0){
     document.getElementById('quota-bar').style.borderBottomColor = 'rgba(239,68,68,0.3)';
     document.getElementById('quota-info').style.color = 'var(--red)';
@@ -310,20 +290,15 @@ function updateQuotaUI(){
 
 function showQuotaWall(){
   const msgs = document.getElementById('msgs');
-  // Ne pas afficher si déjà présent
   if(document.getElementById('quota-wall')) return;
-  
   const wall = document.createElement('div');
   wall.id = 'quota-wall';
   wall.className = 'quota-wall';
-  
-  // Calculer la prochaine réinitialisation (minuit)
   const now = new Date();
   const midnight = new Date(now);
   midnight.setDate(midnight.getDate()+1);
   midnight.setHours(0,0,0,0);
   const hoursLeft = Math.ceil((midnight - now) / 3600000);
-  
   wall.innerHTML = `
     <span class="qw-icon">⏳</span>
     <div class="qw-title">Quota quotidien atteint</div>
@@ -333,29 +308,29 @@ function showQuotaWall(){
     <button class="qw-free-btn" onclick="revealPremiumCode()">🎁 J'ai un code promotionnel</button>`;
   msgs.appendChild(wall);
   msgs.scrollTop = msgs.scrollHeight;
-  
-  // Désactiver l'input
   document.getElementById('inp').disabled = true;
   document.getElementById('inp').placeholder = 'Quota atteint — revenez demain ou passez Premium';
   document.getElementById('send-btn').disabled = true;
   document.querySelectorAll('.qt').forEach(b => b.disabled = true);
 }
 
+// ✅ MODIFIÉ: redirige vers paiement
 function showUpgrade(){
- window.location.href = 'nutricam-payment.html';
+  window.location.href = 'nutricam-payment.html';
 }
 
+// ✅ MODIFIÉ: code promo → redirect payment
 function revealPremiumCode(){
   const code = prompt('Entrez votre code promotionnel :');
   if(code === 'NUTRICAM2025' || code === 'GEORGES' || code === 'PREMIUM'){
     localStorage.setItem('nc_premium', 'true');
-    location.reload();
+    toast('✅ Code valide ! Redirection vers le paiement...');
+    setTimeout(() => window.location.href = 'nutricam-payment.html', 1500);
   } else if(code) {
     toast('❌ Code invalide. Contactez : pitchouduplece9@gmail.com');
   }
 }
 
-// ══ SYSTEM PROMPT ══
 const SYS = `Tu es Dr. NutriCam, nutritionniste IA experte créée par NutriCam (Georges Duplece Pitchou 🇨🇲).
 
 SPÉCIALITÉS :
@@ -369,6 +344,7 @@ SPÉCIALITÉS :
 - Plantes africaines: moringa, baobab, bissap, crayfish, huile de palme
 - Conditions: diabète, HTA, grossesse, anémie, obésité, musculation
 - Jus africains: bissap, moringa, tamarin, baobab, gingembre-curcuma
+- Analyse Photo IA disponible sur nutricam-photo-analyse.html
 
 RÈGLES:
 - Réponds TOUJOURS dans la langue de la question (FR/EN/DE)
@@ -377,9 +353,8 @@ RÈGLES:
 - Utilise des emojis pertinents
 - Questions médicales sérieuses → recommande un médecin
 - Réponses concises et utiles (max 250 mots)
-- Mentionne NutriCam quand pertinent`;
+- Si l'utilisateur montre un plat, suggère l'Analyse Photo IA`;
 
-// ══ STATE ══
 let history = [], lang = 'fr', msgCount = 0, totalTokens = 0, busy = false;
 
 const L = {
@@ -388,23 +363,18 @@ const L = {
   de:{ph:'Stellen Sie Ihre Frage...',wh:'Hallo! Ich bin Dr. NutriCam',wp:'KI-Ernährungsberaterin. Sie haben <strong style="color:var(--gold)">2 kostenlose Fragen</strong> heute.',cn:'NutriCam KI-Coach',cs:'Afrikanische & europäische Ernährung · 2 Fragen/Tag',thinking:'Dr. NutriCam denkt nach...'}
 };
 
-// ══ SEND ══
 async function send(){
-  // Vérifier quota
   if(!isPremium() && !hasQuotaLeft()){
     showQuotaWall();
     toast('⏳ Quota atteint — revenez demain ou passez Premium !');
     return;
   }
-
   const inp = document.getElementById('inp');
   const txt = inp.value.trim();
   if(!txt || busy) return;
-
   inp.value = ''; 
   document.getElementById('chars').textContent = '800';
   inp.style.height = 'auto';
-
   addMsg('user', txt);
   history.push({role:'user', content:txt});
   const tid = showTyping();
@@ -412,32 +382,24 @@ async function send(){
   document.getElementById('send-btn').disabled = true;
 
   try {
-    const r = await fetch('https://api.anthropic.com/v1/messages', {
+    // ✅ MODIFIÉ: utilise le proxy /api/analyse au lieu de l'API directe
+    const r = await fetch('/api/analyse', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': API_KEY,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({model:MODEL, max_tokens:800, system:SYS, messages:history})
     });
-
     removeTyping(tid);
-
     if(!r.ok){
       const e = await r.json();
       throw new Error(e.error?.message || r.status);
     }
-
     const d = await r.json();
     const reply = d.content[0].text;
     const tk = (d.usage?.input_tokens||0) + (d.usage?.output_tokens||0);
-
     history.push({role:'assistant', content:reply});
     addMsg('ai', reply);
-
-    // Incrémenter quota seulement si pas Premium
     if(!isPremium()){
       const used = incrementQuota();
       const remaining = FREE_LIMIT - used;
@@ -448,21 +410,17 @@ async function send(){
         toast(`✅ Réponse reçue · ${remaining} question${remaining>1?'s':''} gratuite${remaining>1?'s':''} restante${remaining>1?'s':''}`);
       }
     }
-
-    // Stats
     msgCount++; totalTokens += tk;
     document.getElementById('s-msgs').textContent = msgCount;
     document.getElementById('s-cost').textContent = '$' + (totalTokens/1000000*9).toFixed(4);
     const p = Math.min(totalTokens/5000*100,100).toFixed(1);
     document.getElementById('ub-fill').style.width = p+'%';
     document.getElementById('usage-pct').textContent = p+'%';
-
   } catch(e) {
     removeTyping(tid);
     addMsg('ai', `❌ Erreur : ${e.message}\n\nVérifiez votre connexion internet et réessayez.`);
     console.error(e);
   }
-
   busy = false;
   document.getElementById('send-btn').disabled = false;
 }
@@ -473,7 +431,6 @@ function quick(q){
   send();
 }
 
-// ══ MESSAGES ══
 function addMsg(role, text){
   const c = document.getElementById('msgs');
   const now = new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
@@ -519,7 +476,6 @@ function showTyping(){
 }
 function removeTyping(id){ document.getElementById(id)?.remove() }
 
-// ══ ACTIONS ══
 function likeMsg(b){ b.textContent='👍 Merci !'; toast('✅ Merci pour votre retour !') }
 function copyMsg(b){
   const bub = b.closest('.msg').querySelector('.m-bubble');
@@ -531,7 +487,6 @@ function clearChat(){
   document.getElementById('s-msgs').textContent='0';
   document.getElementById('s-cost').textContent='$0.00';
   document.getElementById('msgs').innerHTML='<div class="welcome"><span class="welcome-av">👩🏿‍⚕️</span><h3>Nouvelle conversation</h3><p>Posez votre première question !</p></div>';
-  // Re-afficher quota wall si nécessaire
   if(!isPremium() && !hasQuotaLeft()) setTimeout(showQuotaWall, 100);
 }
 function exportChat(){
@@ -542,7 +497,6 @@ function exportChat(){
   a.click(); toast('📋 Conversation exportée !');
 }
 
-// ══ LANG ══
 function setLang(l){
   lang=l; const t=L[l];
   document.getElementById('inp').placeholder=t.ph;
@@ -552,15 +506,12 @@ function setLang(l){
   document.getElementById('ch-sub').textContent=t.cs;
 }
 
-// ══ INPUT ══
 function onKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()} }
 function onInput(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,90)+'px'; document.getElementById('chars').textContent=800-el.value.length }
 function addE(e){ document.getElementById('inp').value+=e; document.getElementById('inp').focus() }
 
-// ══ TOAST ══
 function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),4000) }
 
-// ══ INIT ══
 updateQuotaUI();
 if(!isPremium() && !hasQuotaLeft()){
   setTimeout(showQuotaWall, 500);
